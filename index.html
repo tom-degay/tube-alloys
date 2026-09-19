@@ -125,7 +125,31 @@
      above 1024px -- see the desktop block for why. */
   .case-block-kicker .case-icon { display: none; }
 
-  .testimonials { --stagger: clamp(72px, 9vw, 130px); }
+  .testimonials { --stagger: clamp(72px, 9vw, 130px); --reveal-y: 0px; }
+
+  /* -- scroll reveal: each quote fades and slides in from its own side,
+     left column from the left, right column from the right. --reveal-y
+     carries the column's resting vertical offset (0 here, the 820px
+     stagger below) into the keyframes, so the animation's final frame
+     doesn't clobber the 2-col stagger transform once it finishes. */
+  .reveal-armed .testimonials blockquote { opacity: 0; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal-armed .testimonials blockquote.is-revealed:nth-child(odd) {
+      animation: testimonial-in-left 0.9s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms) both;
+    }
+
+    .reveal-armed .testimonials blockquote.is-revealed:nth-child(even) {
+      animation: testimonial-in-right 0.9s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms) both;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-armed .testimonials blockquote,
+    .reveal-armed .testimonials blockquote.is-revealed {
+      opacity: 1;
+    }
+  }
 
   /* No teal rule here -- the quote mark already says "quotation", and two
      markers for one thing is one too many. Dropping the shared rule's
@@ -185,7 +209,8 @@
        rather than a margin: a margin on a grid item grows its row, which
        would carry the left column down with it and lose the stagger. */
     .testimonials blockquote:nth-child(even) {
-      transform: translateY(var(--stagger));
+      --reveal-y: var(--stagger);
+      transform: translateY(var(--reveal-y));
     }
   }
 
@@ -362,6 +387,16 @@
   @keyframes card-fade-in {
     from { opacity: 0; }
     to   { opacity: 1; }
+  }
+
+  @keyframes testimonial-in-left {
+    from { opacity: 0; transform: translateY(var(--reveal-y, 0px)) translateX(-40px); }
+    to   { opacity: 1; transform: translateY(var(--reveal-y, 0px)) translateX(0); }
+  }
+
+  @keyframes testimonial-in-right {
+    from { opacity: 0; transform: translateY(var(--reveal-y, 0px)) translateX(40px); }
+    to   { opacity: 1; transform: translateY(var(--reveal-y, 0px)) translateX(0); }
   }
 
   /* Pipelines card: cascading green stages and colour-matched flow. */
@@ -822,6 +857,7 @@
     .hero-armed #about-heading,
     .hero-armed .about-statement { opacity: 1 !important; transform: none !important; }
     .reveal-armed .case-blocks .case-block { opacity: 1 !important; }
+    .reveal-armed .testimonials blockquote { opacity: 1 !important; }
   </style>
 </noscript>
   <script src="/nav.js" defer></script>
@@ -1160,6 +1196,36 @@
       }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
 
       cards.forEach(function (c) { io.observe(c); });
+    })();
+
+    (function () {
+      var root = document.documentElement;
+      if (!root.classList.contains('reveal-armed')) return;
+
+      var quotes = Array.prototype.slice.call(document.querySelectorAll('.testimonials blockquote'));
+      if (!quotes.length) return;
+
+      if (!('IntersectionObserver' in window)) {
+        quotes.forEach(function (q) { q.classList.add('is-revealed'); });
+        return;
+      }
+
+      var STAGGER = 90; // ms between quotes entering together (row cascade)
+      var io = new IntersectionObserver(function (entries) {
+        entries
+          .filter(function (e) { return e.isIntersecting; })
+          .map(function (e) { return e.target; })
+          .sort(function (a, b) {
+            return (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING) ? -1 : 1;
+          })
+          .forEach(function (el, i) {
+            el.style.setProperty('--reveal-delay', (i * STAGGER) + 'ms');
+            el.classList.add('is-revealed');
+            io.unobserve(el);
+          });
+      }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+
+      quotes.forEach(function (q) { io.observe(q); });
     })();
 
     (function () {

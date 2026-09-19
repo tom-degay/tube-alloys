@@ -753,15 +753,10 @@
     <section aria-labelledby="outcome-heading" class="case-body">
       <h2 class="eyebrow" id="outcome-heading">Outcome</h2>
       <h3>Evaluating the new model</h3>
-      <p>To evaluate the new mapping behaviour, I created four synthetic schemas based on the 250-column Lloyd&rsquo;s London Market schema, which is widely used in the industry. These contained realistic data, with extensive discrepancies and lexical variation in column names&mdash;making the test more demanding than typical product usage.</p>
+      <p>To evaluate the new mapping behaviour, I created four synthetic schemas based on the 250-column Lloyd&rsquo;s London Market schema, which is widely used in the industry. These contained realistic data, with extensive discrepancies and lexical variation in column names, making the test more demanding than typical product usage.</p>
       <p>In my LLM-assisted assessment across four demanding synthetic schemas, the new model achieved approximately 12% higher overall match quality and around 75% fewer serious semantic mapping errors. That represents a fourfold reduction in serious errors: the new model produced roughly one serious error for every four produced by the old model.</p>
       <p>Across the four schemas, only three mappings from the new model were assessed as incorrect, even with the Automap confidence threshold set to 0%. It also handled repeated and numbered fields more consistently, reducing incorrect matches between similar-looking fields with distinct meanings.</p>
       <blockquote>Our tests showed a 4x improvement in mapping quality for the same coverage.</blockquote>
-
-      <h3>An invisible user experience</h3>
-      <p>Column mapping gives clients control over complex, high-volume data ingestion, allowing them to scale without growing operational headcount.</p>
-      <p>With the semantic upgrade, users have the confidence to run their process without even logging in: when new fields are detected, they are mapped in automatically. <a href="/case-studies/validation">Our validations framework</a> catches any rare exceptions and notifies the user.</p>
-      <blockquote>We put considerable effort into creating a compelling user experience. On the happy path, users now never see it.</blockquote>
     </section>
 
     <hr class="rule">
