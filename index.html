@@ -151,6 +151,22 @@
     }
   }
 
+  /* -- scroll reveal: the "AI-powered automation in action" YouTube card
+     fades in, matching the .case-blocks card-fade-in treatment. */
+  .reveal-armed .job .case-block.has-thumb { opacity: 0; }
+
+  .reveal-armed .job .case-block.has-thumb.is-revealed {
+    animation: card-fade-in 1.1s ease both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-armed .job .case-block.has-thumb,
+    .reveal-armed .job .case-block.has-thumb.is-revealed {
+      opacity: 1;
+      animation: none;
+    }
+  }
+
   /* No teal rule here -- the quote mark already says "quotation", and two
      markers for one thing is one too many. Dropping the shared rule's
      border and its 22px padding puts the text back on the grid line the
@@ -858,6 +874,7 @@
     .hero-armed .about-statement { opacity: 1 !important; transform: none !important; }
     .reveal-armed .case-blocks .case-block { opacity: 1 !important; }
     .reveal-armed .testimonials blockquote { opacity: 1 !important; }
+    .reveal-armed .job .case-block.has-thumb { opacity: 1 !important; }
   </style>
 </noscript>
   <script src="/nav.js" defer></script>
@@ -1226,6 +1243,27 @@
       }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
 
       quotes.forEach(function (q) { io.observe(q); });
+    })();
+
+    (function () {
+      var root = document.documentElement;
+      if (!root.classList.contains('reveal-armed')) return;
+
+      var card = document.querySelector('.job .case-block.has-thumb');
+      if (!card) return;
+
+      if (!('IntersectionObserver' in window)) {
+        card.classList.add('is-revealed');
+        return;
+      }
+
+      var io = new IntersectionObserver(function (entries) {
+        if (!entries[0].isIntersecting) return;
+        card.classList.add('is-revealed');
+        io.unobserve(card);
+      }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+
+      io.observe(card);
     })();
 
     (function () {
