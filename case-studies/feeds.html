@@ -176,15 +176,21 @@
      the page's black background -- a grey frame the full width of the
      figure gives it a backdrop to float on, with its own shadow for lift. */
   .figure-portrait-frame {
+    box-sizing: border-box;
     display: flex;
     justify-content: center;
+    align-items: center;
+    aspect-ratio: 1 / 1;
     padding: 32px 24px;
     background: rgb(33, 33, 33);
     border-radius: 10px;
   }
 
   .figure-portrait-frame img {
+    width: auto;
+    height: auto;
     max-width: 300px;
+    max-height: 100%;
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
   }
 
