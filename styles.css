@@ -686,7 +686,6 @@ h4 {
   color: #fff;
   font-size: 20px;
   line-height: 1.5;
-  max-width: 54ch;
 }
 
 .case-body blockquote:last-child { margin-bottom: 0; }
