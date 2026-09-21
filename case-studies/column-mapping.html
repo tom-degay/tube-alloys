@@ -716,20 +716,6 @@
         <p class="see-also"><a href="/ai#ai-for-heading">More on designing for AI &rarr;</a></p>
       </div>
 
-      <div class="subsection" id="refinement-heading">
-        <h3>Making uncertainty visible</h3>
-        <p>Improved automapping produced useful suggestions at confidence thresholds as low as 30%, compared with around 80% for the previous model. But lower-confidence mappings needed closer review.</p>
-
-        <p>I introduced a yellow highlight gradient to draw attention to these mappings, helping users focus their review where it mattered most. They could then inspect sample values and a data profile to judge whether a match was appropriate. Better automation needed an equally clear way to question its results.</p>
-
-        <p>The yellow gradient performed best among the colour options we tested, including in colour-blindness simulations and testing with a user with colour vision deficiency.</p>
-
-        <figure class="figure">
-          <img src="media/mapping-detail.png" width="1348" height="746" alt="Two mapped schemas side by side, each 53 mapped and 1 unmapped: several match confidences highlighted yellow for review, such as 30.9% for Line of Business and 20.0% for Extra Field 1, alongside high-confidence green matches like 97.1% for Policy No." loading="lazy">
-          <figcaption>The yellow highlight alerts the user to mapping suggestions that are more likely to need review.</figcaption>
-        </figure>
-      </div>
-
       <div class="subsection" id="desire-lines-heading">
         <h3>Following the product's desire lines</h3>
         <p>Column mapping has been in production for ten years. Over that time, we've continually adapted it to how people actually use it, following the product's emerging ‘desire lines’.</p>
@@ -758,6 +744,20 @@
         <figure class="figure">
           <img src="media/data-profile-web.jpg" width="1708" height="1376" alt="Data profile panel showing uniques, blanks, duplicates, coverage, mode and a value distribution histogram for a Commission Amount column." loading="lazy">
           <figcaption>Data profiles allow users to understand the content of every column and inform mapping suggestions.</figcaption>
+        </figure>
+      </div>
+
+      <div class="subsection" id="refinement-heading">
+        <h3>Making uncertainty visible</h3>
+        <p>Improved automapping produced useful suggestions at confidence thresholds as low as 30%, compared with around 80% for the previous model. But lower-confidence mappings needed closer review.</p>
+
+        <p>I introduced a yellow highlight gradient to draw attention to these mappings, helping users focus their review where it mattered most. They could then inspect sample values and a data profile to judge whether a match was appropriate. Better automation needed an equally clear way to question its results.</p>
+
+        <p>The yellow gradient performed best among the colour options we tested, including in colour-blindness simulations and testing with a user with colour vision deficiency.</p>
+
+        <figure class="figure">
+          <img src="media/mapping-detail.png" width="1348" height="746" alt="Two mapped schemas side by side, each 53 mapped and 1 unmapped: several match confidences highlighted yellow for review, such as 30.9% for Line of Business and 20.0% for Extra Field 1, alongside high-confidence green matches like 97.1% for Policy No." loading="lazy">
+          <figcaption>The yellow highlight alerts the user to mapping suggestions that are more likely to need review.</figcaption>
         </figure>
       </div>
     </section>
