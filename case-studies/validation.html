@@ -56,10 +56,10 @@
 
   /* Dividers from Problem onward sit inside the narrow reading column, so
      they match the text/figure width (46rem) instead of running the full
-     hero width. The hr's above Summary are left at hero width, and so are
-     the closing two -- the one before "Back to top" and the one footer.js
-     injects immediately before .site-footer -- which stay full width. */
-  section[aria-labelledby="summary-heading"] ~ hr.rule:not(:has(+ .back-to-top-row)):not(:has(+ .site-footer)) {
+     hero width. The hr's above Summary are left at hero width, and so is
+     the one footer.js injects immediately before .site-footer, which now
+     spans the wider nav-matching width. */
+  section[aria-labelledby="summary-heading"] ~ hr.rule:not(:has(+ .site-footer)) {
     max-width: 46rem;
   }
 
