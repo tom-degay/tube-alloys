@@ -995,23 +995,16 @@ h4 {
     flex-direction: column;
     gap: 40px;
   }
-
-  .side-rail .related {
-    grid-template-columns: 1fr;
-    margin-top: 0;
-    padding-top: 0;
-    border-top: none;
-  }
 }
 
+/* Sits at the page bottom (after the explicit hr + back-to-top link that
+   now precede it, so it no longer needs a divider of its own) and fills
+   the full content width, unlike the narrow 46rem column above it. */
 .related {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  max-width: 46rem;
-  margin-top: clamp(40px, 6vw, 56px);
-  padding-top: 28px;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  gap: 20px;
+  margin-top: clamp(24px, 3.5vw, 32px);
 }
 
 @media (max-width: 560px) {
