@@ -56,8 +56,10 @@
 
   /* Dividers from Problem onward sit inside the narrow reading column, so
      they match the text/figure width (46rem) instead of running the full
-     hero width. The hr's above Summary are left at hero width. */
-  section[aria-labelledby="summary-heading"] ~ hr.rule {
+     hero width. The hr's above Summary are left at hero width, and so are
+     the closing two -- the one before "Back to top" and the one footer.js
+     injects immediately before .site-footer -- which stay full width. */
+  section[aria-labelledby="summary-heading"] ~ hr.rule:not(:has(+ .back-to-top-row)):not(:has(+ .site-footer)) {
     max-width: 46rem;
   }
 
@@ -207,6 +209,12 @@
   }
 
   .toc-heading { margin: 0 0 16px; }
+
+  /* This study has no case-icon svg above the kicker (that's a Quantemplate-
+     only vector), so the kicker itself needs to sit flush at the top to
+     line up with "On this page" -- on icon pages it's the icon that aligns
+     there instead, with the kicker sitting below it. */
+  .kicker { margin-top: 0; }
 
   /* -- next case study link block -- */
   .case-block {
