@@ -223,17 +223,55 @@ hr.rule:has(+ .back-to-top-row) { margin-bottom: clamp(8px, 1.2vw, 14px); }
   border-color: rgba(255, 255, 255, 0.9);
 }
 
-/* -- Site footer: copyright left, links right. Lives inside <main> on every
-   page so it picks up that page's max-width and padding -- each page sets its
-   own, so a footer outside main would need per-page values to stay aligned.
-   Uses the same small-print scale as .site-note. -- */
+/* -- Site footer: copyright left, links right. footer.js appends it as a
+   sibling straight after <main>, not inside it, so it can share the nav
+   bar's own width formula here instead of each page's own (different)
+   main max-width -- consistent everywhere rather than per-page. The
+   padding-bottom replaces the page-bottom whitespace main's own bottom
+   padding used to provide back when the footer lived inside it.
+
+   .site-footer mirrors .site-nav-inner's own box model (max-width, then
+   padding inside it) so its children land on the same inset as the nav's
+   brand/links. The divider hr has no children to inset via padding --
+   a border-top renders at the padding box's OUTER edge regardless of
+   padding, so it needs its max-width computed as the nav's content width
+   directly (min(cap, 100%) minus the gutter twice), not the nav's own
+   outer cap. min()/100% (not a bare 1500px) matters here: below that
+   width .site-nav-inner is itself capped by the viewport, not 1500px,
+   so hardcoding 1500 would overshoot the nav's actual content width at
+   1024-1500px viewports specifically -- confirmed in the browser, not
+   assumed. Uses the same small-print scale as .site-note. -- */
 .site-footer {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(24px, 5vw, 56px);
+  padding-right: clamp(24px, 5vw, 56px);
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   justify-content: space-between;
   gap: 10px 28px;
   margin-top: clamp(24px, 3.5vw, 32px);
+  padding-bottom: clamp(96px, 12vw, 140px);
+}
+
+hr.rule:has(+ .site-footer) {
+  max-width: calc(min(900px, 100%) - 2 * clamp(24px, 5vw, 56px));
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 1024px) {
+  .site-footer {
+    max-width: 1500px;
+    padding-left: clamp(32px, 4vw, 72px);
+    padding-right: clamp(32px, 4vw, 72px);
+  }
+
+  hr.rule:has(+ .site-footer) {
+    max-width: calc(min(1500px, 100%) - 2 * clamp(32px, 4vw, 72px));
+  }
 }
 
 .site-footer p { margin: 0; }
@@ -955,24 +993,6 @@ h4 {
     display: flex;
     flex-direction: column;
     gap: 40px;
-  }
-
-  /* footer.js appends the footer to main itself (not main > .content) on
-     pages with a .side-rail -- see its own comment. Without this, an
-     unplaced grid item here auto-places into column 1 (the rail, now on
-     the left), not a new row in the content column as you'd expect;
-     confirmed directly in the browser, not assumed. This pins it back to
-     the content column, which lands it at the same width as this page's
-     other hr.rule elements.
-
-     Scoped with :has() to main > .side-rail specifically (rather than a
-     bare "main > hr.rule"), so it can never reach a page like index.html,
-     which has its own hr.rule elements as direct children of main for
-     unrelated section dividers -- harmless there today since that main
-     isn't a grid, but scoping it explicitly means it stays that way even
-     if that changes. */
-  main:has(> .side-rail) > hr.rule, main:has(> .side-rail) > .site-footer {
-    grid-column: 2;
   }
 
   .side-rail .related {
