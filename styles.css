@@ -931,12 +931,21 @@ h4 {
 
 @media (min-width: 1100px) {
   .content {
-    grid-column: 1;
+    grid-column: 2;
+    grid-row: 1;
     min-width: 0;
   }
 
+  /* grid-row: 1 is load-bearing, not decorative -- .content (DOM-first,
+     now column 2) advances the sparse auto-placement cursor past column 1
+     before .side-rail (DOM-second, column 1) is placed. The cursor never
+     moves backward, so without an explicit row .side-rail can't backfill
+     row 1 and drops to a row of its own, thousands of pixels down the
+     page. Confirmed directly in the browser -- reasoning about grid
+     auto-placement from memory kept saying this would just work. */
   .side-rail {
-    grid-column: 2;
+    grid-column: 1;
+    grid-row: 1;
     position: sticky;
     top: 100px;
     display: flex;
@@ -946,10 +955,11 @@ h4 {
 
   /* footer.js appends the footer to main itself (not main > .content) on
      pages with a .side-rail -- see its own comment. Without this, an
-     unplaced grid item here auto-places into column 2 (the 230px rail),
-     not a new row in column 1 as you'd expect; confirmed directly in the
-     browser, not assumed. This pins it back to the content column, which
-     lands it at the same width as this page's other hr.rule elements.
+     unplaced grid item here auto-places into column 1 (the rail, now on
+     the left), not a new row in the content column as you'd expect;
+     confirmed directly in the browser, not assumed. This pins it back to
+     the content column, which lands it at the same width as this page's
+     other hr.rule elements.
 
      Scoped with :has() to main > .side-rail specifically (rather than a
      bare "main > hr.rule"), so it can never reach a page like index.html,
@@ -958,7 +968,7 @@ h4 {
      isn't a grid, but scoping it explicitly means it stays that way even
      if that changes. */
   main:has(> .side-rail) > hr.rule, main:has(> .side-rail) > .site-footer {
-    grid-column: 1;
+    grid-column: 2;
   }
 
   .side-rail .related {
