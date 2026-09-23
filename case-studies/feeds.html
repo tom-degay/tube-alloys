@@ -159,7 +159,7 @@
     background: rgba(0, 0, 0, 0.8);
   }
 
-  /* -- hero video -- */
+  /* -- animated hero diagram -- */
   .case-hero-video {
     padding: clamp(24px, 2.5vw, 28px) clamp(24px, 2.5vw, 28px) 0;
     background: linear-gradient(180deg, #131313 0%, #222121 100%);
@@ -168,16 +168,21 @@
   .case-hero-video-frame {
     max-width: 1024px;
     margin: 0 auto;
+    padding-top: clamp(16px, 3vw, 32px);
+    background: #000;
     overflow: hidden;
     border: 1px solid #282828;
     border-bottom: none;
     border-radius: 10px 10px 0 0;
   }
 
-  .case-hero-video-frame img {
+  .case-hero-video-frame object {
     display: block;
-    width: 100%;
+    width: 90%;
+    margin: 0 auto;
     height: auto;
+    aspect-ratio: 2048 / 1164;
+    background: #000;
   }
 
   @media (max-width: 799.98px) {
@@ -679,7 +684,9 @@
   </nav>
   <div class="case-hero-video">
     <div class="case-hero-video-frame">
-      <img src="media/chain-of-custody.png" width="2940" height="1626" alt="A chain-of-custody view in Feeds: two partner organisations supplying premium, payment, claims and loss-adjustment data into an insurer, which passes it on to a broker and three reinsurers downstream, with each card showing who last used the data and where it flows.">
+      <object type="image/svg+xml" data="media/data-chain-of-custody-animated.svg" width="2048" height="1164" aria-label="Animated data chain of custody, from insurers through a broker to reinsurers.">
+        <img src="media/data-chain-of-custody-animated.svg" width="2048" height="1164" alt="Data chain of custody from Alderwick and TDG TPA through Example Insurance and Placefield Brokers to three reinsurers.">
+      </object>
     </div>
   </div>
   <main>

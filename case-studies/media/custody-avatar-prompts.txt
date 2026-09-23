@@ -1,0 +1,7 @@
+Generated with the built-in image generation tool. Both portraits are fictional.
+
+Mira Bennett — custody-avatar-mira.png
+Use case: photorealistic-natural. Create a square photographic profile avatar of a fictional woman in her thirties, medium brown skin, shoulder-length dark hair, warm natural smile, casual professional clothing. Close head-and-shoulders framing, face centered and large enough to be recognizable at 38px. Soft daylight, softly blurred neutral office background. Realistic skin texture, candid professional portrait, no illustration, no text, no watermark.
+
+Owen Clarke — custody-avatar-owen.png
+Use case: photorealistic-natural. Create a square photographic profile avatar of a fictional man in his forties, fair skin, short brown hair, light stubble, friendly relaxed expression, casual professional shirt. Close head-and-shoulders framing, face centered and large enough to be recognizable at 38px. Soft daylight, softly blurred neutral office background. Realistic skin texture, candid professional portrait, no illustration, no text, no watermark.
