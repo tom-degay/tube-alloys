@@ -159,6 +159,33 @@
     background: rgba(0, 0, 0, 0.8);
   }
 
+  /* -- hero video -- */
+  .case-hero-video {
+    padding: clamp(24px, 2.5vw, 28px) clamp(24px, 2.5vw, 28px) 0;
+    background: linear-gradient(180deg, #131313 0%, #222121 100%);
+  }
+
+  .case-hero-video-frame {
+    max-width: 1024px;
+    margin: 0 auto;
+    overflow: hidden;
+    border: 1px solid #282828;
+    border-bottom: none;
+    border-radius: 10px 10px 0 0;
+  }
+
+  .case-hero-video-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @media (max-width: 799.98px) {
+    .case-hero-video-frame {
+      border-radius: 6px 6px 0 0;
+    }
+  }
+
   /* -- inline diagram -- */
   .diagram {
     max-width: 46rem;
@@ -650,6 +677,11 @@
       </div>
     </div>
   </nav>
+  <div class="case-hero-video">
+    <div class="case-hero-video-frame">
+      <img src="media/chain-of-custody.png" width="2940" height="1626" alt="A chain-of-custody view in Feeds: two partner organisations supplying premium, payment, claims and loss-adjustment data into an insurer, which passes it on to a broker and three reinsurers downstream, with each card showing who last used the data and where it flows.">
+    </div>
+  </div>
   <main>
   <div class="content">
     <header>
@@ -705,11 +737,6 @@
           <li>Unified submissions, scheduling and organisation admin</li>
         </ul>
       </div>
-
-      <figure class="figure is-full">
-        <img src="media/chain-of-custody.png" width="2940" height="1626" alt="A chain-of-custody view in Feeds: two partner organisations supplying premium, payment, claims and loss-adjustment data into an insurer, which passes it on to a broker and three reinsurers downstream, with each card showing who last used the data and where it flows." loading="lazy">
-        <figcaption>Feeds keeps the chain of custody for every dataset: which organisation supplied it, who has used it, and where it flows downstream.</figcaption>
-      </figure>
     </section>
 
     <hr class="rule">

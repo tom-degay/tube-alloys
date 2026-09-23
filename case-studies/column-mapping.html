@@ -125,8 +125,6 @@
     overflow: hidden;
   }
 
-  .ui-video.is-full { max-width: none; }
-
   .ui-video video {
     display: block;
     width: 100%;
@@ -159,6 +157,33 @@
   .ui-video-expand:hover, .ui-video-expand:focus-visible {
     border-color: rgba(255, 255, 255, 0.85);
     background: rgba(0, 0, 0, 0.8);
+  }
+
+  /* -- hero video -- */
+  .case-hero-video {
+    padding: clamp(24px, 2.5vw, 28px) clamp(24px, 2.5vw, 28px) 0;
+    background: linear-gradient(180deg, #131313 0%, #222121 100%);
+  }
+
+  .case-hero-video-frame {
+    max-width: 1024px;
+    margin: 0 auto;
+    overflow: hidden;
+    border: 1px solid #282828;
+    border-bottom: none;
+    border-radius: 10px 10px 0 0;
+  }
+
+  .case-hero-video-frame video {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @media (max-width: 799.98px) {
+    .case-hero-video-frame {
+      border-radius: 6px 6px 0 0;
+    }
   }
 
   /* -- inline diagram -- */
@@ -575,6 +600,13 @@
       </div>
     </div>
   </nav>
+  <div class="case-hero-video">
+    <div class="case-hero-video-frame">
+      <video autoplay muted loop playsinline poster="media/mch-confidence-threshold.jpg">
+        <source src="media/mch-confidence-threshold.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
   <main>
   <div class="content">
     <header>
@@ -624,16 +656,6 @@
           <li>Data semantics improves mapping quality 4&times;</li>
         </ul>
       </div>
-
-      <figure class="figure is-full">
-        <div class="ui-video is-full" data-hover-controls>
-          <video autoplay muted loop playsinline disablepictureinpicture poster="media/mch-confidence-threshold.jpg">
-            <source src="media/mch-confidence-threshold.mp4" type="video/mp4">
-          </video>
-        <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
-        </div>
-        <figcaption>As the confidence threshold is adjusted, lower confidence mappings are highlighted. Mappings previously made by others elsewhere are flagged, building trust.</figcaption>
-      </figure>
     </section>
 
     <hr class="rule">

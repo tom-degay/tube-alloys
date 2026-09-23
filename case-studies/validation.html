@@ -158,6 +158,33 @@
     background: rgba(0, 0, 0, 0.8);
   }
 
+  /* -- hero video -- */
+  .case-hero-video {
+    padding: clamp(24px, 2.5vw, 28px) clamp(24px, 2.5vw, 28px) 0;
+    background: linear-gradient(180deg, #131313 0%, #222121 100%);
+  }
+
+  .case-hero-video-frame {
+    max-width: 1024px;
+    margin: 0 auto;
+    overflow: hidden;
+    border: 1px solid #282828;
+    border-bottom: none;
+    border-radius: 10px 10px 0 0;
+  }
+
+  .case-hero-video-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @media (max-width: 799.98px) {
+    .case-hero-video-frame {
+      border-radius: 6px 6px 0 0;
+    }
+  }
+
   /* -- inline diagram -- */
   .diagram {
     max-width: 46rem;
@@ -579,6 +606,11 @@
       </div>
     </div>
   </nav>
+  <div class="case-hero-video">
+    <div class="case-hero-video-frame">
+      <img src="media/validation-hero.png" width="2778" height="1409" alt="A Quantemplate validation report: rules grouped by pipeline stage — Claims Validations and Final Validations — each rule showing a pass/fail bar and a count such as 'All rows passed' or '1,223 rows failed', with Fail, Warn and Pass filters and an option to share the report with a partner organisation.">
+    </div>
+  </div>
   <main>
   <div class="content">
     <header>
@@ -632,11 +664,6 @@
           <li>Validation reports help win clients</li>
         </ul>
       </div>
-
-      <figure class="figure is-full">
-        <img src="media/validation-hero.png" width="2778" height="1409" alt="A Quantemplate validation report: rules grouped by pipeline stage — Claims Validations and Final Validations — each rule showing a pass/fail bar and a count such as 'All rows passed' or '1,223 rows failed', with Fail, Warn and Pass filters and an option to share the report with a partner organisation." loading="lazy">
-        <figcaption>The validation report: every rule shown with its pass rate and failing-row count, grouped by the pipeline stage it runs in.</figcaption>
-      </figure>
     </section>
 
     <hr class="rule">
