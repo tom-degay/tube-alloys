@@ -205,15 +205,52 @@
     border-radius: 6px;
   }
 
+  /* Every content image/video floats on this same grey-gradient backdrop
+     card, rather than sitting straight on the page's black background.
+     Standalone frames (not inside a <figure>) need their own bottom
+     margin to space them from whatever follows -- wrapping ui-video here
+     broke its old `.ui-video + p` sibling spacing, since the frame div
+     now sits between them. Figure-wrapped frames don't need it: the
+     figcaption after them supplies its own margin. */
+  .figure-portrait-frame {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    padding: 7.5%;
+    margin-bottom: clamp(24px, 3.5vw, 36px);
+    background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
+    border-radius: 10px;
+  }
+
+  figure > .figure-portrait-frame {
+    margin-bottom: 0;
+  }
+
+  .figure-portrait-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .figure-portrait-frame > .ui-video {
+    width: 100%;
+    margin: 0;
+  }
+
+  .figure-portrait-frame > .figure-strip-imgs {
+    width: 100%;
+    min-width: 0;
+  }
+
   .figure-strip-imgs {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: 20px;
   }
 
   .figure-strip .figure-strip-imgs img {
+    display: block;
     width: 100%;
-    height: 100%;
     aspect-ratio: 16 / 10;
     object-fit: cover;
   }
@@ -687,11 +724,13 @@
       <p>Studying dozens of Excel processes where people had manually reconciled different schemas revealed consistent patterns. The most effective approaches arranged source and target schemas vertically, using alignment across rows to show mappings. Interviews with domain experts validated the approach, but exposed a recurring pain point: constantly rearranging cells whilst keeping track of what was mapped and what remained.</p>
 
       <figure class="figure figure-strip">
-        <div class="figure-strip-imgs">
-          <img src="media/mch-excel-1.png" width="2064" height="1588" alt="A Lloyd's coverholder reporting template laid out month by month, each column repeating the same nested list of required fields." loading="lazy">
-          <img src="media/mch-excel-2.png" width="2980" height="1876" alt="More of the same template &mdash; Exposure, Sum Insured, Excess, Deductible and Transaction fields repeated across four monthly columns, one cell highlighted for follow-up." loading="lazy">
-          <img src="media/mch-excel-3.png" width="2834" height="1566" alt="A life-reinsurance data dictionary: target field names down the left, several source systems alongside, each with its own raw field name and hand-written mapping notes, some flagged in red." loading="lazy">
-          <img src="media/mch-excel-4.png" width="2620" height="1518" alt="A broker data-source mapping: a shared list of target fields on the left, each partner's spreadsheet filled in alongside in colour-coded columns." loading="lazy">
+        <div class="figure-portrait-frame">
+          <div class="figure-strip-imgs">
+            <img src="media/mch-excel-1.png" width="2064" height="1588" alt="A Lloyd's coverholder reporting template laid out month by month, each column repeating the same nested list of required fields." loading="lazy">
+            <img src="media/mch-excel-2.png" width="2980" height="1876" alt="More of the same template &mdash; Exposure, Sum Insured, Excess, Deductible and Transaction fields repeated across four monthly columns, one cell highlighted for follow-up." loading="lazy">
+            <img src="media/mch-excel-3.png" width="2834" height="1566" alt="A life-reinsurance data dictionary: target field names down the left, several source systems alongside, each with its own raw field name and hand-written mapping notes, some flagged in red." loading="lazy">
+            <img src="media/mch-excel-4.png" width="2620" height="1518" alt="A broker data-source mapping: a shared list of target fields on the left, each partner's spreadsheet filled in alongside in colour-coded columns." loading="lazy">
+          </div>
         </div>
         <figcaption>A few of the manual Excel mappings we studied &mdash; every partner and every month reconciled by hand.</figcaption>
       </figure>
@@ -707,7 +746,9 @@
       <p>There was no established product pattern that we could adopt. Instead, a concept emerged directly from the research: an interface with vertically stacked fields, across which multiple schemas could align to a common master.</p>
 
       <figure class="figure">
-        <img src="media/mch-sketch-cleanup.png" width="1100" height="552" alt="Hand-drawn sketch of the column mapping concept: a map-headers control column, a sources column and a mapped column, a match-score strip down the middle, and notes on filtering by manual, auto or unmapped and adding a preview of the first 1000 rows." loading="lazy">
+        <div class="figure-portrait-frame">
+          <img src="media/mch-sketch-cleanup.png" width="1100" height="552" alt="Hand-drawn sketch of the column mapping concept: a map-headers control column, a sources column and a mapped column, a match-score strip down the middle, and notes on filtering by manual, auto or unmapped and adding a preview of the first 1000 rows." loading="lazy">
+        </div>
         <figcaption>One of many initial concept sketches used to sense check ideas with domain experts and engineering team before progressing to higher fidelity designs</figcaption>
       </figure>
       <p>The key innovation was separating mapped and unmapped fields into mutually exclusive tabs for each schema. This made it easier to spot gaps and keep track of unmapped items, whilst a progress bar indicated the completeness of each schema.</p>
@@ -715,11 +756,13 @@
 
       <blockquote>Processing those 2000 files a month went from taking most of the month to a job running in the background in minutes.</blockquote>
 
-      <div class="ui-video" data-hover-controls>
-        <video autoplay muted loop playsinline disablepictureinpicture poster="media/concept-mapping-detail.jpg">
-          <source src="media/concept-mapping-detail.mp4" type="video/mp4">
-        </video>
-      <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+      <div class="figure-portrait-frame">
+        <div class="ui-video" data-hover-controls>
+          <video autoplay muted loop playsinline disablepictureinpicture poster="media/concept-mapping-detail.jpg">
+            <source src="media/concept-mapping-detail.mp4" type="video/mp4">
+          </video>
+        <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+        </div>
       </div>
     </section>
 
@@ -736,11 +779,13 @@
         <blockquote>These safeguards helped users trust the automation.</blockquote>
 
         <figure class="figure">
-          <div class="ui-video" data-hover-controls>
-            <video autoplay muted loop playsinline disablepictureinpicture poster="media/automap-preview.jpg">
-              <source src="media/automap-preview.mp4" type="video/mp4">
-            </video>
-          <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+          <div class="figure-portrait-frame">
+            <div class="ui-video" data-hover-controls>
+              <video autoplay muted loop playsinline disablepictureinpicture poster="media/automap-preview.jpg">
+                <source src="media/automap-preview.mp4" type="video/mp4">
+              </video>
+            <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+            </div>
           </div>
           <figcaption>Lower confidence ratings are highlighted yellow for user review.</figcaption>
         </figure>
@@ -754,11 +799,13 @@
 
         <p>Our original sample of users were building master schemas by amalgamating multiple files. But as we broadened the user cohort, they more often started with a definitive file, such as their data warehouse target schema. We evolved the workflow to foreground that behaviour.</p>
 
-        <div class="ui-video" data-hover-controls>
-          <video autoplay muted loop playsinline disablepictureinpicture poster="media/apply-master-schema.jpg">
-            <source src="media/apply-master-schema.mp4" type="video/mp4">
-          </video>
-        <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+        <div class="figure-portrait-frame">
+          <div class="ui-video" data-hover-controls>
+            <video autoplay muted loop playsinline disablepictureinpicture poster="media/apply-master-schema.jpg">
+              <source src="media/apply-master-schema.mp4" type="video/mp4">
+            </video>
+          <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+          </div>
         </div>
       </div>
 
@@ -774,7 +821,9 @@
         <p>When it came to the UI, we displayed the data types, allowing users to drill down and see detailed stats for each column. Prior mappings from other users now had avatars and recency information to build trust.</p>
 
         <figure class="figure">
-          <img src="media/data-profile-web.jpg" width="1708" height="1376" alt="Data profile panel showing uniques, blanks, duplicates, coverage, mode and a value distribution histogram for a Commission Amount column." loading="lazy">
+          <div class="figure-portrait-frame">
+            <img src="media/data-profile-web.jpg" width="1708" height="1376" alt="Data profile panel showing uniques, blanks, duplicates, coverage, mode and a value distribution histogram for a Commission Amount column." loading="lazy">
+          </div>
           <figcaption>Data profiles allow users to understand the content of every column and inform mapping suggestions.</figcaption>
         </figure>
       </div>
@@ -788,7 +837,9 @@
         <p>The yellow gradient performed best among the colour options we tested, including in colour-blindness simulations and testing with a user with colour vision deficiency.</p>
 
         <figure class="figure">
-          <img src="media/mapping-detail.png" width="1348" height="746" alt="Two mapped schemas side by side, each 53 mapped and 1 unmapped: several match confidences highlighted yellow for review, such as 30.9% for Line of Business and 20.0% for Extra Field 1, alongside high-confidence green matches like 97.1% for Policy No." loading="lazy">
+          <div class="figure-portrait-frame">
+            <img src="media/mapping-detail.png" width="1348" height="746" alt="Two mapped schemas side by side, each 53 mapped and 1 unmapped: several match confidences highlighted yellow for review, such as 30.9% for Line of Business and 20.0% for Extra Field 1, alongside high-confidence green matches like 97.1% for Policy No." loading="lazy">
+          </div>
           <figcaption>The yellow highlight alerts the user to mapping suggestions that are more likely to need review.</figcaption>
         </figure>
       </div>

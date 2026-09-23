@@ -167,19 +167,43 @@
     max-width: 46rem;
   }
 
-  /* The PDF summary is portrait and would look small and adrift straight on
-     the page's black background -- a grey frame the full width of the
-     figure gives it a backdrop to float on, with its own shadow for lift. */
+  /* Every content image/video floats on this same grey-gradient backdrop
+     card, rather than sitting straight on the page's black background. The
+     PDF summary is portrait, so it keeps its own narrower, centred max-width
+     rather than filling the card edge to edge like everything else. */
   .figure-portrait-frame {
+    box-sizing: border-box;
     display: flex;
     justify-content: center;
-    padding: 32px 24px;
+    padding: 7.5%;
+    margin-bottom: clamp(24px, 3.5vw, 36px);
     background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
     border-radius: 10px;
   }
 
+  /* Standalone frames (not inside a <figure>) need their own bottom
+     margin to space them from whatever follows -- wrapping ui-video
+     broke its old `.ui-video + p` sibling spacing, since the frame div
+     now sits between them. Figure-wrapped frames don't need it: the
+     figcaption after them supplies its own margin. */
+  figure > .figure-portrait-frame {
+    margin-bottom: 0;
+  }
+
   .figure-portrait-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .figure-portrait-frame img[src$="image-insight-pdf-report.jpg"] {
+    width: auto;
     max-width: 300px;
+  }
+
+  .figure-portrait-frame > .ui-video {
+    width: 100%;
+    margin: 0;
   }
 
   .figure img {
@@ -572,7 +596,9 @@
       </div>
 
       <figure class="figure">
-        <img src="media/image-insight-session-expanded.jpg" width="2000" height="1356" alt="The session opened to full screen: a large 'What cards represent your weaknesses?' heading above three chosen images, with 'Review session' and 'Add question' below.">
+        <div class="figure-portrait-frame">
+          <img src="media/image-insight-session-expanded.jpg" width="2000" height="1356" alt="The session opened to full screen: a large 'What cards represent your weaknesses?' heading above three chosen images, with 'Review session' and 'Add question' below.">
+        </div>
         <figcaption>The redesign in one view: the question and the chosen images hold the centre, and the rest of the interface steps back.</figcaption>
       </figure>
     </section>
@@ -594,7 +620,9 @@
       <p>The tool was intended for coaches and therapists, including those working in schools with children from primary age through to teenagers. The design needed to support the conversation without becoming another task to manage.</p>
 
       <figure class="figure">
-        <img src="media/image-insight-ui.jpg" width="2000" height="1212" alt="Image Insight's main screen: a scrolling grid of photographs with a floating toolbar, alongside a 'My session' panel holding the coach's question and the participant's chosen images." loading="lazy">
+        <div class="figure-portrait-frame">
+          <img src="media/image-insight-ui.jpg" width="2000" height="1212" alt="Image Insight's main screen: a scrolling grid of photographs with a floating toolbar, alongside a 'My session' panel holding the coach's question and the participant's chosen images." loading="lazy">
+        </div>
         <figcaption>Images to explore together in a session, with the session&rsquo;s picks and notes gathered in one panel: the conversation supported without being another tool to manage.</figcaption>
       </figure>
     </section>
@@ -612,12 +640,16 @@
       <p class="see-also"><a href="/design-craft">More visual identities and material explorations &rarr;</a></p>
 
       <figure class="figure">
-        <img src="media/image-insight-landing.jpg" width="2000" height="1300" alt="Image Insight's dashboard: cards for a new session and past sessions, a count of completed and active sessions, and panels for referrals, tutorials and support." loading="lazy">
+        <div class="figure-portrait-frame">
+          <img src="media/image-insight-landing.jpg" width="2000" height="1300" alt="Image Insight's dashboard: cards for a new session and past sessions, a count of completed and active sessions, and panels for referrals, tutorials and support." loading="lazy">
+        </div>
         <figcaption>The dashboard applies the same calm treatment across the app: one clear primary action, a light summary of activity, and help within reach.</figcaption>
       </figure>
 
       <figure class="figure">
-        <img src="media/image-insight-login.jpg" width="2000" height="1300" alt="Image Insight's sign-in page: a soft card on a pale teal background patterned with the app's rounded image-grid motif, with email and password fields and Google or Azure options." loading="lazy">
+        <div class="figure-portrait-frame">
+          <img src="media/image-insight-login.jpg" width="2000" height="1300" alt="Image Insight's sign-in page: a soft card on a pale teal background patterned with the app's rounded image-grid motif, with email and password fields and Google or Azure options." loading="lazy">
+        </div>
         <figcaption>The sign-in page: the same calm palette and generous whitespace as the rest of the app, and a logo built from the signature image grid.</figcaption>
       </figure>
     </section>
@@ -633,7 +665,9 @@
       <blockquote>My focus was on making the surrounding interface simple enough for the coach and participant to stay with the conversation.</blockquote>
 
       <figure class="figure">
-        <img src="media/image-insight-session-sidebar.jpg" width="2000" height="969" alt="Two panels side by side: a 'My session' panel with the coach's question and the participant's chosen images, and a 'Session settings' panel with a session name, a Junior/Teen/Adult profile, and optional client name and notes." loading="lazy">
+        <div class="figure-portrait-frame">
+          <img src="media/image-insight-session-sidebar.jpg" width="2000" height="969" alt="Two panels side by side: a 'My session' panel with the coach's question and the participant's chosen images, and a 'Session settings' panel with a session name, a Junior/Teen/Adult profile, and optional client name and notes." loading="lazy">
+        </div>
         <figcaption>Session settings panel: easy to flip into session settings, which otherwise stay out of the way.</figcaption>
       </figure>
     </section>
@@ -654,7 +688,9 @@
         </blockquote>
 
         <figure class="figure">
-          <img src="media/image-insight-session-review.jpg" width="2000" height="1300" alt="Image Insight's session review screen: each chosen image paired with the participant's reflection, and an Actions panel listing next steps to carry forward." loading="lazy">
+          <div class="figure-portrait-frame">
+            <img src="media/image-insight-session-review.jpg" width="2000" height="1300" alt="Image Insight's session review screen: each chosen image paired with the participant's reflection, and an Actions panel listing next steps to carry forward." loading="lazy">
+          </div>
           <figcaption>The session review pairs each image with its reflection and foregrounds the actions to take forward, ready to export as a PDF.</figcaption>
         </figure>
 
@@ -674,7 +710,9 @@
         <p>Coaches wanted to begin immediately rather than schedule something for later. Engineering proposed a separate instant-session button. I made the case for one clear entry point for a new session, avoiding competing actions for essentially the same task.</p>
 
         <figure class="figure">
-          <img src="media/image-insight-new-session.jpg" width="2146" height="1220" alt="A menu opening from the sidebar's add button: 'New session — start a session using your default settings' above 'Schedule a session — schedule and customise a session'." loading="lazy">
+          <div class="figure-portrait-frame">
+            <img src="media/image-insight-new-session.jpg" width="2146" height="1220" alt="A menu opening from the sidebar's add button: 'New session — start a session using your default settings' above 'Schedule a session — schedule and customise a session'." loading="lazy">
+          </div>
           <figcaption>One entry point for a new session: start straight away on default settings, or open the same flow to schedule and customise.</figcaption>
         </figure>
 
@@ -682,7 +720,9 @@
         <p>Coaches reported that a large grid could feel overwhelming for some participants, including some neurodivergent children and young people. We added a slider to control how many images were displayed. I floated it over the bottom of the grid so coaches could see the effect immediately and adjust it during the conversation.</p>
 
         <figure class="figure">
-          <img src="media/image-insight-toolbar.jpg" width="1800" height="415" alt="A toolbar floating over the bottom of the image grid: a Refresh button, a gallery selector reading 'Standard', and a slider set to 25 images." loading="lazy">
+          <div class="figure-portrait-frame">
+            <img src="media/image-insight-toolbar.jpg" width="1800" height="415" alt="A toolbar floating over the bottom of the image grid: a Refresh button, a gallery selector reading 'Standard', and a slider set to 25 images." loading="lazy">
+          </div>
           <figcaption>The grid toolbar floats over the images: refresh for a new batch, a gallery selector, and a slider for how many images show.</figcaption>
         </figure>
 
@@ -693,11 +733,13 @@
         <h3>Work in progress</h3>
         <p>The app continues to develop in response to user feedback. I&rsquo;m currently ensuring all elements meet WCAG visual contrast guidelines and working on a dark mode, using Figma&rsquo;s variables and modes.</p>
 
-        <div class="ui-video" data-hover-controls>
-          <video autoplay muted loop playsinline disablepictureinpicture poster="media/figma-modes.jpg">
-            <source src="media/figma-modes.mp4" type="video/mp4">
-          </video>
-          <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+        <div class="figure-portrait-frame">
+          <div class="ui-video" data-hover-controls>
+            <video autoplay muted loop playsinline disablepictureinpicture poster="media/figma-modes.jpg">
+              <source src="media/figma-modes.mp4" type="video/mp4">
+            </video>
+            <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+          </div>
         </div>
       </div>
     </section>

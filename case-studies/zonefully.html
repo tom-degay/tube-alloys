@@ -174,6 +174,40 @@
     border-radius: 6px;
   }
 
+  /* Every content image/video floats on this same grey-gradient backdrop
+     card, rather than sitting straight on the page's black background.
+     Standalone frames (not inside a <figure>) need their own bottom
+     margin to space them from whatever follows -- wrapping ui-video here
+     broke its old `.ui-video + p` sibling spacing, since the frame div
+     now sits between them. Figure-wrapped frames don't need it: the
+     figcaption after them supplies its own margin. */
+  .figure-portrait-frame {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    padding: 7.5%;
+    margin-bottom: clamp(24px, 3.5vw, 36px);
+    background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
+    border-radius: 10px;
+  }
+
+  figure > .figure-portrait-frame {
+    margin-bottom: 0;
+  }
+
+  .figure-portrait-frame img {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid #323232;
+  }
+
+  .figure-portrait-frame > .ui-video {
+    width: 100%;
+    margin: 0;
+  }
+
   @media (min-width: 1100px) {
     main {
       display: grid;
@@ -604,7 +638,9 @@
       </div>
 
       <figure class="figure">
-        <img src="media/zonefully-programs.jpg" width="1440" height="964" alt="Zonefully's Programs screen: a searchable list of programmes on the left, and the selected programme's detail — cover image, activity and ordered routines — on the right.">
+        <div class="figure-portrait-frame">
+          <img src="media/zonefully-programs.jpg" width="1440" height="964" alt="Zonefully's Programs screen: a searchable list of programmes on the left, and the selected programme's detail — cover image, activity and ordered routines — on the right.">
+        </div>
         <figcaption>Programme list and detail share one spacious structure; the activity colour and selection highlight tie a programme to its routines.</figcaption>
       </figure>
     </section>
@@ -626,7 +662,9 @@
       <p>For a cycling goal, that could mean training and recovery programmes containing individual rides and rest days. The design challenge was to make that hierarchy usable: people needed to work on an individual routine, understand how it fitted into a programme, and see where it belonged in their calendar.</p>
 
       <figure class="figure">
-        <img src="media/zonefully-planner.jpg" width="2000" height="1339" alt="Zonefully's Planner: a programme's routines laid across a week, with a side panel naming the Activity, Programme and Routine for the selected slot." loading="lazy">
+        <div class="figure-portrait-frame">
+          <img src="media/zonefully-planner.jpg" width="2000" height="1339" alt="Zonefully's Planner: a programme's routines laid across a week, with a side panel naming the Activity, Programme and Routine for the selected slot." loading="lazy">
+        </div>
         <figcaption>A programme&rsquo;s routines placed on the calendar, with the chain from activity to programme to routine kept in view.</figcaption>
       </figure>
     </section>
@@ -640,7 +678,9 @@
       <p>A spacious layout separated the main areas of the interface. Activity colours, selection highlights and breadcrumb labels reinforced the connections between goals, programmes and routines.</p>
 
       <figure class="figure">
-        <img src="media/zonefully-new-program.jpg" width="2000" height="1339" alt="A newly created 'Untitled Program' selected in the list and open in the detail panel, with an 'Assign to an Activity' prompt and empty day-by-day routine fields." loading="lazy">
+        <div class="figure-portrait-frame">
+          <img src="media/zonefully-new-program.jpg" width="2000" height="1339" alt="A newly created 'Untitled Program' selected in the list and open in the detail panel, with an 'Assign to an Activity' prompt and empty day-by-day routine fields." loading="lazy">
+        </div>
         <figcaption>A new programme starts with the next steps spelled out: assign it to an activity, then add some routines.</figcaption>
       </figure>
     </section>
@@ -654,7 +694,9 @@
       <p>This prioritised context: each step into the detail retained a visible connection to the wider plan. Activity colours, selection highlights and breadcrumbs reinforced that relationship.</p>
 
       <figure class="figure">
-        <img src="media/zonefully-routine-context.jpg" width="1440" height="964" alt="A routine opened for editing alongside the programme it sits in, with a breadcrumb reading Activities › Ride the Tourmalet › Programs." loading="lazy">
+        <div class="figure-portrait-frame">
+          <img src="media/zonefully-routine-context.jpg" width="1440" height="964" alt="A routine opened for editing alongside the programme it sits in, with a breadcrumb reading Activities › Ride the Tourmalet › Programs." loading="lazy">
+        </div>
         <figcaption>Opening a routine brings its detail into focus without losing the programme it belongs to; the breadcrumb holds the path back.</figcaption>
       </figure>
       <p>Creation states made the next steps explicit. Prompts such as &ldquo;Assign to an Activity&rdquo; and &ldquo;Add some Routines&rdquo; guided the setup of a new programme. Contextual controls grouped actions such as setting a cover image, duplicating and deleting.</p>
@@ -670,7 +712,9 @@
         <p>I developed designs for programme browsing, routine details and new-programme creation, including selection and hover states. I also explored variations in cover imagery and action placement to balance functionality with a spacious layout.</p>
 
         <figure class="figure">
-          <img src="media/zonefully-actions.jpg" width="1440" height="964" alt="A variant of the programme detail without a cover image, with the contextual action controls placed in a row at the top of the panel." loading="lazy">
+          <div class="figure-portrait-frame">
+            <img src="media/zonefully-actions.jpg" width="1440" height="964" alt="A variant of the programme detail without a cover image, with the contextual action controls placed in a row at the top of the panel." loading="lazy">
+          </div>
           <figcaption>One of the explorations of where the programme&rsquo;s controls sit, keeping them reachable without crowding the layout.</figcaption>
         </figure>
       </div>

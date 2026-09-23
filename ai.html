@@ -78,7 +78,7 @@
   /* -- inline image with caption -- */
   .figure {
     margin: clamp(20px, 3vw, 28px) 0 clamp(24px, 4vw, 36px);
-    max-width: 620px;
+    max-width: 736px;
   }
 
   .figure img {
@@ -86,6 +86,29 @@
     width: 100%;
     height: auto;
     border-radius: 6px;
+  }
+
+  /* Content image/video floats on this same grey-gradient backdrop card,
+     rather than sitting straight on the page's black background -- matches
+     the case-study pages. Not applied inside .example-card, which has its
+     own deliberate edge-to-edge video-bleed design. */
+  .figure-portrait-frame {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    padding: 7.5%;
+    margin-bottom: clamp(24px, 3.5vw, 36px);
+    background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
+    border-radius: 10px;
+  }
+
+  figure > .figure-portrait-frame {
+    margin-bottom: 0;
+  }
+
+  .figure-portrait-frame > .ui-video {
+    width: 100%;
+    margin: 0;
   }
 
   /* -- external links in running text: no trailing arrow -- */
@@ -375,7 +398,7 @@
     color: #fff;
     font-size: 20px;
     line-height: 1.5;
-    max-width: 620px;
+    max-width: 736px;
   }
 
   /* -- related case study card -- */
@@ -542,11 +565,13 @@
           <p>An uncertain suggestion can be useful if it&rsquo;s easy to check and correct. Even a confident one may need approval if a mistake would be costly. Previews, controls and feedback should reflect that distinction, directing attention where it matters most.</p>
 
           <figure class="figure">
-            <div class="ui-video" data-hover-controls>
-              <video autoplay muted loop playsinline disablepictureinpicture poster="/case-studies/media/automap-preview.jpg">
-                <source src="/case-studies/media/automap-preview.mp4" type="video/mp4">
-              </video>
-            <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+            <div class="figure-portrait-frame">
+              <div class="ui-video" data-hover-controls>
+                <video autoplay muted loop playsinline disablepictureinpicture poster="/case-studies/media/automap-preview.jpg">
+                  <source src="/case-studies/media/automap-preview.mp4" type="video/mp4">
+                </video>
+              <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+              </div>
             </div>
             <figcaption>Lower confidence ratings are highlighted yellow for user review.</figcaption>
           </figure>

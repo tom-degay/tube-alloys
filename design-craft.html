@@ -78,7 +78,7 @@
   /* -- inline image with caption -- */
   .figure {
     margin: clamp(20px, 3vw, 28px) 0 clamp(24px, 4vw, 36px);
-    max-width: 620px;
+    max-width: 736px;
   }
 
   .figure img {
@@ -86,6 +86,23 @@
     width: 100%;
     height: auto;
     border-radius: 6px;
+  }
+
+  /* Content image floats on this same grey-gradient backdrop card, rather
+     than sitting straight on the page's black background -- matches the
+     case-study pages. */
+  .figure-portrait-frame {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    padding: 7.5%;
+    margin-bottom: clamp(24px, 3.5vw, 36px);
+    background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
+    border-radius: 10px;
+  }
+
+  figure > .figure-portrait-frame {
+    margin-bottom: 0;
   }
 
   .figure figcaption a, .gallery .gallery-caption a, .lightbox-caption a {
@@ -115,7 +132,7 @@
     background-color: rgb(33, 33, 33);
     overflow: hidden;
     transition: background-color 0.2s ease, border-color 0.2s ease;
-    max-width: 620px;
+    max-width: 736px;
   }
 
   .case-block:hover, .case-block:focus-visible {
@@ -371,7 +388,7 @@
     color: #fff;
     font-size: 20px;
     line-height: 1.5;
-    max-width: 620px;
+    max-width: 736px;
   }
 
   .principle blockquote p { margin: 0; }
@@ -510,7 +527,9 @@
           <p>We wanted an interface that felt comfortable for long work sessions, and I brought the concept to life with a dark UI and a sparingly applied set of neon colours.</p>
 
           <figure class="figure">
-            <img src="media/dashboard.jpg" width="2000" height="915" alt="Concept design for Quantemplate&rsquo;s early analytics dashboard: a solvency-margin chart, a Value at Risk gauge, a sunburst volatility breakdown, and region, industry and risk breakdown tables in a dark theme." loading="lazy">
+            <div class="figure-portrait-frame">
+              <img src="media/dashboard.jpg" width="2000" height="915" alt="Concept design for Quantemplate&rsquo;s early analytics dashboard: a solvency-margin chart, a Value at Risk gauge, a sunburst volatility breakdown, and region, industry and risk breakdown tables in a dark theme." loading="lazy">
+            </div>
             <figcaption>Dashboard concept design, c.2013. The &lsquo;Bloomberg for Insurance&rsquo;.</figcaption>
           </figure>
 

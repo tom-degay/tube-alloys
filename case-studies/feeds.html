@@ -213,36 +213,55 @@
     border-radius: 6px;
   }
 
-  /* The schedules modal is portrait and would look small and adrift straight on
-     the page's black background -- a grey frame the full width of the
-     figure gives it a backdrop to float on, with its own shadow for lift. */
+  /* Every content image/video floats on this same grey-gradient backdrop
+     card, rather than sitting straight on the page's black background --
+     tried across the whole page as an experiment. No fixed aspect-ratio
+     here (unlike the original portrait-only version): the frame just pads
+     around whatever it holds, landscape or portrait, image or video. */
   .figure-portrait-frame {
     box-sizing: border-box;
     display: flex;
     justify-content: center;
-    align-items: center;
-    aspect-ratio: 1 / 1;
     padding: 7.5%;
+    margin-bottom: clamp(24px, 3.5vw, 36px);
     background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
     border-radius: 10px;
   }
 
+  /* Standalone frames (not inside a <figure>) need their own bottom
+     margin to space them from whatever follows -- wrapping ui-video
+     broke its old `.ui-video + p` sibling spacing, since the frame div
+     now sits between them. Figure-wrapped frames don't need it: the
+     figcaption after them supplies its own margin. */
+  figure > .figure-portrait-frame {
+    margin-bottom: 0;
+  }
+
   .figure-portrait-frame img {
-    width: auto;
+    display: block;
+    width: 100%;
     height: auto;
-    max-width: 100%;
-    max-height: 100%;
+  }
+
+  .figure-portrait-frame > .ui-video {
+    width: 100%;
+    margin: 0;
+  }
+
+  .figure-portrait-frame > .figure-strip-imgs {
+    width: 100%;
+    min-width: 0;
   }
 
   .figure-strip-imgs {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: 20px;
   }
 
   .figure-strip .figure-strip-imgs img {
+    display: block;
     width: 100%;
-    height: 100%;
     aspect-ratio: 16 / 10;
     object-fit: cover;
   }
@@ -775,9 +794,11 @@
       <blockquote>Across an average of 150 trading partners, repeated monthly, that amounted to 18,000 manual steps a year.</blockquote>
 
       <figure class="figure figure-strip">
-        <div class="figure-strip-imgs">
-          <img src="media/workflow-bottlenecks-diagram.png" width="1600" height="795" alt="Diagram of a typical MGA data pipeline: manual upload to network storage, an automated import-to-output pipeline including Map Column Headers, then a manual step to push output to the client database via API." loading="lazy">
-          <img src="media/feeds-problem-postits.png" width="1800" height="1206" alt="Annotated version of the Data Repo and pipeline diagram, with yellow sticky notes flagging open questions and trade-offs at each stage: partner data visibility and permissions, input selector categorisation, additive versus replacing submissions, and notification requirements." loading="lazy">
+        <div class="figure-portrait-frame">
+          <div class="figure-strip-imgs">
+            <img src="media/workflow-bottlenecks-diagram.png" width="1600" height="795" alt="Diagram of a typical MGA data pipeline: manual upload to network storage, an automated import-to-output pipeline including Map Column Headers, then a manual step to push output to the client database via API." loading="lazy">
+            <img src="media/feeds-problem-postits.png" width="1800" height="1206" alt="Annotated version of the Data Repo and pipeline diagram, with yellow sticky notes flagging open questions and trade-offs at each stage: partner data visibility and permissions, input selector categorisation, additive versus replacing submissions, and notification requirements." loading="lazy">
+          </div>
         </div>
         <figcaption>2022 analysis of the typical Quantemplate workflow, identifying the manual bottlenecks &mdash; then an annotated version flagging the trade-offs and open questions on the way to straight-through processing.</figcaption>
       </figure>
@@ -794,7 +815,9 @@
       <p>It became the basis for the submission lifecycle, schedules, statuses, reminders, version history and pipeline triggers.</p>
 
       <figure class="figure">
-        <img src="media/feeds-research-lifecycle.png" width="1800" height="567" alt="Swimlane diagram of the submission lifecycle spanning Carrier and MGA roles, from period open through upload, parsing, validation and carrier pipeline review, to period close, with pink notification steps, grey decision points and yellow manual touchpoints." loading="lazy">
+        <div class="figure-portrait-frame">
+          <img src="media/feeds-research-lifecycle.png" width="1800" height="567" alt="Swimlane diagram of the submission lifecycle spanning Carrier and MGA roles, from period open through upload, parsing, validation and carrier pipeline review, to period close, with pink notification steps, grey decision points and yellow manual touchpoints." loading="lazy">
+        </div>
         <figcaption>Submission lifecycle analysis showing notification steps (pink), automated decision points and manual touchpoints (yellow).</figcaption>
       </figure>
     </section>
@@ -811,7 +834,9 @@
         <blockquote>The Data Drop would have been a quick win but an incomplete solution. I proposed Feeds instead.</blockquote>
 
         <figure class="figure">
-          <img src="media/data-drop-concept.png" width="1600" height="1000" alt="Mockup of the Data Drop secure data transfer concept: a card showing transfer from and to organisations, submission type, period, due date, a worksheet selector with checkboxes, and a submit button." loading="lazy">
+          <div class="figure-portrait-frame">
+            <img src="media/data-drop-concept.png" width="1600" height="1000" alt="Mockup of the Data Drop secure data transfer concept: a card showing transfer from and to organisations, submission type, period, due date, a worksheet selector with checkboxes, and a submit button." loading="lazy">
+          </div>
           <figcaption>The data drop concept we never shipped.</figcaption>
         </figure>
 
@@ -823,12 +848,16 @@
         <p>I used the journey maps to make the case for the broader scope, showing how onboarding, scheduling and administration were necessary parts of a complete submission workflow. Connecting each capability to a concrete user need helped explain why improving the upload experience alone wouldn’t solve the whole problem.</p>
 
         <figure class="figure">
-          <img src="media/feeds-org-relationship-diagram.jpg" width="2000" height="1093" alt="Diagram showing a Data originator org with a Feed Out mirroring data to a Data consumer org's Feed In, fed by API, pipeline and manual upload sources on each side, with an upload portal shown as a separate concept still under consideration." loading="lazy">
+          <div class="figure-portrait-frame">
+            <img src="media/feeds-org-relationship-diagram.jpg" width="2000" height="1093" alt="Diagram showing a Data originator org with a Feed Out mirroring data to a Data consumer org's Feed In, fed by API, pipeline and manual upload sources on each side, with an upload portal shown as a separate concept still under consideration." loading="lazy">
+          </div>
           <figcaption>Architecting the relationship between organisation feeds. Every Feed In corresponds to a Feed Out in the partner org. At this point I was still considering the &lsquo;upload portal&rsquo; as a layer in the workflow. It was descoped when the walkthrough revealed it to be superfluous.</figcaption>
         </figure>
 
         <figure class="figure">
-          <img src="media/in-out-diagram.png" width="1346" height="852" alt="Diagram of the four Feed roles: Feed Out Leader (pushing out) and Feed In Follower (receiving pushes) connected by one arrow, Feed Out Follower (responding to requests) and Feed In Leader (pulling/requesting) connected by another." loading="lazy">
+          <div class="figure-portrait-frame">
+            <img src="media/in-out-diagram.png" width="1346" height="852" alt="Diagram of the four Feed roles: Feed Out Leader (pushing out) and Feed In Follower (receiving pushes) connected by one arrow, Feed Out Follower (responding to requests) and Feed In Leader (pulling/requesting) connected by another." loading="lazy">
+          </div>
           <figcaption>A conceptual model that users could understand: each Feed In is mirrored by a Feed Out in the partner organisation. Leaders control all Feed configuration, whilst followers simply respond. This reflected real-world market relationships.</figcaption>
         </figure>
       </div>
@@ -838,11 +867,13 @@
         <p>I initially favoured retaining a separate, stripped-back portal. My product partner challenged that assumption, and working through the journey together changed my view. If we could preserve the simplicity of the upload process within feeds, whilst introducing users to key Quantemplate behaviours, that would make for a more coherent user experience, and a more efficient and maintainable build.</p>
 
         <figure class="figure">
-          <div class="ui-video" data-hover-controls>
-            <video autoplay muted loop playsinline disablepictureinpicture poster="media/feeds-submissions.jpg">
-              <source src="media/feeds-submissions.mp4" type="video/mp4">
-            </video>
-            <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+          <div class="figure-portrait-frame">
+            <div class="ui-video" data-hover-controls>
+              <video autoplay muted loop playsinline disablepictureinpicture poster="media/feeds-submissions.jpg">
+                <source src="media/feeds-submissions.mp4" type="video/mp4">
+              </video>
+              <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+            </div>
           </div>
           <figcaption>To drop the portal layer, I needed to make the upload design equally intuitive and simple, whilst introducing key behaviours. Here we see a user submitting batches of Premium and Claims data which need to be assigned to separate subsections.</figcaption>
         </figure>
@@ -873,14 +904,18 @@
         <p>Looking at our permissions model, I realised that we needed a way to run automations without a user present, and have those runs tracked in the history. When the Robot User has access to a Feed, they can take the data from it, run a pipeline they have access to and output it to a dataset they&rsquo;ve been given write permission on.</p>
 
         <figure class="figure">
-          <img src="media/feeds-permissions-share-panel.png" width="1270" height="866" alt="Feed sharing panel listing who has access: TDG TPA with 9 members as Submitter, Robot User as Can view, Martina Brito as Manager, and Tom de Gay as Owner." loading="lazy">
+          <div class="figure-portrait-frame">
+            <img src="media/feeds-permissions-share-panel.png" width="1270" height="866" alt="Feed sharing panel listing who has access: TDG TPA with 9 members as Submitter, Robot User as Can view, Martina Brito as Manager, and Tom de Gay as Owner." loading="lazy">
+          </div>
           <figcaption>Sharing a Feed. Owner, Manager, Submitter and view-only roles sit alongside the Robot User, enabling automations across the platform.</figcaption>
         </figure>
 
         <p>Enabling automation surfaces a clear ‘Share with Robot User’ button, with prompts to share any dependent documents too. If users lack sharing rights, they can ask the document owner to grant access. This makes the permissions model visible at the point it matters, reduces setup friction and anticipates the next action users need to take.</p>
 
         <figure class="figure">
-          <img src="media/robot-user-reminder.png" width="1228" height="564" alt="A 'Set up automation' reminder prompting the user to share the pipeline with the Robot User, listing Auto Run and Auto Export options alongside an Add button next to the Robot User row." loading="lazy">
+          <div class="figure-portrait-frame">
+            <img src="media/robot-user-reminder.png" width="1228" height="564" alt="A 'Set up automation' reminder prompting the user to share the pipeline with the Robot User, listing Auto Run and Auto Export options alongside an Add button next to the Robot User row." loading="lazy">
+          </div>
           <figcaption>A reminder to share with the Robot User, surfaced right where automation features are set up.</figcaption>
         </figure>
 
@@ -896,17 +931,21 @@
         <h3>Trusted setup in under a minute</h3>
         <p>Initiating a partner connection required just their contact&rsquo;s email. We used the domain to find their organisation or begin creating it. I researched and proposed a <a href="https://www.logo.dev" target="_blank" rel="noopener noreferrer">logo.dev</a> integration to populate organisation names and logos automatically, reducing setup effort and making requests more recognisable. Admins on each side approve the connection, with all events tracked in a new admin panel.</p>
 
-        <div class="ui-video" data-hover-controls>
-          <video autoplay muted loop playsinline disablepictureinpicture poster="media/feeds-partners.jpg">
-            <source src="media/feeds-partners.mp4" type="video/mp4">
-          </video>
-          <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+        <div class="figure-portrait-frame">
+          <div class="ui-video" data-hover-controls>
+            <video autoplay muted loop playsinline disablepictureinpicture poster="media/feeds-partners.jpg">
+              <source src="media/feeds-partners.mp4" type="video/mp4">
+            </video>
+            <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+          </div>
         </div>
 
         <blockquote>What if the organisation was already on Quantemplate? What if they were already a partner? Working through every scenario meant some complexity behind the scenes, but ensured simplicity in the user experience.</blockquote>
 
         <figure class="figure">
-          <img src="media/feeds-add-partners-spec.jpg" width="2000" height="1102" alt="Design specification board mapping every path through the add-partners workflow: adding internal submitters, connecting to an existing partner, adding a new partner, setup via a Feed In or Feed Out, setup statuses and review settings." loading="lazy">
+          <div class="figure-portrait-frame">
+            <img src="media/feeds-add-partners-spec.jpg" width="2000" height="1102" alt="Design specification board mapping every path through the add-partners workflow: adding internal submitters, connecting to an existing partner, adding a new partner, setup via a Feed In or Feed Out, setup statuses and review settings." loading="lazy">
+          </div>
           <figcaption>Design specification for the &lsquo;Add partners&rsquo; workflow. Did the partner already exist on the system? Were they already connected? Was the user an admin?</figcaption>
         </figure>
 
@@ -936,14 +975,18 @@
         <p>Both parties retain an immutable, versioned record of submitted data. User avatars and organisation domains identify the people and companies behind submissions, building trust.</p>
 
         <figure class="figure">
-          <img src="media/submission-record.png" width="2278" height="616" alt="A submission record showing Premium and versioned Claims files with row counts, submitter avatars and dates, and a 'Submitted by / Submitted date' tooltip for one file." loading="lazy">
+          <div class="figure-portrait-frame">
+            <img src="media/submission-record.png" width="2278" height="616" alt="A submission record showing Premium and versioned Claims files with row counts, submitter avatars and dates, and a 'Submitted by / Submitted date' tooltip for one file." loading="lazy">
+          </div>
         </figure>
 
         <p>I redesigned the Feed repository as a management dashboard, showing which Feeds are complete, waiting for data or overdue; this real-time view of inventory replaces manual tracking in spreadsheets. Configurable reminders chase outstanding submissions automatically.</p>
         <p>Visible connections between Feeds and pipelines help managers understand what each submission will trigger and what the automation is still waiting for.</p>
 
         <figure class="figure">
-          <img src="media/feeds-repo-dashboard.png" width="2000" height="1251" alt="Your Feeds dashboard listing partner feeds with status badges (Draft, Overdue, Resubmission, Complete), owners, submission counts and a filterable sidebar for feed status, type and tags." loading="lazy">
+          <div class="figure-portrait-frame">
+            <img src="media/feeds-repo-dashboard.png" width="2000" height="1251" alt="Your Feeds dashboard listing partner feeds with status badges (Draft, Overdue, Resubmission, Complete), owners, submission counts and a filterable sidebar for feed status, type and tags." loading="lazy">
+          </div>
           <figcaption>Feeds repo: I reimagined the document storage as a management dashboard.</figcaption>
         </figure>
 
@@ -953,11 +996,13 @@
         <h3>Connecting the whole data chain</h3>
         <p>Feeds support incoming data, outgoing distribution and onward sharing. An insurer can distribute data to reinsurers, while a broker can receive and pass on the original submission. Each organisation can connect its own processing pipelines while retaining a shared, auditable source record. This uniquely allows us to surface the full data Chain of Custody.</p>
 
-        <div class="ui-video" data-hover-controls>
-          <video autoplay muted loop playsinline disablepictureinpicture poster="media/chain-of-custody.jpg">
-            <source src="media/chain-of-custody.mp4" type="video/mp4">
-          </video>
-          <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+        <div class="figure-portrait-frame">
+          <div class="ui-video" data-hover-controls>
+            <video autoplay muted loop playsinline disablepictureinpicture poster="media/chain-of-custody.jpg">
+              <source src="media/chain-of-custody.mp4" type="video/mp4">
+            </video>
+            <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+          </div>
         </div>
 
         <a class="case-block has-thumb" href="https://www.youtube.com/watch?v=vqHMlfbLOZU" target="_blank" rel="noopener noreferrer">
@@ -974,7 +1019,9 @@
         <p>We mapped out further <a href="https://help.quantemplate.com/feed-use-cases" target="_blank" rel="noopener noreferrer">Use Cases</a> on this support page.</p>
 
         <figure class="figure">
-          <img src="media/feeds-network-potential-diagram.png" width="1414" height="756" alt="Diagram showing data flowing from MGAs and Carriers who are Quantemplate clients, through to free-user Carriers and Reinsurers, illustrating how submissions and pushes propagate across the network regardless of client status." loading="lazy">
+          <div class="figure-portrait-frame">
+            <img src="media/feeds-network-potential-diagram.png" width="1414" height="756" alt="Diagram showing data flowing from MGAs and Carriers who are Quantemplate clients, through to free-user Carriers and Reinsurers, illustrating how submissions and pushes propagate across the network regardless of client status." loading="lazy">
+          </div>
           <figcaption>Potential to flow data seamlessly across the insurance industry.</figcaption>
         </figure>
       </div>

@@ -207,15 +207,52 @@
     border-radius: 6px;
   }
 
+  /* Every content image/video floats on this same grey-gradient backdrop
+     card, rather than sitting straight on the page's black background.
+     Standalone frames (not inside a <figure>) need their own bottom
+     margin to space them from whatever follows -- wrapping ui-video here
+     broke its old `.ui-video + p` sibling spacing, since the frame div
+     now sits between them. Figure-wrapped frames don't need it: the
+     figcaption after them supplies its own margin. */
+  .figure-portrait-frame {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    padding: 7.5%;
+    margin-bottom: clamp(24px, 3.5vw, 36px);
+    background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
+    border-radius: 10px;
+  }
+
+  figure > .figure-portrait-frame {
+    margin-bottom: 0;
+  }
+
+  .figure-portrait-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .figure-portrait-frame > .ui-video {
+    width: 100%;
+    margin: 0;
+  }
+
+  .figure-portrait-frame > .figure-strip-imgs {
+    width: 100%;
+    min-width: 0;
+  }
+
   .figure-strip-imgs {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: 20px;
   }
 
   .figure-strip .figure-strip-imgs img {
+    display: block;
     width: 100%;
-    height: 100%;
     aspect-ratio: 4 / 3;
     object-fit: cover;
   }
@@ -705,9 +742,11 @@
         <p>Engineering had already created an Excel-style formula editor for creating calculated values. This was a syntax that was second-nature to power users and had proven its usefulness. We decided to allow users to set their own validation queries, as this would allow complete flexibility. Validation rules were accompanied by a description and a fail/warn action &ndash; another requirement we&rsquo;d learnt from the research.</p>
 
         <figure class="figure figure-strip">
-          <div class="figure-strip-imgs">
-            <img src="media/validation-operation.png" width="3404" height="1426" alt="The formula-based validation rule editor, showing eight example rules such as effective-date and premium checks, each with a description and a warn/fail action." loading="lazy">
-            <img src="media/calculate-editor.png" width="1860" height="1338" alt="Autocomplete in the rule editor: typing a letter lists matching columns and functions, with the ENDOFMONTH function&rsquo;s description and syntax shown in a side panel." loading="lazy">
+          <div class="figure-portrait-frame">
+            <div class="figure-strip-imgs">
+              <img src="media/validation-operation.png" width="3404" height="1426" alt="The formula-based validation rule editor, showing eight example rules such as effective-date and premium checks, each with a description and a warn/fail action." loading="lazy">
+              <img src="media/calculate-editor.png" width="1860" height="1338" alt="Autocomplete in the rule editor: typing a letter lists matching columns and functions, with the ENDOFMONTH function&rsquo;s description and syntax shown in a side panel." loading="lazy">
+            </div>
           </div>
           <figcaption>Users write their own validation rules in a familiar, Excel-style syntax, with autocomplete surfacing fields and functions as they type.</figcaption>
         </figure>
@@ -719,7 +758,9 @@
         <p>I worked on this with an information designer who I was mentoring in UX. We did a lot of whiteboard prototyping so we could test ideas with subject matter experts and engineers before moving to high fidelity mockups to play back to our user cohort.</p>
 
         <figure class="figure">
-          <img src="media/whiteboard-2.jpg" width="1600" height="1117" alt="Whiteboard sketches exploring the validation report: segmented ring charts with stacked result rows, a filter to select which sources to show, a per-dataset impact filter, drill-down on a segment, and notes on the download use cases." loading="lazy">
+          <div class="figure-portrait-frame">
+            <img src="media/whiteboard-2.jpg" width="1600" height="1117" alt="Whiteboard sketches exploring the validation report: segmented ring charts with stacked result rows, a filter to select which sources to show, a per-dataset impact filter, drill-down on a segment, and notes on the download use cases." loading="lazy">
+          </div>
           <figcaption>Collaborative whiteboarding helped us originate a solution to a problem where no prior patterns existed</figcaption>
         </figure>
 
@@ -736,11 +777,13 @@
         <p>We shipped a capable V1, then observed and progressively refined the experience.</p>
 
         <figure class="figure">
-          <div class="ui-video" data-hover-controls>
-            <video id="drilldown-video" autoplay muted loop playsinline disablepictureinpicture poster="media/validations-drill-down.jpg">
-              <source src="media/validations-drill-down.mp4" type="video/mp4">
-            </video>
-          <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+          <div class="figure-portrait-frame">
+            <div class="ui-video" data-hover-controls>
+              <video id="drilldown-video" autoplay muted loop playsinline disablepictureinpicture poster="media/validations-drill-down.jpg">
+                <source src="media/validations-drill-down.mp4" type="video/mp4">
+              </video>
+            <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+            </div>
           </div>
           <figcaption>An earlier version of the validation report. We later compressed the multi-step drill-down into a single step, based on observed usage</figcaption>
         </figure>
@@ -749,7 +792,9 @@
         <blockquote>The opportunity was to bring that existing pattern into the report, making corrections easier to configure and trace.</blockquote>
 
         <figure class="figure">
-          <img src="media/ad-hoc-correction.png" width="1240" height="218" alt="A pipeline calculation step containing a hand-written IF statement that sets the Accident State to a fixed value when the policy number matches." loading="lazy">
+          <div class="figure-portrait-frame">
+            <img src="media/ad-hoc-correction.png" width="1240" height="218" alt="A pipeline calculation step containing a hand-written IF statement that sets the Accident State to a fixed value when the policy number matches." loading="lazy">
+          </div>
           <figcaption>Desire lines in the product: an ad-hoc correction added by a user to a pipeline. A manually-entered IF statement to modify the Accident State for a specific policy number.</figcaption>
         </figure>
 
@@ -768,7 +813,9 @@
         <p>We added a formula bar, so users could derive a value from another column. For example, if a date is missing, take the date from another column and subtract one month. Based on what we&rsquo;d observed in production pipelines, this would be a necessary addition.</p>
 
         <figure class="figure">
-          <img src="media/validation-corrections-preview.png" width="1899" height="1068" alt="Quantemplate's validation report: flagged errors beside an editable corrections column, with the correction popup open on a row." loading="lazy">
+          <div class="figure-portrait-frame">
+            <img src="media/validation-corrections-preview.png" width="1899" height="1068" alt="Quantemplate's validation report: flagged errors beside an editable corrections column, with the correction popup open on a row." loading="lazy">
+          </div>
           <figcaption>Entering a correction. The popup makes the scope explicit &mdash; every matching value, or only where a condition is met &mdash; with a formula bar for deriving the value from another column.</figcaption>
         </figure>
       </div>
@@ -778,7 +825,9 @@
         <p>Audit was important to our clients, who use Quantemplate as a system-of-record for financial reporting. To support this we displayed the original failed values alongside the corrected rows in the report. The full change history of each edit was displayed.</p>
 
         <figure class="figure">
-          <img src="media/validation-history.png" width="1254" height="1004" alt="The correction popup with a Correction history section below the Apply button, listing successive edits to a value with the editor's name and a timestamp for each." loading="lazy">
+          <div class="figure-portrait-frame">
+            <img src="media/validation-history.png" width="1254" height="1004" alt="The correction popup with a Correction history section below the Apply button, listing successive edits to a value with the editor's name and a timestamp for each." loading="lazy">
+          </div>
           <figcaption>Each edit to a failed value is recorded and displayed, building trust in the change and helping our clients meet their audit goals</figcaption>
         </figure>
       </div>
@@ -787,11 +836,13 @@
         <h3>Give immediate feedback</h3>
         <p>Corrections are applied to the output on the next pipeline run, so we called this out with a notification bar. But as a user types in a correction, we check that their entered value will pass the rule, and warn if it&rsquo;s still a fail.</p>
 
-        <div class="ui-video" data-hover-controls>
-          <video autoplay muted loop playsinline disablepictureinpicture poster="media/validation-instant-check.jpg">
-            <source src="media/validation-instant-check.mp4" type="video/mp4">
-          </video>
-        <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+        <div class="figure-portrait-frame">
+          <div class="ui-video" data-hover-controls>
+            <video autoplay muted loop playsinline disablepictureinpicture poster="media/validation-instant-check.jpg">
+              <source src="media/validation-instant-check.mp4" type="video/mp4">
+            </video>
+          <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+          </div>
         </div>
       </div>
     </section>
@@ -806,7 +857,9 @@
         <p>One of the things we discovered in testing, as part of our internal QA process, was that the order in which corrections apply is important, since one correction could overwrite a prior one. We created an interface showing all corrections applied to any validation rule, allowing users to reorder or remove them.</p>
 
         <figure class="figure">
-          <img src="media/validation-correction-log.jpg" width="2000" height="1206" alt="A table of all corrections attached to one validation rule, with columns for order, column, the correction rule, last editor and last edit date." loading="lazy">
+          <div class="figure-portrait-frame">
+            <img src="media/validation-correction-log.jpg" width="2000" height="1206" alt="A table of all corrections attached to one validation rule, with columns for order, column, the correction rule, last editor and last edit date." loading="lazy">
+          </div>
           <figcaption>Behind each validation is a log of all corrections applied, allowing reordering of correction rules. We uncovered the need for this in QA testing.</figcaption>
         </figure>
       </div>
@@ -818,14 +871,18 @@
         <p>The workflow covers preparing corrections, explicitly submitting them back, tracking progress and notifying both parties through in-app updates and email.</p>
 
         <figure class="figure">
-          <img src="media/validation-sharing-spec.jpg" width="2000" height="1451" alt="Design specification board for the validation sharing workflow: the sharing popup across states, from selecting rules and a partner organisation, through a confirmation step, to automatic sharing settings." loading="lazy">
+          <div class="figure-portrait-frame">
+            <img src="media/validation-sharing-spec.jpg" width="2000" height="1451" alt="Design specification board for the validation sharing workflow: the sharing popup across states, from selecting rules and a partner organisation, through a confirmation step, to automatic sharing settings." loading="lazy">
+          </div>
           <figcaption>Design specification showing steps in the validation sharing workflow. The user chooses what to share, and to whom, then passes a confirmation step.</figcaption>
         </figure>
 
         <p>Sharing raised a raft of new questions, for instance: should the validation progress bar reflect the entire dataset or only the validations shared with the supplier? I chose the shared validations, ensuring requester and supplier saw the same measure of completion, and made this clear in the UI.</p>
 
         <figure class="figure">
-          <img src="media/validation-progress-bar.png" width="1254" height="680" alt="Two notifications: validations ready to share with a partner organisation, and a progress bar on the sent validations showing '10 results, 88% corrected'." loading="lazy">
+          <div class="figure-portrait-frame">
+            <img src="media/validation-progress-bar.png" width="1254" height="680" alt="Two notifications: validations ready to share with a partner organisation, and a progress bar on the sent validations showing '10 results, 88% corrected'." loading="lazy">
+          </div>
           <figcaption>The progress bar tracks completion of the shared validations specifically, not the full dataset, so requester and supplier see the same number.</figcaption>
         </figure>
 
@@ -838,11 +895,13 @@
         <p>The solution arose when we implemented <a href="https://help.quantemplate.com/data-semantics" target="_blank" rel="noopener noreferrer">data semantics</a> across the platform. Now, with an understanding of the data in each column we could implement a very lightweight solution. We added a toggle to enable type validations in <a href="/case-studies/column-mapping#semantics-heading">Map Column Headers</a>, the point in the pipeline in which schema is defined.</p>
         <blockquote>This cut out at least four pipeline steps for every column whose type was validated, removing implementation complexity and slashing hours from implementation time.</blockquote>
 
-        <div class="ui-video" data-hover-controls>
-          <video autoplay muted loop playsinline disablepictureinpicture poster="media/type-validation.jpg">
-            <source src="media/type-validation.mp4" type="video/mp4">
-          </video>
-        <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+        <div class="figure-portrait-frame">
+          <div class="ui-video" data-hover-controls>
+            <video autoplay muted loop playsinline disablepictureinpicture poster="media/type-validation.jpg">
+              <source src="media/type-validation.mp4" type="video/mp4">
+            </video>
+          <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+          </div>
         </div>
       </div>
     </section>

@@ -217,15 +217,52 @@
     border-radius: 6px;
   }
 
+  /* Every content image/video floats on this same grey-gradient backdrop
+     card, rather than sitting straight on the page's black background.
+     Standalone frames (not inside a <figure>) need their own bottom
+     margin to space them from whatever follows -- wrapping ui-video/
+     video-panel here broke their old `.ui-video + p` sibling spacing,
+     since the frame div now sits between them. Figure-wrapped frames
+     don't need it: the figcaption after them supplies its own margin. */
+  .figure-portrait-frame {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    padding: 7.5%;
+    margin-bottom: clamp(24px, 3.5vw, 36px);
+    background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
+    border-radius: 10px;
+  }
+
+  figure > .figure-portrait-frame {
+    margin-bottom: 0;
+  }
+
+  .figure-portrait-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .figure-portrait-frame > .ui-video, .figure-portrait-frame > .video-panel {
+    width: 100%;
+    margin: 0;
+  }
+
+  .figure-portrait-frame > .figure-strip-imgs {
+    width: 100%;
+    min-width: 0;
+  }
+
   .figure-strip-imgs {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    gap: 20px;
   }
 
   .figure-strip .figure-strip-imgs img {
+    display: block;
     width: 100%;
-    height: 100%;
     aspect-ratio: 4 / 3;
     object-fit: cover;
   }
@@ -790,10 +827,12 @@
         <p>A missing operation could leave the whole workflow unusable. We needed to get to that breadth of capability quickly, then make it easier to work with.</p>
 
         <figure class="figure figure-strip">
-          <div class="figure-strip-imgs">
-            <img src="media/pipelines-flow-mapping.jpg" width="1280" height="960" alt="A whiteboard mapping the data pipeline: sticky notes for inputs, tasks and people, and a horizontal flow of processing stages from data detection through column mapping to a cleaned output." loading="lazy">
-            <img src="media/pipelines-stack-ranking.jpg" width="1280" height="960" alt="A whiteboard stack-ranking exercise: security and user-monitoring features on sticky notes, grouped and marked by priority." loading="lazy">
-            <img src="media/pipeline-sketch.jpg" width="1448" height="1086" alt="Pencil concept sketches exploring how pipeline operations could be shown: popups, an expanding sidebar and an expanding list, each worked through from v0.2 to v1.0 and annotated with pros and cons." loading="lazy">
+          <div class="figure-portrait-frame">
+            <div class="figure-strip-imgs">
+              <img src="media/pipelines-flow-mapping.jpg" width="1280" height="960" alt="A whiteboard mapping the data pipeline: sticky notes for inputs, tasks and people, and a horizontal flow of processing stages from data detection through column mapping to a cleaned output." loading="lazy">
+              <img src="media/pipelines-stack-ranking.jpg" width="1280" height="960" alt="A whiteboard stack-ranking exercise: security and user-monitoring features on sticky notes, grouped and marked by priority." loading="lazy">
+              <img src="media/pipeline-sketch.jpg" width="1448" height="1086" alt="Pencil concept sketches exploring how pipeline operations could be shown: popups, an expanding sidebar and an expanding list, each worked through from v0.2 to v1.0 and annotated with pros and cons." loading="lazy">
+            </div>
           </div>
           <figcaption>Artefacts of the process: collaborative flow mapping, stack ranking, concept sketches</figcaption>
         </figure>
@@ -802,11 +841,13 @@
         <p>This approach meant that each operation could have an interface tailored to its particular task.</p>
 
         <figure class="figure figure-strip figure-strip-4">
-          <div class="figure-strip-imgs">
-            <img src="media/code-editor-1.png" width="1670" height="942" alt="The original code editor: a full screen of Python and pandas cleaning a bordereau spreadsheet, with Run, History and Save controls." loading="lazy">
-            <img src="media/code-editor-2.png" width="832" height="624" alt="The same work as a single named operation, Detect Headers, configured by one line: useFirstNRowsAsHeader with a row count of one." loading="lazy">
-            <img src="media/code-editor-3.png" width="2000" height="1128" alt="A pipeline broken into named stages &ndash; Cleanse Data, Column Mapping, Combine Premium Data, Join &ndash; beside a grid of the resulting insurance data." loading="lazy">
-            <img src="media/pipelines-today.png" width="2000" height="1193" alt="Pipelines today: seventeen connected stages from mapping through joins to underwriting and reinsurance outputs, with a validations panel reporting the result of each operation." loading="lazy">
+          <div class="figure-portrait-frame">
+            <div class="figure-strip-imgs">
+              <img src="media/code-editor-1.png" width="1670" height="942" alt="The original code editor: a full screen of Python and pandas cleaning a bordereau spreadsheet, with Run, History and Save controls." loading="lazy">
+              <img src="media/code-editor-2.png" width="832" height="624" alt="The same work as a single named operation, Detect Headers, configured by one line: useFirstNRowsAsHeader with a row count of one." loading="lazy">
+              <img src="media/code-editor-3.png" width="2000" height="1128" alt="A pipeline broken into named stages &ndash; Cleanse Data, Column Mapping, Combine Premium Data, Join &ndash; beside a grid of the resulting insurance data." loading="lazy">
+              <img src="media/pipelines-today.png" width="2000" height="1193" alt="Pipelines today: seventeen connected stages from mapping through joins to underwriting and reinsurance outputs, with a validations panel reporting the result of each operation." loading="lazy">
+            </div>
           </div>
           <figcaption>Pipeline evolution: from one long script to named operations, each with its own interface &ndash; and the pipeline as it stands today.</figcaption>
         </figure>
@@ -825,22 +866,26 @@
         <h3>Give pipelines a simple hierarchy</h3>
         <p>Our first visual model broke the code into steps called stages. We soon realised that pipelines would become enormous if every operation occupied its own stage.</p>
 
-        <div class="video-panel">
-          <div class="ui-video is-tall" data-hover-controls>
-            <video autoplay muted loop playsinline disablepictureinpicture poster="media/pipelines-add-stage.jpg">
-              <source src="media/pipelines-add-stage.mp4" type="video/mp4">
-            </video>
-            <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+        <div class="figure-portrait-frame">
+          <div class="video-panel">
+            <div class="ui-video is-tall" data-hover-controls>
+              <video autoplay muted loop playsinline disablepictureinpicture poster="media/pipelines-add-stage.jpg">
+                <source src="media/pipelines-add-stage.mp4" type="video/mp4">
+              </video>
+              <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+            </div>
           </div>
         </div>
         <p>Working with engineering, we introduced operations within stages. Stages represented the broader structure of the data flow (joining, combining or transforming inputs) while operations contained the detailed work.</p>
 
-        <div class="video-panel">
-          <div class="ui-video is-tall" data-hover-controls>
-            <video autoplay muted loop playsinline disablepictureinpicture poster="media/pipelines-move-operation.jpg">
-              <source src="media/pipelines-move-operation.mp4" type="video/mp4">
-            </video>
-            <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+        <div class="figure-portrait-frame">
+          <div class="video-panel">
+            <div class="ui-video is-tall" data-hover-controls>
+              <video autoplay muted loop playsinline disablepictureinpicture poster="media/pipelines-move-operation.jpg">
+                <source src="media/pipelines-move-operation.mp4" type="video/mp4">
+              </video>
+              <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+            </div>
           </div>
         </div>
         <p>This collapsed the pipeline into a manageable sequence. Users could see its overall structure, then open a stage to work on individual operations.</p>
@@ -865,11 +910,13 @@
         <h3>Bring inputs and outputs into one view</h3>
         <p>The pipeline&rsquo;s right-hand area was originally intended for live data preview, but this proved technically challenging. Based on user feedback, I repurposed it to bring inputs and outputs together from their three separate tabs, resolving a navigation problem inherited from the original code editor.</p>
 
-        <div class="ui-video" data-hover-controls>
-          <video autoplay muted loop playsinline disablepictureinpicture poster="media/pipelines-inputs-outputs.jpg">
-            <source src="media/pipelines-inputs-outputs.mp4" type="video/mp4">
-          </video>
-          <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+        <div class="figure-portrait-frame">
+          <div class="ui-video" data-hover-controls>
+            <video autoplay muted loop playsinline disablepictureinpicture poster="media/pipelines-inputs-outputs.jpg">
+              <source src="media/pipelines-inputs-outputs.mp4" type="video/mp4">
+            </video>
+            <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+          </div>
         </div>
       </div>
 
@@ -877,11 +924,13 @@
         <h3>Show the lineage</h3>
         <p>Another pain point we identified was keeping track of data lineage through pipelines. I proposed connecting lines between stages to <a href="/wayfinding#complexity-heading">help users follow data through a pipeline</a>. Initially, I envisioned user-defined colour groups to denote functions, but the feedback we got was that these would add configuration overhead. Instead, we automatically cycled colours through a spectrum to distinguish connections.</p>
 
-        <div class="ui-video" data-hover-controls>
-          <video autoplay muted loop playsinline disablepictureinpicture poster="media/pipelines-lineage-highlight.jpg">
-            <source src="media/pipelines-lineage-highlight.mp4" type="video/mp4">
-          </video>
-          <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+        <div class="figure-portrait-frame">
+          <div class="ui-video" data-hover-controls>
+            <video autoplay muted loop playsinline disablepictureinpicture poster="media/pipelines-lineage-highlight.jpg">
+              <source src="media/pipelines-lineage-highlight.mp4" type="video/mp4">
+            </video>
+            <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+          </div>
         </div>
       </div>
 
@@ -890,30 +939,28 @@
         <p>As clients chained pipelines together, we found ourselves explaining the connections through <a href="https://miro.com" target="_blank" rel="noopener noreferrer">Miro</a> flowcharts. This was a desire line: a view we repeatedly created outside the product.</p>
         <p>In 2026, we built a flowchart view into Quantemplate, giving users an overview across pipelines alongside the detailed stage editor.</p>
 
-        <div class="ui-video" data-hover-controls>
-          <video autoplay muted loop playsinline disablepictureinpicture poster="media/pipelines-flow-view.jpg">
-            <source src="media/pipelines-flow-view.mp4" type="video/mp4">
-          </video>
-          <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+        <div class="figure-portrait-frame">
+          <div class="ui-video" data-hover-controls>
+            <video autoplay muted loop playsinline disablepictureinpicture poster="media/pipelines-flow-view.jpg">
+              <source src="media/pipelines-flow-view.mp4" type="video/mp4">
+            </video>
+            <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+          </div>
         </div>
 
-        <p>Automated runs introduced a further risk: a chain of pipelines could end up triggering itself and running forever.</p>
-        <blockquote>This was a systemic risk. I advocated for the engineering team to develop loop detection and designed a UI for it.</blockquote>
-
-        <figure class="figure">
-          <img src="media/auto-run92.jpg" width="1340" height="1044" alt="The loop-detection UI: a popover warning &lsquo;Automation loop detected&rsquo;, showing the chain of pipelines that would form an infinite loop &mdash; API data, Chain 1, intermediate-10, and this pipeline." loading="lazy">
-        </figure>
       </div>
 
       <div class="subsection" id="impl-activity">
         <h3>Make activity visible</h3>
         <p>Pipelines glow as they run, along with their corresponding connecting lines in the flowchart. This makes execution visible in the context of the wider workflow. We recorded an uptick in engagement during demos and training sessions as the data flow through a pipeline became tangible.</p>
 
-        <div class="ui-video" data-hover-controls>
-          <video autoplay muted loop playsinline disablepictureinpicture poster="media/pipelines-glow.jpg">
-            <source src="media/pipelines-glow.mp4" type="video/mp4">
-          </video>
-          <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+        <div class="figure-portrait-frame">
+          <div class="ui-video" data-hover-controls>
+            <video autoplay muted loop playsinline disablepictureinpicture poster="media/pipelines-glow.jpg">
+              <source src="media/pipelines-glow.mp4" type="video/mp4">
+            </video>
+            <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+          </div>
         </div>
       </div>
     </section>
@@ -926,17 +973,6 @@
       <p>Pipelines became our platform for product development that is still improving today, delivering new capabilities and refining in response to feedback.</p>
       <p>The work began with getting the full transformation capability into users&rsquo; hands. Sustained refinement then came from observing how clients used it, building pipelines ourselves and following the workarounds that showed us what the product needed next.</p>
       <blockquote>Pipelines have driven the growth of the business and are now responsible for 100% of engagements and sales, processing 3.4bn rows per year with 17k pipeline runs in client production environments.</blockquote>
-
-      <h3>Laying the foundations for agents</h3>
-      <p>In 2026 we introduced a semantic layer, giving Quantemplate a detailed understanding of the data flowing through. This enables rapid pipeline construction through making intelligent suggestions for <a href="/case-studies/column-mapping">mappings</a>, data dictionaries and <a href="/ai#ai-for-heading">join points</a>, reducing the skill level and domain expertise required to build a pipeline. Together with the <a href="/case-studies/feeds#permissions-heading">Robot User</a> I introduced, the semantic layer establishes the foundation for agents to build pipelines on request.</p>
-
-      <a class="case-block has-thumb" href="https://www.youtube.com/watch?v=eSW6uoPb6tc" target="_blank" rel="noopener noreferrer">
-        <img class="case-block-thumb" src="media/youtube-ai-pipelines.jpg" width="800" height="450" alt="Thumbnail for the YouTube video &lsquo;From raw data to production workflow in minutes with AI pipelines&rsquo;" loading="lazy">
-        <span class="case-block-text">
-          <span class="case-block-title">From raw data to production workflow in minutes with AI pipelines</span>
-          <span class="case-block-watch">Watch on YouTube</span>
-        </span>
-      </a>
     </section>
 
     <hr class="rule">
