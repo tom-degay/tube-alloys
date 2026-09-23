@@ -45,8 +45,16 @@
     padding: clamp(24px, 6vw, 72px) clamp(24px, 5vw, 56px);
   }
 
+  /* Every child (paragraphs, figures, hr, principles, the related nav)
+     shares this one width, rather than each needing its own max-width --
+     hr.rule in particular has no max-width of its own, so without this it
+     stretches to whatever's left of the content column. */
+  .content {
+    max-width: 736px;
+  }
+
   @media (min-width: 1100px) {
-    main { max-width: 1080px; }
+    main { max-width: 1320px; }
   }
 
   .eyebrow {
@@ -78,7 +86,6 @@
   /* -- inline image with caption -- */
   .figure {
     margin: clamp(20px, 3vw, 28px) 0 clamp(24px, 4vw, 36px);
-    max-width: 736px;
   }
 
   .figure img {

@@ -803,7 +803,7 @@ h4 {
 /* -- image gallery: large image + thumbnail strip, click to enlarge -- */
 .gallery {
   margin: clamp(20px, 3vw, 28px) 0 clamp(24px, 4vw, 36px);
-  max-width: 620px;
+  max-width: 736px;
 }
 
 .gallery-frame { position: relative; }

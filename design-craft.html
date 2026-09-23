@@ -45,8 +45,16 @@
     padding: clamp(24px, 6vw, 72px) clamp(24px, 5vw, 56px);
   }
 
+  /* Every child (paragraphs, figures, hr, principles, the related nav)
+     shares this one width, rather than each needing its own max-width --
+     hr.rule in particular has no max-width of its own, so without this it
+     stretches to whatever's left of the content column. */
+  .content {
+    max-width: 736px;
+  }
+
   @media (min-width: 1100px) {
-    main { max-width: 1080px; }
+    main { max-width: 1320px; }
   }
 
   .eyebrow {
@@ -69,6 +77,15 @@
     max-width: 24ch;
   }
 
+  /* Matches .principle p exactly, so the opening paragraph reads the same
+     as every other paragraph on the page. */
+  .content > p:first-of-type {
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 18px;
+    line-height: 1.6;
+    margin: 0;
+  }
+
   .rule {
     border: none;
     border-top: 1px solid rgba(255, 255, 255, 0.2);
@@ -78,7 +95,6 @@
   /* -- inline image with caption -- */
   .figure {
     margin: clamp(20px, 3vw, 28px) 0 clamp(24px, 4vw, 36px);
-    max-width: 736px;
   }
 
   .figure img {
@@ -498,7 +514,7 @@
     <div class="content">
       <h1 class="lede display head-fade">Design craft</h1>
 
-      <p class="intro head-fade">I love the craft of design. I like to know how things are made, whether that means working with a printer, a fabricator or an engineer. Alongside the process and systems thinking elsewhere on this site, here&rsquo;s a closer look at building brands, finding the finesse, and caring about the details.</p>
+      <p>I love the craft of design. I like to know how things are made, whether that means working with a printer, a fabricator or an engineer. Alongside the process and systems thinking elsewhere on this site, here&rsquo;s a closer look at building brands, finding the finesse, and caring about the details.</p>
 
       <hr class="rule">
 
