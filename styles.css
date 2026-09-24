@@ -477,7 +477,7 @@ p.keywords {
 .job-desc {
   color: rgba(255, 255, 255, 0.82);
   font-size: clamp(18px, 2.3vw, 22px);
-  line-height: 33px;
+  line-height: 30px;
   max-width: 55ch;
   margin: 18px 0 0;
 }

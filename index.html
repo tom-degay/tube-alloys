@@ -85,6 +85,8 @@
     max-width: 40ch;
   }
 
+  .job-video-link { margin: 16px 0 0; }
+
   /* Always 2x2 or 4x1, never 3+1. auto-fit(minmax(130px,...)) packed as
      many >=130px tracks as the container allowed, and there is a real
      range of container widths (roughly 454-615px here) where exactly 3
@@ -148,22 +150,6 @@
     .reveal-armed .testimonials blockquote,
     .reveal-armed .testimonials blockquote.is-revealed {
       opacity: 1;
-    }
-  }
-
-  /* -- scroll reveal: the "AI-powered automation in action" YouTube card
-     fades in, matching the .case-blocks card-fade-in treatment. */
-  .reveal-armed .job .case-block.has-thumb { opacity: 0; }
-
-  .reveal-armed .job .case-block.has-thumb.is-revealed {
-    animation: card-fade-in 1.1s ease both;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .reveal-armed .job .case-block.has-thumb,
-    .reveal-armed .job .case-block.has-thumb.is-revealed {
-      opacity: 1;
-      animation: none;
     }
   }
 
@@ -314,58 +300,6 @@
   }
 
   .case-block[target="_blank"]::after { content: none; }
-
-  /* -- horizontal video card (YouTube) -- */
-  .case-block.has-thumb {
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 22px;
-    margin-top: 28px;
-    padding: 18px 22px 16px;
-    overflow: hidden;
-    border-color: rgb(33, 33, 33);
-    background-color: rgb(33, 33, 33);
-  }
-
-  .case-block.has-thumb:hover, .case-block.has-thumb:focus-visible {
-    border-color: rgb(48, 48, 48);
-    background-color: rgb(48, 48, 48);
-    transform: none;
-  }
-
-  .case-block-thumb {
-    flex: 0 0 clamp(150px, 26vw, 240px);
-    width: clamp(150px, 26vw, 240px);
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    object-position: center;
-    border-radius: 6px;
-    transition: transform 0.3s ease;
-  }
-
-  .case-block-watch {
-    display: block;
-    margin-top: 12px;
-    font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: 2px;
-    word-spacing: -3px;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.45);
-  }
-
-  @media (max-width: 560px) {
-    .case-block.has-thumb {
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .case-block-thumb {
-      width: 100%;
-      flex-basis: auto;
-    }
-  }
 
   .hero-armed .about-statement { opacity: 0; }
 
@@ -644,18 +578,9 @@
     /* -- type: the extra width buys a bigger job title. -- */
     .job-company { font-size: 36px; }
 
-    /* The YouTube card would stretch to the full content column; hold it
-       to the site's usual 46rem media measure. */
-    .case-block.has-thumb { max-width: 46rem; }
-
     /* -- the Experience content, as the four-column grid the stats already
-       imply. The closing paragraph takes columns 1-2 and the video card
-       columns 3-4, so they sit side by side rather than stacking.
-
-       Rows are explicit because the card comes before the paragraph in the
-       markup: with auto-placement, an item starting in column 3 followed
-       by one starting in column 1 moves the cursor backwards, which pushes
-       the paragraph onto a row of its own. -- */
+       imply. Rows are explicit rather than left to auto-placement, so each
+       piece lands exactly where it's meant to regardless of source order. -- */
     .job {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -667,41 +592,34 @@
        1em on a <p> -- which scales with its own font size, so it was
        pushing the title ~33px below the rail label it should line up with. */
     .job-company  { grid-area: 1 / 1 / 2 / -1; margin: 0; }
-    .job-keywords { grid-area: 2 / 1 / 3 / -1; }
-    .stats        { grid-area: 3 / 1 / 4 / -1; }
 
-    /* Both row-4 items take the same top margin so they start level. The
-       font-size override that used to live here is gone -- .job-desc's
-       shared clamp() now tops out at 22px well before this breakpoint. */
-    .job-desc {
-      grid-area: 4 / 1 / 5 / 3;
-      margin-top: clamp(40px, 4vw, 56px);
-    }
-
-    .job .case-block.has-thumb {
-      grid-area: 4 / 3 / 5 / -1;
-      margin-top: clamp(40px, 4vw, 56px);
-    }
-
-    /* -- the video card, turned upright: thumbnail on top, text beneath,
-       which in a half-width column lands it close to square. Same shape as
-       the .has-image cards elsewhere on the page. -- */
-    .job .case-block.has-thumb {
-      flex-direction: column;
-      align-items: stretch;
-      justify-content: flex-start;
-      gap: 0;
+    /* The subtitle beneath the title is also .job-desc for the shared
+       look, plus its own class to place it -- :first-of-type/:last-of-type
+       match by tag among ALL siblings, not "first/last .job-desc", so
+       with three <p> siblings above it that pair silently matches
+       nothing; named classes avoid the trap. max-width: none and nowrap
+       so the short line doesn't wrap under the shared .job-desc 55ch
+       measure; the tighter margin-top keeps it close under the title. */
+    .job-subtitle {
+      grid-area: 2 / 1 / 3 / -1;
       max-width: none;
-      padding: 0 0 18px;
+      white-space: nowrap;
+      margin-top: 10px;
     }
 
-    .job .case-block-thumb {
-      flex: none;
-      width: 100%;
-      border-radius: 0;
+    .job-keywords { grid-area: 3 / 1 / 4 / -1; }
+    .stats        { grid-area: 4 / 1 / 5 / -1; }
+
+    /* Three of the four columns, now that there's no video card to share
+       the row with -- max-width: none so the wider grid area actually
+       gets used rather than staying clipped at the shared 55ch measure. */
+    .job-summary {
+      grid-area: 5 / 1 / 6 / 4;
+      max-width: none;
+      margin-top: clamp(40px, 4vw, 56px);
     }
 
-    .job .case-block.has-thumb .case-block-text { padding: 18px 22px 0; }
+    .job-video-link { grid-area: 6 / 1 / 7 / 2; margin-top: 16px; }
 
     /* -- grids: wider band, wider gaps. -- */
     /* Fixed at four so the stats stay on one row at every desktop width;
@@ -871,11 +789,9 @@
 </script>
 <noscript>
   <style>
-    .hero-armed #about-heading,
     .hero-armed .about-statement { opacity: 1 !important; transform: none !important; }
     .reveal-armed .case-blocks .case-block { opacity: 1 !important; }
     .reveal-armed .testimonials blockquote { opacity: 1 !important; }
-    .reveal-armed .job .case-block.has-thumb { opacity: 1 !important; }
   </style>
 </noscript>
   <script src="/nav.js" defer></script>
@@ -956,8 +872,7 @@
         </video>
       </div>
 
-      <section aria-labelledby="about-heading">
-        <h2 class="eyebrow" id="about-heading">About</h2>
+      <section>
         <p class="about-statement display">Product designer. Big-picture thinker. Small-detail obsessive. Complexity to clarity. A&nbsp;human in the loop.</p>
       </section>
     </div>
@@ -967,13 +882,14 @@
     <section aria-labelledby="experience-heading">
       <h2 class="eyebrow" id="experience-heading">Principal Experience</h2>
       <div class="job">
-        <p class="job-company display">Head of Design | Senior IC | <a href="https://quantemplate.com" target="_blank" rel="noopener noreferrer">Quantemplate</a></p>
+        <p class="job-company display">Head of Design | <a href="https://quantemplate.com" target="_blank" rel="noopener noreferrer">Quantemplate</a></p>
+        <p class="job-desc job-subtitle">Product strategy and hands-on design</p>
         <p class="job-keywords"><span class="keyword">Enterprise data</span><span class="keyword">No-code automation</span><span class="keyword">Connected workflows</span></p>
 
         <dl class="stats">
           <div class="stat">
-            <dt class="stat-value">10+</dt>
-            <dd class="stat-label">Years product evolution</dd>
+            <dt class="stat-value">14</dt>
+            <dd class="stat-label">Years product innovation</dd>
           </div>
           <div class="stat">
             <dt class="stat-value">7</dt>
@@ -981,7 +897,7 @@
           </div>
           <div class="stat">
             <dt class="stat-value">300+</dt>
-            <dd class="stat-label">Features and improvements shipped</dd>
+            <dd class="stat-label">Improvements to critical workflows</dd>
           </div>
           <div class="stat">
             <dt class="stat-value">3.4bn</dt>
@@ -989,16 +905,8 @@
           </div>
         </dl>
 
-        <a class="case-block has-thumb" href="https://www.youtube.com/watch?v=n1prlc_ovts" target="_blank" rel="noopener noreferrer">
-          <img class="case-block-thumb" src="/media/youtube-quantemplate-overview.jpg" width="800" height="450" alt="Thumbnail for the YouTube video &lsquo;AI-powered automation in action&rsquo;" loading="lazy">
-          <span class="case-block-text">
-            <span class="case-block-title">AI-powered automation in action</span>
-            <span class="case-block-subtitle">A five-minute walkthrough of the platform: requesting and importing data with Feeds, automated pipelines with AI-powered column and value mapping, validation, data lineage and BI reporting.</span>
-            <span class="case-block-watch">Watch on YouTube</span>
-          </span>
-        </a>
-
-        <p class="job-desc">I&rsquo;ve helped Quantemplate evolve from startup to mature enterprise platform. Working closely with users and with engineering, I&rsquo;ve brought together product strategy, systems thinking and interaction design to make complex data workflows intuitive, and establish design as a competitive differentiator.</p>
+        <p class="job-desc job-summary">I&rsquo;ve helped Quantemplate evolve from startup to mature enterprise platform. Working closely with users and with engineering, I&rsquo;ve brought together product strategy, systems thinking and interaction design to make complex data workflows intuitive, and establish design as a competitive differentiator.</p>
+        <p class="job-video-link"><a href="https://www.youtube.com/watch?v=n1prlc_ovts" target="_blank" rel="noopener noreferrer">Five-minute demo</a></p>
       </div>
 
       <hr class="rule">
@@ -1143,7 +1051,6 @@
       if (!root.classList.contains('hero-armed')) return;
 
       var stmt = document.querySelector('.about-statement');
-      var eyebrow = document.getElementById('about-heading');
       if (!stmt) { root.classList.remove('hero-armed'); return; }
 
       try {
@@ -1161,8 +1068,7 @@
         });
 
         var STEP = 58;      // ms between words
-        var LEAD = 120;     // ms before the first word (after the eyebrow)
-        if (eyebrow) eyebrow.style.transitionDelay = '0ms';
+        var LEAD = 120;     // ms before the first word starts
         wordEls.forEach(function (el, i) {
           el.style.transitionDelay = (LEAD + i * STEP) + 'ms';
         });
@@ -1179,7 +1085,6 @@
             el.style.willChange = '';
             el.style.transitionDelay = '';
           });
-          if (eyebrow) eyebrow.style.transitionDelay = '';
         }, LEAD + wordEls.length * STEP + 900);
       } catch (e) {
         root.classList.remove('hero-armed');
@@ -1244,27 +1149,6 @@
       }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
 
       quotes.forEach(function (q) { io.observe(q); });
-    })();
-
-    (function () {
-      var root = document.documentElement;
-      if (!root.classList.contains('reveal-armed')) return;
-
-      var card = document.querySelector('.job .case-block.has-thumb');
-      if (!card) return;
-
-      if (!('IntersectionObserver' in window)) {
-        card.classList.add('is-revealed');
-        return;
-      }
-
-      var io = new IntersectionObserver(function (entries) {
-        if (!entries[0].isIntersecting) return;
-        card.classList.add('is-revealed');
-        io.unobserve(card);
-      }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
-
-      io.observe(card);
     })();
 
     (function () {
