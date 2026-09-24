@@ -87,6 +87,15 @@
 
   .job-video-link { margin: 16px 0 0; }
 
+  /* The real source of the gap above the subtitle: .job-company keeps
+     the browser default <p> margin (1em 0, ~20px here) below 1024px --
+     the desktop media query zeroes it, but nothing did at this width,
+     so its bottom margin collapsed against .job-subtitle's top margin
+     and won outright, no matter how low the latter was set. */
+  .job-company { margin: 0; }
+
+  .job-subtitle { margin-top: 10px; }
+
   /* Always 2x2 or 4x1, never 3+1. auto-fit(minmax(130px,...)) packed as
      many >=130px tracks as the container allowed, and there is a real
      range of container widths (roughly 454-615px here) where exactly 3
@@ -599,12 +608,11 @@
        with three <p> siblings above it that pair silently matches
        nothing; named classes avoid the trap. max-width: none and nowrap
        so the short line doesn't wrap under the shared .job-desc 55ch
-       measure; the tighter margin-top keeps it close under the title. */
+       measure (margin-top is set once, at the base level, above). */
     .job-subtitle {
       grid-area: 2 / 1 / 3 / -1;
       max-width: none;
       white-space: nowrap;
-      margin-top: 10px;
     }
 
     .job-keywords { grid-area: 3 / 1 / 4 / -1; }
