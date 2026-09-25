@@ -570,6 +570,11 @@
       border-top-color: rgba(255, 255, 255, 0.1);
     }
 
+    /* The 108px cap above reads as too much air under a single short
+       link line once the vw scaling maxes out at wide viewports --
+       narrower widths never reach the cap, so they're unaffected. */
+    .job + hr.rule { margin-top: clamp(76px, 7vw, 88px); }
+
     main > section > span.eyebrow { margin: clamp(40px, 4vw, 60px) 0 0; }
 
     main > section > .case-blocks,
