@@ -571,9 +571,10 @@
     }
 
     /* The 108px cap above reads as too much air under a single short
-       link line once the vw scaling maxes out at wide viewports --
-       narrower widths never reach the cap, so they're unaffected. */
-    .job + hr.rule { margin-top: clamp(76px, 7vw, 88px); }
+       link line -- tightened further, and to a narrower floor-to-cap
+       spread, since a single link line doesn't need much viewport-
+       proportional scaling either. */
+    .job + hr.rule { margin-top: clamp(56px, 4vw, 64px); }
 
     main > section > span.eyebrow { margin: clamp(40px, 4vw, 60px) 0 0; }
 
