@@ -108,8 +108,12 @@
     padding: clamp(24px, 6vw, 72px) clamp(24px, 5vw, 56px);
   }
 
-  @media (min-width: 1100px) {
-    main { max-width: 1320px; }
+  @media (min-width: 1024px) {
+    main {
+      max-width: 1500px;
+      padding-left: clamp(32px, 4vw, 72px);
+      padding-right: clamp(32px, 4vw, 72px);
+    }
   }
 
   /* This page's .meta-row has 5 items, not the usual 3, so the shared
@@ -253,12 +257,17 @@
   }
 
   .case-hero-video-frame {
-    max-width: 1024px;
+    max-width: 900px;
     margin: 0 auto;
     overflow: hidden;
     border: 1px solid #282828;
     border-bottom: none;
     border-radius: 10px 10px 0 0;
+    max-height: 750px;
+  }
+
+  @media (min-width: 1024px) {
+    .case-hero-video-frame { max-width: 1500px; }
   }
 
   .case-hero-video-frame video {
