@@ -32,6 +32,70 @@
 <style>
   html { scroll-padding-top: 100px; }
 
+  /* Annual manual steps: 18,000 before, 1,800 with Feeds. */
+  .feeds-chart {
+    max-width: 46rem;
+    margin: 32px 0;
+    padding: clamp(20px, 4vw, 32px);
+    border-radius: 8px;
+    background: rgb(33, 33, 33);
+  }
+  .feeds-chart .feeds-chart-title {
+    margin: 0 0 8px;
+  }
+  .feeds-chart .feeds-chart-subtitle {
+    margin: 0 0 28px;
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 15px;
+  }
+  .feeds-chart-row + .feeds-chart-row { margin-top: 24px; }
+  .feeds-chart-label { display: block; margin-bottom: 10px; font-size: 15px; }
+  .feeds-chart-plot { padding-right: 66px; }
+  .feeds-chart-bar {
+    position: relative;
+    height: 12px;
+    width: 100%;
+  }
+  .feeds-chart-row--better .feeds-chart-bar { width: 10%; }
+  .feeds-chart-fill {
+    display: block;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 999px;
+    transform-origin: left;
+  }
+  .feeds-chart-row--better .feeds-chart-fill { background: #00d8aa; }
+  .feeds-chart-value {
+    position: absolute;
+    left: calc(100% + 10px);
+    top: 50%;
+    transform: translateY(-50%);
+    font: 14px "IBM Plex Mono", monospace;
+    color: rgba(255, 255, 255, 0.88);
+  }
+  .feeds-chart-row--better .feeds-chart-value { color: #00d8aa; }
+  .feeds-chart figcaption {
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .feeds-chart figcaption span { display: block; }
+  @keyframes model-bar-reveal {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .feeds-chart.is-waiting .feeds-chart-fill { transform: scaleX(0); }
+    .feeds-chart.is-revealed .feeds-chart-fill {
+      animation: model-bar-reveal 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .feeds-chart.is-revealed .feeds-chart-row--better .feeds-chart-fill { animation-delay: 0.15s; }
+  }
+
+
   body {
     font-family: "Fakt Blond", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -774,7 +838,7 @@
       </svg>
       <span class="kicker head-fade">Case Study | <a href="https://help.quantemplate.com/about-feeds" target="_blank" rel="noopener noreferrer">Quantemplate Feeds</a></span>
       <h1 class="display head-fade">Connecting organisations through data</h1>
-      <p class="subtitle head-fade">Automated cross-organisation data exchange, cutting out 18,000 manual steps a year.</p>
+      <p class="subtitle head-fade">Automated cross-organisation data exchange, removing an estimated 16,200 manual steps a year.</p>
       <p class="keywords"><span class="keyword">Product strategy</span><span class="keyword">Systems thinking</span><span class="keyword">Process design</span></p>
 
       <hr class="rule">
@@ -808,7 +872,7 @@
       <div class="key-points-grid">
         <ul class="key-points">
           <li>Reframed an upload portal as a cross-company network</li>
-          <li>Automated data sharing, eliminating an estimated 16k manual steps a year</li>
+          <li>Automated data sharing, eliminating an estimated 16,200 manual steps a year</li>
           <li>Simplified complex submission setup to under a minute</li>
           <li>Made data integrity verifiable through lineage and version history</li>
         </ul>
@@ -1048,6 +1112,28 @@
       <h2 class="eyebrow" id="outcome-heading">Outcome</h2>
       <h3>A foundation for networked data</h3>
       <p>Feeds have been running production data for approximately 18 months, processing recurring monthly submissions and 3.4 million rows to date. This removes nearly all of the manual steps identified in the original workflow mapping, for true &lsquo;straight-through processing&rsquo;. The one step that remains, the initial upload, is performed directly by the data supplier.</p>
+      <figure class="feeds-chart" aria-labelledby="feeds-chart-title" aria-describedby="feeds-chart-caption">
+        <h3 class="feeds-chart-title" id="feeds-chart-title">90% fewer manual steps</h3>
+        <p class="feeds-chart-subtitle">Annual manual steps per organisation</p>
+        <div class="feeds-chart-row">
+          <span class="feeds-chart-label">Before Feeds</span>
+          <div class="feeds-chart-plot"><div class="feeds-chart-bar">
+            <span class="feeds-chart-fill" aria-hidden="true"></span>
+            <span class="feeds-chart-value">18,000</span>
+          </div></div>
+        </div>
+        <div class="feeds-chart-row feeds-chart-row--better">
+          <span class="feeds-chart-label">With Feeds · supplier uploads the file</span>
+          <div class="feeds-chart-plot"><div class="feeds-chart-bar">
+            <span class="feeds-chart-fill" aria-hidden="true"></span>
+            <span class="feeds-chart-value">1,800</span>
+          </div></div>
+        </div>
+        <figcaption id="feeds-chart-caption">
+          <span>An estimated 16,200 manual steps avoided per year.</span>
+          <span>Based on the typical workflow: 9 steps removed × 150 trading partners × 12 monthly submissions.</span>
+        </figcaption>
+      </figure>
       <p>Bringing further partners onto Feeds is an ongoing project: in-app guidance and comprehensive tutorials have driven initial uptake, and upcoming features to <a href="/case-studies/validation#impl-sharing">share validation reports and suggest corrections</a> should make the value of switching more visible.</p>
       <blockquote>Feeds expanded Quantemplate from a product for automating processes within an organisation, towards infrastructure connecting them.</blockquote>
 
@@ -1300,5 +1386,19 @@
     })();
   </script>
   <script data-goatcounter="https://tomdegay.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+  <script>
+  (function () {
+    var chart = document.querySelector('.feeds-chart');
+    if (!chart || !('IntersectionObserver' in window)) return;
+    chart.classList.add('is-waiting');
+    var observer = new IntersectionObserver(function (entries) {
+      if (!entries[0].isIntersecting) return;
+      chart.classList.remove('is-waiting');
+      chart.classList.add('is-revealed');
+      observer.disconnect();
+    }, { threshold: 0.3 });
+    observer.observe(chart);
+  })();
+  </script>
   </body>
 </html>
