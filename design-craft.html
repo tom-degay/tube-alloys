@@ -111,10 +111,16 @@
     box-sizing: border-box;
     display: flex;
     justify-content: center;
-    padding: 7.5%;
+    padding: 5%;
     margin-bottom: clamp(24px, 3.5vw, 36px);
     background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
     border-radius: 10px;
+  }
+
+  .figure-portrait-frame img,
+  .figure-portrait-frame > .ui-video,
+  .figure-portrait-frame > .figure-strip-imgs {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
   }
 
   figure > .figure-portrait-frame {
