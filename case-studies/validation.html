@@ -285,6 +285,51 @@
     }
   }
 
+  /* -- .figure-wide: an opt-in modifier for large videos/images. 140%
+     of the 46rem text column, centred on it (expanding out of both
+     sides) -- using an absolute rem width/offset rather than a
+     percentage, since not every instance that carries this class sits
+     in a container that's actually 46rem itself (a bare
+     .figure-portrait-frame with no enclosing .figure, for instance,
+     fills the full grid content column instead).
+
+     46rem x 1.4 = 64.4rem. The extra 18.4rem is split evenly, so the
+     left/right overhang is 9.2rem each -- margin-left takes that back
+     off the element's normal (flush-left) position to centre it.
+
+     Only turned on at 1500px+: below that, the 96px rail-gap between
+     .toc and the content column isn't wide enough for a 9.2rem
+     (147px) left bleed to clear the toc without overlapping it -- see
+     the column-gap override below, which exists only to make room for
+     this. Below 1500px .figure-wide is inert; each instance just keeps
+     whatever width its base class already gives it. */
+  @media (min-width: 1500px) {
+    main { column-gap: 200px; }
+
+    .figure-wide {
+      width: 64.4rem;
+      max-width: none;
+      margin-left: -9.2rem;
+    }
+
+    /* .ui-video carries its own independent max-width: 46rem (for its
+       normal standalone use elsewhere on the page), which still won
+       over the wider frame around it here -- the video was rendering
+       at the old 46rem measure regardless of how wide .figure-wide
+       made its containing frame. Lift it same as the frame itself. */
+    .figure-wide .ui-video {
+      max-width: none;
+    }
+
+    /* The image/video bleeds, but a wide caption is hard to read --
+       keep it at the normal measure, left-aligned with the image's new
+       (further-left) edge rather than the page's normal text column. */
+    .figure-wide figcaption {
+      width: 32rem;
+      max-width: 100%;
+    }
+  }
+
   .toc-heading { margin: 0 0 16px; }
 
   /* -- next case study link block -- */
@@ -738,7 +783,7 @@
         <h3>Context: setting validation rules</h3>
         <p>Engineering had already created an Excel-style formula editor for creating calculated values. This was a syntax that was second-nature to power users and had proven its usefulness. We decided to allow users to set their own validation queries, as this would allow complete flexibility. Validation rules were accompanied by a description and a fail/warn action &ndash; another requirement we&rsquo;d learnt from the research.</p>
 
-        <figure class="figure figure-strip">
+        <figure class="figure figure-strip figure-wide">
           <div class="figure-portrait-frame">
             <div class="figure-strip-imgs">
               <img src="media/validation-operation.png" width="3404" height="1426" alt="The formula-based validation rule editor, showing eight example rules such as effective-date and premium checks, each with a description and a warn/fail action." loading="lazy">
@@ -773,7 +818,7 @@
         <blockquote>Our philosophy was to get a working version into users&rsquo; hands sooner rather than later. We needed to see how the report held up to real data and business use.</blockquote>
         <p>We shipped a capable V1, then observed and progressively refined the experience.</p>
 
-        <figure class="figure">
+        <figure class="figure figure-wide">
           <div class="figure-portrait-frame">
             <div class="ui-video" data-hover-controls>
               <video id="drilldown-video" autoplay muted loop playsinline disablepictureinpicture poster="media/validations-drill-down.jpg">
@@ -809,7 +854,7 @@
         <p>Quantemplate applies corrections to bulk data rather than isolated cells, so we needed to make this clear. When a user selects a field, it opens a popup where they enter the correction. The UI makes it clear that corrections can apply to every matching value or use conditions, such as correcting Premium only for a specific Policy Number.</p>
         <p>We added a formula bar, so users could derive a value from another column. For example, if a date is missing, take the date from another column and subtract one month. Based on what we&rsquo;d observed in production pipelines, this would be a necessary addition.</p>
 
-        <figure class="figure">
+        <figure class="figure figure-wide">
           <div class="figure-portrait-frame">
             <img src="media/validation-corrections-preview.png" width="1899" height="1068" alt="Quantemplate's validation report: flagged errors beside an editable corrections column, with the correction popup open on a row." loading="lazy">
           </div>
@@ -853,7 +898,7 @@
         <h3>Ordering and audit</h3>
         <p>One of the things we discovered in testing, as part of our internal QA process, was that the order in which corrections apply is important, since one correction could overwrite a prior one. We created an interface showing all corrections applied to any validation rule, allowing users to reorder or remove them.</p>
 
-        <figure class="figure">
+        <figure class="figure figure-wide">
           <div class="figure-portrait-frame">
             <img src="media/validation-correction-log.jpg" width="2000" height="1206" alt="A table of all corrections attached to one validation rule, with columns for order, column, the correction rule, last editor and last edit date." loading="lazy">
           </div>
@@ -867,7 +912,7 @@
         <blockquote>This will take out several manual back-and-forth steps which are currently done over email.</blockquote>
         <p>The workflow covers preparing corrections, explicitly submitting them back, tracking progress and notifying both parties through in-app updates and email.</p>
 
-        <figure class="figure">
+        <figure class="figure figure-wide">
           <div class="figure-portrait-frame">
             <img src="media/validation-sharing-spec.jpg" width="2000" height="1451" alt="Design specification board for the validation sharing workflow: the sharing popup across states, from selecting rules and a partner organisation, through a confirmation step, to automatic sharing settings." loading="lazy">
           </div>

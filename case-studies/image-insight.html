@@ -237,6 +237,51 @@
     }
   }
 
+  /* -- .figure-wide: an opt-in modifier for large videos/images. 140%
+     of the 46rem text column, centred on it (expanding out of both
+     sides) -- using an absolute rem width/offset rather than a
+     percentage, since not every instance that carries this class sits
+     in a container that's actually 46rem itself (a bare
+     .figure-portrait-frame with no enclosing .figure, for instance,
+     fills the full grid content column instead).
+
+     46rem x 1.4 = 64.4rem. The extra 18.4rem is split evenly, so the
+     left/right overhang is 9.2rem each -- margin-left takes that back
+     off the element's normal (flush-left) position to centre it.
+
+     Only turned on at 1500px+: below that, the 96px rail-gap between
+     .toc and the content column isn't wide enough for a 9.2rem
+     (147px) left bleed to clear the toc without overlapping it -- see
+     the column-gap override below, which exists only to make room for
+     this. Below 1500px .figure-wide is inert; each instance just keeps
+     whatever width its base class already gives it. */
+  @media (min-width: 1500px) {
+    main { column-gap: 200px; }
+
+    .figure-wide {
+      width: 64.4rem;
+      max-width: none;
+      margin-left: -9.2rem;
+    }
+
+    /* .ui-video carries its own independent max-width: 46rem (for its
+       normal standalone use elsewhere on the page), which still won
+       over the wider frame around it here -- the video was rendering
+       at the old 46rem measure regardless of how wide .figure-wide
+       made its containing frame. Lift it same as the frame itself. */
+    .figure-wide .ui-video {
+      max-width: none;
+    }
+
+    /* The image/video bleeds, but a wide caption is hard to read --
+       keep it at the normal measure, left-aligned with the image's new
+       (further-left) edge rather than the page's normal text column. */
+    .figure-wide figcaption {
+      width: 32rem;
+      max-width: 100%;
+    }
+  }
+
   .toc-heading { margin: 0 0 16px; }
 
   /* This study has no case-icon svg above the kicker (that's a Quantemplate-
@@ -601,7 +646,7 @@
         </ul>
       </div>
 
-      <figure class="figure">
+      <figure class="figure figure-wide">
         <div class="figure-portrait-frame">
           <img src="media/image-insight-session-expanded.jpg" width="2000" height="1356" alt="The session opened to full screen: a large 'What cards represent your weaknesses?' heading above three chosen images, with 'Review session' and 'Add question' below.">
         </div>
@@ -625,7 +670,7 @@
       <p>Physical image cards give people a starting point for conversations that can be difficult to begin with words alone. Taking that approach online makes it possible to explore images together during a video call, then capture the reflections and actions in one place.</p>
       <p>The tool was intended for coaches and therapists, including those working in schools with children from primary age through to teenagers. The design needed to support the conversation without becoming another task to manage.</p>
 
-      <figure class="figure">
+      <figure class="figure figure-wide">
         <div class="figure-portrait-frame">
           <img src="media/image-insight-ui.jpg" width="2000" height="1212" alt="Image Insight's main screen: a scrolling grid of photographs with a floating toolbar, alongside a 'My session' panel holding the coach's question and the participant's chosen images." loading="lazy">
         </div>
@@ -645,14 +690,14 @@
 
       <p class="see-also"><a href="/design-craft">More visual identities and material explorations &rarr;</a></p>
 
-      <figure class="figure">
+      <figure class="figure figure-wide">
         <div class="figure-portrait-frame">
           <img src="media/image-insight-landing.jpg" width="2000" height="1300" alt="Image Insight's dashboard: cards for a new session and past sessions, a count of completed and active sessions, and panels for referrals, tutorials and support." loading="lazy">
         </div>
         <figcaption>The dashboard applies the same calm treatment across the app: one clear primary action, a light summary of activity, and help within reach.</figcaption>
       </figure>
 
-      <figure class="figure">
+      <figure class="figure figure-wide">
         <div class="figure-portrait-frame">
           <img src="media/image-insight-login.jpg" width="2000" height="1300" alt="Image Insight's sign-in page: a soft card on a pale teal background patterned with the app's rounded image-grid motif, with email and password fields and Google or Azure options." loading="lazy">
         </div>
@@ -670,7 +715,7 @@
       <p>Adult, teen and child modes change the selection of images shown. AI can describe images to help narrow the selection.</p>
       <blockquote>My focus was on making the surrounding interface simple enough for the coach and participant to stay with the conversation.</blockquote>
 
-      <figure class="figure">
+      <figure class="figure figure-wide">
         <div class="figure-portrait-frame">
           <img src="media/image-insight-session-sidebar.jpg" width="2000" height="969" alt="Two panels side by side: a 'My session' panel with the coach's question and the participant's chosen images, and a 'Session settings' panel with a session name, a Junior/Teen/Adult profile, and optional client name and notes." loading="lazy">
         </div>
@@ -693,14 +738,14 @@
           <cite>Ed, Head Teacher / Coach &middot; <a href="https://imageinsight.app/" target="_blank" rel="noopener noreferrer">Source</a></cite>
         </blockquote>
 
-        <figure class="figure">
+        <figure class="figure figure-wide">
           <div class="figure-portrait-frame">
             <img src="media/image-insight-session-review.jpg" width="2000" height="1300" alt="Image Insight's session review screen: each chosen image paired with the participant's reflection, and an Actions panel listing next steps to carry forward." loading="lazy">
           </div>
           <figcaption>The session review pairs each image with its reflection and foregrounds the actions to take forward, ready to export as a PDF.</figcaption>
         </figure>
 
-        <figure class="figure">
+        <figure class="figure figure-wide">
           <div class="figure-portrait-frame">
             <img src="media/image-insight-pdf-report.jpg" width="1050" height="1486" alt="A one-page PDF session summary: an Image Insight header, a narrative summary, a list of actions, and the session review questions with their images and reflections." loading="lazy">
           </div>
@@ -725,7 +770,7 @@
         <h4>Controlling the image grid</h4>
         <p>Coaches reported that a large grid could feel overwhelming for some participants, including some neurodivergent children and young people. We added a slider to control how many images were displayed. I floated it over the bottom of the grid so coaches could see the effect immediately and adjust it during the conversation.</p>
 
-        <figure class="figure">
+        <figure class="figure figure-wide">
           <div class="figure-portrait-frame">
             <img src="media/image-insight-toolbar.jpg" width="1800" height="415" alt="A toolbar floating over the bottom of the image grid: a Refresh button, a gallery selector reading 'Standard', and a slider set to 25 images." loading="lazy">
           </div>

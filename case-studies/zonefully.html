@@ -232,6 +232,51 @@
     }
   }
 
+  /* -- .figure-wide: an opt-in modifier for large videos/images. 140%
+     of the 46rem text column, centred on it (expanding out of both
+     sides) -- using an absolute rem width/offset rather than a
+     percentage, since not every instance that carries this class sits
+     in a container that's actually 46rem itself (a bare
+     .figure-portrait-frame with no enclosing .figure, for instance,
+     fills the full grid content column instead).
+
+     46rem x 1.4 = 64.4rem. The extra 18.4rem is split evenly, so the
+     left/right overhang is 9.2rem each -- margin-left takes that back
+     off the element's normal (flush-left) position to centre it.
+
+     Only turned on at 1500px+: below that, the 96px rail-gap between
+     .toc and the content column isn't wide enough for a 9.2rem
+     (147px) left bleed to clear the toc without overlapping it -- see
+     the column-gap override below, which exists only to make room for
+     this. Below 1500px .figure-wide is inert; each instance just keeps
+     whatever width its base class already gives it. */
+  @media (min-width: 1500px) {
+    main { column-gap: 200px; }
+
+    .figure-wide {
+      width: 64.4rem;
+      max-width: none;
+      margin-left: -9.2rem;
+    }
+
+    /* .ui-video carries its own independent max-width: 46rem (for its
+       normal standalone use elsewhere on the page), which still won
+       over the wider frame around it here -- the video was rendering
+       at the old 46rem measure regardless of how wide .figure-wide
+       made its containing frame. Lift it same as the frame itself. */
+    .figure-wide .ui-video {
+      max-width: none;
+    }
+
+    /* The image/video bleeds, but a wide caption is hard to read --
+       keep it at the normal measure, left-aligned with the image's new
+       (further-left) edge rather than the page's normal text column. */
+    .figure-wide figcaption {
+      width: 32rem;
+      max-width: 100%;
+    }
+  }
+
   .toc-heading { margin: 0 0 16px; }
 
   /* This study has no case-icon svg above the kicker (that's a Quantemplate-
@@ -643,7 +688,7 @@
         </ul>
       </div>
 
-      <figure class="figure">
+      <figure class="figure figure-wide">
         <div class="figure-portrait-frame">
           <img src="media/zonefully-programs.jpg" width="1440" height="964" alt="Zonefully's Programs screen: a searchable list of programmes on the left, and the selected programme's detail — cover image, activity and ordered routines — on the right.">
         </div>
@@ -667,7 +712,7 @@
       <p>Zonefully brought together several related concepts. Activities represented the things people wanted to plan and track. Programmes grouped Routines into sequences, which could then be applied to a calendar.</p>
       <p>For a cycling goal, that could mean training and recovery programmes containing individual rides and rest days. The design challenge was to make that hierarchy usable: people needed to work on an individual routine, understand how it fitted into a programme, and see where it belonged in their calendar.</p>
 
-      <figure class="figure">
+      <figure class="figure figure-wide">
         <div class="figure-portrait-frame">
           <img src="media/zonefully-planner.jpg" width="2000" height="1339" alt="Zonefully's Planner: a programme's routines laid across a week, with a side panel naming the Activity, Programme and Routine for the selected slot." loading="lazy">
         </div>
@@ -683,7 +728,7 @@
       <p>I worked within the founder&rsquo;s conceptual model, focusing on how people would navigate between its different levels. Programme lists, routine lists and detail views followed a consistent visual structure.</p>
       <p>A spacious layout separated the main areas of the interface. Activity colours, selection highlights and breadcrumb labels reinforced the connections between goals, programmes and routines.</p>
 
-      <figure class="figure">
+      <figure class="figure figure-wide">
         <div class="figure-portrait-frame">
           <img src="media/zonefully-new-program.jpg" width="2000" height="1339" alt="A newly created 'Untitled Program' selected in the list and open in the detail panel, with an 'Assign to an Activity' prompt and empty day-by-day routine fields." loading="lazy">
         </div>
@@ -699,7 +744,7 @@
       <p>I used connected, expanding cards to keep programmes and routines visible together. Selecting a programme revealed its routines; opening a routine showed its details alongside the programme it belonged to.</p>
       <p>This prioritised context: each step into the detail retained a visible connection to the wider plan. Activity colours, selection highlights and breadcrumbs reinforced that relationship.</p>
 
-      <figure class="figure">
+      <figure class="figure figure-wide">
         <div class="figure-portrait-frame">
           <img src="media/zonefully-routine-context.jpg" width="1440" height="964" alt="A routine opened for editing alongside the programme it sits in, with a breadcrumb reading Activities › Ride the Tourmalet › Programs." loading="lazy">
         </div>
@@ -717,7 +762,7 @@
         <h3>Developing the interface</h3>
         <p>I developed designs for programme browsing, routine details and new-programme creation, including selection and hover states. I also explored variations in cover imagery and action placement to balance functionality with a spacious layout.</p>
 
-        <figure class="figure">
+        <figure class="figure figure-wide">
           <div class="figure-portrait-frame">
             <img src="media/zonefully-actions.jpg" width="1440" height="964" alt="A variant of the programme detail without a cover image, with the contextual action controls placed in a row at the top of the panel." loading="lazy">
           </div>

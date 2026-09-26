@@ -297,6 +297,51 @@
     }
   }
 
+  /* -- .figure-wide: an opt-in modifier for large videos/images. 140%
+     of the 46rem text column, centred on it (expanding out of both
+     sides) -- using an absolute rem width/offset rather than a
+     percentage, since not every instance that carries this class sits
+     in a container that's actually 46rem itself (a bare
+     .figure-portrait-frame with no enclosing .figure, for instance,
+     fills the full grid content column instead).
+
+     46rem x 1.4 = 64.4rem. The extra 18.4rem is split evenly, so the
+     left/right overhang is 9.2rem each -- margin-left takes that back
+     off the element's normal (flush-left) position to centre it.
+
+     Only turned on at 1500px+: below that, the 96px rail-gap between
+     .toc and the content column isn't wide enough for a 9.2rem
+     (147px) left bleed to clear the toc without overlapping it -- see
+     the column-gap override below, which exists only to make room for
+     this. Below 1500px .figure-wide is inert; each instance just keeps
+     whatever width its base class already gives it. */
+  @media (min-width: 1500px) {
+    main { column-gap: 200px; }
+
+    .figure-wide {
+      width: 64.4rem;
+      max-width: none;
+      margin-left: -9.2rem;
+    }
+
+    /* .ui-video carries its own independent max-width: 46rem (for its
+       normal standalone use elsewhere on the page), which still won
+       over the wider frame around it here -- the video was rendering
+       at the old 46rem measure regardless of how wide .figure-wide
+       made its containing frame. Lift it same as the frame itself. */
+    .figure-wide .ui-video {
+      max-width: none;
+    }
+
+    /* The image/video bleeds, but a wide caption is hard to read --
+       keep it at the normal measure, left-aligned with the image's new
+       (further-left) edge rather than the page's normal text column. */
+    .figure-wide figcaption {
+      width: 32rem;
+      max-width: 100%;
+    }
+  }
+
   .toc-heading { margin: 0 0 16px; }
 
   /* -- next case study link block -- */
@@ -937,7 +982,7 @@
         <p>As clients chained pipelines together, we found ourselves explaining the connections through <a href="https://miro.com" target="_blank" rel="noopener noreferrer">Miro</a> flowcharts. This was a desire line: a view we repeatedly created outside the product.</p>
         <p>In 2026, we built a flowchart view into Quantemplate, giving users an overview across pipelines alongside the detailed stage editor.</p>
 
-        <div class="figure-portrait-frame">
+        <div class="figure-portrait-frame figure-wide">
           <div class="ui-video" data-hover-controls>
             <video autoplay muted loop playsinline disablepictureinpicture poster="media/pipelines-flow-view.jpg">
               <source src="media/pipelines-flow-view.mp4" type="video/mp4">
@@ -952,7 +997,7 @@
         <h3>Make activity visible</h3>
         <p>Pipelines glow as they run, along with their corresponding connecting lines in the flowchart. This makes execution visible in the context of the wider workflow. We recorded an uptick in engagement during demos and training sessions as the data flow through a pipeline became tangible.</p>
 
-        <div class="figure-portrait-frame">
+        <div class="figure-portrait-frame figure-wide">
           <div class="ui-video" data-hover-controls>
             <video autoplay muted loop playsinline disablepictureinpicture poster="media/pipelines-glow.jpg">
               <source src="media/pipelines-glow.mp4" type="video/mp4">

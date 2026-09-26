@@ -307,6 +307,51 @@
     }
   }
 
+  /* -- .figure-wide: an opt-in modifier for large videos/images. 140%
+     of the 46rem text column, centred on it (expanding out of both
+     sides) -- using an absolute rem width/offset rather than a
+     percentage, since not every instance that carries this class sits
+     in a container that's actually 46rem itself (a bare
+     .figure-portrait-frame with no enclosing .figure, for instance,
+     fills the full grid content column instead).
+
+     46rem x 1.4 = 64.4rem. The extra 18.4rem is split evenly, so the
+     left/right overhang is 9.2rem each -- margin-left takes that back
+     off the element's normal (flush-left) position to centre it.
+
+     Only turned on at 1500px+: below that, the 96px rail-gap between
+     .toc and the content column isn't wide enough for a 9.2rem
+     (147px) left bleed to clear the toc without overlapping it -- see
+     the column-gap override below, which exists only to make room for
+     this. Below 1500px .figure-wide is inert; each instance just keeps
+     whatever width its base class already gives it. */
+  @media (min-width: 1500px) {
+    main { column-gap: 200px; }
+
+    .figure-wide {
+      width: 64.4rem;
+      max-width: none;
+      margin-left: -9.2rem;
+    }
+
+    /* .ui-video carries its own independent max-width: 46rem (for its
+       normal standalone use elsewhere on the page), which still won
+       over the wider frame around it here -- the video was rendering
+       at the old 46rem measure regardless of how wide .figure-wide
+       made its containing frame. Lift it same as the frame itself. */
+    .figure-wide .ui-video {
+      max-width: none;
+    }
+
+    /* The image/video bleeds, but a wide caption is hard to read --
+       keep it at the normal measure, left-aligned with the image's new
+       (further-left) edge rather than the page's normal text column. */
+    .figure-wide figcaption {
+      width: 32rem;
+      max-width: 100%;
+    }
+  }
+
   .toc-heading { margin: 0 0 16px; }
 
   /* -- next case study link block -- */
@@ -802,7 +847,7 @@
 
       <blockquote>Processing those 2000 files a month went from taking most of the month to a job running in the background in minutes.</blockquote>
 
-      <div class="figure-portrait-frame">
+      <div class="figure-portrait-frame figure-wide">
         <div class="ui-video" data-hover-controls>
           <video autoplay muted loop playsinline disablepictureinpicture poster="media/concept-mapping-detail.jpg">
             <source src="media/concept-mapping-detail.mp4" type="video/mp4">
@@ -824,7 +869,7 @@
 
         <blockquote>These safeguards helped users trust the automation.</blockquote>
 
-        <figure class="figure">
+        <figure class="figure figure-wide">
           <div class="figure-portrait-frame">
             <div class="ui-video" data-hover-controls>
               <video autoplay muted loop playsinline disablepictureinpicture poster="media/automap-preview.jpg">
@@ -845,7 +890,7 @@
 
         <p>Our original sample of users were building master schemas by amalgamating multiple files. But as we broadened the user cohort, they more often started with a definitive file, such as their data warehouse target schema. We evolved the workflow to foreground that behaviour.</p>
 
-        <div class="figure-portrait-frame">
+        <div class="figure-portrait-frame figure-wide">
           <div class="ui-video" data-hover-controls>
             <video autoplay muted loop playsinline disablepictureinpicture poster="media/apply-master-schema.jpg">
               <source src="media/apply-master-schema.mp4" type="video/mp4">

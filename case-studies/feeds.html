@@ -294,6 +294,51 @@
     }
   }
 
+  /* -- .figure-wide: an opt-in modifier for large videos/images. 140%
+     of the 46rem text column, centred on it (expanding out of both
+     sides) -- using an absolute rem width/offset rather than a
+     percentage, since not every instance that carries this class sits
+     in a container that's actually 46rem itself (a bare
+     .figure-portrait-frame with no enclosing .figure, for instance,
+     fills the full grid content column instead).
+
+     46rem x 1.4 = 64.4rem. The extra 18.4rem is split evenly, so the
+     left/right overhang is 9.2rem each -- margin-left takes that back
+     off the element's normal (flush-left) position to centre it.
+
+     Only turned on at 1500px+: below that, the 96px rail-gap between
+     .toc and the content column isn't wide enough for a 9.2rem
+     (147px) left bleed to clear the toc without overlapping it -- see
+     the column-gap override below, which exists only to make room for
+     this. Below 1500px .figure-wide is inert; each instance just keeps
+     whatever width its base class already gives it. */
+  @media (min-width: 1500px) {
+    main { column-gap: 200px; }
+
+    .figure-wide {
+      width: 64.4rem;
+      max-width: none;
+      margin-left: -9.2rem;
+    }
+
+    /* .ui-video carries its own independent max-width: 46rem (for its
+       normal standalone use elsewhere on the page), which still won
+       over the wider frame around it here -- the video was rendering
+       at the old 46rem measure regardless of how wide .figure-wide
+       made its containing frame. Lift it same as the frame itself. */
+    .figure-wide .ui-video {
+      max-width: none;
+    }
+
+    /* The image/video bleeds, but a wide caption is hard to read --
+       keep it at the normal measure, left-aligned with the image's new
+       (further-left) edge rather than the page's normal text column. */
+    .figure-wide figcaption {
+      width: 32rem;
+      max-width: 100%;
+    }
+  }
+
   .toc-heading { margin: 0 0 16px; }
 
   /* -- next case study link block -- */
@@ -811,7 +856,7 @@
 
       <p>It became the basis for the submission lifecycle, schedules, statuses, reminders, version history and pipeline triggers.</p>
 
-      <figure class="figure">
+      <figure class="figure figure-wide">
         <div class="figure-portrait-frame">
           <img src="media/feeds-research-lifecycle.png" width="1800" height="567" alt="Swimlane diagram of the submission lifecycle spanning Carrier and MGA roles, from period open through upload, parsing, validation and carrier pipeline review, to period close, with pink notification steps, grey decision points and yellow manual touchpoints." loading="lazy">
         </div>
@@ -830,7 +875,7 @@
 
         <blockquote>The Data Drop would have been a quick win but an incomplete solution. I proposed Feeds instead.</blockquote>
 
-        <figure class="figure">
+        <figure class="figure figure-wide">
           <div class="figure-portrait-frame">
             <img src="media/data-drop-concept.png" width="1600" height="1000" alt="Mockup of the Data Drop secure data transfer concept: a card showing transfer from and to organisations, submission type, period, due date, a worksheet selector with checkboxes, and a submit button." loading="lazy">
           </div>
@@ -844,7 +889,7 @@
         <h3>Selling the wider scope</h3>
         <p>I used the journey maps to make the case for the broader scope, showing how onboarding, scheduling and administration were necessary parts of a complete submission workflow. Connecting each capability to a concrete user need helped explain why improving the upload experience alone wouldn’t solve the whole problem.</p>
 
-        <figure class="figure">
+        <figure class="figure figure-wide">
           <div class="figure-portrait-frame">
             <img src="media/feeds-org-relationship-diagram.jpg" width="2000" height="1093" alt="Diagram showing a Data originator org with a Feed Out mirroring data to a Data consumer org's Feed In, fed by API, pipeline and manual upload sources on each side, with an upload portal shown as a separate concept still under consideration." loading="lazy">
           </div>
@@ -863,7 +908,7 @@
         <h3>Dropping the portal layer</h3>
         <p>I initially favoured retaining a separate, stripped-back portal. My product partner challenged that assumption, and working through the journey together changed my view. If we could preserve the simplicity of the upload process within feeds, whilst introducing users to key Quantemplate behaviours, that would make for a more coherent user experience, and a more efficient and maintainable build.</p>
 
-        <figure class="figure">
+        <figure class="figure figure-wide">
           <div class="figure-portrait-frame">
             <div class="ui-video" data-hover-controls>
               <video autoplay muted loop playsinline disablepictureinpicture poster="media/feeds-submissions.jpg">
@@ -930,7 +975,7 @@
 
         <blockquote>What if the organisation was already on Quantemplate? What if they were already a partner? Working through every scenario meant some complexity behind the scenes, but ensured simplicity in the user experience.</blockquote>
 
-        <figure class="figure">
+        <figure class="figure figure-wide">
           <div class="figure-portrait-frame">
             <img src="media/feeds-add-partners-spec.jpg" width="2000" height="1102" alt="Design specification board mapping every path through the add-partners workflow: adding internal submitters, connecting to an existing partner, adding a new partner, setup via a Feed In or Feed Out, setup statuses and review settings." loading="lazy">
           </div>
@@ -953,7 +998,7 @@
         <h3>The full picture, at a glance</h3>
         <p>Both parties retain an immutable, versioned record of submitted data. User avatars and organisation domains identify the people and companies behind submissions, building trust.</p>
 
-        <figure class="figure">
+        <figure class="figure figure-wide">
           <div class="figure-portrait-frame">
             <img src="media/submission-record.png" width="2278" height="616" alt="A submission record showing Premium and versioned Claims files with row counts, submitter avatars and dates, and a 'Submitted by / Submitted date' tooltip for one file." loading="lazy">
           </div>
@@ -962,7 +1007,7 @@
         <p>I redesigned the Feed repository as a management dashboard, showing which Feeds are complete, waiting for data or overdue; this real-time view of inventory replaces manual tracking in spreadsheets. Configurable reminders chase outstanding submissions automatically.</p>
         <p>Visible connections between Feeds and pipelines help managers understand what each submission will trigger and what the automation is still waiting for.</p>
 
-        <figure class="figure">
+        <figure class="figure figure-wide">
           <div class="figure-portrait-frame">
             <img src="media/feeds-repo-dashboard.png" width="2000" height="1251" alt="Your Feeds dashboard listing partner feeds with status badges (Draft, Overdue, Resubmission, Complete), owners, submission counts and a filterable sidebar for feed status, type and tags." loading="lazy">
           </div>
@@ -975,7 +1020,7 @@
         <h3>Connecting the whole data chain</h3>
         <p>Feeds support incoming data, outgoing distribution and onward sharing. An insurer can distribute data to reinsurers, while a broker can receive and pass on the original submission. Each organisation can connect its own processing pipelines while retaining a shared, auditable source record. This uniquely allows us to surface the full data Chain of Custody.</p>
 
-        <div class="figure-portrait-frame">
+        <div class="figure-portrait-frame figure-wide">
           <div class="ui-video" data-hover-controls>
             <video autoplay muted loop playsinline disablepictureinpicture poster="media/chain-of-custody.jpg">
               <source src="media/chain-of-custody.mp4" type="video/mp4">
