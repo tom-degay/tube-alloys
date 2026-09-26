@@ -49,6 +49,30 @@
     main { max-width: 1320px; }
   }
 
+  /* This page's .meta-row has 5 items, not the usual 3, so the shared
+     auto-fit columns (styles.css) can't be trusted to always land
+     Domain and User profiles together -- it's width-dependent and can
+     put User profiles alone on its own row with 3+ empty columns
+     beside it. Three explicit, deterministic states instead, all
+     driven by the same rule: User profiles (last in the markup) always
+     spans 2 columns, so it only ever shares a row when there are 2+
+     columns to share, and drops to its own full-width row otherwise.
+       3 columns (>=1100px): Role | Team | Timeframe, then
+         Domain | User profiles.
+       2 columns (>=700px):  Role | Team, then Timeframe | Domain,
+         then User profiles alone.
+       1 column (below 700px): every item stacks in order. */
+  .meta-row { grid-template-columns: 1fr; }
+
+  @media (min-width: 700px) {
+    .meta-row { grid-template-columns: repeat(2, 1fr); }
+    .meta-item:last-child { grid-column: span 2; }
+  }
+
+  @media (min-width: 1100px) {
+    .meta-row { grid-template-columns: repeat(3, 1fr); }
+  }
+
   hr.rule {
     border: none;
     border-top: 1px solid rgba(255, 255, 255, 0.2);
@@ -657,28 +681,6 @@
       <p class="subtitle head-fade">Turns a month of manual schema-matching into a job that runs in minutes, +75% more accurate since the 2026 upgrade.</p>
       <p class="keywords"><span class="keyword">Interaction design</span><span class="keyword">Human-in-the-loop</span></p>
 
-      <hr class="rule">
-
-      <div class="meta-row">
-        <div class="meta-item">
-          <span class="eyebrow">Role</span>
-          <p>Lead product designer, end to end</p>
-        </div>
-        <div class="meta-item">
-          <span class="eyebrow">Team</span>
-          <p>Design, engineering, domain experts and customers</p>
-        </div>
-        <div class="meta-item">
-          <span class="eyebrow">Timeframe</span>
-          <div class="timeframe-with-donut">
-            <svg class="timeframe-donut" viewBox="0 0 44 44" width="44" height="44" role="img" aria-label="Design time: about 60 days">
-              <circle class="timeframe-donut-track" cx="22" cy="22" r="18"></circle>
-              <circle class="timeframe-donut-value" cx="22" cy="22" r="18" pathLength="180" style="--donut-offset: 120" transform="rotate(-90 22 22)"></circle>
-            </svg>
-            <p>1 month / 2016 v1 release<br>1 month / 2026 upgrade</p>
-          </div>
-        </div>
-      </div>
     </header>
 
     <hr class="rule">
@@ -694,6 +696,37 @@
         </ul>
       </div>
     </section>
+
+    <hr class="rule">
+
+    <div class="meta-row">
+      <div class="meta-item">
+        <span class="eyebrow">Role</span>
+        <p>Research, origination of solution, detailed design, testing, revision.</p>
+      </div>
+      <div class="meta-item">
+        <span class="eyebrow">Team</span>
+        <p>CTO, Product Manager, Solutions Architect, engineers.</p>
+      </div>
+      <div class="meta-item">
+        <span class="eyebrow">Timeframe</span>
+        <div class="timeframe-with-donut">
+          <svg class="timeframe-donut" viewBox="0 0 44 44" width="44" height="44" role="img" aria-label="Design time: about 60 days">
+            <circle class="timeframe-donut-track" cx="22" cy="22" r="18"></circle>
+            <circle class="timeframe-donut-value" cx="22" cy="22" r="18" pathLength="180" style="--donut-offset: 120" transform="rotate(-90 22 22)"></circle>
+          </svg>
+          <p>1 month / 2016 v1 release<br>1 month / 2026 upgrade</p>
+        </div>
+      </div>
+      <div class="meta-item">
+        <span class="eyebrow">Domain</span>
+        <p>Wholesale insurance data management.</p>
+      </div>
+      <div class="meta-item">
+        <span class="eyebrow">User profiles</span>
+        <p>Data analyst: domain expert with deep knowledge of the data.<br>Technical skill level: competent Excel user.</p>
+      </div>
+    </div>
 
     <hr class="rule">
 
