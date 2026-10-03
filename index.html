@@ -427,8 +427,16 @@
     :root {
       --band: 1500px;                      /* caps the band on big screens */
       --gutter: clamp(32px, 4vw, 72px);    /* band inset, shared with the nav */
-      --rail: clamp(150px, 14vw, 220px);   /* the label column */
-      --rail-gap: clamp(40px, 5vw, 96px);
+
+      /* -- the grid. Twelve columns across the band; nothing is drawn, but
+         every block on the page is placed on it. --g is the gutter. Labels
+         live in columns 1 to --content-start minus 1, content starts on
+         column --content-start (5 by default: 4 label columns, 8 content
+         columns -- eight divides into four stat columns of two and two
+         card columns of four). Change --content-start to move the line
+         every section's content hangs from. -- */
+      --g: clamp(16px, 1.7vw, 30px);
+      --content-start: 5;
 
       /* main is centred once the window is wider than the band, so reaching
          the window edge from inside the band means clearing the right
@@ -436,11 +444,6 @@
          edge, which the document clips. */
       --outer: max(0px, (100vw - var(--band)) / 2);
       --bleed: clamp(56px, 9vw, 180px);
-
-      /* One gap for the Experience grid and for the stats nested inside it,
-         so the four stat columns sit on the same lines as the four grid
-         columns beneath them. */
-      --job-gap: clamp(32px, 4vw, 64px);
     }
 
     /* Clips the hero's overhang at the real window edge, which also makes
@@ -461,7 +464,16 @@
     main {
       max-width: var(--band);
       padding: clamp(32px, 3.4vw, 52px) var(--gutter);
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--g);
+      align-content: start;
     }
+
+    /* Everything in main is a full-width row; sections and the card grids
+       inside them re-use these twelve tracks through subgrid, so their
+       children land on the same lines. */
+    main > * { grid-column: 1 / -1; }
 
     /* styles.css hardcodes this same 1500px/clamp(32px,4vw,72px) pair at the
        same 1024px breakpoint, so the nav doesn't resize when navigating to
@@ -484,23 +496,26 @@
        display type into something unreadable. -- */
     .hero-spread {
       display: grid;
-      grid-template-columns: minmax(0, 40fr) minmax(0, 60fr);
-      column-gap: clamp(40px, 5vw, 80px);
+      grid-template-columns: subgrid;
       align-items: center;
-      margin-bottom: clamp(88px, 9vw, 136px);
     }
 
+    /* Statement on columns 1-5, video from column 6 to (and past) the edge. */
     .hero-spread > section {
-      grid-column: 1;
+      grid-column: 1 / 6;
       grid-row: 1;
     }
+
+    /* Grid items do not collapse margins, so the air under the spread lives
+       on the hairline that follows it. */
+    .hero-spread + hr.rule { margin-top: clamp(88px, 9vw, 136px); }
 
     /* The video runs off the right of the window rather than stopping at
        the band. Growing the box is what makes the video bigger -- it is
        width:100% of it -- so the frame scales up and the overhang is the
        part that falls off the edge. */
     .hero-spread .hero-video {
-      grid-column: 2;
+      grid-column: 6 / -1;
       grid-row: 1;
       margin-bottom: 0;
       margin-right: calc(-1 * (var(--gutter) + var(--outer) + var(--bleed)));
@@ -514,12 +529,11 @@
        break out across both. -- */
     main > section {
       display: grid;
-      grid-template-columns: var(--rail) minmax(0, 1fr);
-      column-gap: var(--rail-gap);
+      grid-template-columns: subgrid;
       align-items: start;
     }
 
-    main > section > * { grid-column: 2; }
+    main > section > * { grid-column: var(--content-start) / -1; }
 
     /* The rail label shares a baseline with the first line of the content
        beside it. Grid baseline alignment rather than a padding nudge: the
@@ -529,7 +543,7 @@
        content column (the card grids break out to their own row), the
        label is alone in its baseline group and simply sits at the top. */
     main > section > h2.eyebrow {
-      grid-column: 1;
+      grid-column: 1 / var(--content-start);
       grid-row: 1;
       margin: 0;
       align-self: baseline;
@@ -601,8 +615,7 @@
        piece lands exactly where it's meant to regardless of source order. -- */
     .job {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      column-gap: var(--job-gap);
+      grid-template-columns: subgrid;
       align-items: start;
     }
 
@@ -631,24 +644,40 @@
        the row with -- max-width: none so the wider grid area actually
        gets used rather than staying clipped at the shared 55ch measure. */
     .job-summary {
-      grid-area: 5 / 1 / 6 / 4;
+      grid-area: 5 / 1 / 6 / 7;
       max-width: none;
       margin-top: clamp(40px, 4vw, 56px);
     }
 
-    .job-video-link { grid-area: 6 / 1 / 7 / 2; margin-top: 16px; }
+    .job-video-link { grid-area: 6 / 1 / 7 / 3; margin-top: 16px; }
 
     /* -- grids: wider band, wider gaps. -- */
     /* Fixed at four so the stats stay on one row at every desktop width;
        auto-fit drops one to a second row around 1200px. Four columns
        because there are four stats -- revisit if that changes. */
     .stats {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 32px var(--job-gap);
+      grid-template-columns: subgrid;
+      column-gap: var(--g);
+      row-gap: 32px;
       margin-top: 36px;
     }
 
-    .case-blocks { column-gap: clamp(20px, 2.4vw, 36px); row-gap: clamp(20px, 2.4vw, 36px); }
+    .stat { grid-column: span 2; }
+
+    /* Card rows are subgrids of the same twelve columns: the approach cards
+       take four each, the Other work cards six. (.case-blocks-wide is
+       placed further down, after the rules it has to beat.) The selectors
+       carry the extra weight needed to beat styles.css's own
+       .case-blocks.approach-blocks three-up rule. */
+    main > section > .case-blocks {
+      grid-template-columns: subgrid;
+      column-gap: var(--g);
+      row-gap: clamp(20px, 2.4vw, 36px);
+    }
+
+    main > section > .case-blocks.approach-blocks { grid-template-columns: subgrid; }
+    main > section > .case-blocks > .case-block { grid-column: span 6; }
+    main > section > .case-blocks.approach-blocks > .case-block { grid-column: span 4; }
   }
 
   /* -- Horizontal cards run from 800px, well below the 1024px the rest of
@@ -785,6 +814,49 @@
     .case-blocks-wide .case-pair:nth-child(even) .case-block { grid-template-columns: 2fr 3fr; }
     .case-blocks-wide .case-pair:nth-child(even) .case-block-media { grid-area: 1 / 2; }
     .case-blocks-wide .case-pair:nth-child(even) .case-block-text { grid-area: 1 / 1; }
+  }
+
+  /* -- The wide study cards and their quotes on the twelve-column grid. Late
+     in the sheet on purpose: the 800px rules above set the card's own
+     3fr/2fr split, and these have to win over them.
+
+     Each pair spans the band; the card inside it is a subgrid of those
+     columns, so the picture/text split falls on a column line (picture
+     seven columns, text five, mirrored on every second card) instead of on
+     a percentage. The quote hangs on columns 3-10: centred on the page,
+     with its left edge on a grid line. -- */
+  @media (min-width: 1024px) {
+    main > section > .case-blocks-wide { row-gap: clamp(48px, 5vw, 80px); }
+
+    .case-blocks-wide > .case-pair {
+      grid-column: 1 / -1;
+      grid-template-columns: subgrid;
+      row-gap: clamp(48px, 5vw, 80px);
+      column-gap: var(--g);
+    }
+
+    .case-blocks-wide .case-pair .case-block.has-image {
+      grid-column: 1 / -1;
+      grid-template-columns: subgrid;
+      column-gap: var(--g);
+    }
+
+    .case-blocks-wide .case-pair .case-block-media { grid-area: 1 / 1 / 2 / 8; }
+
+    .case-blocks-wide .case-pair .case-block.has-image .case-block-text {
+      grid-area: 1 / 8 / 2 / -1;
+      padding: clamp(28px, 3.4vw, 48px) clamp(24px, 3vw, 48px);
+    }
+
+    .case-blocks-wide .case-pair:nth-child(even) .case-block.has-image { grid-template-columns: subgrid; }
+    .case-blocks-wide .case-pair:nth-child(even) .case-block-media { grid-area: 1 / 6 / 2 / -1; }
+    .case-blocks-wide .case-pair:nth-child(even) .case-block.has-image .case-block-text { grid-area: 1 / 1 / 2 / 6; }
+
+    .case-pair blockquote {
+      grid-column: 3 / 11;
+      max-width: none;
+      justify-self: stretch;
+    }
   }
 
 </style>
