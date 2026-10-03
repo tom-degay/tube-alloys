@@ -724,7 +724,7 @@ h4 {
 
 .case-body p:last-child { margin-bottom: 0; }
 
-.case-body blockquote, .testimonials blockquote {
+.case-body blockquote, .case-pair blockquote {
   margin: 28px 0 24px;
   padding-left: 22px;
   border-left: 2px solid #00d8aa;
@@ -736,7 +736,7 @@ h4 {
 
 .case-body blockquote:last-child { margin-bottom: 0; }
 
-.case-body blockquote cite, .testimonials blockquote cite {
+.case-body blockquote cite, .case-pair blockquote cite {
   display: block;
   margin-top: 12px;
   font-style: normal;
