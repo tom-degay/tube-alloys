@@ -146,9 +146,9 @@
   /* -- Lovable example: video + extended commentary as one self-contained
      card, matching the site's dark rgb(33,33,33) case-block treatment.
      Not a link, so no hover lift -- it's a content grouping, not a
-     navigation target. The video bleeds edge-to-edge at the top (clipped
-     to the card's own rounded corners via overflow: hidden); the caption
-     and .note paragraphs below share the card's horizontal padding. -- */
+     navigation target. The video, caption and .note paragraphs all share
+     the card's 22px horizontal padding, so the video is exactly as wide as
+     the text block beneath it. -- */
   .example-card {
     margin: clamp(20px, 3vw, 28px) 0 clamp(24px, 4vw, 36px);
     max-width: 46rem;
@@ -162,7 +162,7 @@
 
   .example-card figure { margin: 0; }
 
-  .example-card .ui-video { margin: 0; border-radius: 0; }
+  .example-card .ui-video { margin: 0 22px; border-radius: 6px; }
 
   .example-card figcaption {
     margin: 10px 22px 0;
@@ -398,6 +398,51 @@
     margin: 0 0 4px;
   }
 
+  /* -- .figure-wide: an opt-in modifier for large videos/images. 140%
+     of the 46rem text column, centred on it (expanding out of both
+     sides) -- using an absolute rem width/offset rather than a
+     percentage, since not every instance that carries this class sits
+     in a container that's actually 46rem itself (a bare
+     .figure-portrait-frame with no enclosing .figure, for instance,
+     fills the full grid content column instead).
+
+     46rem x 1.4 = 64.4rem. The extra 18.4rem is split evenly, so the
+     left/right overhang is 9.2rem each -- margin-left takes that back
+     off the element's normal (flush-left) position to centre it.
+
+     Only turned on at 1500px+: below that, the 96px rail-gap between
+     .toc and the content column isn't wide enough for a 9.2rem
+     (147px) left bleed to clear the toc without overlapping it -- see
+     the column-gap override below, which exists only to make room for
+     this. Below 1500px .figure-wide is inert; each instance just keeps
+     whatever width its base class already gives it. */
+  @media (min-width: 1500px) {
+    main { column-gap: 200px; }
+
+    .figure-wide {
+      width: 64.4rem;
+      max-width: none;
+      margin-left: -9.2rem;
+    }
+
+    /* .ui-video carries its own independent max-width: 46rem (for its
+       normal standalone use elsewhere on the page), which still won
+       over the wider frame around it here -- the video was rendering
+       at the old 46rem measure regardless of how wide .figure-wide
+       made its containing frame. Lift it same as the frame itself. */
+    .figure-wide .ui-video {
+      max-width: none;
+    }
+
+    /* The image/video bleeds, but a wide caption is hard to read --
+       keep it at the normal measure, left-aligned with the image's new
+       (further-left) edge rather than the page's normal text column. */
+    .figure-wide figcaption {
+      width: 38rem;
+      max-width: 100%;
+    }
+  }
+
   .toc-heading { margin: 0 0 16px; }
 
   .principle p + p { margin-top: clamp(16px, 2.2vw, 24px); }
@@ -577,7 +622,7 @@
           <blockquote>How should a system express what it doesn&rsquo;t know? How do we build confidence in automated decisions? How do we prevent harm?</blockquote>
           <p>An uncertain suggestion can be useful if it&rsquo;s easy to check and correct. Even a confident one may need approval if a mistake would be costly. Previews, controls and feedback should reflect that distinction, directing attention where it matters most.</p>
 
-          <figure class="figure">
+          <figure class="figure figure-wide">
             <div class="figure-portrait-frame">
               <div class="ui-video" data-hover-controls>
                 <video autoplay muted loop playsinline disablepictureinpicture poster="/case-studies/media/automap-preview.jpg">
@@ -590,6 +635,14 @@
           </figure>
 
           <p>Trust in a process depends on evidence: who or what suggested a change, what informed it, and how it can be checked. Systems should show their working.</p>
+
+          <figure class="figure figure-wide">
+            <div class="figure-portrait-frame">
+              <img src="/media/agent-corrections-highlight.png" width="1638" height="1350" alt="Quantemplate's agent panel over a data table. A user asks it to correct the invalid zip codes; it replies that it added leading zeros to 12 values and links to review the changes. In the table behind, each corrected zip code is marked with a small cube icon. The user then asks it to change 2907 back, and the agent starts reverting that correction." loading="lazy">
+            </div>
+            <figcaption>Changes made by Quantemplate&rsquo;s agent are highlighted for approval, using the cube motif.</figcaption>
+          </figure>
+
           <p>When results change between runs, those changes should be visible. Human work should never be silently undone. People should control what automation can access and change, and be able to trace what it did.</p>
           <p>As AI takes on more of the work, design must keep asking: where in the loop does the human need to be?</p>
 
@@ -640,7 +693,7 @@
                 </video>
               <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
               </div>
-              <figcaption>A 10-minute prototype made in Lovable to test and refine some interactions. It doesn&rsquo;t look exactly like Quantemplate but at this point in the process it doesn&rsquo;t have to.</figcaption>
+              <figcaption>A 10-minute prototype made in Lovable to test and refine some interactions.</figcaption>
             </figure>
 
             <hr>
