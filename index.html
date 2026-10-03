@@ -545,15 +545,15 @@
        The lift is the difference in cap height. Measured off the real
        fonts (canvas actualBoundingBoxAscent on a capital): IBM Plex Mono
        caps are 0.698em, Fakt Blond SemiBold 0.688em, so the label needs
-       to rise by 0.688 x <title size> - 0.698 x 14px. The title's size is
-       a clamp, so the lift has to track it -- 8.1px at 1100 up to 13.6px
-       at 1920. transform, not margin: a margin is folded into the
-       baseline offset and would move nothing.
+       to rise by 0.688 x <title size> - 0.698 x 14px. The title is a fixed
+       32px from 1024 up (see .job-company), so the lift is 12.2px -- if
+       that size changes, change it here too. transform, not margin: a
+       margin is folded into the baseline offset and would move nothing.
 
        Scoped with :has() to the one section whose label has a title beside
        it; the rest sit alone above their grids with nothing to align to. */
     main > section:has(> .job) > h2.eyebrow {
-      transform: translateY(calc(0.698 * 14px - 0.688 * clamp(26px, 2.3vw, 34px)));
+      transform: translateY(calc(0.698 * 14px - 0.688 * 32px));
     }
 
     main > section > hr.rule,
@@ -591,7 +591,7 @@
     }
 
     /* -- type: the extra width buys a bigger job title. -- */
-    .job-company { font-size: 36px; }
+    .job-company { font-size: 32px; }
 
     /* -- the Experience content, as the four-column grid the stats already
        imply. Rows are explicit rather than left to auto-placement, so each
