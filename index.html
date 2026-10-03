@@ -137,9 +137,13 @@
      styles.css. -- */
   .case-blocks-wide { row-gap: 48px; }
 
-  /* One pair per row at every width -- the generic 820px two-up must not
-     split the pairs across two columns. */
-  .case-blocks.case-blocks-wide { grid-template-columns: 1fr; }
+  /* One pair per row below the grid layout -- the generic 820px two-up must
+     not split the pairs across two columns. (From 1024px the row is a
+     subgrid of the twelve columns instead; this rule must not reach it, or
+     the pairs collapse into a single track and card and quote overlap.) */
+  @media (max-width: 1023.98px) {
+    .case-blocks.case-blocks-wide { grid-template-columns: 1fr; }
+  }
 
   .case-pair {
     display: grid;
