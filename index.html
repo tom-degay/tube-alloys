@@ -700,10 +700,9 @@
      below) at every width; the horizontal picture/text card was removed for
      this experiment (it is in git history, one commit back). From 1024px
      each card and its quote share a row of the twelve-column grid on
-     opposite halves -- card on columns 1-6 and quote on 7-12, then swapped,
-     and so on -- and the quote is bottom-aligned to its card, so it sits
-     lower than the card's top. Together the alternating sides and the drop
-     give a descending cascade down the page. -- */
+     opposite halves -- card on the left and quote on the right, then
+     swapped, and so on -- with the quote vertically centred on its card. The
+     cards alternate sides down the page. -- */
   @media (min-width: 1024px) {
     main > section > .case-blocks-wide { row-gap: clamp(64px, 6vw, 110px); }
 
@@ -712,7 +711,7 @@
       grid-template-columns: subgrid;
       column-gap: var(--g);
       row-gap: 0;
-      align-items: end;
+      align-items: center;
     }
 
     .case-pair blockquote {
