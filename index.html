@@ -163,19 +163,44 @@
 
   .case-pair blockquote cite { font-size: clamp(13px, 0.95vw, 15px); }
 
-  /* -- scroll reveal: the quote fades in as it enters view. -- */
-  .reveal-armed .case-pair blockquote { opacity: 0; }
+  /* -- scroll reveal, same move as the hero statement: the script wraps each
+     word of the quote in a .word span, and as the quote enters view the
+     words rise and fade in one after another (same easing and timing as the
+     hero). The quote mark comes in first, the attribution once the last
+     word has landed. Only the spans are hidden, so a failed split leaves
+     the text readable. -- */
+  .reveal-armed .case-pair blockquote .word {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(0.5em);
+  }
 
-  @media (prefers-reduced-motion: no-preference) {
-    .reveal-armed .case-pair blockquote.is-revealed {
-      animation: card-fade-in 1.1s ease var(--reveal-delay, 0ms) both;
-    }
+  .reveal-armed .case-pair blockquote::before,
+  .reveal-armed .case-pair blockquote cite { opacity: 0; }
+
+  .reveal-armed .case-pair blockquote.is-revealed .word {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.66s ease, transform 0.72s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal-armed .case-pair blockquote.is-revealed::before {
+    opacity: 1;
+    transition: opacity 0.66s ease var(--reveal-delay, 0ms);
+  }
+
+  .reveal-armed .case-pair blockquote.is-revealed cite {
+    opacity: 1;
+    transition: opacity 0.66s ease var(--cite-delay, 0ms);
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .reveal-armed .case-pair blockquote,
-    .reveal-armed .case-pair blockquote.is-revealed {
-      opacity: 1;
+    .case-pair blockquote .word,
+    .case-pair blockquote::before,
+    .case-pair blockquote cite {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
     }
   }
 
@@ -777,7 +802,9 @@
   <style>
     .hero-armed .about-statement { opacity: 1 !important; transform: none !important; }
     .reveal-armed .case-blocks .case-block { opacity: 1 !important; }
-    .reveal-armed .case-pair blockquote { opacity: 1 !important; }
+    .reveal-armed .case-pair blockquote::before,
+    .reveal-armed .case-pair blockquote cite,
+    .reveal-armed .case-pair blockquote .word { opacity: 1 !important; transform: none !important; }
   </style>
 </noscript>
   <script src="/nav.js" defer></script>
@@ -1118,6 +1145,34 @@
         quotes.forEach(function (q) { q.classList.add('is-revealed'); });
         return;
       }
+
+      // Split each quote into .word spans, as the hero statement does. Plain
+      // spaces only -- \s would also match the &nbsp; that keeps the last
+      // two words together, so that pair stays one span and one unit.
+      var STEP = 40;   // ms between words
+      var LEAD = 160;  // ms before the first word, after the quote mark
+      quotes.forEach(function (q) {
+        try {
+          var tn = null;
+          for (var n = q.firstChild; n; n = n.nextSibling) {
+            if (n.nodeType === 3 && n.textContent.trim()) { tn = n; break; }
+          }
+          if (!tn) return;
+          var words = tn.textContent.replace(/[\t\n\r ]+/g, ' ').trim().split(' ');
+          var frag = document.createDocumentFragment();
+          words.forEach(function (w, i) {
+            var s = document.createElement('span');
+            s.className = 'word';
+            s.textContent = w;
+            s.style.transitionDelay = 'calc(var(--reveal-delay, 0ms) + ' + (LEAD + i * STEP) + 'ms)';
+            frag.appendChild(s);
+            if (i < words.length - 1) frag.appendChild(document.createTextNode(' '));
+          });
+          q.insertBefore(frag, tn);
+          q.removeChild(tn);
+          q.style.setProperty('--cite-delay', 'calc(var(--reveal-delay, 0ms) + ' + (LEAD + words.length * STEP + 120) + 'ms)');
+        } catch (e) {}
+      });
 
       var STAGGER = 90; // ms between quotes entering together (row cascade)
       var io = new IntersectionObserver(function (entries) {
