@@ -1133,6 +1133,65 @@
       quotes.forEach(function (q) { io.observe(q); });
     })();
 
+    // Differential scroll: on the side-by-side layout the quotes drift against
+    // their cards, moving a little slower than the page. Each quote is
+    // centred on its card when the pair crosses the middle of the window and
+    // lags behind it either side of that point. Uses the individual
+    // `translate` property, so it never fights the word-reveal transforms,
+    // and only runs for pairs near the viewport.
+    (function () {
+      var RATE = 0.18;   // fraction of scroll speed the quotes give up (0 = locked to the card)
+      var MAX = 140;     // px cap, so a quote never strays far from its card
+      var quotes = Array.prototype.slice.call(document.querySelectorAll('.case-pair blockquote'));
+      if (!quotes.length || !window.matchMedia) return;
+
+      var wide = window.matchMedia('(min-width: 1024px)');
+      var still = window.matchMedia('(prefers-reduced-motion: reduce)');
+      var near = [];
+      var queued = false;
+
+      function enabled() { return wide.matches && !still.matches; }
+
+      function update() {
+        queued = false;
+        if (!enabled()) return;
+        var mid = window.innerHeight / 2;
+        near.forEach(function (q) {
+          var r = q.parentNode.getBoundingClientRect();
+          var d = (mid - (r.top + r.height / 2)) * RATE;
+          q.style.translate = '0 ' + Math.max(-MAX, Math.min(MAX, d)).toFixed(1) + 'px';
+        });
+      }
+
+      function queue() {
+        if (!queued) { queued = true; requestAnimationFrame(update); }
+      }
+
+      function reset() { quotes.forEach(function (q) { q.style.translate = ''; }); }
+
+      function sync() { if (enabled()) queue(); else reset(); }
+
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            var q = e.target.querySelector('blockquote');
+            var i = near.indexOf(q);
+            if (e.isIntersecting && i < 0) near.push(q);
+            else if (!e.isIntersecting && i >= 0) near.splice(i, 1);
+          });
+          queue();
+        }, { rootMargin: '25% 0px 25% 0px' });
+        quotes.forEach(function (q) { io.observe(q.parentNode); });
+      } else {
+        near = quotes;
+      }
+
+      window.addEventListener('scroll', queue, { passive: true });
+      window.addEventListener('resize', sync);
+      if (wide.addEventListener) { wide.addEventListener('change', sync); still.addEventListener('change', sync); }
+      sync();
+    })();
+
     (function () {
       var stats = document.querySelector('.stats');
       if (!stats) return;
