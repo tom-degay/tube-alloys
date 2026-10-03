@@ -445,6 +445,13 @@
 
   .toc-heading { margin: 0 0 16px; }
 
+  /* Subsection links nest under their section: indented and a step smaller,
+     on the same rail so the indicator still runs the full height. */
+  .toc a.toc-sub {
+    padding-left: 30px;
+    font-size: 15px;
+  }
+
   /* Subsection heading inside a principle -- the case-study h3 look
      (styles.css), as a real h2 under the section's h1. The top margin sets
      it off from the paragraph above. */
@@ -666,6 +673,9 @@
           <p>Autonomy should be scoped to the task and its consequences, with approval gates for consequential actions.</p>
           <p>My work on <a href="/case-studies/column-mapping">mapping suggestions</a>, <a href="/case-studies/validation">auditable corrections</a> and <a href="/case-studies/pipelines">inspectable data pipelines</a> provides a foundation for these challenges: helping people delegate work while retaining meaningful control.</p>
 
+          <h2 id="ai-human-heading">Human factors</h2>
+          <p>The human work starts before an agent takes action. Designing these systems means working with users and stakeholders to decide what to delegate, where human judgement matters and who remains accountable. Adoption depends on involving people in reshaping their workflows, testing with real tasks and learning what works in practice.</p>
+
           <a class="case-block has-thumb" href="/case-studies/column-mapping">
             <img class="case-block-thumb" src="/case-studies/media/concept-mapping-detail.png" width="1400" height="778" alt="Concept design for Quantemplate's column mapping interface: schemas as vertically stacked fields aligned to a common master." loading="lazy">
             <span class="case-block-text">
@@ -741,6 +751,8 @@
       <span class="toc-indicator" aria-hidden="true"></span>
       <span class="eyebrow toc-heading">On this page</span>
       <a href="#ai-for-heading">Designing for AI</a>
+      <a class="toc-sub" href="#ai-agents-heading">Designing for agents</a>
+      <a class="toc-sub" href="#ai-human-heading">Human factors</a>
       <a href="#ai-with-heading">Designing with AI</a>
     </nav>
     </div>
@@ -769,7 +781,7 @@
 
     (function () {
       var links = document.querySelectorAll(".toc a");
-      if (!links.length || !("IntersectionObserver" in window)) return;
+      if (!links.length) return;
 
       var indicator = document.querySelector(".toc-indicator");
       function moveIndicator(link) {
@@ -778,43 +790,44 @@
         indicator.style.transform = "translateY(" + link.offsetTop + "px)";
         indicator.classList.add("is-visible");
       }
-      window.addEventListener("resize", function () {
-        var active = document.querySelector(".toc a.is-active");
-        if (active) moveIndicator(active);
-      });
 
-      var sections = [];
+      // Each link points at a heading -- a section's h1 or a subsection's
+      // h2. The active link is the last heading to have crossed a line 30%
+      // of the way down the window, so a subsection takes over from its
+      // parent section as soon as its heading arrives.
+      var items = [];
       links.forEach(function (link) {
-        var id = link.getAttribute("href").slice(1);
-        var el = document.getElementById(id);
-        var section = el ? el.closest("section") || el : null;
-        if (section) sections.push({ section: section, link: link });
+        var el = document.getElementById(link.getAttribute("href").slice(1));
+        if (el) items.push({ el: el, link: link });
       });
+      if (!items.length) return;
 
-      var observer = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (entry) {
-            var match = null;
-            for (var i = 0; i < sections.length; i++) {
-              if (sections[i].section === entry.target) {
-                match = sections[i];
-                break;
-              }
-            }
-            if (!match) return;
-            if (entry.isIntersecting) {
-              links.forEach(function (l) { l.classList.remove("is-active"); });
-              match.link.classList.add("is-active");
-              moveIndicator(match.link);
-            }
-          });
-        },
-        { rootMargin: "-20% 0px -70% 0px", threshold: 0 }
-      );
+      var active = null;
+      var queued = false;
+      function update() {
+        queued = false;
+        var line = window.innerHeight * 0.3;
+        var current = items[0];
+        items.forEach(function (it) {
+          if (it.el.getBoundingClientRect().top <= line) current = it;
+        });
+        if (current.link !== active) {
+          links.forEach(function (l) { l.classList.remove("is-active"); });
+          current.link.classList.add("is-active");
+          active = current.link;
+          moveIndicator(active);
+        }
+      }
+      function queue() {
+        if (!queued) { queued = true; requestAnimationFrame(update); }
+      }
 
-      sections.forEach(function (s) {
-        observer.observe(s.section);
+      window.addEventListener("scroll", queue, { passive: true });
+      window.addEventListener("resize", function () {
+        if (active) moveIndicator(active);
+        queue();
       });
+      update();
     })();
 
   </script>
