@@ -1217,7 +1217,7 @@ h4 {
   align-items: stretch;
   justify-content: flex-start;
   gap: 0;
-  padding: 0 0 14px;
+  padding: 0 0 28px;
   overflow: hidden;
 }
 
@@ -1238,6 +1238,32 @@ not top-anchored UI screenshots -- override the default top crop. */
 }
 
 .case-block.has-image .case-block-text { padding: 0 22px; }
+
+/* -- light card: Image Insight and Zonefully (the non-Quantemplate studies)
+   sit on white, with the usual white/grey type and chips flipped to the page
+   black. The kicker stays green, a touch deeper than the site teal. -- */
+.case-block.is-light {
+  background-color: #fff;
+  border-color: #fff;
+}
+
+.case-block.is-light:hover, .case-block.is-light:focus-visible {
+  background-color: rgb(238, 238, 238);
+  border-color: rgb(238, 238, 238);
+}
+
+.case-block.is-light .case-block-title { color: #131313; }
+.case-block.is-light .case-block-subtitle { color: rgba(19, 19, 19, 0.68); }
+.case-block.is-light .case-block-kicker { color: #00cb9f; }
+
+.case-block.is-light .case-block-keyword {
+  background: rgba(19, 19, 19, 0.08);
+  color: rgba(19, 19, 19, 0.72);
+}
+
+.case-block.is-light:hover .case-block-keyword, .case-block.is-light:focus-visible .case-block-keyword {
+  background: rgba(19, 19, 19, 0.14);
+}
 
 .case-block.has-image:hover .case-block-media, .case-block.has-image:focus-visible .case-block-media {
   transform: scale(1.03);
