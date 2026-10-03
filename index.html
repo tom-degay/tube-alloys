@@ -1134,13 +1134,13 @@
     })();
 
     // Differential scroll: on the side-by-side layout the quotes drift against
-    // their cards, moving a little slower than the page. Each quote is
+    // their cards, moving a little faster than the page. Each quote is
     // centred on its card when the pair crosses the middle of the window and
-    // lags behind it either side of that point. Uses the individual
+    // runs ahead of it either side of that point. Uses the individual
     // `translate` property, so it never fights the word-reveal transforms,
     // and only runs for pairs near the viewport.
     (function () {
-      var RATE = 0.18;   // fraction of scroll speed the quotes give up (0 = locked to the card)
+      var RATE = -0.18;  // extra scroll speed: negative = quotes move faster than the cards, positive = slower, 0 = locked
       var MAX = 140;     // px cap, so a quote never strays far from its card
       var quotes = Array.prototype.slice.call(document.querySelectorAll('.case-pair blockquote'));
       if (!quotes.length || !window.matchMedia) return;
