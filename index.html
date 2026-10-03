@@ -137,6 +137,10 @@
      styles.css. -- */
   .case-blocks-wide { row-gap: 48px; }
 
+  /* One pair per row at every width -- the generic 820px two-up must not
+     split the pairs across two columns. */
+  .case-blocks.case-blocks-wide { grid-template-columns: 1fr; }
+
   .case-pair {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -688,185 +692,36 @@
     main > section > .case-blocks.approach-blocks > .case-block { grid-column: span 4; }
   }
 
-  /* -- Horizontal cards run from 800px, well below the 1024px the rest of
-     the editorial layout starts at, so the two-up grid never appears. In
-     between, the cards sit in the old centred column rather than the band;
-     they simply take its full width. -- */
-  @media (min-width: 800px) {
-    /* -- the four Quantemplate studies, as full-band horizontal cards that
-       alternate sides: picture | text, text | picture, and so on.
-
-       The card becomes a two-column grid and the media is placed
-       explicitly rather than reordered in the markup, so the reading order
-       stays kicker-title-subtitle after the image in every card.
-
-       align-items: center applies to the text, which centres in its half.
-       The media overrides it with align-self: stretch -- see the note on
-       it below for why it fills the row on black rather than being sized
-       to it. -- */
-    .case-blocks-wide {
-      grid-template-columns: 1fr;
-      row-gap: clamp(48px, 5vw, 80px);
-    }
-
-    .case-blocks-wide .case-block.has-image {
-      display: grid;
-      grid-template-columns: 3fr 2fr;
-      align-items: center;
-      padding: 0;
-    }
-
-    /* The media covers its half rather than sitting at its natural 16/9:
-       stretched to the card's full height, with the SVGs set to
-       xMidYMid slice so they fill it. At 3/5 width the box is wider than
-       tall relative to the artwork, so the crop it takes is horizontal --
-       a few per cent off each side, not the top and bottom where these
-       compositions carry their content. */
-    /* The media keeps its shared 16/9 and stretches to whatever the row
-       ends up being, with a black background filling the difference. So
-       the artwork is never cropped: where the text is the taller item --
-       which is what happens below about 1024, in the narrower column --
-       the image sits centred on black rather than being blown up and
-       sliced. At the wider end the row is the media's own height and it
-       fills the half exactly, as before.
-
-       Height is not set on the card. An aspect-ratio there sizes its box
-       but not its grid row: the row stays content-sized, overflows the box
-       and is clipped, which had the media rendering taller than the card
-       containing it. A vw-based height does not work either between 800
-       and 1024, where the card sits in the old centred column that stops
-       growing at 900px while vw keeps going. */
-    .case-blocks-wide .case-block-media {
-      grid-area: 1 / 1;
-      margin: 0;
-      align-self: stretch;
-      background: #000;
-    }
-
-    /* -- the study icon, lifted out of the kicker line to sit above the
-       text block at about three times its inline size. The kicker is
-       already a flex row containing icon + label, so turning it into a
-       column is all it takes -- no markup change, and the icons are SVG
-       so they scale without loss. -- */
-    .case-blocks-wide .case-block-kicker {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 14px;
-    }
-
-    /* -- pipelines and mapping are scaled and re-centred only here. The
-       narrow cards keep the artwork at full bleed, filling their 16/9
-       frame, which is what those UI drawings want at small sizes.
-
-       It has to be a transform on an inner wrapper rather than the
-       viewBox, because the viewBox is one attribute and cannot answer to
-       a media query. The backdrop rect deliberately sits outside
-       .vector-inner, so the black keeps filling the box while only the
-       drawing shrinks -- scaling the whole element would shrink the
-       backdrop too and let the card's grey show at the edges.
-
-       translate sits inside the scale so the shift is taken in the
-       artwork's own units. The measured offsets were 19.5 and 58 units,
-       and 0.9 x the original scale is exactly the scale the widened
-       viewBox gave, so those numbers carry over unchanged. -- */
-    .case-blocks-wide .pipeline-vector .vector-inner,
-    .case-blocks-wide .mapping-vector .vector-inner {
-      transform-box: view-box;
-      transform-origin: center;
-    }
-
-    .case-blocks-wide .pipeline-vector .vector-inner {
-      transform: scale(0.9) translate(0, -19.5px);
-    }
-
-    .case-blocks-wide .mapping-vector .vector-inner {
-      transform: scale(0.9) translate(0, -58px);
-    }
-
-    /* The animated vector replaces the flat icon here. It is a different
-       drawing, not the same file animated: its traces are split into
-       separately-drawn strokes and it is set for a 42px render, at about
-       half the flat icon's stroke weight. That reads well large and too
-       faint at the 14px the narrow cards use, which is why the swap is
-       scoped to this breakpoint rather than done in the markup. */
-    .case-blocks-wide .case-block-kicker .case-icon {
-      display: block;
-      height: clamp(30px, 2.6vw, 40px);
-      margin: 0;
-    }
-
-    .case-blocks-wide .case-block-kicker .case-block-kicker-icon { display: none; }
-
-    /* Hold the draw until the card scrolls in, so it is not spent below the
-       fold -- the cards already carry .is-revealed from the reveal observer.
-       Pausing rather than delaying keeps each trace's own stagger intact. */
-    @media (prefers-reduced-motion: no-preference) {
-      .reveal-armed .case-blocks-wide .case-block .case-icon-trace {
-        animation-play-state: paused;
-      }
-
-      .reveal-armed .case-blocks-wide .case-block.is-revealed .case-icon-trace {
-        animation-play-state: running;
-      }
-    }
-
-    .case-blocks-wide .case-block.has-image .case-block-text {
-      grid-area: 1 / 2;
-      padding: clamp(28px, 3.4vw, 48px) clamp(32px, 4vw, 64px);
-    }
-
-    /* Every second card mirrors: text left, picture right. The track sizes
-       have to mirror with it -- the media moves to column 2, so column 2 is
-       the 3fr one here. Without this the mirrored cards hand the picture
-       2/5 and the text 3/5, which is backwards and crops the artwork hard. */
-    .case-blocks-wide .case-pair:nth-child(even) .case-block { grid-template-columns: 2fr 3fr; }
-    .case-blocks-wide .case-pair:nth-child(even) .case-block-media { grid-area: 1 / 2; }
-    .case-blocks-wide .case-pair:nth-child(even) .case-block-text { grid-area: 1 / 1; }
-  }
-
-  /* -- The wide study cards and their quotes on the twelve-column grid. Late
-     in the sheet on purpose: the 800px rules above set the card's own
-     3fr/2fr split, and these have to win over them.
-
-     Each pair spans the band; the card inside it is a subgrid of those
-     columns, so the picture/text split falls on a column line (picture
-     seven columns, text five, mirrored on every second card) instead of on
-     a percentage. The quote alternates between the right half of the grid
-     (columns 7-12) and the left half (1-6). -- */
+  /* -- Case study cards stay in their vertical form (picture above, text
+     below) at every width; the horizontal picture/text card was removed for
+     this experiment (it is in git history, one commit back). From 1024px
+     each card and its quote share a row of the twelve-column grid on
+     opposite halves -- card on columns 1-6 and quote on 7-12, then swapped,
+     and so on -- and the quote is bottom-aligned to its card, so it sits
+     lower than the card's top. Together the alternating sides and the drop
+     give a descending cascade down the page. -- */
   @media (min-width: 1024px) {
-    main > section > .case-blocks-wide { row-gap: clamp(48px, 5vw, 80px); }
+    main > section > .case-blocks-wide { row-gap: clamp(64px, 6vw, 110px); }
 
     .case-blocks-wide > .case-pair {
       grid-column: 1 / -1;
       grid-template-columns: subgrid;
-      row-gap: clamp(48px, 5vw, 80px);
       column-gap: var(--g);
+      row-gap: 0;
+      align-items: end;
     }
-
-    .case-blocks-wide .case-pair .case-block.has-image {
-      grid-column: 1 / -1;
-      grid-template-columns: subgrid;
-      column-gap: var(--g);
-    }
-
-    .case-blocks-wide .case-pair .case-block-media { grid-area: 1 / 1 / 2 / 8; }
-
-    .case-blocks-wide .case-pair .case-block.has-image .case-block-text {
-      grid-area: 1 / 8 / 2 / -1;
-      padding: clamp(28px, 3.4vw, 48px) clamp(24px, 3vw, 48px);
-    }
-
-    .case-blocks-wide .case-pair:nth-child(even) .case-block.has-image { grid-template-columns: subgrid; }
-    .case-blocks-wide .case-pair:nth-child(even) .case-block-media { grid-area: 1 / 6 / 2 / -1; }
-    .case-blocks-wide .case-pair:nth-child(even) .case-block.has-image .case-block-text { grid-area: 1 / 1 / 2 / 6; }
 
     .case-pair blockquote {
+      grid-row: 1;
       max-width: none;
       justify-self: stretch;
     }
 
-    /* Alternate halves: columns 7-12, then 1-6, and so on down the page. */
+    .case-pair .case-block { grid-row: 1; align-self: start; }
+
+    .case-pair:nth-child(odd) .case-block { grid-column: 1 / 7; }
     .case-pair:nth-child(odd) blockquote { grid-column: 7 / 13; }
+    .case-pair:nth-child(even) .case-block { grid-column: 7 / 13; }
     .case-pair:nth-child(even) blockquote { grid-column: 1 / 7; }
   }
 
