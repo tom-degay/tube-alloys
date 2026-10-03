@@ -129,7 +129,7 @@
     margin-top: 20px;
     display: grid;
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 20px;
   }
 
   /* The animated study icons ride in the markup at every width but only show
@@ -162,17 +162,18 @@
     }
   }
 
-  /* No teal rule here -- the quote mark already says "quotation", and two
-     markers for one thing is one too many. Dropping the shared rule's
-     border and its 22px padding puts the text back on the grid line the
-     section labels and card grids start from. (The case studies keep
-     theirs: the shared rule covers both, so this overrides rather than
-     edits it.) */
+  /* Each quote sits on the same grey card as the case-study and approach
+     cards. No teal rule -- the quote mark already says "quotation", and two
+     markers for one thing is one too many; the card replaces the shared
+     rule's left border and padding. (The case studies keep theirs: the
+     shared rule covers both, so this overrides rather than edits it.) */
   .testimonials blockquote {
     margin: 0;
-    border-left: none;
-    padding-left: 0;
-    max-width: 54ch;
+    border: 1px solid rgb(33, 33, 33);
+    border-radius: 10px;
+    background-color: rgb(33, 33, 33);
+    padding: clamp(24px, 2.6vw, 40px);
+    max-width: none;
   }
 
   /* A large open quote above each testimonial. Plain generated content
@@ -209,8 +210,8 @@
   @media (min-width: 820px) {
     .testimonials {
       grid-template-columns: 1fr 1fr;
-      column-gap: 40px;
-      row-gap: 56px;
+      column-gap: 20px;
+      row-gap: 20px;
       /* Reserves the room the dropped column needs at the foot of the
          section, since a transform takes up no space. */
       padding-bottom: var(--stagger);
@@ -649,8 +650,8 @@
 
 
     .testimonials {
-      column-gap: clamp(48px, 6vw, 96px);
-      row-gap: clamp(56px, 6vw, 84px);
+      column-gap: clamp(20px, 2.4vw, 36px);
+      row-gap: clamp(20px, 2.4vw, 36px);
     }
   }
 
