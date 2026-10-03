@@ -135,25 +135,33 @@
      one above. (Tried as a grey card, and alongside the card from 1280px;
      both rejected.) Quote and cite type is the shared styling in
      styles.css. -- */
-  .case-blocks-wide { row-gap: 32px; }
+  .case-blocks-wide { row-gap: 48px; }
 
   .case-pair {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: 32px;
+    gap: 48px;
   }
 
   @media (min-width: 800px) {
     .case-pair { gap: clamp(48px, 5vw, 80px); }
   }
 
+  /* The shared quote is 20px / 46rem. Here it grows with the viewport from
+     1100px to a 28px cap, and the measure is in em so the line length
+     (about 32em) stays put as the type scales. */
   .case-pair blockquote {
     margin: 0;
     border: none;
     padding: 0;
-    max-width: 640px;
+    font-size: clamp(20px, 1.9vw, 28px);
+    color: rgba(255, 255, 255, 0.82);
+    max-width: 32em;
+    text-wrap: pretty;
     justify-self: center;
   }
+
+  .case-pair blockquote cite { font-size: clamp(13px, 0.95vw, 15px); }
 
   /* -- scroll reveal: the quote fades in as it enters view. -- */
   .reveal-armed .case-pair blockquote { opacity: 0; }
@@ -554,6 +562,12 @@
       border-top-color: rgba(255, 255, 255, 0.16);
     }
 
+    /* The Current role block ends on a single short link line, so the full
+       separator air under it reads as a gap -- roughly halved here. */
+    main > section[aria-labelledby="experience-heading"] + hr.rule {
+      margin-top: clamp(48px, 4.5vw, 72px);
+    }
+
     /* -- type: the extra width buys a bigger job title. -- */
     .job-company { font-size: 32px; }
 
@@ -891,15 +905,13 @@
           <img class="case-block-media" src="/media/brain-emboss.jpg" width="1986" height="792" alt="A brain icon with circuit-board style connections, blind-embossed on paper." loading="lazy">
           <span class="case-block-text">
             <span class="case-block-title">Design and AI</span>
-            <span class="case-block-subtitle">Designing for intelligent systems. Using AI in my work.</span>
           </span>
         </a>
 
         <a class="case-block has-image" href="/design-craft">
-          <img class="case-block-media" src="/media/approach-craft.jpg" width="820" height="328" alt="The blind-embossed White Rainbow logo, in detail." loading="lazy">
+          <img class="case-block-media" src="/media/approach-craft-full.jpg" width="1100" height="660" alt="The blind-embossed White Rainbow logo, in detail." loading="lazy">
           <span class="case-block-text">
             <span class="case-block-title">Design craft</span>
-            <span class="case-block-subtitle">Useful by design. Beautiful in the details.</span>
           </span>
         </a>
 
@@ -907,7 +919,6 @@
           <img class="case-block-media" src="/media/wayfinding-emboss.jpg" width="1983" height="793" alt="Directional signage arrows pointing outward from a junction, blind-embossed on paper." loading="lazy">
           <span class="case-block-text">
             <span class="case-block-title">Wayfinding</span>
-            <span class="case-block-subtitle">Design principles learned from wayfinding.</span>
           </span>
         </a>
       </div>
@@ -930,7 +941,7 @@
           </a>
 
           <blockquote>
-            Tom can take a vague problem with incomplete information, competing priorities and a lot of uncertainty, and methodically turn that into a clear product direction.
+            Tom can take a vague problem with incomplete information, competing priorities and a lot of uncertainty, and methodically turn that into a clear product&nbsp;direction.
             <cite><a href="https://www.linkedin.com/in/tom-dg/details/recommendations/?detailScreenTabIndex=0" target="_blank" rel="noopener noreferrer">Andre Brantom</a>, CTO, Quantemplate</cite>
           </blockquote>
         </div>
@@ -947,7 +958,7 @@
           </a>
 
           <blockquote>
-            I cannot adequately express how receptive he was to our suggestions for improvement. He would listen, ask questions and make our wishlist items reality; even enhancing our suggestions.
+            I cannot adequately express how receptive he was to our suggestions for improvement. He would listen, ask questions and make our wishlist items reality; even enhancing our&nbsp;suggestions.
             <cite><a href="https://www.linkedin.com/in/tom-dg/details/recommendations/?detailScreenTabIndex=0" target="_blank" rel="noopener noreferrer">Lee Ann Dewell Lang</a>, Quantemplate user-client, James River Insurance</cite>
           </blockquote>
         </div>
@@ -964,7 +975,7 @@
           </a>
 
           <blockquote>
-            Tom has produced immaculately conceived designs for every aspect of the platform, and has a razor-sharp eye for detail in addition to the high level vision that is critical for a cohesive product.
+            Tom has produced immaculately conceived designs for every aspect of the platform, and has a razor-sharp eye for detail in addition to the high level vision that is critical for a cohesive&nbsp;product.
             <cite><a href="https://www.linkedin.com/in/tom-dg/details/recommendations/?detailScreenTabIndex=0" target="_blank" rel="noopener noreferrer">Alex Fox Gill</a>, Application Architect, Quantemplate</cite>
           </blockquote>
         </div>
@@ -981,7 +992,7 @@
           </a>
 
           <blockquote>
-            His feedback is always thoughtful, respectful and supportive, he makes people feel appreciated and included. Tom simply brings out the best in everyone.
+            His feedback is always thoughtful, respectful and supportive, he makes people feel appreciated and included. Tom simply brings out the best in&nbsp;everyone.
             <cite><a href="https://www.linkedin.com/in/tom-dg/details/recommendations/?detailScreenTabIndex=0" target="_blank" rel="noopener noreferrer">Sol Kawage</a>, Designer, Isokon Gallery</cite>
           </blockquote>
         </div>

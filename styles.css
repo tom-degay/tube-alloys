@@ -612,7 +612,37 @@ p.keywords {
   transform: none;
 }
 
-.approach-blocks .case-block-media { aspect-ratio: 5 / 2; }
+.approach-blocks .case-block-media { aspect-ratio: 5 / 3; }
+
+/* Image-only cards: the title sits over the picture, bottom left, in the page
+   black (#131313) -- the three pictures are pale embossed paper, so it reads
+   dark on light. No text strip below the image. */
+.approach-blocks .case-block.has-image {
+  position: relative;
+  padding: 0;
+}
+
+.approach-blocks .case-block-media { margin-bottom: 0; }
+
+.approach-blocks .case-block.has-image .case-block-text {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: clamp(16px, 4vw, 28px);
+}
+
+/* One column below 820px, so the cards grow with the viewport -- the title
+   grows with them (20px at a phone, 32px at the widest single column)
+   rather than staying at the 18-22px of the three-up row. */
+.approach-blocks .case-block-title {
+  color: #131313;
+  font-size: clamp(20px, 5vw, 32px);
+}
+
+@media (min-width: 820px) {
+  .approach-blocks .case-block.has-image .case-block-text { padding: clamp(16px, 2vw, 24px); }
+  .approach-blocks .case-block-title { font-size: clamp(18px, 2.4vw, 22px); }
+}
 
 form { max-width: 480px; }
 
