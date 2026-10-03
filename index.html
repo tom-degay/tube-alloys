@@ -161,7 +161,15 @@
     justify-self: center;
   }
 
-  .case-pair blockquote cite { font-size: clamp(13px, 0.95vw, 15px); }
+  /* Attribution in Fakt SemiBold (the site's bold face) rather than the
+     shared mono; the size is stepped up because a proportional face reads
+     smaller than 13px mono. */
+  .case-pair blockquote cite {
+    font-family: "Fakt Blond SemiBold", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    font-size: clamp(15px, 1.05vw, 17px);
+  }
 
   /* -- scroll reveal, same move as the hero statement: the script wraps each
      word of the quote in a .word span, and as the quote enters view the
@@ -823,8 +831,8 @@
      Each pair spans the band; the card inside it is a subgrid of those
      columns, so the picture/text split falls on a column line (picture
      seven columns, text five, mirrored on every second card) instead of on
-     a percentage. The quote hangs on columns 3-10: centred on the page,
-     with its left edge on a grid line. -- */
+     a percentage. The quote alternates between the right half of the grid
+     (columns 7-12) and the left half (1-6). -- */
   @media (min-width: 1024px) {
     main > section > .case-blocks-wide { row-gap: clamp(48px, 5vw, 80px); }
 
@@ -853,10 +861,13 @@
     .case-blocks-wide .case-pair:nth-child(even) .case-block.has-image .case-block-text { grid-area: 1 / 1 / 2 / 6; }
 
     .case-pair blockquote {
-      grid-column: 3 / 11;
       max-width: none;
       justify-self: stretch;
     }
+
+    /* Alternate halves: columns 7-12, then 1-6, and so on down the page. */
+    .case-pair:nth-child(odd) blockquote { grid-column: 7 / 13; }
+    .case-pair:nth-child(even) blockquote { grid-column: 1 / 7; }
   }
 
 </style>
