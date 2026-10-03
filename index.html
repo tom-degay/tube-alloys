@@ -697,50 +697,38 @@
   }
 
   /* -- Case study cards stay in their vertical form (picture above, text
-     below) at every width. From 1024px the cards and quotes flow as two
-     interlocking lanes, each half the grid (columns 1-6 and 7-12):
-
-         left lane   card 1    quote 2    card 3    quote 4
-         right lane  (drop)    quote 1    card 2    quote 3    card 4
-
-     in the same order as the markup, which is what keeps the reading and
-     tab order natural. That is done with floats rather than grid: a float
-     goes as high as it can without overlapping the floats before it, so
-     each item slots in under the previous item in its lane while the lanes
-     keep their own rhythm -- a grid would tie both lanes to shared row
-     heights. The first quote's top margin is the drop that starts the
-     cascade; everything after follows from the heights. The .case-pair
-     wrappers dissolve (display: contents) so card and quote float together
-     in the one container, and the container is a flow-root so it still
-     contains them. Each lane is exactly six grid columns wide, so both
-     edges stay on the grid. -- */
+     below) at every width; the horizontal picture/text card was removed for
+     this experiment (it is in git history, one commit back). From 1024px
+     each card and its quote share a row of the twelve-column grid on
+     opposite halves -- card on columns 1-6 and quote on 7-12, then swapped,
+     and so on -- and the quote is bottom-aligned to its card, so it sits
+     lower than the card's top. Together the alternating sides and the drop
+     give a descending cascade down the page. -- */
   @media (min-width: 1024px) {
-    main > section > .case-blocks-wide {
-      display: flow-root;
-      --lane-gap: clamp(64px, 6vw, 110px);
-      --lane-drop: clamp(140px, 16vw, 260px);
-      /* every item carries a bottom margin as the gap to the one under it;
-         the last one's is not wanted before the section's own spacing */
-      margin-bottom: calc(-1 * var(--lane-gap));
+    main > section > .case-blocks-wide { row-gap: clamp(64px, 6vw, 110px); }
+
+    .case-blocks-wide > .case-pair {
+      grid-column: 1 / -1;
+      grid-template-columns: subgrid;
+      column-gap: var(--g);
+      row-gap: 0;
+      align-items: end;
     }
 
-    .case-blocks-wide > .case-pair { display: contents; }
-
-    .case-blocks-wide .case-block,
-    .case-blocks-wide .case-pair blockquote {
-      width: calc((100% - var(--g)) / 2);
+    .case-pair blockquote {
+      grid-row: 1;
       max-width: none;
-      margin: 0 0 var(--lane-gap);
+      justify-self: stretch;
     }
 
-    .case-blocks-wide .case-pair:nth-child(odd) .case-block,
-    .case-blocks-wide .case-pair:nth-child(even) blockquote { float: left; }
+    .case-pair .case-block { grid-row: 1; align-self: start; }
 
-    .case-blocks-wide .case-pair:nth-child(odd) blockquote,
-    .case-blocks-wide .case-pair:nth-child(even) .case-block { float: right; }
-
-    .case-blocks-wide .case-pair:first-child blockquote { margin-top: var(--lane-drop); }
+    .case-pair:nth-child(odd) .case-block { grid-column: 1 / 7; }
+    .case-pair:nth-child(odd) blockquote { grid-column: 7 / 13; }
+    .case-pair:nth-child(even) .case-block { grid-column: 7 / 13; }
+    .case-pair:nth-child(even) blockquote { grid-column: 1 / 7; }
   }
+
 </style>
 <script>
   /* Arm the entrance animations before first paint, but only when motion is welcome. */
