@@ -8,8 +8,8 @@
       <stop offset="1" stop-color="#df2582"/>
       <animateTransform attributeName="gradientTransform" type="rotate" from="0 130 130" to="-360 130 130" dur="3s" repeatCount="indefinite"/>
     </linearGradient>
-  <linearGradient id="text-shimmer" gradientUnits="userSpaceOnUse" x1="-500" y1="0" x2="0" y2="0" spreadMethod="pad">
-<stop offset="0" stop-color="#555560"/><stop offset=".35" stop-color="#656570"/><stop offset=".5" stop-color="#92929f"/><stop offset=".65" stop-color="#7b7389"/><stop offset="1" stop-color="#555560"/>
+  <linearGradient id="text-shimmer" gradientUnits="userSpaceOnUse" x1="-750" y1="0" x2="0" y2="0" spreadMethod="pad">
+<stop offset="0" stop-color="#555560"/><stop offset=".35" stop-color="#858590"/><stop offset=".5" stop-color="#e6e3ef"/><stop offset=".65" stop-color="#96909f"/><stop offset="1" stop-color="#555560"/>
 <animateTransform attributeName="gradientTransform" type="translate" from="0 0" to="3277.4 0" dur="3s" repeatCount="indefinite"/>
 </linearGradient></defs>
   <g fill="none" stroke="url(#cube-gradient)" stroke-width="9" stroke-linejoin="miter">
