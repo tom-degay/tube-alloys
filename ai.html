@@ -83,6 +83,27 @@
     margin: clamp(32px, 5vw, 48px) 0;
   }
 
+  /* Animated agent status, framed like the page's other media assets. */
+  .ai-validation-animation {
+    display: grid;
+    place-items: center;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    height: clamp(160px, 24vw, 245px);
+    margin: 0 0 clamp(24px, 4vw, 36px);
+    padding: clamp(16px, 4vw, 40px);
+    overflow: hidden;
+    background: #000;
+    border-radius: 10px;
+  }
+
+  .ai-validation-animation img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
   /* -- inline image with caption -- */
   .figure {
     margin: clamp(20px, 3vw, 28px) 0 clamp(24px, 4vw, 36px);
@@ -638,6 +659,9 @@
       <div class="principles">
         <section class="principle">
           <h1 class="lede display" id="ai-for-heading">Designing for AI</h1>
+          <div class="ai-validation-animation">
+            <img src="/media/ai-validation-animation.svg" width="1745" height="260" alt="Checking validation errors — animated gradient cube with shimmering text.">
+          </div>
           <blockquote>How should a system express what it doesn&rsquo;t know? How do we build confidence in automated decisions? How do we prevent harm?</blockquote>
           <p>An uncertain suggestion can be useful if it&rsquo;s easy to check and correct. Even a confident one may need approval if a mistake would be costly. Previews, controls and feedback should reflect that distinction, directing attention where it matters most.</p>
 
