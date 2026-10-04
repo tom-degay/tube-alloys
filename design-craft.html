@@ -93,6 +93,50 @@
   }
 
   /* -- inline image with caption -- */
+  /* -- inline UI video -- */
+  .ui-video {
+    position: relative;
+    margin: clamp(24px, 3.5vw, 36px) 0 0;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .ui-video video {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .figure .ui-video { margin: 0; }
+
+  .ui-video-expand {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .ui-video:hover .ui-video-expand, .ui-video:focus-within .ui-video-expand {
+    opacity: 1;
+  }
+
+  .ui-video-expand:hover, .ui-video-expand:focus-visible {
+    border-color: rgba(255, 255, 255, 0.85);
+    background: rgba(0, 0, 0, 0.8);
+  }
+
   .figure {
     margin: clamp(20px, 3vw, 28px) 0 clamp(24px, 4vw, 36px);
   }
@@ -522,6 +566,16 @@
 
       <p>I love the craft of design. I like to know how things are made, whether that means working with a printer, a fabricator or an engineer. Alongside the process and systems thinking elsewhere on this site, here&rsquo;s a closer look at building brands, finding the finesse, and caring about the details.</p>
 
+      <figure class="figure">
+        <div class="ui-video" data-hover-controls>
+          <video autoplay muted loop playsinline disablepictureinpicture poster="media/agent-hover-prototype.jpg">
+            <source src="media/agent-hover-prototype.mp4" type="video/mp4">
+          </video>
+          <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+        </div>
+        <figcaption>All the details: Quantemplate Agent hover animation</figcaption>
+      </figure>
+
       <hr class="rule">
 
       <div class="principles">
@@ -767,6 +821,16 @@
       requestAnimationFrame(function () {
         requestAnimationFrame(function () { root.classList.add('head-play'); });
       });
+    })();
+  </script>
+  <script>
+    (function () {
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.querySelectorAll(".ui-video video").forEach(function (v) {
+          v.removeAttribute("autoplay");
+          v.pause();
+        });
+      }
     })();
   </script>
   <script data-goatcounter="https://tomdegay.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
