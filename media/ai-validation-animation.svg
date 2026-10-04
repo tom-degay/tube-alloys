@@ -10,7 +10,8 @@
     </linearGradient>
   <linearGradient id="text-shimmer" gradientUnits="userSpaceOnUse" x1="-750" y1="0" x2="0" y2="0" spreadMethod="pad">
 <stop offset="0" stop-color="#555560"/><stop offset=".35" stop-color="#858590"/><stop offset=".5" stop-color="#e6e3ef"/><stop offset=".65" stop-color="#96909f"/><stop offset="1" stop-color="#555560"/>
-<animateTransform attributeName="gradientTransform" type="translate" from="0 0" to="3277.4 0" dur="3s" repeatCount="indefinite"/>
+<animate attributeName="x1" from="-750" to="2527.4" dur="3s" repeatCount="indefinite"/>
+<animate attributeName="x2" from="0" to="3277.4" dur="3s" repeatCount="indefinite"/>
 </linearGradient></defs>
   <g fill="none" stroke="url(#cube-gradient)" stroke-width="9" stroke-linejoin="miter">
     <path d="M130 65 L185 97 L185 157 L130 187 L75 157 L75 97 Z"/>
