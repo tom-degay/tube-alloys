@@ -132,6 +132,8 @@
   /* -- pictures -- */
   /* The standard framed-picture treatment of the case studies: a grey
      gradient card with the image floating inside it, shadowed. */
+  .p-logo img { display: block; width: min(60%, 260px); height: auto; margin: 0 auto; }
+
   .figure-portrait-frame {
     display: flex;
     justify-content: center;
@@ -282,6 +284,16 @@
 
     /* room for the last caption, which hangs below the final row */
     .poster { padding-bottom: clamp(64px, 7vw, 112px); }
+
+    .poster > .p-logo { position: relative; align-self: stretch; }
+    .p-logo > img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      object-fit: contain;
+    }
 
     .poster > .p-hero { align-self: end; }
     .poster > .case-block { align-self: stretch; align-items: center; }
@@ -529,6 +541,8 @@
       <div class="p-item p-card p-section" style="--c:7 / 13;--r:var(--q-row, 8) / span 5"><h2 class="principle-title display" id="quantemplate-heading">Defining the Quantemplate product brand</h2><p>Back in 2013, there was nothing that looked quite like <a href="https://quantemplate.com" target="_blank" rel="noopener noreferrer">Quantemplate</a>. We were inspired by the <a href="https://www.bloomberg.com/professional/products/bloomberg-terminal/" target="_blank" rel="noopener noreferrer">Bloomberg Terminal</a> as a power tool, and a <a href="https://media.evo.co.uk/image/private/s--8AFVzv4W--/f_auto,t_content-image-full-desktop@1/v1556258285/evo/images/dir_446/car_photo_223452.jpg" target="_blank" rel="noopener noreferrer">Lamborghini dashboard</a> as, well, a different kind of power tool.</p><p>We wanted an interface that felt comfortable for long work sessions, and I brought the concept to life with a dark UI and a sparingly applied set of neon colours.</p><blockquote>The visual style and the craft that went into the interface were consistently cited by new hires as a reason for joining.</blockquote><p>The look drew some pushback from sales and prospective buyers, but we believed the brand was a core differentiator and stuck with it. Funnily enough, when Apple introduced Dark Mode on iOS in 2019, we stopped hearing those concerns.</p></div>
 
       <figure class="p-item figure p-fig p-fig-free" style="--c:1 / 13;--r:13 / span 5"><div class="figure-portrait-frame"><img src="media/dashboard.jpg" width="2000" height="915" alt="Concept design for Quantemplate&rsquo;s early analytics dashboard: a solvency-margin chart, a Value at Risk gauge, a sunburst volatility breakdown, and region, industry and risk breakdown tables in a dark theme." loading="lazy"></div><figcaption>Dashboard concept design, c.2013. The &lsquo;Bloomberg for Insurance&rsquo;.</figcaption></figure>
+
+      <figure class="p-item p-logo" style="--c:2 / 6;--r:19 / span 5"><img src="media/isokon-gallery-logo.svg" width="541" height="815" alt="Isokon Gallery logo" loading="lazy"></figure>
 
       <div class="p-item p-card p-section" style="--c:7 / 13;--r:19 / span 5"><h2 class="principle-title display" id="isokon-heading">Isokon Gallery</h2><p>I&rsquo;ve had a long involvement with the Isokon building, the famous Grade I listed apartment block in north London. My first contribution was to design a sign for it in 2005. There was no precedent for a sign on the building so the material and finish mattered. Cast aluminium was the hard way, but the right way for durability and quality.</p><p>In 2014 I co-founded a <a href="https://isokongallery.org" target="_blank" rel="noopener noreferrer">micro-museum</a> in the building&rsquo;s former garage space to tell its remarkable history. I co-designed the permanent exhibition, mentoring an MA student through the work.</p><p>Every couple of years we hold a special exhibition focusing on an important resident. Most recently this was Egon Riss, one of modernism&rsquo;s most elusive characters. I spent my weekends designing a <a href="https://isokongallery.org/products/design-displacement-donkeys-the-fractured-life-of-egon-riss" target="_blank" rel="noopener noreferrer">book</a> to tell his story. Uncoated paper, chunky typography and a plywood colour palette capture the spirit of his work.</p></div>
 
