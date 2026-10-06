@@ -61,6 +61,7 @@
     margin: 32px 0 28px;
   }
 
+  .rule.rule-top { margin: 0 0 clamp(16px, 2vw, 28px); }
   .rule {
     border: none;
     border-top: 1px solid rgba(255, 255, 255, 0.2);
@@ -318,7 +319,7 @@
     /* sits close under the dashboard caption instead of a full row below */
     .poster > .p-item.p-tuck { margin-top: calc(32px - var(--gv) - var(--tuck)); }
 
-    .poster > .p-hero { align-self: end; }
+    .poster > .p-hero { align-self: start; }
     .poster > .case-block { align-self: stretch; align-items: center; }
 
     .poster > .p-fig {
@@ -544,6 +545,7 @@
     </div>
   </nav>
   <main>
+    <hr class="rule rule-top">
     <div class="poster" style="--rows:18">
       <div class="p-item p-hero" style="--c:1 / 8;--r:1 / span 2"><h1 class="lede display head-fade">Design craft</h1></div>
 
