@@ -132,6 +132,7 @@
   /* -- pictures -- */
   /* The standard framed-picture treatment of the case studies: a grey
      gradient card with the image floating inside it, shadowed. */
+  .p-logo .p-logo-lit { display: none; }
   .p-logo img { display: block; width: min(60%, 260px); height: auto; margin: 0 auto; }
 
   .figure-portrait-frame {
@@ -343,6 +344,26 @@
        bottom edge may fall between row lines. Caption follows in flow. */
     .poster > .p-fig.p-fig-free { position: static; align-self: start; margin-top: calc(-1 * var(--tuck)); }
     .p-fig-free > figcaption { position: static; padding-top: 10px; }
+
+    /* Torchlight: with a mouse, the logo rests dim and a soft circle of light
+       follows the pointer, lighting it up wherever it passes. */
+    @media (hover: hover) and (pointer: fine) {
+      .poster > .p-logo > img:not(.p-logo-lit) { opacity: 0.2; }
+      .poster > .p-logo > .p-logo-lit {
+        display: block;
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        opacity: 0;
+        transition: opacity 0.35s ease;
+        pointer-events: none;
+        -webkit-mask-image: radial-gradient(circle 190px at var(--mx, 50%) var(--my, 50%), #000 0%, rgba(0, 0, 0, 0.6) 45%, transparent 100%);
+        mask-image: radial-gradient(circle 190px at var(--mx, 50%) var(--my, 50%), #000 0%, rgba(0, 0, 0, 0.6) 45%, transparent 100%);
+      }
+      .poster > .p-logo:hover > .p-logo-lit { opacity: 1; }
+    }
 
     /* A picture that must never be trimmed: natural height, caption in flow. */
     .poster > .p-fig.p-nocrop { position: static; align-self: start; }
@@ -569,7 +590,7 @@
     </div>
 
     <div class="poster poster-2" style="--rows:6">
-      <figure class="p-item p-logo" style="--c:8 / 12;--r:1 / span 5"><img src="media/isokon-gallery-logo.svg" width="541" height="815" alt="Isokon Gallery logo" loading="lazy"></figure>
+      <figure class="p-item p-logo" style="--c:8 / 12;--r:1 / span 5"><img src="media/isokon-gallery-logo.svg" width="541" height="815" alt="Isokon Gallery logo" loading="lazy"><img class="p-logo-lit" src="media/isokon-gallery-logo.svg" width="541" height="815" alt="" aria-hidden="true" loading="lazy"></figure>
 
       <div class="p-item p-card p-section" style="--c:1 / 7;--r:3 / span 4"><h2 class="principle-title display" id="isokon-heading">Isokon Gallery</h2><p>I&rsquo;ve had a long involvement with the Isokon building, the famous Grade I listed apartment block in north London. My first contribution was to design a sign for it in 2005. There was no precedent for a sign on the building so the material and finish mattered. Cast aluminium was the hard way, but the right way for durability and quality.</p><p>In 2014 I co-founded a <a href="https://isokongallery.org" target="_blank" rel="noopener noreferrer">micro-museum</a> in the building&rsquo;s former garage space to tell its remarkable history. I co-designed the permanent exhibition, mentoring an MA student through the work.</p><p>Every couple of years we hold a special exhibition focusing on an important resident. Most recently this was Egon Riss, one of modernism&rsquo;s most elusive characters. I spent my weekends designing a <a href="https://isokongallery.org/products/design-displacement-donkeys-the-fractured-life-of-egon-riss" target="_blank" rel="noopener noreferrer">book</a> to tell his story. Uncoated paper, chunky typography and a plywood colour palette capture the spirit of his work.</p></div>
     </div>
@@ -710,6 +731,13 @@
         items.forEach(function (c) { io.observe(c); });
       }
     }
+
+    var logo = document.querySelector(".p-logo");
+    if (logo) logo.addEventListener("pointermove", function (e) {
+      var r = logo.getBoundingClientRect();
+      logo.style.setProperty("--mx", (e.clientX - r.left) + "px");
+      logo.style.setProperty("--my", (e.clientY - r.top) + "px");
+    });
 
     /* Parallax: pictures drift against the page, slower in the left half and
        faster in the right, so the two columns slide past each other. Cards
