@@ -545,9 +545,9 @@
     </div>
 
     <div class="poster poster-2" style="--rows:54">
-      <figure class="p-item p-logo" style="--c:2 / 6;--r:1 / span 5"><img src="media/isokon-gallery-logo.svg" width="541" height="815" alt="Isokon Gallery logo" loading="lazy"></figure>
+      <figure class="p-item p-logo" style="--c:8 / 12;--r:1 / span 5"><img src="media/isokon-gallery-logo.svg" width="541" height="815" alt="Isokon Gallery logo" loading="lazy"></figure>
 
-      <div class="p-item p-card p-section" style="--c:7 / 13;--r:3 / span 4"><h2 class="principle-title display" id="isokon-heading">Isokon Gallery</h2><p>I&rsquo;ve had a long involvement with the Isokon building, the famous Grade I listed apartment block in north London. My first contribution was to design a sign for it in 2005. There was no precedent for a sign on the building so the material and finish mattered. Cast aluminium was the hard way, but the right way for durability and quality.</p><p>In 2014 I co-founded a <a href="https://isokongallery.org" target="_blank" rel="noopener noreferrer">micro-museum</a> in the building&rsquo;s former garage space to tell its remarkable history. I co-designed the permanent exhibition, mentoring an MA student through the work.</p><p>Every couple of years we hold a special exhibition focusing on an important resident. Most recently this was Egon Riss, one of modernism&rsquo;s most elusive characters. I spent my weekends designing a <a href="https://isokongallery.org/products/design-displacement-donkeys-the-fractured-life-of-egon-riss" target="_blank" rel="noopener noreferrer">book</a> to tell his story. Uncoated paper, chunky typography and a plywood colour palette capture the spirit of his work.</p></div>
+      <div class="p-item p-card p-section" style="--c:1 / 7;--r:3 / span 4"><h2 class="principle-title display" id="isokon-heading">Isokon Gallery</h2><p>I&rsquo;ve had a long involvement with the Isokon building, the famous Grade I listed apartment block in north London. My first contribution was to design a sign for it in 2005. There was no precedent for a sign on the building so the material and finish mattered. Cast aluminium was the hard way, but the right way for durability and quality.</p><p>In 2014 I co-founded a <a href="https://isokongallery.org" target="_blank" rel="noopener noreferrer">micro-museum</a> in the building&rsquo;s former garage space to tell its remarkable history. I co-designed the permanent exhibition, mentoring an MA student through the work.</p><p>Every couple of years we hold a special exhibition focusing on an important resident. Most recently this was Egon Riss, one of modernism&rsquo;s most elusive characters. I spent my weekends designing a <a href="https://isokongallery.org/products/design-displacement-donkeys-the-fractured-life-of-egon-riss" target="_blank" rel="noopener noreferrer">book</a> to tell his story. Uncoated paper, chunky typography and a plywood colour palette capture the spirit of his work.</p></div>
 
       <figure class="p-item figure p-fig" style="--c:1 / 8;--r:8 / span 4"><img src="media/craft-isokon-01.jpg" width="1500" height="1000" alt="The white modernist Isokon building (Lawn Road Flats) with cantilevered access balconies, and raised cast lettering on the end wall reading &lsquo;Isokon &ndash; Lawn Road Flats&rsquo;." loading="lazy"><figcaption>The Isokon building (Lawn Road Flats) and the cast sign, designed 2005.</figcaption></figure>
 
@@ -626,9 +626,9 @@
   (function () {
     var q = document.getElementById("quantemplate-heading");
     var p2 = document.querySelector(".poster-2");
-    var card = document.getElementById("isokon-heading");
+    var card = document.querySelector(".p-logo");
     if (!q || !p2 || !card) return;
-    q = q.parentElement; card = card.parentElement;
+    q = q.parentElement;
     var wide = window.matchMedia("(min-width: 1024px)");
     function pull() {
       p2.style.removeProperty("--pull");
