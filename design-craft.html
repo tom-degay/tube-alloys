@@ -135,6 +135,20 @@
   .p-logo .p-logo-lit { display: none; }
   .p-logo img { display: block; width: min(60%, 260px); height: auto; margin: 0 auto; }
 
+  /* Single column: the same scroll shimmer. Both copies of the logo share one
+     grid cell so the light-up copy lies exactly over the dim one. */
+  @media (max-width: 1023.98px) and (prefers-reduced-motion: no-preference) {
+    .p-logo { display: grid; justify-items: center; }
+    .p-logo img { grid-area: 1 / 1; }
+    .p-logo > img:not(.p-logo-lit) { opacity: 0.4; }
+    .p-logo .p-logo-lit {
+      display: block;
+      pointer-events: none;
+      -webkit-mask-image: linear-gradient(to bottom, transparent calc(var(--shim, 150) * 1% - 28%), rgba(0, 0, 0, 0.55) calc(var(--shim, 150) * 1% - 10%), #000 calc(var(--shim, 150) * 1%), rgba(0, 0, 0, 0.55) calc(var(--shim, 150) * 1% + 10%), transparent calc(var(--shim, 150) * 1% + 28%));
+      mask-image: linear-gradient(to bottom, transparent calc(var(--shim, 150) * 1% - 28%), rgba(0, 0, 0, 0.55) calc(var(--shim, 150) * 1% - 10%), #000 calc(var(--shim, 150) * 1%), rgba(0, 0, 0, 0.55) calc(var(--shim, 150) * 1% + 10%), transparent calc(var(--shim, 150) * 1% + 28%));
+    }
+  }
+
   .figure-portrait-frame {
     display: flex;
     justify-content: center;
@@ -2677,7 +2691,7 @@
     var shimmerQueued = false;
     function shimmer() {
       shimmerQueued = false;
-      if (!logo || !window.matchMedia("(min-width: 1024px)").matches) return;
+      if (!logo) return;
       var r = logo.getBoundingClientRect(), vh = window.innerHeight;
       var p = Math.max(0, Math.min(1, (vh - r.top) / (vh + r.height)));
       logo.style.setProperty("--shim", (128 - p * 156).toFixed(1));
