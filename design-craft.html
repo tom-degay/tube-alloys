@@ -340,6 +340,11 @@
        bottom edge may fall between row lines. Caption follows in flow. */
     .poster > .p-fig.p-fig-free { position: static; align-self: start; margin-top: calc(-1 * var(--tuck)); }
     .p-fig-free > figcaption { position: static; padding-top: 10px; }
+
+    /* A picture that must never be trimmed: natural height, caption in flow. */
+    .poster > .p-fig.p-nocrop { position: static; align-self: start; }
+    .p-nocrop > img { position: static; height: auto; }
+    .p-nocrop > figcaption { position: static; padding-top: 10px; }
   }
 
   /* -- interior-page heading entrance -- */
@@ -594,7 +599,7 @@
 
       <figure class="p-item figure p-fig" style="--c:1 / 7;--r:45 / span 3"><img src="media/craft-white-rainbow-10.jpg" width="1400" height="888" alt="The front of the Chu Enoki invitation: &lsquo;Chu Enoki Enoki Chu&rsquo; in silver and gunmetal foil on a dark metallic card, the White Rainbow dot logo top right." loading="lazy"><figcaption>The Chu Enoki invitation: silver ink and silver-and-gunmetal foils on metallic black stock. The artist made use of gunmetal in the exhibition.</figcaption></figure>
 
-      <figure class="p-item figure p-fig" style="--c:7 / 13;--r:46 / span 3"><img src="media/craft-white-rainbow-11.jpg" width="1400" height="864" alt="The reverse of the Chu Enoki invitation: a coarse-screened photograph printed twice, the artist with a half-shaved head on one side and long hair on the other." loading="lazy"><figcaption>The reverse: the artist before and after Going to Hungary with Hangari, 1977.</figcaption></figure>
+      <figure class="p-item figure p-fig p-nocrop" style="--c:7 / 13;--r:46 / span 3"><img src="media/craft-white-rainbow-11.jpg" width="1400" height="864" alt="The reverse of the Chu Enoki invitation: a coarse-screened photograph printed twice, the artist with a half-shaved head on one side and long hair on the other." loading="lazy"><figcaption>The reverse: the artist before and after Going to Hungary with Hangari, 1977.</figcaption></figure>
     </div>
 
     <hr class="rule">
