@@ -72,7 +72,7 @@
   /* -- text cards -- */
   .p-card {
     box-sizing: border-box;
-    background: rgb(33, 33, 33);
+    background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
     border-radius: 10px;
     padding: clamp(20px, 2.4vw, 32px);
   }
@@ -2634,7 +2634,23 @@
       { poster: ".poster-3", above: "#isokon-heading", first: 'img[src$="craft-isokon-01.jpg"]', gap: 68 },
       { poster: ".poster-4", above: "#white-rainbow-heading", first: 'img[src$="craft-white-rainbow-01.jpg"]', gap: 68 }
     ];
+    function tuck() {
+      /* the dashboard (and the cards drawn up with it) sits a fixed distance
+         below the Move fast card, whatever height that card comes to */
+      var p1 = document.querySelector(".poster"), mf = el("#move-fast-heading");
+      var dash = document.querySelector(".figure-portrait-frame");
+      if (!p1 || !mf || !dash) return;
+      dash = dash.closest(".p-item");
+      p1.style.removeProperty("--tuck");
+      if (!wide.matches) return;
+      p1.style.setProperty("--tuck", "0px");
+      var t = dash.style.translate; dash.style.translate = "";
+      var gap = dash.getBoundingClientRect().top - mf.getBoundingClientRect().bottom;
+      dash.style.translate = t;
+      p1.style.setProperty("--tuck", (gap - 56) + "px");
+    }
     function pull() {
+      tuck();
       links.forEach(function (l) {
         var p = document.querySelector(l.poster), a = el(l.above), f = document.querySelector(l.first);
         if (!p || !a || !f) return;
@@ -2653,7 +2669,7 @@
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(pull);
     if (window.ResizeObserver) {
       var ro = new ResizeObserver(pull);
-      ["#quantemplate-heading", "#isokon-heading", "#white-rainbow-heading"].forEach(function (id) { var a = el(id); if (a) ro.observe(a); });
+      ["#move-fast-heading", "#quantemplate-heading", "#isokon-heading", "#white-rainbow-heading"].forEach(function (id) { var a = el(id); if (a) ro.observe(a); });
     }
   })();
 </script>
