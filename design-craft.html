@@ -350,6 +350,20 @@
     .p-nocrop > figcaption { position: static; padding-top: 10px; }
   }
 
+  /* -- scroll reveal, as on the home page: each card and picture fades in as
+     it enters the window; the script adds .is-revealed -- */
+  @keyframes card-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  .reveal-armed .poster > .p-item:not(.p-hero) { opacity: 0; }
+  .reveal-armed .poster > .p-item.is-revealed {
+    animation: card-fade-in 1.1s ease var(--reveal-delay, 0ms) both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-armed .poster > .p-item, .reveal-armed .poster > .p-item.is-revealed { opacity: 1; animation: none; }
+  }
+
   /* -- interior-page heading entrance -- */
   .head-armed .head-fade {
     opacity: 0;
@@ -418,7 +432,7 @@
   (function () {
     try {
       if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        document.documentElement.classList.add('head-armed');
+        document.documentElement.classList.add('head-armed', 'reveal-armed');
       }
     } catch (e) {}
   })();
@@ -426,6 +440,7 @@
 <noscript>
   <style>
     .head-armed .head-fade { opacity: 1 !important; transform: none !important; }
+    .reveal-armed .poster > .p-item { opacity: 1 !important; }
   </style>
 </noscript>
   <script src="/nav.js" defer></script>
@@ -652,7 +667,9 @@
         f = f.closest(".p-item");
         p.style.removeProperty("--pull");
         if (!wide.matches) return;
+        var t = f.style.translate; f.style.translate = "";
         var gap = f.getBoundingClientRect().top - a.getBoundingClientRect().bottom;
+        f.style.translate = t;
         p.style.setProperty("--pull", (gap - l.gap) + "px");
       });
     }
@@ -664,6 +681,82 @@
       var ro = new ResizeObserver(pull);
       ["#quantemplate-heading", "#isokon-heading", "#white-rainbow-heading"].forEach(function (id) { var a = el(id); if (a) ro.observe(a); });
     }
+  })();
+</script>
+<script>
+  (function () {
+    var root = document.documentElement;
+    var items = Array.prototype.slice.call(document.querySelectorAll(".poster > .p-item:not(.p-hero)"));
+
+    /* Fade each card and picture in as it enters the window, a short stagger
+       between those arriving together (same as the home page's cards). */
+    if (root.classList.contains("reveal-armed")) {
+      if (!("IntersectionObserver" in window)) {
+        items.forEach(function (c) { c.classList.add("is-revealed"); });
+      } else {
+        var io = new IntersectionObserver(function (entries) {
+          entries
+            .filter(function (e) { return e.isIntersecting; })
+            .map(function (e) { return e.target; })
+            .sort(function (a, b) {
+              return (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING) ? -1 : 1;
+            })
+            .forEach(function (el, i) {
+              el.style.setProperty("--reveal-delay", (i * 90) + "ms");
+              el.classList.add("is-revealed");
+              io.unobserve(el);
+            });
+        }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+        items.forEach(function (c) { io.observe(c); });
+      }
+    }
+
+    /* Parallax: pictures drift against the page, slower in the left half and
+       faster in the right, so the two columns slide past each other. Cards
+       stay put so text never moves under the reader. Uses the individual
+       `translate` property; capped so a picture never reaches its neighbour. */
+    var RATE = 0.04, MAX = 30;
+    var pics = items.filter(function (el) {
+      return el.classList.contains("p-fig") || el.classList.contains("p-logo") || el.classList.contains("wr-roundel");
+    }).map(function (el) {
+      var c = (el.style.getPropertyValue("--c") || "1 / 13").split("/");
+      var mid = (parseInt(c[0], 10) + parseInt(c[1], 10)) / 2;
+      return { el: el, k: mid < 6.5 ? RATE : -RATE };
+    });
+    var wide = window.matchMedia("(min-width: 1024px)");
+    var still = window.matchMedia("(prefers-reduced-motion: reduce)");
+    var near = [], queued = false;
+    function on() { return wide.matches && !still.matches; }
+    function update() {
+      queued = false;
+      if (!on()) return;
+      var mid = window.innerHeight / 2;
+      near.forEach(function (p) {
+        var r = p.el.getBoundingClientRect(), t = p.el.style.translate;
+        var y = r.top + r.height / 2 - (t ? parseFloat(t.split(" ")[1]) || 0 : 0);
+        var d = (mid - y) * p.k;
+        p.el.style.translate = "0 " + Math.max(-MAX, Math.min(MAX, d)).toFixed(1) + "px";
+      });
+    }
+    function queue() { if (!queued) { queued = true; requestAnimationFrame(update); } }
+    function reset() { pics.forEach(function (p) { p.el.style.translate = ""; }); }
+    function sync() { if (on()) queue(); else reset(); }
+    if ("IntersectionObserver" in window) {
+      var po = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          var p = pics.filter(function (x) { return x.el === e.target; })[0];
+          var i = near.indexOf(p);
+          if (e.isIntersecting && i < 0) near.push(p);
+          else if (!e.isIntersecting && i >= 0) near.splice(i, 1);
+        });
+        queue();
+      }, { rootMargin: "25% 0px 25% 0px" });
+      pics.forEach(function (p) { po.observe(p.el); });
+    } else { near = pics; }
+    window.addEventListener("scroll", queue, { passive: true });
+    window.addEventListener("resize", sync);
+    if (wide.addEventListener) { wide.addEventListener("change", sync); still.addEventListener("change", sync); }
+    sync();
   })();
 </script>
 <script src="/media/agent-interactive.js?v=2"></script>
