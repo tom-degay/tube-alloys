@@ -585,10 +585,26 @@
 <svg class="agent-interactive" xmlns="http://www.w3.org/2000/svg" width="690" height="250" viewBox="0 0 690 250" role="button" tabindex="0" aria-label="Agent" style="cursor:pointer;overflow:visible;touch-action:manipulation">
 <title>Agent — hover to animate</title>
 <defs>
+ <linearGradient id="agent-pill-fill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#242424"/><stop offset=".48" stop-color="#1c1c1c"/><stop offset="1" stop-color="#171717"/></linearGradient>
  <linearGradient id="agent-color" gradientUnits="userSpaceOnUse" x1="80" y1="125" x2="200" y2="125"><stop stop-color="#a1d2ec"/><stop offset=".35" stop-color="#c6a8ef"/><stop offset=".55" stop-color="#d39be7"/><stop offset=".75" stop-color="#eca5cd"/><stop offset="1" stop-color="#b4dcf0"/></linearGradient>
 </defs>
-<style>.agent-bg{opacity:0;transition:opacity 0.3ms ease}.agent-interactive:hover .agent-bg{opacity:1}.agent-interactive:focus{outline:none}.agent-interactive:focus-visible{outline:2px solid #888;outline-offset:6px;border-radius:125px}</style>
-<rect class="agent-bg" x="0" y="0" width="690" height="250" rx="125" fill="#191919"/>
+<style>
+.agent-bg { opacity: 0; transform-box: fill-box; transform-origin: center; transform: scale(.975, .94); transition: opacity 300ms ease, transform 300ms cubic-bezier(.22, 1, .36, 1); }
+@media (hover: hover) and (pointer: fine) {
+  .agent-interactive:hover .agent-bg { opacity: 1; transform: scale(1); animation: agent-pill-settle 550ms cubic-bezier(.22, 1, .36, 1) both; }
+}
+@keyframes agent-pill-settle {
+  0% { transform: scale(.975, .94); }
+  55% { transform: scale(1.012, .988); }
+  78% { transform: scale(.997, 1.006); }
+  100% { transform: scale(1); }
+}
+@media (hover: none), (pointer: coarse) { .agent-bg { display: none; } }
+.agent-interactive:focus { outline: none; }
+.agent-interactive:focus-visible { outline: 2px solid #888; outline-offset: 6px; border-radius: 125px; }
+@media (prefers-reduced-motion: reduce) { .agent-bg { transition: none; animation: none !important; transform: none !important; } }
+</style>
+<rect class="agent-bg" x="0" y="0" width="690" height="250" rx="125" fill="url(#agent-pill-fill)" stroke="#ffffff" stroke-opacity=".065" stroke-width="1"/>
 <g class="agent-lines" fill="none" stroke="#fff" stroke-width="10" stroke-linejoin="miter">
 <path d="M140 65 L195 96 L195 156 L140 186 L85 156 L85 96 Z"/>
 <path class="spoke" d="M140 127 L85 96"/><path class="spoke" d="M140 127 L195 96"/><path class="spoke" d="M140 127 L140 186"/>
@@ -858,6 +874,6 @@
     })();
   </script>
   <script data-goatcounter="https://tomdegay.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
-<script src="/media/agent-interactive.js?v=1"></script>
+<script src="/media/agent-interactive.js?v=2"></script>
 </body>
 </html>

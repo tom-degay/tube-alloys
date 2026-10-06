@@ -1,7 +1,7 @@
 
 (()=>{
  const svg=document.querySelector('.agent-demo svg');
- const lines=svg.querySelector('.agent-lines'),gradient=svg.querySelector('linearGradient');
+ const lines=svg.querySelector('.agent-lines'),gradient=svg.querySelector('#agent-color');
  const groups=[lines].map(g=>Array.from(g.querySelectorAll('.spoke')));
  const ends=[[85,96],[195,96],[140,186]],duration=1450;
  let frame=0,running=false;
