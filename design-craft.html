@@ -166,6 +166,8 @@
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
   }
 
+  .p-fig > video { display: block; width: 100%; height: auto; border-radius: 6px; }
+
   .figure img {
     display: block;
     width: 100%;
@@ -312,7 +314,10 @@
 
     /* room for the last caption, which hangs below the final row */
     .poster-2, .poster-3, .poster-4 { margin-top: calc(-1 * var(--pull, 0px)); }
-    .poster-4 { padding-bottom: clamp(64px, 7vw, 112px); }
+    .poster-5 { padding-bottom: clamp(64px, 7vw, 112px); }
+    /* University teaching: content-sized rows (the video keeps its natural
+       height), one blank row below White Rainbow */
+    .poster-5 { grid-template-rows: none; row-gap: clamp(32px, 4vw, 56px); margin-top: calc(var(--mod) + 2 * var(--gv)); }
 
     .poster > .p-logo { position: relative; align-self: stretch; }
     .p-logo > img {
@@ -425,6 +430,7 @@
     /* A picture that must never be trimmed: natural height, caption in flow. */
     .poster > .p-fig.p-nocrop { position: static; align-self: start; }
     .p-nocrop > img { position: static; height: auto; }
+    .p-nocrop > video { display: block; width: 100%; height: auto; border-radius: 6px; }
     .p-nocrop > figcaption { position: static; padding-top: 10px; }
   }
 
@@ -2648,6 +2654,12 @@
       <figure class="p-item figure p-fig p-nocrop" style="--c:7 / 13;--r:24 / span 3"><img src="media/craft-white-rainbow-11.jpg" width="1400" height="864" alt="The reverse of the Chu Enoki invitation: a coarse-screened photograph printed twice, the artist with a half-shaved head on one side and long hair on the other." loading="lazy"><figcaption>The reverse: the artist before and after Going to Hungary with Hangari, 1977.</figcaption></figure>
     </div>
 
+    <div class="poster poster-5">
+      <div class="p-item p-card p-section" style="--c:7 / 13;--r:1"><h2 class="principle-title display" id="teaching-heading">University teaching</h2><p>I spent 11 years as a Visiting Lecturer at Leeds Beckett University where I taught and mentored around 300 design students over my tenure. I helped them to edit, design and print their year-end publications, from shaping the structure to obsessing over paper stocks and print finishes. It was energising to work with such talented students and, I hope, to help raise the bar for what they thought was possible.</p></div>
+
+      <figure class="p-item figure p-fig p-nocrop" style="--c:1 / 13;--r:2"><video autoplay muted loop playsinline preload="metadata" width="1600" height="900" poster="media/leeds-publication-poster.jpg"><source src="media/leeds-publication.mp4" type="video/mp4"></video><figcaption>End of year publication produced in collaboration with graduating Fine Art and Contemporary Art Practices students and Leeds Beckett University 2013.</figcaption></figure>
+    </div>
+
     <hr class="rule">
 
     <p class="back-to-top-row"><a class="back-to-top" href="#">Back to top <span aria-hidden="true">&uarr;</span></a></p>
@@ -2857,6 +2869,13 @@
     window.addEventListener("resize", align);
     window.addEventListener("load", align);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(align);
+  })();
+</script>
+<script>
+  /* Reduced motion: leave the publication video on its poster frame. */
+  (function () {
+    if (!window.matchMedia || !window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    document.querySelectorAll(".p-fig video").forEach(function (v) { v.removeAttribute("autoplay"); v.pause(); });
   })();
 </script>
 <script src="/media/agent-interactive.js?v=2"></script>
