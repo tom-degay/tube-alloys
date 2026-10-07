@@ -7,14 +7,15 @@
 
      sidebar   a quiet fixed rail down the left, sections expanding in place
      slim      a hairline-thin rail: initials and four words set vertically
+     mark      the whole nav collapsed to a T on a squircle, top left; click to open
      autohide  the bar tucks away as you scroll down, returns as you scroll up
      menu      just a "Menu" pill; the links open as a full-screen index
      dock      a small floating pill at the bottom, menus open upwards
 
    Not for production: delete this file and its script tags to drop it. */
 (function () {
-  var NAMES = ["current", "sidebar", "slim", "autohide", "menu", "dock"];
-  var LABELS = { current: "Current", sidebar: "Sidebar", slim: "Slim", autohide: "Auto-hide", menu: "Menu", dock: "Dock" };
+  var NAMES = ["current", "sidebar", "slim", "mark", "autohide", "menu", "dock"];
+  var LABELS = { current: "Current", sidebar: "Sidebar", slim: "Slim", mark: "T mark", autohide: "Auto-hide", menu: "Menu", dock: "Dock" };
   var root = document.documentElement;
 
   var FONT = '"Fakt Blond SemiBold", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
@@ -60,6 +61,33 @@
   '  html[data-nav="slim"] .nav-item:hover .nav-dropdown, html[data-nav="slim"] .nav-item:focus-within .nav-dropdown, html[data-nav="slim"] .nav-item.is-open .nav-dropdown { transform: translate(0, 0); }' +
   '  html[data-nav="slim"] .nav-dropdown-card-title { white-space: nowrap; }' +
   '}' +
+
+  /* ---------- mark: a T on a squircle opens a small menu ---------- */
+  '.nx-home { display: none; }' +
+  'html[data-nav="mark"] .nx-home { display: block; }' +
+  'html[data-nav="mark"] .site-nav { position: absolute; top: 0; left: 0; right: 0; }' +
+  'html[data-nav="mark"] .site-nav::before { background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; }' +
+  'html[data-nav="mark"] .site-nav-brand { display: none; }' +
+  'html[data-nav="mark"] .nav-toggle { display: flex; position: fixed; top: 16px; left: clamp(14px, 2vw, 24px); z-index: 90; flex-direction: row; width: 44px; height: 44px; margin: 0; padding: 0; background: #fff; border: 0; border-radius: 15px; corner-shape: squircle; box-shadow: 0 4px 18px rgba(0,0,0,0.45); transition: transform .2s ease, background .2s ease; }' +
+  'html[data-nav="mark"] .nav-toggle:hover { transform: scale(1.06); }' +
+  'html[data-nav="mark"] .nav-toggle-bar { display: none; }' +
+  'html[data-nav="mark"] .nav-toggle::before { content: "T"; font: 600 25px/1 ' + FONT + '; color: #131313; transform: translateY(1px); }' +
+  'html[data-nav="mark"] .site-nav.is-open .nav-toggle { background: #00d8aa; }' +
+  'html[data-nav="mark"] .site-nav.is-open .nav-toggle::before { content: "\\00d7"; font-size: 30px; font-weight: 500; transform: translateY(-1px); }' +
+  'html[data-nav="mark"] .site-nav-links { position: fixed; top: 70px; left: clamp(14px, 2vw, 24px); right: auto; z-index: 80; display: none; flex-direction: column; flex-wrap: nowrap; align-items: flex-start; gap: 2px; min-width: 250px; max-width: calc(100vw - 28px); max-height: calc(100vh - 90px); overflow-y: auto; padding: 14px 20px 16px; background: rgba(26,26,26,0.97); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); border-radius: 18px; corner-shape: squircle; box-shadow: 0 18px 50px rgba(0,0,0,0.55); }' +
+  '@keyframes nx-pop { from { opacity: 0; transform: translateY(-6px) scale(0.98); } to { opacity: 1; transform: none; } }' +
+  'html[data-nav="mark"] .site-nav.is-open .site-nav-links { display: flex; animation: nx-pop .18s ease-out; }' +
+  'html[data-nav="mark"] .site-nav-links > a, html[data-nav="mark"] .nav-item > a { display: block; padding: 6px 0; border: 0; font-size: 20px; color: #fff; }' +
+  'html[data-nav="mark"] .site-nav-links > a + a, html[data-nav="mark"] .nav-item { border: 0; }' +
+  'html[data-nav="mark"] .nx-home { color: rgba(255,255,255,0.55) !important; font-size: 14px !important; letter-spacing: 0.5px; padding-bottom: 8px !important; }' +
+  'html[data-nav="mark"] .site-nav-links a.is-current { color: #00d8aa; }' +
+  'html[data-nav="mark"] .nav-dropdown { position: static; opacity: 1; visibility: visible; transform: none; transition: none; padding: 0 0 8px; min-width: 0; }' +
+  'html[data-nav="mark"] .nav-item:hover .nav-dropdown, html[data-nav="mark"] .nav-item:focus-within .nav-dropdown, html[data-nav="mark"] .nav-item.is-open .nav-dropdown { transform: none; opacity: 1; visibility: visible; }' +
+  'html[data-nav="mark"] .nav-dropdown-panel { gap: 0; padding: 0 0 0 2px; background: none; box-shadow: none; }' +
+  'html[data-nav="mark"] .nav-dropdown-card { padding: 4px 0 4px 14px; background: none; border-left: 1px solid rgba(255,255,255,0.14); border-radius: 0; }' +
+  'html[data-nav="mark"] .nav-dropdown-card-kicker, html[data-nav="mark"] .nav-dropdown-divider { display: none; }' +
+  'html[data-nav="mark"] .nav-dropdown-card-title { font-size: 14px; line-height: 1.35; color: rgba(255,255,255,0.55); white-space: nowrap; }' +
+  'html[data-nav="mark"] .nav-dropdown-card:hover .nav-dropdown-card-title { color: #fff; }' +
 
   /* ---------- auto-hide ---------- */
   'html[data-nav="autohide"] .site-nav { transition: transform .32s ease; }' +
@@ -131,6 +159,16 @@
       b.setAttribute("aria-pressed", b.dataset.name === name ? "true" : "false");
     });
     onScroll();
+  }
+
+  /* a Home link for the variants that drop the visible brand */
+  var linksBox = document.querySelector(".site-nav-links");
+  if (linksBox) {
+    var home = document.createElement("a");
+    home.className = "nx-home";
+    home.href = "/";
+    home.textContent = "Tom de Gay";
+    linksBox.insertBefore(home, linksBox.firstChild);
   }
 
   /* auto-hide behaviour */
