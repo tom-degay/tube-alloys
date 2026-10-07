@@ -99,18 +99,18 @@
   'html[data-nav="markfull"] .site-nav-brand { display: none; }' +
   'html[data-nav="markfull"] .nav-toggle { display: flex; position: fixed; top: 16px; left: clamp(14px, 2vw, 24px); z-index: 90; flex-direction: row; width: 44px; height: 44px; margin: 0; padding: 0; background: #1c1c1c; border: 1px solid rgba(255,255,255,0.16); border-radius: 15px; corner-shape: squircle; box-shadow: 0 4px 18px rgba(0,0,0,0.5); transition: transform .2s ease, background .2s ease; }' +
   'html[data-nav="markfull"] .nav-toggle:hover { transform: scale(1.06); }' +
-  'html[data-nav="markfull"] .nav-toggle-bar { display: none; }' +
   'html[data-nav="markfull"] .nav-toggle::before { content: "T"; font: 600 25px/1 ' + FONT + '; color: #fff; transform: translateY(1px); }' +
   'html[data-nav="markfull"] .site-nav.is-open .nav-toggle { border-color: #00d8aa; }' +
   'html[data-nav="markfull"] .site-nav.is-open .nav-toggle::before { color: #00d8aa; }' +
   'html[data-nav="markfull"] body { padding-left: clamp(64px, 5.5vw, 80px); }' +
   'html[data-nav="markfull"] .site-nav.is-open .nav-toggle::before { content: "\\00d7"; font-size: 30px; font-weight: 500; transform: translateY(-1px); }' +
-  /* the T modal's mark: white, frosted glass */
-  'html[data-nav="markfull"] .nav-toggle { background: linear-gradient(150deg, rgba(255,255,255,0.86), rgba(255,255,255,0.62)); border: 1px solid rgba(255,255,255,0.7); backdrop-filter: blur(16px) saturate(1.5); -webkit-backdrop-filter: blur(16px) saturate(1.5); box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), inset 0 -1px 0 rgba(255,255,255,0.25), 0 6px 22px rgba(0,0,0,0.38); }' +
-  'html[data-nav="markfull"] .nav-toggle::before { color: #131313; text-shadow: none; }' +
-  'html[data-nav="markfull"] .nav-toggle:hover { background: linear-gradient(150deg, rgba(255,255,255,0.94), rgba(255,255,255,0.72)); }' +
-  'html[data-nav="markfull"] .site-nav.is-open .nav-toggle { border-color: rgba(0,216,170,0.8); background: linear-gradient(150deg, rgba(0,216,170,0.88), rgba(0,216,170,0.6)); }' +
-  'html[data-nav="markfull"] .site-nav.is-open .nav-toggle::before { color: #131313; }' +
+  /* the T modal's mark: a flat white squircle holding a hamburger */
+  'html[data-nav="markfull"] .nav-toggle { flex-direction: column; gap: 5px; background: #fff; border: 0; backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none; }' +
+  'html[data-nav="markfull"] .nav-toggle:hover { background: #f0f0f0; }' +
+  'html[data-nav="markfull"] .nav-toggle::before { content: none; }' +
+  'html[data-nav="markfull"] .site-nav.is-open .nav-toggle::before { content: none; }' +
+  'html[data-nav="markfull"] .nav-toggle-bar { display: block; width: 20px; height: 2px; background: #131313; border-radius: 1px; }' +
+  'html[data-nav="markfull"] .site-nav.is-open .nav-toggle { background: #00d8aa; border: 0; }' +
   'html[data-nav="markfull"] .nx-home { display: block; }' +
   'html[data-nav="markfull"] .site-nav-links { position: fixed; inset: 0; z-index: 80; display: none; flex-direction: column; flex-wrap: nowrap; align-items: flex-start; justify-content: center; gap: 4px; max-height: none; overflow-y: auto; padding: 90px clamp(28px, 10vw, 180px) 60px clamp(84px, 11vw, 200px); background: rgba(19,19,19,0.97); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 0; }' +
   'html[data-nav="markfull"] .site-nav.is-open .site-nav-links { display: flex; animation: nx-fade .22s ease-out; }' +
