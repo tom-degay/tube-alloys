@@ -6,14 +6,15 @@
    remembered, so it carries from page to page. Also settable with ?nav=NAME.
 
      sidebar   a quiet fixed rail down the left, sections expanding in place
+     slim      a hairline-thin rail: initials and four words set vertically
      autohide  the bar tucks away as you scroll down, returns as you scroll up
      menu      just a "Menu" pill; the links open as a full-screen index
      dock      a small floating pill at the bottom, menus open upwards
 
    Not for production: delete this file and its script tags to drop it. */
 (function () {
-  var NAMES = ["current", "sidebar", "autohide", "menu", "dock"];
-  var LABELS = { current: "Current", sidebar: "Sidebar", autohide: "Auto-hide", menu: "Menu", dock: "Dock" };
+  var NAMES = ["current", "sidebar", "slim", "autohide", "menu", "dock"];
+  var LABELS = { current: "Current", sidebar: "Sidebar", slim: "Slim", autohide: "Auto-hide", menu: "Menu", dock: "Dock" };
   var root = document.documentElement;
 
   var FONT = '"Fakt Blond SemiBold", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
@@ -39,6 +40,25 @@
   '  html[data-nav="sidebar"] .nav-dropdown-card-kicker, html[data-nav="sidebar"] .nav-dropdown-divider { display: none; }' +
   '  html[data-nav="sidebar"] .nav-dropdown-card-title { font-size: 13px; line-height: 1.35; color: rgba(255,255,255,0.55); white-space: normal; }' +
   '  html[data-nav="sidebar"] .nav-dropdown-card:hover .nav-dropdown-card-title, html[data-nav="sidebar"] .nav-dropdown-card:focus-visible .nav-dropdown-card-title { color: #fff; }' +
+  '}' +
+
+  /* ---------- slim: the most minimal rail ---------- */
+  '@media (min-width: 900px) {' +
+  '  html[data-nav="slim"] body { padding-left: 64px; }' +
+  '  html[data-nav="slim"] .site-nav { position: fixed; top: 0; left: 0; bottom: 0; width: 64px; }' +
+  '  html[data-nav="slim"] .site-nav::before { background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; }' +
+  '  html[data-nav="slim"] .site-nav-inner { flex-direction: column; align-items: center; justify-content: space-between; flex-wrap: nowrap; max-width: none; margin: 0; padding: 26px 0 30px; gap: 0; min-height: 100%; height: 100%; }' +
+  '  html[data-nav="slim"] .nav-toggle { display: none; }' +
+  '  html[data-nav="slim"] .site-nav-brand { font-size: 15px; letter-spacing: 0.5px; color: rgba(255,255,255,0.9); font-size: 0; }' +
+  '  html[data-nav="slim"] .site-nav-brand::before { content: "TdG"; font-size: 15px; }' +
+  '  html[data-nav="slim"] .site-nav-links { flex-direction: column; align-items: center; flex-wrap: nowrap; gap: 30px; }' +
+  '  html[data-nav="slim"] .nav-item { position: relative; }' +
+  '  html[data-nav="slim"] .site-nav-links > a, html[data-nav="slim"] .nav-item > a { display: block; writing-mode: vertical-rl; transform: rotate(180deg); font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; padding: 0; color: rgba(255,255,255,0.45); }' +
+  '  html[data-nav="slim"] .site-nav-links a:hover, html[data-nav="slim"] .site-nav-links a:focus-visible, html[data-nav="slim"] .site-nav-links a.is-current { color: #fff; }' +
+  '  html[data-nav="slim"] .site-nav-links a.is-current { color: #00d8aa; }' +
+  '  html[data-nav="slim"] .nav-dropdown { top: 0; left: 100%; padding: 0 0 0 18px; min-width: 0; transform: translate(-6px, 0); }' +
+  '  html[data-nav="slim"] .nav-item:hover .nav-dropdown, html[data-nav="slim"] .nav-item:focus-within .nav-dropdown, html[data-nav="slim"] .nav-item.is-open .nav-dropdown { transform: translate(0, 0); }' +
+  '  html[data-nav="slim"] .nav-dropdown-card-title { white-space: nowrap; }' +
   '}' +
 
   /* ---------- auto-hide ---------- */
