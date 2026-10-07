@@ -272,6 +272,12 @@
       --mod: calc((min(100vw, var(--band)) - 2 * var(--gutter) - 11 * var(--g)) / 12);
     }
 
+    /* Tablet and small-laptop widths: captions wrap to three lines there, so
+       the gap under each picture (where its caption hangs) is a little deeper. */
+    @media (max-width: 1439px) {
+      :root { --gv: 96px; }
+    }
+
     main {
       max-width: var(--band);
       padding: clamp(32px, 3.4vw, 52px) var(--gutter);
