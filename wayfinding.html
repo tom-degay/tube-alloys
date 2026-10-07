@@ -692,7 +692,7 @@
       sync();
     })();
 
-    /* Mini contents: highlight the section being read; sit its last baseline on the heading's. */
+    /* Mini contents: highlight the section being read. */
     (function () {
       var links = Array.prototype.slice.call(document.querySelectorAll(".p-toc a"));
       if (!links.length) return;
@@ -708,25 +708,6 @@
       window.addEventListener("scroll", queue, { passive: true });
       window.addEventListener("resize", queue);
       update();
-
-      var toc = document.querySelector(".p-toc"), h1 = document.querySelector(".poster h1");
-      if (!toc || !h1) return;
-      var last = toc.querySelector("a:last-child");
-      var probeH = document.createElement("i"), probeL = document.createElement("i");
-      [probeH, probeL].forEach(function (p) { p.setAttribute("aria-hidden", "true"); p.style.cssText = "display:inline-block;width:0;height:0;vertical-align:baseline"; });
-      h1.appendChild(probeH); last.appendChild(probeL);
-      var wide = window.matchMedia("(min-width: 1024px)");
-      function align() {
-        toc.style.marginTop = "";
-        if (!wide.matches) return;
-        var hb = probeH.getBoundingClientRect().bottom - h1.getBoundingClientRect().top;
-        var lb = probeL.getBoundingClientRect().bottom - toc.getBoundingClientRect().top;
-        toc.style.marginTop = Math.max(0, hb - lb).toFixed(1) + "px";
-      }
-      align();
-      window.addEventListener("resize", align);
-      window.addEventListener("load", align);
-      if (document.fonts && document.fonts.ready) document.fonts.ready.then(align);
     })();
   </script>
   <script data-goatcounter="https://tomdegay.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
