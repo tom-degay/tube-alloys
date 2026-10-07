@@ -317,7 +317,7 @@
     .poster-5 { padding-bottom: clamp(64px, 7vw, 112px); }
     /* University teaching: content-sized rows (the video keeps its natural
        height), one blank row below White Rainbow */
-    .poster-5 { grid-template-rows: none; row-gap: clamp(32px, 4vw, 56px); margin-top: calc(var(--mod) + 2 * var(--gv)); }
+    .poster-5 { grid-template-rows: none; row-gap: clamp(32px, 4vw, 56px); margin-top: calc(var(--mod) + 2 * var(--gv) - var(--pull, 0px)); }
 
     .poster > .p-logo { position: relative; align-self: stretch; }
     .p-logo > img {
@@ -2696,7 +2696,8 @@
     var links = [
       { poster: ".poster-2", above: "#quantemplate-heading", first: ".p-logo", gap: 56 },
       { poster: ".poster-3", above: "#isokon-heading", first: 'img[src$="craft-isokon-01.jpg"]', gap: 68 },
-      { poster: ".poster-4", above: "#white-rainbow-heading", first: 'img[src$="craft-white-rainbow-01.jpg"]', gap: 68 }
+      { poster: ".poster-4", above: "#white-rainbow-heading", first: 'img[src$="craft-white-rainbow-01.jpg"]', gap: 68 },
+      { poster: ".poster-5", above: 'img[src$="craft-white-rainbow-11.jpg"]', first: "#teaching-heading", gap: 68 }
     ];
     function tuck() {
       /* the dashboard (and the cards drawn up with it) sits a fixed distance
