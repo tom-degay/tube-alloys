@@ -431,6 +431,8 @@
     .poster > .p-fig.p-nocrop { position: static; align-self: start; }
     .p-nocrop > img { position: static; height: auto; }
     .p-nocrop > video { display: block; width: 100%; height: auto; border-radius: 6px; }
+    /* wide screens: the publication video's caption runs to half its width */
+    @media (min-width: 1280px) { .poster-5 .p-nocrop > figcaption { max-width: 50%; } }
     .p-nocrop > figcaption { position: static; padding-top: 10px; }
   }
 
