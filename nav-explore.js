@@ -68,11 +68,14 @@
   'html[data-nav="mark"] .site-nav { position: absolute; top: 0; left: 0; right: 0; }' +
   'html[data-nav="mark"] .site-nav::before { background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; }' +
   'html[data-nav="mark"] .site-nav-brand { display: none; }' +
-  'html[data-nav="mark"] .nav-toggle { display: flex; position: fixed; top: 16px; left: clamp(14px, 2vw, 24px); z-index: 90; flex-direction: row; width: 44px; height: 44px; margin: 0; padding: 0; background: #fff; border: 0; border-radius: 15px; corner-shape: squircle; box-shadow: 0 4px 18px rgba(0,0,0,0.45); transition: transform .2s ease, background .2s ease; }' +
+  'html[data-nav="mark"] .nav-toggle { display: flex; position: fixed; top: 16px; left: clamp(14px, 2vw, 24px); z-index: 90; flex-direction: row; width: 44px; height: 44px; margin: 0; padding: 0; background: #1c1c1c; border: 1px solid rgba(255,255,255,0.16); border-radius: 15px; corner-shape: squircle; box-shadow: 0 4px 18px rgba(0,0,0,0.5); transition: transform .2s ease, background .2s ease; }' +
   'html[data-nav="mark"] .nav-toggle:hover { transform: scale(1.06); }' +
   'html[data-nav="mark"] .nav-toggle-bar { display: none; }' +
-  'html[data-nav="mark"] .nav-toggle::before { content: "T"; font: 600 25px/1 ' + FONT + '; color: #131313; transform: translateY(1px); }' +
-  'html[data-nav="mark"] .site-nav.is-open .nav-toggle { background: #00d8aa; }' +
+  'html[data-nav="mark"] .nav-toggle::before { content: "T"; font: 600 25px/1 ' + FONT + '; color: #fff; transform: translateY(1px); }' +
+  'html[data-nav="mark"] .site-nav.is-open .nav-toggle { border-color: #00d8aa; }' +
+  'html[data-nav="mark"] .site-nav.is-open .nav-toggle::before { color: #00d8aa; }' +
+  /* a left margin on every page, so the mark never sits over content */
+  'html[data-nav="mark"] body { padding-left: clamp(64px, 5.5vw, 80px); }' +
   'html[data-nav="mark"] .site-nav.is-open .nav-toggle::before { content: "\\00d7"; font-size: 30px; font-weight: 500; transform: translateY(-1px); }' +
   'html[data-nav="mark"] .site-nav-links { position: fixed; top: 70px; left: clamp(14px, 2vw, 24px); right: auto; z-index: 80; display: none; flex-direction: column; flex-wrap: nowrap; align-items: flex-start; gap: 2px; min-width: 250px; max-width: calc(100vw - 28px); max-height: calc(100vh - 90px); overflow-y: auto; padding: 14px 20px 16px; background: rgba(26,26,26,0.97); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); border-radius: 18px; corner-shape: squircle; box-shadow: 0 18px 50px rgba(0,0,0,0.55); }' +
   '@keyframes nx-pop { from { opacity: 0; transform: translateY(-6px) scale(0.98); } to { opacity: 1; transform: none; } }' +
