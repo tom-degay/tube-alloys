@@ -8,14 +8,15 @@
      sidebar   a quiet fixed rail down the left, sections expanding in place
      slim      a hairline-thin rail: initials and four words set vertically
      mark      the whole nav collapsed to a T on a squircle, top left; click to open
+     markfull  the same T, but it opens a full-screen overlay
      autohide  the bar tucks away as you scroll down, returns as you scroll up
      menu      just a "Menu" pill; the links open as a full-screen index
      dock      a small floating pill at the bottom, menus open upwards
 
    Not for production: delete this file and its script tags to drop it. */
 (function () {
-  var NAMES = ["current", "sidebar", "slim", "mark", "autohide", "menu", "dock"];
-  var LABELS = { current: "Current", sidebar: "Sidebar", slim: "Slim", mark: "T mark", autohide: "Auto-hide", menu: "Menu", dock: "Dock" };
+  var NAMES = ["current", "sidebar", "slim", "mark", "markfull", "autohide", "menu", "dock"];
+  var LABELS = { current: "Current", sidebar: "Sidebar", slim: "Slim", mark: "T mark", markfull: "T modal", autohide: "Auto-hide", menu: "Menu", dock: "Dock" };
   var root = document.documentElement;
 
   var FONT = '"Fakt Blond SemiBold", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
@@ -91,6 +92,34 @@
   'html[data-nav="mark"] .nav-dropdown-card-kicker, html[data-nav="mark"] .nav-dropdown-divider { display: none; }' +
   'html[data-nav="mark"] .nav-dropdown-card-title { font-size: 14px; line-height: 1.35; color: rgba(255,255,255,0.55); white-space: nowrap; }' +
   'html[data-nav="mark"] .nav-dropdown-card:hover .nav-dropdown-card-title { color: #fff; }' +
+
+  /* ---------- markfull: the T opens a full-screen overlay ---------- */
+  'html[data-nav="markfull"] .site-nav { position: absolute; top: 0; left: 0; right: 0; }' +
+  'html[data-nav="markfull"] .site-nav::before { background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; }' +
+  'html[data-nav="markfull"] .site-nav-brand { display: none; }' +
+  'html[data-nav="markfull"] .nav-toggle { display: flex; position: fixed; top: 16px; left: clamp(14px, 2vw, 24px); z-index: 90; flex-direction: row; width: 44px; height: 44px; margin: 0; padding: 0; background: #1c1c1c; border: 1px solid rgba(255,255,255,0.16); border-radius: 15px; corner-shape: squircle; box-shadow: 0 4px 18px rgba(0,0,0,0.5); transition: transform .2s ease, background .2s ease; }' +
+  'html[data-nav="markfull"] .nav-toggle:hover { transform: scale(1.06); }' +
+  'html[data-nav="markfull"] .nav-toggle-bar { display: none; }' +
+  'html[data-nav="markfull"] .nav-toggle::before { content: "T"; font: 600 25px/1 ' + FONT + '; color: #fff; transform: translateY(1px); }' +
+  'html[data-nav="markfull"] .site-nav.is-open .nav-toggle { border-color: #00d8aa; }' +
+  'html[data-nav="markfull"] .site-nav.is-open .nav-toggle::before { color: #00d8aa; }' +
+  'html[data-nav="markfull"] body { padding-left: clamp(64px, 5.5vw, 80px); }' +
+  'html[data-nav="markfull"] .site-nav.is-open .nav-toggle::before { content: "\\00d7"; font-size: 30px; font-weight: 500; transform: translateY(-1px); }' +
+  'html[data-nav="markfull"] .nx-home { display: block; }' +
+  'html[data-nav="markfull"] .site-nav-links { position: fixed; inset: 0; z-index: 80; display: none; flex-direction: column; flex-wrap: nowrap; align-items: flex-start; justify-content: center; gap: 4px; max-height: none; overflow-y: auto; padding: 90px clamp(28px, 10vw, 180px) 60px clamp(84px, 11vw, 200px); background: rgba(19,19,19,0.97); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 0; }' +
+  'html[data-nav="markfull"] .site-nav.is-open .site-nav-links { display: flex; animation: nx-fade .22s ease-out; }' +
+  '@keyframes nx-fade { from { opacity: 0; } to { opacity: 1; } }' +
+  'html[data-nav="markfull"] .site-nav-links > a, html[data-nav="markfull"] .nav-item > a { display: block; padding: 4px 0; border: 0; font-size: clamp(34px, 5.6vw, 72px); line-height: 1.1; color: #fff; }' +
+  'html[data-nav="markfull"] .site-nav-links > a + a, html[data-nav="markfull"] .nav-item { border: 0; }' +
+  'html[data-nav="markfull"] .nx-home { color: rgba(255,255,255,0.45) !important; font-size: 15px !important; letter-spacing: 0.5px; padding-bottom: 18px !important; }' +
+  'html[data-nav="markfull"] .site-nav-links a.is-current { color: #00d8aa; }' +
+  'html[data-nav="markfull"] .nav-dropdown { position: static; opacity: 1; visibility: visible; transform: none; transition: none; padding: 2px 0 18px; min-width: 0; }' +
+  'html[data-nav="markfull"] .nav-item:hover .nav-dropdown, html[data-nav="markfull"] .nav-item:focus-within .nav-dropdown, html[data-nav="markfull"] .nav-item.is-open .nav-dropdown { transform: none; opacity: 1; visibility: visible; }' +
+  'html[data-nav="markfull"] .nav-dropdown-panel { flex-direction: row; flex-wrap: wrap; gap: 4px 26px; padding: 0; background: none; box-shadow: none; }' +
+  'html[data-nav="markfull"] .nav-dropdown-card { padding: 4px 0; background: none; }' +
+  'html[data-nav="markfull"] .nav-dropdown-card-kicker, html[data-nav="markfull"] .nav-dropdown-divider { display: none; }' +
+  'html[data-nav="markfull"] .nav-dropdown-card-title { font-size: 17px; color: rgba(255,255,255,0.55); white-space: nowrap; }' +
+  'html[data-nav="markfull"] .nav-dropdown-card:hover .nav-dropdown-card-title { color: #fff; }' +
 
   /* ---------- auto-hide ---------- */
   'html[data-nav="autohide"] .site-nav { transition: transform .32s ease; }' +
