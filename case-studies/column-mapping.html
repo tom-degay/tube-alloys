@@ -261,7 +261,10 @@
     margin: -28px auto 0;
     overflow: hidden;
     border-radius: 10px 10px 0 0;
-    max-height: 750px;
+    /* Short laptop windows (a 15" MacBook Air is ~780px tall): keep the case
+       study icon, kicker and the start of "On this page" above the fold, by
+       leaving ~270px under the hero. Taller windows keep the full 750px. */
+    max-height: min(750px, max(320px, calc(100vh - 270px)));
   }
 
   @media (min-width: 1024px) {
