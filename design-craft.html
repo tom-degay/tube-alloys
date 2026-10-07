@@ -370,9 +370,18 @@
       aspect-ratio: auto;
       height: 100%;
       align-content: center;
-      /* a shallower panel: padding shrinks with the window so the content
-         always fits the three rows it sits in */
-      padding: clamp(3px, calc((100vw - 1030px) * 0.04 + 3px), 36px) 0 clamp(3px, calc((100vw - 1030px) * 0.03 + 3px), 20px);
+    }
+
+    /* Wide windows: a shallow panel, three rows, its padding easing with the
+       window so the content always fits. Medium windows have less room, so
+       there the panel takes a fourth row and keeps its full padding. */
+    @media (min-width: 1440px) {
+      .p-fig > .agent-demo {
+        padding: clamp(3px, calc((100vw - 1030px) * 0.04 + 3px), 36px) 0 clamp(3px, calc((100vw - 1030px) * 0.03 + 3px), 20px);
+      }
+    }
+    @media (max-width: 1439px) {
+      .poster > .p-fig:has(> .agent-demo) { --r: 2 / span 4 !important; }
     }
 
     .p-fig > figcaption {
