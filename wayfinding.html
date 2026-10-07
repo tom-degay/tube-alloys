@@ -308,12 +308,152 @@
       transition: none !important;
     }
   }
+
+  /* ==== Design and AI as a poster (same treatment as Design craft) ====
+     Below 1024px: one column of cards and pictures in reading order. From
+     1024px the .poster is the home page's twelve columns, with content-sized
+     rows, so nothing can overlap whatever the text does. ==== */
+  main { display: block; max-width: 900px; margin: 0 auto; padding: clamp(24px, 6vw, 72px) clamp(24px, 5vw, 56px); }
+
+  .p-toc { display: none; }
+  .rule.rule-top { margin: 0 0 clamp(16px, 2vw, 28px); }
+
+  .p-item { margin: 0 0 clamp(24px, 7.5vw, 40px); }
+
+  .p-card {
+    box-sizing: border-box;
+    background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
+    border-radius: 10px;
+    padding: clamp(20px, 2.4vw, 32px);
+  }
+  .p-card p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: clamp(16px, 1.3vw, 19px);
+    line-height: 1.6;
+  }
+  .p-card p + p { margin-top: 1em; }
+  .p-card p a[target="_blank"]::after { content: none; }
+  .p-card p + blockquote, .p-card blockquote + p { margin-top: 22px; }
+  .p-card p.prompts-intro { margin-top: 22px; margin-bottom: 14px; }
+  .p-card blockquote {
+    margin: 0;
+    padding-left: 22px;
+    border-left: 2px solid #00d8aa;
+    color: #fff;
+    font-size: clamp(18px, 1.5vw, 22px);
+    line-height: 1.5;
+    max-width: none;
+  }
+  .p-card blockquote p { color: inherit; font-size: inherit; line-height: inherit; }
+  .p-card blockquote p + p { margin-top: 0.5em; }
+  .p-section .principle-title { margin-bottom: clamp(16px, 1.8vw, 26px); }
+  .p-notes .eyebrow { margin: 0 0 16px; }
+  .p-stack { display: flex; flex-direction: column; gap: clamp(20px, 2.4vw, 28px); }
+  .p-stack .case-block { margin: 0; }
+
+  .principle-title {
+    margin: 0;
+    color: #fff;
+    font-size: clamp(30px, 3.6vw, 56px);
+    line-height: 1.06;
+  }
+
+  .p-hero { display: flex; }
+  .p-hero .lede {
+    margin: 0;
+    max-width: none;
+    color: #fff;
+    font-size: clamp(44px, 7vw, 112px);
+    line-height: 0.98;
+  }
+
+  /* pictures: no zoom cursor (there is no lightbox), full width of their cell */
+  .p-pic.figure { margin: 0 0 clamp(24px, 7.5vw, 40px); }
+  .p-pic.figure img { cursor: default; }
+  .p-pic .figure-portrait-frame { margin-bottom: 0; }
+  .p-pic .ui-video { max-width: none; }
+  /* the thinking-state canvas is a square */
+  .p-pic .ai-validation-animation { height: auto; aspect-ratio: 1 / 1; }
+  .p-pic figcaption { margin: 0; padding-top: 10px; }
+
+  /* wide screens: captions run to half the picture's width, not its full width */
+  @media (min-width: 1280px) { .p-big figcaption { max-width: 50%; } }
+
+  /* link cards take the same gradient as the text cards */
+  .poster .case-block.has-thumb {
+    max-width: none;
+    background-color: transparent;
+    background-image: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
+    border-color: transparent;
+  }
+  .poster .case-block.has-thumb:hover, .poster .case-block.has-thumb:focus-visible {
+    background-image: linear-gradient(to bottom, #222, #363636);
+    border-color: transparent;
+    transform: none;
+  }
+
+  /* -- scroll reveal, as on the home page -- */
+  @keyframes card-fade-in { from { opacity: 0; } to { opacity: 1; } }
+  .reveal-armed .poster > .p-item:not(.p-hero) { opacity: 0; }
+  .reveal-armed .poster > .p-item.is-revealed { animation: card-fade-in 1.1s ease var(--reveal-delay, 0ms) both; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-armed .poster > .p-item, .reveal-armed .poster > .p-item.is-revealed { opacity: 1; animation: none; }
+  }
+
+  /* -- heading entrance -- */
+  .head-armed .head-fade { opacity: 0; transform: translateY(10px); }
+  .head-play .head-fade { opacity: 1; transform: translateY(0); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+  @media (prefers-reduced-motion: reduce) {
+    .head-fade { opacity: 1 !important; transform: none !important; transition: none !important; }
+  }
+
+  @media (min-width: 1024px) {
+    :root {
+      --band: 1500px;
+      --gutter: clamp(32px, 4vw, 72px);
+      --g: clamp(16px, 1.7vw, 30px);
+      --gr: clamp(40px, 4.4vw, 72px);
+      --bandgap: clamp(40px, 5vw, 80px);
+    }
+    main { display: block; max-width: var(--band); padding: clamp(32px, 3.4vw, 52px) var(--gutter); }
+
+    .poster {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--g);
+      row-gap: var(--gr);
+      align-items: start;
+    }
+    .poster > .p-item { grid-column: var(--c); grid-row: var(--r); margin: 0; }
+    .poster > .p-item.band { margin-top: var(--bandgap); }
+    /* one grid row, as on the twelve-column home page: a column's width plus the gap */
+    .poster > .p-item.drop { margin-top: calc((min(100vw, var(--band)) - 2 * var(--gutter) - 11 * var(--g)) / 12 + var(--gr)); }
+    .poster > .p-item.drop2 { margin-top: calc(2 * ((min(100vw, var(--band)) - 2 * var(--gutter) - 11 * var(--g)) / 12 + var(--gr))); }
+    .poster > .p-item.band.drop { margin-top: calc(var(--bandgap) + (min(100vw, var(--band)) - 2 * var(--gutter) - 11 * var(--g)) / 12 + var(--gr)); }
+    .poster > .p-item.tight { margin-top: calc(24px - var(--gr)); }
+    .p-pic.figure { margin: 0; }
+
+    .poster > .p-toc { display: block; justify-self: end; width: max-content; }
+    .p-toc a { position: relative; width: fit-content; padding: 4px 0; font-size: 15px; border-left: 0; }
+    .p-toc a::after {
+      content: "\2193";
+      position: absolute;
+      right: -1.1em;
+      top: 50%;
+      transform: translate(0, calc(-50% - 4px));
+      opacity: 0;
+      transition: transform 0.18s ease, opacity 0.18s ease;
+      pointer-events: none;
+    }
+    .p-toc a:hover::after, .p-toc a:focus-visible::after { opacity: 1; transform: translate(0, -50%); }
+  }
 </style>
 <script>
   (function () {
     try {
       if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        document.documentElement.classList.add('head-armed');
+        document.documentElement.classList.add('head-armed', 'reveal-armed');
       }
     } catch (e) {}
   })();
@@ -321,9 +461,9 @@
 <noscript>
   <style>
     .head-armed .head-fade { opacity: 1 !important; transform: none !important; }
+    .reveal-armed .poster > .p-item { opacity: 1 !important; }
   </style>
 </noscript>
-  <script src="/lightbox.js" defer></script>
   <script src="/nav.js" defer></script>
   <script src="/footer.js" defer></script>
 </head>
@@ -391,177 +531,183 @@
     </div>
   </nav>
   <main>
-    <div class="content">
-      <h1 class="lede display head-fade">Learning from wayfinding</h1>
+    <hr class="rule rule-top">
+    <div class="poster">
+      <div class="p-item p-hero" style="--c:1 / 8;--r:1"><h1 class="lede display head-fade">Learning from wayfinding</h1></div>
 
-      <p>Before moving into digital product design, I designed wayfinding systems for schools, hospitals and other complex buildings. That work still shapes my approach: help people understand where they are, what they can do next and whether they&rsquo;re on the right track.</p>
-
-      <figure class="figure">
+      <nav class="p-item toc p-toc" aria-label="On this page" style="--c:9 / 13;--r:1">
+        <a href="#start-heading">Start with people and their journeys</a>
+        <a href="#information-heading">Give the right information at the right moment</a>
+        <a href="#complexity-heading">Make complexity understandable</a>
+        <a href="#experience-heading">Design the whole experience</a>
+        <a href="#build-heading">Build together, test and learn</a>
+      </nav>
+      <div class="p-item p-card p-section" style="--c:7 / 13;--r:2"><p>Before moving into digital product design, I designed wayfinding systems for schools, hospitals and other complex buildings. That work still shapes my approach: help people understand where they are, what they can do next and whether they&rsquo;re on the right track.</p></div>
+      <figure class="p-item figure p-pic" style="--c:1 / 7;--r:2">
         <img src="media/haggerston-colour-banding.jpg" width="1920" height="1080" alt="Interior of Haggerston School showing a staircase and corridor walls painted in bands of red and green to distinguish floors.">
         <figcaption>Haggerston School, London. I designed the colour banding on the walls to differentiate floors, break up monotonous corridors and enhance natural wayfinding.</figcaption>
       </figure>
-
-      <hr class="rule">
-
-      <div class="principles">
-        <section class="principle">
-          <h2 class="principle-title display" id="start-heading">Start with people and their journeys</h2>
-          <figure class="figure">
+      <div class="p-item p-card p-section band" style="--c:1 / 7;--r:3"><h2 class="principle-title display" id="start-heading">Start with people and their journeys</h2><p>Learn what people are trying to achieve, their context and how much they already know. A first-time visitor needs different guidance from someone who knows the way. Start every project with an understanding of the different user roles, their needs, their expectations, their context outside your product. Decide who you&rsquo;re optimising for at which point.</p><p class="principle-applied"><a href="/case-studies/column-mapping#approach-heading">Learning from users&rsquo; Excel workarounds &rarr;</a></p></div>
+      <figure class="p-item figure p-pic band" style="--c:7 / 13;--r:3">
             <img src="media/haggerston-visitor-journey.jpg" width="1920" height="1080" alt="Diagram of a visitor's route through Haggerston School's signage: entrance map, block locator, directional sign, stair locator, floor directory and destination locator." loading="lazy">
             <figcaption>A typical visitor journey at Haggerston School, showing key decision points and information disclosure.</figcaption>
           </figure>
-          <p>Learn what people are trying to achieve, their context and how much they already know. A first-time visitor needs different guidance from someone who knows the way. Start every project with an understanding of the different user roles, their needs, their expectations, their context outside your product. Decide who you&rsquo;re optimising for at which point.</p>
-          <p class="principle-applied"><a href="/case-studies/column-mapping#approach-heading">Learning from users&rsquo; Excel workarounds &rarr;</a></p>
-        </section>
-
-        <hr class="rule">
-
-        <section class="principle">
-          <h2 class="principle-title display" id="information-heading">Give the right information at the right moment</h2>
-          <figure class="figure">
+      <div class="p-item p-card p-section band" style="--c:7 / 13;--r:4"><h2 class="principle-title display" id="information-heading">Give the right information at the right moment</h2><p>Those road signs on the motorway that just say &lsquo;The North&rsquo;? That&rsquo;s a great example of &lsquo;progressive disclosure&rsquo;. You don&rsquo;t need to list every town for the next 200 miles to know you&rsquo;re heading in the right direction. The same&rsquo;s true for digital products, revealing detail when it becomes useful and reducing distractions along the way.</p><p class="principle-applied"><a href="/case-studies/feeds#datamodel-heading">Guiding users through complex submissions &rarr;</a></p></div>
+      <figure class="p-item figure p-pic band" style="--c:1 / 7;--r:4">
             <img src="media/road-sign-the-north.jpg" width="1731" height="1154" alt="A large blue UK motorway sign reading &lsquo;The NORTH, Scotch Corner, A1&rsquo; above two downward lane arrows." loading="lazy">
             <figcaption>An example of progressive disclosure, familiar to anyone on a long drive in the UK.</figcaption>
           </figure>
-          <p>Those road signs on the motorway that just say &lsquo;The North&rsquo;? That&rsquo;s a great example of &lsquo;progressive disclosure&rsquo;. You don&rsquo;t need to list every town for the next 200 miles to know you&rsquo;re heading in the right direction. The same&rsquo;s true for digital products, revealing detail when it becomes useful and reducing distractions along the way.</p>
-          <p class="principle-applied"><a href="/case-studies/feeds#datamodel-heading">Guiding users through complex submissions &rarr;</a></p>
-        </section>
-
-        <hr class="rule">
-
-        <section class="principle">
-          <h2 class="principle-title display" id="complexity-heading">Make complexity understandable</h2>
-          <figure class="figure">
+      <div class="p-item p-card p-section band" style="--c:1 / 7;--r:5"><h2 class="principle-title display" id="complexity-heading">Make complexity understandable</h2><p>A map is a complex artefact, but an experienced navigator knows how to use one. They have a mental model of how the map works. Every cartographer needs to make decisions about what is included and what is omitted. Prominence and hierarchy are key. Likewise, in complex products, we should aim to preserve the capability people need while making it easier to learn and use.</p><p class="principle-applied"><a href="/case-studies/pipelines#kd-hierarchy">Giving pipelines a simple hierarchy &rarr;</a></p></div>
+      <figure class="p-item figure p-pic band" style="--c:7 / 13;--r:5">
             <img src="media/dinorwig-quarry-map.webp" width="2000" height="1296" alt="Detail from a hand-drawn map of Dinorwig Quarry and Padarn Country Park near Llanberis, showing numbered levels, inclines, buildings and walking routes." loading="lazy">
             <figcaption>Dinorwig Quarry map (detail). I drew this as part of my Masters final project at <a href="https://www.arts.ac.uk/colleges/central-saint-martins" target="_blank" rel="noopener noreferrer">Central Saint Martins</a>, where I specialised in wayfinding.</figcaption>
           </figure>
-          <p>A map is a complex artefact, but an experienced navigator knows how to use one. They have a mental model of how the map works. Every cartographer needs to make decisions about what is included and what is omitted. Prominence and hierarchy are key. Likewise, in complex products, we should aim to preserve the capability people need while making it easier to learn and use.</p>
-          <p class="principle-applied"><a href="/case-studies/pipelines#kd-hierarchy">Giving pipelines a simple hierarchy &rarr;</a></p>
-        </section>
-
-        <hr class="rule">
-
-        <section class="principle">
-          <h2 class="principle-title display" id="experience-heading">Design the whole experience</h2>
-          <figure class="figure">
+      <div class="p-item p-card p-section band" style="--c:7 / 13;--r:6"><h2 class="principle-title display" id="experience-heading">Design the whole experience</h2><p>A sign only works as part of a wider wayfinding system &ndash; a coherent visual language applied to a wayfinding plan. Likewise, every component in a design system needs to support a coherent journey. A system is more than a set of consistent visual designs and behaviours, it provides guardrails that enable good decision making.</p><p class="principle-applied"><a href="/case-studies/feeds#approach-heading">Mapping the complete data submission workflow &rarr;</a></p></div>
+      <figure class="p-item figure p-pic band" style="--c:1 / 7;--r:6">
             <img src="media/road-signs-1957.png" width="1920" height="1080" alt="Construction drawing of a UK road sign for Turpin's Crossroads, dimensioned entirely in multiples of the stroke width of a capital letter I." loading="lazy">
             <figcaption>1957 UK road sign system, still in use today. The entire system can be specified using the width of a letter I as the base unit of measurement.</figcaption>
           </figure>
-          <p>A sign only works as part of a wider wayfinding system &ndash; a coherent visual language applied to a wayfinding plan. Likewise, every component in a design system needs to support a coherent journey. A system is more than a set of consistent visual designs and behaviours, it provides guardrails that enable good decision making.</p>
-          <p class="principle-applied"><a href="/case-studies/feeds#approach-heading">Mapping the complete data submission workflow &rarr;</a></p>
-        </section>
-
-        <hr class="rule">
-
-        <section class="principle">
-          <h2 class="principle-title display" id="build-heading">Build together, test and learn</h2>
-          <figure class="figure">
+      <div class="p-item p-card p-section band" style="--c:1 / 7;--r:7"><h2 class="principle-title display" id="build-heading">Build together, test and learn</h2><p>In wayfinding, others manufacture, install and extend the systems you design. Involving the people who will build and maintain a solution from the outset helps it last and adapt. The same applies to digital products: work with users, engineers and subject-matter experts to shape ideas, test prototypes and improve the experience as our needs change and our understanding evolves.</p><p class="principle-applied"><a href="/case-studies/validation#approach-infodesign">Shaping validation reports through collaboration and feedback &rarr;</a></p></div>
+      <figure class="p-item figure p-pic band" style="--c:7 / 13;--r:7">
             <img src="media/road-signs-legibility-test-1960.jpg" width="1920" height="1080" alt="1960 legibility trial: observers seated on chairs at the roadside watch a car carrying a test sign drive past on a former airfield." loading="lazy">
             <figcaption>1960 legibility test, comparing different fonts for the UK road signs system. An early example of methodical testing of a design.</figcaption>
           </figure>
-          <p>In wayfinding, others manufacture, install and extend the systems you design. Involving the people who will build and maintain a solution from the outset helps it last and adapt. The same applies to digital products: work with users, engineers and subject-matter experts to shape ideas, test prototypes and improve the experience as our needs change and our understanding evolves.</p>
-          <p class="principle-applied"><a href="/case-studies/validation#approach-infodesign">Shaping validation reports through collaboration and feedback &rarr;</a></p>
-        </section>
-      </div>
-
-      <hr class="rule">
-
-      <p class="back-to-top-row"><a class="back-to-top" href="#">Back to top <span aria-hidden="true">&uarr;</span></a></p>
-
-      <nav class="related" aria-label="More in Approach">
-        <span class="eyebrow related-heading">More</span>
-        <a href="/ai"><img class="related-thumb" src="/media/brain-emboss.jpg" width="1986" height="792" alt="" loading="lazy"><span class="related-title">Design and AI</span></a>
-        <a href="/design-craft"><img class="related-thumb" src="/media/approach-craft.jpg" width="820" height="328" alt="" loading="lazy"><span class="related-title">Design craft</span></a>
-      </nav>
     </div>
 
-    <div class="side-rail">
-    <nav class="toc" aria-label="Section navigation">
-      <span class="toc-indicator" aria-hidden="true"></span>
-      <span class="eyebrow toc-heading">On this page</span>
-      <a href="#start-heading">Start with people and their journeys</a>
-      <a href="#information-heading">Give the right information at the right moment</a>
-      <a href="#complexity-heading">Make complexity understandable</a>
-      <a href="#experience-heading">Design the whole experience</a>
-      <a href="#build-heading">Build together, test and learn</a>
+    <hr class="rule">
+
+    <p class="back-to-top-row"><a class="back-to-top" href="#">Back to top <span aria-hidden="true">&uarr;</span></a></p>
+
+    <nav class="related" aria-label="More in Approach">
+      <span class="eyebrow related-heading">More</span>
+      <a href="/ai"><img class="related-thumb" src="/media/brain-emboss.jpg" width="1986" height="792" alt="" loading="lazy"><span class="related-title">Design and AI</span></a>
+      <a href="/design-craft"><img class="related-thumb" src="/media/approach-craft.jpg" width="820" height="328" alt="" loading="lazy"><span class="related-title">Design craft</span></a>
     </nav>
-    </div>
-
-    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged image" tabindex="-1">
-      <div class="lightbox-media">
-        <img alt="">
-        <video class="lightbox-video" muted loop playsinline hidden></video>
-        <button class="lightbox-close" type="button" aria-label="Close enlarged image">&times;</button>
-        <button class="lightbox-nav lightbox-prev" type="button" aria-label="Previous image"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
-        <button class="lightbox-nav lightbox-next" type="button" aria-label="Next image"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
-      </div>
-      <p class="lightbox-caption" hidden></p>
-    </div>
   </main>
-
   <script>
     (function () {
-      var links = document.querySelectorAll(".toc a");
-      if (!links.length || !("IntersectionObserver" in window)) return;
-
-      var indicator = document.querySelector(".toc-indicator");
-      function moveIndicator(link) {
-        if (!indicator || !link) return;
-        indicator.style.height = link.offsetHeight + "px";
-        indicator.style.transform = "translateY(" + link.offsetTop + "px)";
-        indicator.classList.add("is-visible");
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.querySelectorAll(".ui-video video").forEach(function (v) {
+          v.removeAttribute("autoplay");
+          v.pause();
+        });
       }
-      window.addEventListener("resize", function () {
-        var active = document.querySelector(".toc a.is-active");
-        if (active) moveIndicator(active);
-      });
-
-      var sections = [];
-      links.forEach(function (link) {
-        var id = link.getAttribute("href").slice(1);
-        var el = document.getElementById(id);
-        var section = el ? el.closest("section") || el : null;
-        if (section) sections.push({ section: section, link: link });
-      });
-
-      var observer = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (entry) {
-            var match = null;
-            for (var i = 0; i < sections.length; i++) {
-              if (sections[i].section === entry.target) {
-                match = sections[i];
-                break;
-              }
-            }
-            if (!match) return;
-            if (entry.isIntersecting) {
-              links.forEach(function (l) { l.classList.remove("is-active"); });
-              match.link.classList.add("is-active");
-              moveIndicator(match.link);
-            }
-          });
-        },
-        { rootMargin: "-20% 0px -70% 0px", threshold: 0 }
-      );
-
-      sections.forEach(function (s) {
-        observer.observe(s.section);
-      });
     })();
 
-  </script>
-  <script>
+    /* heading entrance, as on Design craft */
     (function () {
       var root = document.documentElement;
       if (!root.classList.contains('head-armed')) return;
       var els = document.querySelectorAll('.head-fade');
       if (!els.length) return;
-      Array.prototype.forEach.call(els, function (el, i) {
-        el.style.transitionDelay = (i * 70) + 'ms';
-      });
       requestAnimationFrame(function () {
         requestAnimationFrame(function () { root.classList.add('head-play'); });
       });
+    })();
+
+    (function () {
+      var root = document.documentElement;
+      var items = Array.prototype.slice.call(document.querySelectorAll(".poster > .p-item:not(.p-hero)"));
+
+      /* Fade each card and picture in as it enters the window. */
+      if (root.classList.contains("reveal-armed")) {
+        if (!("IntersectionObserver" in window)) {
+          items.forEach(function (c) { c.classList.add("is-revealed"); });
+        } else {
+          var io = new IntersectionObserver(function (entries) {
+            entries
+              .filter(function (e) { return e.isIntersecting; })
+              .map(function (e) { return e.target; })
+              .sort(function (a, b) { return (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING) ? -1 : 1; })
+              .forEach(function (el, i) {
+                el.style.setProperty("--reveal-delay", (i * 90) + "ms");
+                el.classList.add("is-revealed");
+                io.unobserve(el);
+              });
+          }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+          items.forEach(function (c) { io.observe(c); });
+        }
+      }
+
+      /* Parallax: pictures drift against the page, the left column one way and
+         the right the other. Capped well inside the gaps between blocks. */
+      var RATE = 0.04, MAX = 20;
+      var pics = items.filter(function (el) { return el.classList.contains("p-pic"); }).map(function (el) {
+        var c = (el.style.getPropertyValue("--c") || "1 / 13").split("/");
+        var mid = (parseInt(c[0], 10) + parseInt(c[1], 10)) / 2;
+        return { el: el, k: mid < 6.5 ? RATE : -RATE };
+      });
+      var wide = window.matchMedia("(min-width: 1024px)");
+      var still = window.matchMedia("(prefers-reduced-motion: reduce)");
+      var near = [], queued = false;
+      function on() { return wide.matches && !still.matches; }
+      function update() {
+        queued = false;
+        if (!on()) return;
+        var mid = window.innerHeight / 2;
+        near.forEach(function (p) {
+          var r = p.el.getBoundingClientRect(), t = p.el.style.translate;
+          var y = r.top + r.height / 2 - (t ? parseFloat(t.split(" ")[1]) || 0 : 0);
+          var d = (mid - y) * p.k;
+          p.el.style.translate = "0 " + Math.max(-MAX, Math.min(MAX, d)).toFixed(1) + "px";
+        });
+      }
+      function queue() { if (!queued) { queued = true; requestAnimationFrame(update); } }
+      function reset() { pics.forEach(function (p) { p.el.style.translate = ""; }); }
+      function sync() { if (on()) queue(); else reset(); }
+      if ("IntersectionObserver" in window) {
+        var po = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            var p = pics.filter(function (x) { return x.el === e.target; })[0];
+            var i = near.indexOf(p);
+            if (e.isIntersecting && i < 0) near.push(p);
+            else if (!e.isIntersecting && i >= 0) near.splice(i, 1);
+          });
+          queue();
+        }, { rootMargin: "25% 0px 25% 0px" });
+        pics.forEach(function (p) { po.observe(p.el); });
+      } else { near = pics; }
+      window.addEventListener("scroll", queue, { passive: true });
+      window.addEventListener("resize", sync);
+      if (wide.addEventListener) { wide.addEventListener("change", sync); still.addEventListener("change", sync); }
+      sync();
+    })();
+
+    /* Mini contents: highlight the section being read; sit its last baseline on the heading's. */
+    (function () {
+      var links = Array.prototype.slice.call(document.querySelectorAll(".p-toc a"));
+      if (!links.length) return;
+      var targets = links.map(function (a) { return document.getElementById(a.getAttribute("href").slice(1)); });
+      var queued = false;
+      function update() {
+        queued = false;
+        var line = window.innerHeight * 0.35, active = -1;
+        targets.forEach(function (t, i) { if (t && t.getBoundingClientRect().top <= line) active = i; });
+        links.forEach(function (a, i) { a.classList.toggle("is-active", i === active); });
+      }
+      function queue() { if (!queued) { queued = true; requestAnimationFrame(update); } }
+      window.addEventListener("scroll", queue, { passive: true });
+      window.addEventListener("resize", queue);
+      update();
+
+      var toc = document.querySelector(".p-toc"), h1 = document.querySelector(".poster h1");
+      if (!toc || !h1) return;
+      var last = toc.querySelector("a:last-child");
+      var probeH = document.createElement("i"), probeL = document.createElement("i");
+      [probeH, probeL].forEach(function (p) { p.setAttribute("aria-hidden", "true"); p.style.cssText = "display:inline-block;width:0;height:0;vertical-align:baseline"; });
+      h1.appendChild(probeH); last.appendChild(probeL);
+      var wide = window.matchMedia("(min-width: 1024px)");
+      function align() {
+        toc.style.marginTop = "";
+        if (!wide.matches) return;
+        var hb = probeH.getBoundingClientRect().bottom - h1.getBoundingClientRect().top;
+        var lb = probeL.getBoundingClientRect().bottom - toc.getBoundingClientRect().top;
+        toc.style.marginTop = Math.max(0, hb - lb).toFixed(1) + "px";
+      }
+      align();
+      window.addEventListener("resize", align);
+      window.addEventListener("load", align);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(align);
     })();
   </script>
   <script data-goatcounter="https://tomdegay.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
