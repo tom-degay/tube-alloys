@@ -322,9 +322,33 @@
     .poster > .p-item.p-tuck { margin-top: calc(32px - var(--gv) - var(--tuck)); }
 
     .poster > .p-hero { align-self: start; }
-    .poster > .p-toc { display: block; align-self: start; margin: 0; }
-    .p-toc { text-align: right; }
-    .p-toc a { padding: 4px 0; font-size: 15px; border-left: 0; }
+    /* the block hugs the right-hand edge; the links read left to right inside
+       it. The script sets margin-top so the last link's baseline meets the
+       heading's. */
+    .poster > .p-toc { display: block; align-self: start; justify-self: end; width: max-content; margin: 0; }
+    .p-toc a {
+      position: relative;
+      width: fit-content;
+      padding: 4px 0;
+      font-size: 15px;
+      border-left: 0;
+    }
+    /* a down arrow flies out beside the link on hover, as the site's
+       external-link arrow does sideways */
+    .p-toc a::after {
+      content: "\2193";
+      position: absolute;
+      right: -1.1em;
+      top: 50%;
+      transform: translate(0, calc(-50% - 4px));
+      opacity: 0;
+      transition: transform 0.18s ease, opacity 0.18s ease;
+      pointer-events: none;
+    }
+    .p-toc a:hover::after, .p-toc a:focus-visible::after {
+      opacity: 1;
+      transform: translate(0, -50%);
+    }
     .poster > .case-block { align-self: stretch; align-items: center; }
 
     .poster > .p-fig {
@@ -2794,6 +2818,29 @@
     window.addEventListener("scroll", queue, { passive: true });
     window.addEventListener("resize", queue);
     update();
+  })();
+</script>
+<script>
+  /* Sit the mini contents' last baseline on the heading's baseline. */
+  (function () {
+    var toc = document.querySelector(".p-toc"), h1 = document.querySelector(".poster h1");
+    if (!toc || !h1) return;
+    var last = toc.querySelector("a:last-child");
+    var probeH = document.createElement("i"), probeL = document.createElement("i");
+    [probeH, probeL].forEach(function (p) { p.setAttribute("aria-hidden", "true"); p.style.cssText = "display:inline-block;width:0;height:0;vertical-align:baseline"; });
+    h1.appendChild(probeH); last.appendChild(probeL);
+    var wide = window.matchMedia("(min-width: 1024px)");
+    function align() {
+      toc.style.marginTop = "";
+      if (!wide.matches) return;
+      var hb = probeH.getBoundingClientRect().bottom - h1.getBoundingClientRect().top;
+      var lb = probeL.getBoundingClientRect().bottom - toc.getBoundingClientRect().top;
+      toc.style.marginTop = (hb - lb).toFixed(1) + "px";
+    }
+    align();
+    window.addEventListener("resize", align);
+    window.addEventListener("load", align);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(align);
   })();
 </script>
 <script src="/media/agent-interactive.js?v=2"></script>
