@@ -439,6 +439,8 @@
       align-items: start;
     }
     .poster > .p-item { grid-column: var(--c); grid-row: var(--r); margin: 0; }
+    /* room under the last card before the closing rule */
+    .poster { padding-bottom: clamp(48px, 6vw, 104px); }
     .poster > .p-item.band { margin-top: var(--bandgap); }
     /* one grid row, as on the twelve-column home page: a column's width plus the gap */
     .poster > .p-item.drop { margin-top: calc((min(100vw, var(--band)) - 2 * var(--gutter) - 11 * var(--g)) / 12 + var(--gr)); }
