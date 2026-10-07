@@ -1,0 +1,178 @@
+/* Shared collapsing identity navigation. */
+/* Fakt is used consistently throughout the bar and menu. */
+@font-face {
+  font-family: "Fakt";
+  src: url("/FaktProBlond.woff2") format("woff2"), url("/FaktProBlond.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fakt";
+  src: url("/FaktProSemiBold.woff2") format("woff2"), url("/FaktProSemiBold.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+[data-navigation="identity"] > .site-nav { display: none !important; }
+.identity-nav { position: relative; z-index: 60; color: #fff; font-family: "Fakt", sans-serif; }
+.identity-nav *, .identity-nav *::before, .identity-nav *::after { box-sizing: border-box; }
+.identity-nav a, .identity-nav button { color: #b0b0b0; font: 16px/1.35 "Fakt", sans-serif; text-decoration: none; border: 0; padding: 10px 0; background: transparent; cursor: pointer; }
+.identity-nav a:hover, .identity-nav button:hover { color: #fff; }
+.identity-nav :focus-visible { outline: none; }
+.identity-nav:not(.pointer-navigation) .identity-name:focus-visible,
+.identity-nav:not(.pointer-navigation) button:focus-visible .menu-label { text-decoration: underline; text-decoration-color: rgba(255,255,255,.5); text-underline-offset: 5px; text-decoration-thickness: 1px; }
+.identity-nav a::after { content: none !important; }
+.identity-nav [hidden] { display: none !important; }
+.identity-brand { white-space: nowrap; }
+
+/* Identity bar: a quiet masthead opens into a full-screen typographic index. */
+[data-navigation="identity"] .identity-nav { height: 104px; --identity-compact-right: 24px; }
+/* On wide screens, the Menu-only surface ends 22px beyond the footer divider. */
+@media (min-width: 1024px) {
+  [data-navigation="identity"] .identity-nav { --identity-compact-right: max(24px, calc((100% - min(1500px, 100%)) / 2 + clamp(32px, 4vw, 72px) - 22px)); }
+}
+[data-navigation="identity"] .identity-bar, [data-navigation="identity"] .identity-dialog-top { box-sizing: border-box; width: min(820px, calc(100% - 48px)); margin: 0; padding: 8px 22px; display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+[data-navigation="identity"] .identity-bar { position: fixed; top: 22px; left: 50%; transform: translateX(-50%); background: rgba(29, 29, 29, 0.5); border: 1px solid #ffffff09; border-radius: 16px; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+[data-navigation="identity"] .identity-brand { width: auto; font-family: "Fakt", sans-serif; font-weight: 600; font-size: 18px; line-height: 24px; color: #eee; padding: 8px 0; }
+[data-navigation="identity"] .identity-role { font-family: "Fakt", sans-serif; font-weight: 400; color: #aaa; }
+[data-navigation="identity"] .identity-role > span[aria-hidden] { margin: 0 8px; color: #666; }
+[data-navigation="identity"] .identity-brand { display: flex; align-items: baseline; min-width: 0; }
+[data-navigation="identity"] .identity-name { flex-shrink: 0; font: inherit; color: inherit; padding: 0; pointer-events: auto; }
+/* A shallow letter tilt travels across the name without moving the layout. */
+.identity-name-letter { display: inline-block; white-space: pre; transform-origin: 50% 60%; backface-visibility: hidden; }
+@media (prefers-reduced-motion: no-preference) {
+  .identity-name.is-flipping .identity-name-letter { animation: identity-letter-flip 420ms ease-in-out calc(var(--letter-index) * 22ms) both; }
+}
+@keyframes identity-letter-flip {
+  0%, 100% { transform: perspective(160px) rotateX(0); opacity: 1; }
+  45% { transform: perspective(160px) rotateX(35deg); opacity: .82; }
+}
+[data-navigation="identity"] .identity-role { display: flex; align-items: baseline; min-width: 0; }
+[data-navigation="identity"] .identity-context { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+[data-navigation="identity"] .identity-toggle, [data-navigation="identity"] .identity-close { flex-shrink: 0; }
+[data-navigation="identity"] .identity-toggle, [data-navigation="identity"] .identity-close { display: inline-flex; align-items: center; gap: 9px; font: 17px/24px "Fakt", sans-serif; min-height: 44px; padding: 8px 0 8px 12px; color: #eee; }
+.menu-label { display: block; width: 43px; text-align: left; }
+/* Real line elements extend together, then converge and rotate into an X. */
+.menu-icon { position: relative; flex-shrink: 0; display: block; width: 14px; height: 14px; }
+.menu-icon > span { position: absolute; right: 0; height: 1px; background: #00d8aa; transform-origin: center; transition: width 200ms cubic-bezier(.22,1,.36,1), top 240ms cubic-bezier(.22,1,.36,1), transform 240ms cubic-bezier(.22,1,.36,1); }
+.menu-icon > span:first-child { top: 4px; width: 11px; }
+.menu-icon > span:last-child { top: 9px; width: 7px; }
+.identity-toggle:is(:hover, :focus-visible) .menu-icon > span { width: 14px; }
+.identity-toggle[aria-expanded="true"] .menu-icon > span, .identity-close .menu-icon > span { top: 6.5px; width: 14px; transition-property: top, transform; }
+.identity-toggle[aria-expanded="true"] .menu-icon > span:first-child, .identity-close .menu-icon > span:first-child { transform: rotate(45deg) scaleX(1.343); }
+.identity-toggle[aria-expanded="true"] .menu-icon > span:last-child, .identity-close .menu-icon > span:last-child { transform: rotate(-45deg) scaleX(1.343); }
+/* The modal is a separate top-layer surface; replay the same morph there. */
+.identity-dialog[open] .menu-icon > span:first-child { animation: menu-cross-top 240ms cubic-bezier(.22,1,.36,1) both; }
+.identity-dialog[open] .menu-icon > span:last-child { animation: menu-cross-bottom 240ms cubic-bezier(.22,1,.36,1) both; }
+@keyframes menu-cross-top { from { top: 4px; transform: rotate(0); } to { top: 6.5px; transform: rotate(45deg) scaleX(1.343); } }
+@keyframes menu-cross-bottom { from { top: 9px; transform: rotate(0); } to { top: 6.5px; transform: rotate(-45deg) scaleX(1.343); } }
+html.identity-menu-open { overflow: hidden; }
+[data-navigation="identity"] .identity-dialog { position: fixed; inset: 0; width: 100%; height: 100dvh; max-width: none; max-height: none; margin: 0; border: 0; padding: 110px 24px 40px; box-sizing: border-box; color: #eee; background: rgba(19,19,19,.86); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); overflow: hidden; }
+[data-navigation="identity"] .identity-dialog::backdrop { background: rgba(0,0,0,.18); }
+[data-navigation="identity"] .identity-dialog[open] { display: flex; flex-direction: column; align-items: center; animation: identity-reveal 220ms ease both; }
+[data-navigation="identity"] .identity-dialog-top { position: absolute; border: 1px solid transparent; top: 22px; left: 50%; transform: translateX(-50%); }
+.menu-body { display: flex; flex-direction: column; align-items: center; flex: 1; min-height: 0; width: 100%; overflow-y: auto; }
+[data-navigation="identity"] .identity-dialog .identity-links { position: static; inset: auto; display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: min(1000px, 100%); gap: 4px; padding: 12px 0; margin: auto 0; background: none; border: none; box-shadow: none; max-height: none; overflow: visible; }
+[data-navigation="identity"] .identity-dialog .identity-links :is(a, button) { letter-spacing: normal; transition: none; animation: none; transform: none; }
+[data-navigation="identity"] .identity-dialog .menu-primary { display: block; padding: 4px 20px; font: clamp(38px, 5.5vw, 76px)/1.15 "Fakt", sans-serif; }
+[data-navigation="identity"] .identity-dialog .identity-links .menu-primary { color: rgba(255,255,255,.8); transition: color 400ms ease; }
+[data-navigation="identity"] .identity-dialog .identity-links .menu-primary:is(:hover, :focus-visible) { color: #fff; }
+[data-navigation="identity"] .identity-dialog .identity-links :is(a, button):is(:hover, :focus-visible) { text-decoration: none; }
+[data-navigation="identity"] .identity-dialog .menu-subsections a[aria-current] { color: #fff; text-decoration: none; }
+.menu-section { width: 100%; text-align: center; }
+.menu-section-toggle { position: relative; margin: 0 auto; }
+.menu-section-toggle::after { content: "+"; position: absolute; left: 100%; top: 50%; transform: translateY(-50%); font: 20px/1 "Fakt", sans-serif; color: #888; }
+.menu-section-toggle[aria-expanded="true"]::after { content: "−"; }
+/* Animate the section's real height, then gently reveal its contents. */
+.menu-subsections { display: grid; grid-template-rows: 0fr; width: 100%; margin: 0 auto; text-align: left; visibility: hidden; transition: grid-template-rows 520ms cubic-bezier(.22,1,.36,1), visibility 0s 520ms; }
+.menu-subsections.is-expanded { grid-template-rows: 1fr; visibility: visible; transition-delay: 0s; }
+.menu-subsections-clip { min-height: 0; overflow: hidden; }
+.menu-subsections-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 8px 32px; padding: 16px 0 24px; }
+.menu-subsection-item { min-width: 0; opacity: 0; transform: translateY(8px); transition: opacity 160ms ease, transform 240ms cubic-bezier(.22,1,.36,1); }
+.is-expanded .menu-subsection-item { opacity: 1; transform: translateY(0); transition: opacity 320ms ease var(--entry-delay), transform 440ms cubic-bezier(.22,1,.36,1) var(--entry-delay); }
+[data-navigation="identity"] .identity-dialog .menu-subsections a { display: grid; grid-template-columns: 20px minmax(0, 1fr); align-items: start; gap: 9px; min-height: 44px; padding: 10px 12px; font: 20px/1.35 "Fakt", sans-serif; color: #ccc; }
+.menu-subsection-copy { grid-column: 2; display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.menu-subsection-icon { display: block; width: 16px; height: 16px; object-fit: contain; justify-self: end; margin-top: 3px; position: relative; left: 25px; }
+.menu-subsection-icon + .menu-subsection-copy > .menu-subsection-kicker { padding-left: 24px; }
+.menu-subsection-kicker { font: 500 14px/20px "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace; color: #00d8aa; text-transform: uppercase; letter-spacing: 2px; word-spacing: -3px; }
+.menu-subsection-divider { grid-column: 1 / -1; width: calc(100% - 24px); border: 0; border-top: 1px solid rgba(255,255,255,.14); margin: 8px 12px; }
+.menu-subsections--approach .menu-subsections-grid { grid-template-columns: 1fr; gap: 0; text-align: center; }
+[data-navigation="identity"] .identity-dialog .menu-subsections--approach a { display: block; width: fit-content; max-width: 100%; margin: 0 auto; }
+@media (min-width: 641px) {
+  .menu-subsections--case-studies { width: calc(100% - 40px); transform: translateX(20px); }
+}
+/* The Agent hover surface: a soft fill settles around stationary text. */
+[data-navigation="identity"] .identity-dialog .menu-subsections a { position: relative; isolation: isolate; --surface-start-x: .975; --surface-start-y: .94; --surface-peak-x: 1.012; --surface-peak-y: .988; --surface-settle-x: .997; --surface-settle-y: 1.006; }
+[data-navigation="identity"] .identity-dialog .menu-subsections a::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; border: 0; border-radius: 12px; background: rgba(255,255,255,.05); opacity: 0; transform-origin: center; transform: scale(var(--surface-start-x), var(--surface-start-y)); transition: opacity 300ms ease, transform 300ms cubic-bezier(.22,1,.36,1); }
+/* Leave room for the centred overshoot to stay within the divider. */
+[data-navigation="identity"] .identity-dialog .menu-subsections--case-studies a { padding-right: 28px; }
+[data-navigation="identity"] .identity-dialog .menu-subsections--case-studies a::before { left: 25px; right: 16px; }
+/* Smaller Approach surfaces need a larger percentage for the same visible motion. */
+[data-navigation="identity"] .identity-dialog .menu-subsections--approach a { --surface-start-x: .94; --surface-start-y: .9; --surface-peak-x: 1.04; --surface-peak-y: .98; --surface-settle-x: .99; --surface-settle-y: 1.025; }
+@media (hover: hover) and (pointer: fine) {
+  [data-navigation="identity"] .identity-dialog .menu-subsections a:hover::before { opacity: 1; transform: scale(1); animation: menu-surface-settle 550ms cubic-bezier(.22,1,.36,1) both; }
+}
+[data-navigation="identity"] .identity-dialog .menu-subsections a:is(:focus-visible, :active)::before { opacity: 1; transform: scale(1); }
+@keyframes menu-surface-settle {
+  0% { transform: scale(var(--surface-start-x), var(--surface-start-y)); }
+  55% { transform: scale(var(--surface-peak-x), var(--surface-peak-y)); }
+  78% { transform: scale(var(--surface-settle-x), var(--surface-settle-y)); }
+  100% { transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-navigation="identity"] .identity-dialog .menu-subsections a::before { transition: none; animation: none !important; transform: none !important; }
+}
+@keyframes identity-reveal { from { opacity: 0; } to { opacity: 1; } }
+@media (max-width: 640px) {
+  [data-navigation="identity"] .identity-nav { height: 86px; }
+  [data-navigation="identity"] .identity-bar, [data-navigation="identity"] .identity-dialog-top { width: calc(100% - 28px); top: 14px; padding: 6px 16px; gap: 16px; }
+  [data-navigation="identity"] .identity-bar { border-radius: 13px; }
+  [data-navigation="identity"] .identity-brand { font-size: 17px; }
+  [data-navigation="identity"] .identity-role { display: none; }
+  [data-navigation="identity"] .identity-case-study .identity-role { display: flex; }
+  [data-navigation="identity"] .identity-case-study .identity-role > span[aria-hidden] { margin: 0 6px; }
+  [data-navigation="identity"] .identity-dialog .menu-primary { font-size: 48px; padding: 8px 16px; }
+  .menu-subsections-grid { grid-template-columns: 1fr; gap: 4px; padding: 12px 0 20px; }
+  [data-navigation="identity"] .identity-dialog .menu-subsections a { font-size: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .identity-nav *, .identity-nav *::before, .identity-nav *::after { animation: none !important; transition: none !important; }
+}
+
+/* One continuous surface moves and contracts; page spacing stays constant. */
+[data-navigation="identity"] .identity-bar { left: auto; right: max(24px, calc((100% - 820px) / 2)); transform: none; width: min(820px, calc(100% - 48px)); height: 62px; display: block; overflow: hidden; transition: width 480ms cubic-bezier(.22,1,.36,1), right 480ms cubic-bezier(.22,1,.36,1); }
+[data-navigation="identity"] .identity-bar > .identity-brand { position: absolute; top: 10px; left: 22px; max-width: calc(100% - 145px); z-index: 1; pointer-events: none; opacity: 1; transition: opacity 160ms ease 160ms, transform 300ms cubic-bezier(.22,1,.36,1); }
+/* A native button covers the surface; the name link sits above it. */
+[data-navigation="identity"] .identity-bar > .identity-toggle { position: absolute; inset: 0; width: 100%; height: 100%; min-height: 0; justify-content: flex-end; padding: 8px 22px; border-radius: inherit; }
+[data-navigation="identity"] .is-compact .identity-bar { width: 109px; right: var(--identity-compact-right); }
+[data-navigation="identity"] .is-compact .identity-bar > .identity-brand { opacity: 0; transform: translateX(-12px); pointer-events: none; transition-delay: 0ms; }
+[data-navigation="identity"] .is-compact .identity-dialog-top { width: auto; left: 24px; right: var(--identity-compact-right); transform: none; padding-left: 0; padding-right: 22px; }
+@media (max-width: 640px) {
+  [data-navigation="identity"] .identity-bar { width: calc(100% - 28px); height: 58px; right: 14px; }
+  [data-navigation="identity"] .identity-bar > .identity-brand { left: 16px; top: 8px; max-width: calc(100% - 112px); }
+  [data-navigation="identity"] .identity-bar > .identity-toggle { padding: 6px 16px; }
+  [data-navigation="identity"] .is-compact .identity-bar { width: 97px; right: 14px; }
+  [data-navigation="identity"] .is-compact .identity-dialog-top { left: 14px; right: 14px; padding-right: 16px; }
+}
+/* The glass surface brightens subtly on hover without moving. */
+[data-navigation="identity"] .identity-bar { isolation: isolate; overflow: visible; background: transparent; border-color: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; }
+[data-navigation="identity"] .identity-bar::before { content: ""; position: absolute; inset: -1px; z-index: -1; pointer-events: none; border: 1px solid #ffffff09; border-radius: inherit; background: rgba(29, 29, 29, 0.5); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); transition: background-color 300ms ease; }
+@media (hover: hover) and (pointer: fine) {
+  [data-navigation="identity"] .identity-bar:hover::before { background-color: rgba(36, 36, 36, 0.54); transition-duration: 500ms; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-navigation="identity"] .identity-bar::before { transform: none !important; transition: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-navigation="identity"] .identity-bar, [data-navigation="identity"] .identity-bar > .identity-brand { transition: none; }
+}
+
+/* Keep the original links usable when scripting or native dialogs are unavailable. */
+body:not([data-navigation="identity"]) .site-nav .nav-toggle { display: none; }
+@media (max-width: 640px) {
+  body:not([data-navigation="identity"]) .site-nav { position: static; }
+  body:not([data-navigation="identity"]) .site-nav .site-nav-inner { flex-direction: column; align-items: stretch; }
+  body:not([data-navigation="identity"]) .site-nav .site-nav-links { display: flex; position: static; width: 100%; max-height: none; overflow: visible; background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; }
+}
