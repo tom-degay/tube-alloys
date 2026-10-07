@@ -653,6 +653,9 @@
   .p-pic .ui-video { max-width: none; }
   .p-pic figcaption { margin: 0; padding-top: 10px; }
 
+  /* wide screens: captions run to half the picture's width, not its full width */
+  @media (min-width: 1280px) { .p-pic figcaption { max-width: 50%; } }
+
   /* link cards take the same gradient as the text cards */
   .poster .case-block.has-thumb {
     max-width: none;
@@ -871,7 +874,7 @@
                   <source src="media/loveable.mp4" type="video/mp4">
                 </video>
               </div>
-              <figcaption>A 10-minute prototype made in Lovable to test and refine some interactions.<br>It doesn&rsquo;t look exactly like Quantemplate, but at this stage, it doesn&rsquo;t have to.</figcaption>
+              <figcaption>A 10-minute prototype made in Lovable to test and refine some interactions. It doesn&rsquo;t look exactly like Quantemplate, but at this stage, it doesn&rsquo;t have to.</figcaption>
             </figure>
       <div class="p-item p-card p-notes tight" style="--c:1 / 7;--r:9"><span class="eyebrow">Prototyping example</span><p>In this example I used Lovable to test how users could find and sort datasets designated as &lsquo;data dictionaries&rsquo;. I explored placing the filter in the sidebar or the top ribbon, and sorting by properties unique to data dictionaries.</p><p>The prototype revealed a conflict between dictionary-specific sorting and the main dataset sort setting. I made the dictionary sort behave like a removable filter: users could see when it was active and clear it to return to the main sort order.</p><p>Working with realistic data exposed an issue that would have been harder to spot in a conventional click-through prototype.</p></div>
     </div>
