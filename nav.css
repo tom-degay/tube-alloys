@@ -126,6 +126,8 @@ html.identity-menu-open { overflow: hidden; }
 @keyframes identity-reveal { from { opacity: 0; } to { opacity: 1; } }
 @media (max-width: 640px) {
   [data-navigation="identity"] .identity-nav { height: 86px; }
+  /* Feather scrolling menu text at both edges of the mobile viewport. */
+  .identity-dialog .menu-body { -webkit-mask-image: linear-gradient(to bottom, transparent, #000 28px, #000 calc(100% - 28px), transparent); mask-image: linear-gradient(to bottom, transparent, #000 28px, #000 calc(100% - 28px), transparent); }
   [data-navigation="identity"] .identity-bar, [data-navigation="identity"] .identity-dialog-top { width: calc(100% - 28px); top: 14px; padding: 6px 16px; gap: 16px; }
   [data-navigation="identity"] .identity-bar { border-radius: 13px; }
   [data-navigation="identity"] .identity-brand { font-size: 17px; }
