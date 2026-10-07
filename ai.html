@@ -702,6 +702,7 @@
     .poster > .p-item.band { margin-top: var(--bandgap); }
     /* one grid row, as on the twelve-column home page: a column's width plus the gap */
     .poster > .p-item.drop { margin-top: calc((min(100vw, var(--band)) - 2 * var(--gutter) - 11 * var(--g)) / 12 + var(--gr)); }
+    .poster > .p-item.drop2 { margin-top: calc(2 * ((min(100vw, var(--band)) - 2 * var(--gutter) - 11 * var(--g)) / 12 + var(--gr))); }
     .poster > .p-item.band.drop { margin-top: calc(var(--bandgap) + (min(100vw, var(--band)) - 2 * var(--gutter) - 11 * var(--g)) / 12 + var(--gr)); }
     .poster > .p-item.tight { margin-top: calc(24px - var(--gr)); }
     .p-pic.figure { margin: 0; }
@@ -829,8 +830,8 @@
             </div>
             <figcaption>Lower confidence ratings are highlighted yellow for user review.</figcaption>
           </figure>
-      <div class="p-item p-card p-section band" style="--c:1 / 7;--r:4 / span 2"><h2 class="principle-title display" id="ai-agents-heading">Designing for agents</h2><p>Designing for agents extends beyond the chat window to the work itself. People need to see what an agent is proposing, what it has already changed, and what is waiting for their approval. Those distinctions should be visible where the work happens, without reconstructing events from a chat history.</p><p>Approval needs something concrete to act on: a structured diff showing exactly what will change. Users should be able to accept, adjust or reject proposals, with attention directed towards uncertainty and consequential decisions.</p><p>Once changes are applied, the interface should preserve change provenance: what changed, when, and who or what made and approved it. Interrupted tasks, partial success and conflicting human edits need clear paths to recovery.</p><p>Autonomy should be scoped to the task and its consequences, with approval gates for consequential actions.</p><p>My work on <a href="/case-studies/column-mapping">mapping suggestions</a>, <a href="/case-studies/validation">auditable corrections</a> and <a href="/case-studies/pipelines">inspectable data pipelines</a> provides a foundation for these challenges: helping people delegate work while retaining meaningful control.</p></div>
-      <div class="p-item p-stack band drop" style="--c:7 / 13;--r:4 / span 2">
+      <div class="p-item p-card p-section drop2" style="--c:1 / 7;--r:4 / span 2"><h2 class="principle-title display" id="ai-agents-heading">Designing for agents</h2><p>Designing for agents extends beyond the chat window to the work itself. People need to see what an agent is proposing, what it has already changed, and what is waiting for their approval. Those distinctions should be visible where the work happens, without reconstructing events from a chat history.</p><p>Approval needs something concrete to act on: a structured diff showing exactly what will change. Users should be able to accept, adjust or reject proposals, with attention directed towards uncertainty and consequential decisions.</p><p>Once changes are applied, the interface should preserve change provenance: what changed, when, and who or what made and approved it. Interrupted tasks, partial success and conflicting human edits need clear paths to recovery.</p><p>Autonomy should be scoped to the task and its consequences, with approval gates for consequential actions.</p><p>My work on <a href="/case-studies/column-mapping">mapping suggestions</a>, <a href="/case-studies/validation">auditable corrections</a> and <a href="/case-studies/pipelines">inspectable data pipelines</a> provides a foundation for these challenges: helping people delegate work while retaining meaningful control.</p></div>
+      <div class="p-item p-stack" style="--c:7 / 13;--r:4 / span 2">
         <a class="case-block has-thumb" href="/case-studies/column-mapping">
             <img class="case-block-thumb" src="/case-studies/media/concept-mapping-detail.png" width="1400" height="778" alt="Concept design for Quantemplate's column mapping interface: schemas as vertically stacked fields aligned to a common master." loading="lazy">
             <span class="case-block-text">
@@ -870,7 +871,7 @@
                   <source src="media/loveable.mp4" type="video/mp4">
                 </video>
               </div>
-              <figcaption>A 10-minute prototype made in Lovable to test and refine some interactions.</figcaption>
+              <figcaption>A 10-minute prototype made in Lovable to test and refine some interactions.<br>It doesn&rsquo;t look exactly like Quantemplate, but at this stage, it doesn&rsquo;t have to.</figcaption>
             </figure>
       <div class="p-item p-card p-notes tight" style="--c:1 / 7;--r:9"><span class="eyebrow">Prototyping example</span><p>In this example I used Lovable to test how users could find and sort datasets designated as &lsquo;data dictionaries&rsquo;. I explored placing the filter in the sidebar or the top ribbon, and sorting by properties unique to data dictionaries.</p><p>The prototype revealed a conflict between dictionary-specific sorting and the main dataset sort setting. I made the dictionary sort behave like a removable filter: users could see when it was active and clear it to return to the main sort order.</p><p>Working with realistic data exposed an issue that would have been harder to spot in a conventional click-through prototype.</p></div>
     </div>
