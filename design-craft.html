@@ -61,8 +61,6 @@
     margin: 32px 0 28px;
   }
 
-  /* Mini contents, top right under the rule: the site's "On this page" links. */
-  .p-toc { display: none; }
   .rule.rule-top { margin: 0 0 clamp(16px, 2vw, 28px); }
   .rule {
     border: none;
@@ -322,8 +320,6 @@
     .poster > .p-item.p-tuck { margin-top: calc(32px - var(--gv) - var(--tuck)); }
 
     .poster > .p-hero { align-self: start; }
-    .poster > .p-toc { display: block; align-self: start; margin: 0; }
-    .p-toc a { padding: 4px 0 4px 16px; font-size: 15px; }
     .poster > .case-block { align-self: stretch; align-items: center; }
 
     .poster > .p-fig {
@@ -552,12 +548,6 @@
     <hr class="rule rule-top">
     <div class="poster" style="--rows:17">
       <div class="p-item p-hero" style="--c:1 / 8;--r:1 / span 1"><h1 class="lede display head-fade">Design craft</h1></div>
-
-      <nav class="p-item toc p-toc" aria-label="On this page" style="--c:10 / 13;--r:1 / span 1">
-        <a href="#move-fast-heading">Approach</a>
-        <a href="#quantemplate-heading">Visual language</a>
-        <a href="#isokon-heading">Physical media</a>
-      </nav>
 
       <figure class="p-item figure p-fig" style="--c:7 / 13;--r:2 / span 3">
       <div class="agent-demo">
@@ -2775,24 +2765,6 @@
     window.addEventListener("resize", sync);
     if (wide.addEventListener) { wide.addEventListener("change", sync); still.addEventListener("change", sync); }
     sync();
-  })();
-</script>
-<script>
-  /* Highlight the mini contents link for the section being read. */
-  (function () {
-    var links = Array.prototype.slice.call(document.querySelectorAll(".p-toc a"));
-    var targets = links.map(function (a) { return document.getElementById(a.getAttribute("href").slice(1)); });
-    var queued = false;
-    function update() {
-      queued = false;
-      var line = window.innerHeight * 0.35, active = -1;
-      targets.forEach(function (t, i) { if (t && t.getBoundingClientRect().top <= line) active = i; });
-      links.forEach(function (a, i) { a.classList.toggle("is-active", i === active); });
-    }
-    function queue() { if (!queued) { queued = true; requestAnimationFrame(update); } }
-    window.addEventListener("scroll", queue, { passive: true });
-    window.addEventListener("resize", queue);
-    update();
   })();
 </script>
 <script src="/media/agent-interactive.js?v=2"></script>
