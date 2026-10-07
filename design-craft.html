@@ -2835,7 +2835,8 @@
       if (!wide.matches) return;
       var hb = probeH.getBoundingClientRect().bottom - h1.getBoundingClientRect().top;
       var lb = probeL.getBoundingClientRect().bottom - toc.getBoundingClientRect().top;
-      toc.style.marginTop = (hb - lb).toFixed(1) + "px";
+      /* never lift it toward the rule: where the baselines would need that, keep it level with the heading's top instead */
+      toc.style.marginTop = Math.max(0, hb - lb).toFixed(1) + "px";
     }
     align();
     window.addEventListener("resize", align);
