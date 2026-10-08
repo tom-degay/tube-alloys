@@ -546,7 +546,7 @@
       align-self: end;
       /* The laptop's base stops ~5.3% of the picture's height above the
          video box's bottom edge; the script below sets --hero-lift to that. */
-      margin-bottom: var(--hero-lift, 0px);
+      margin-bottom: calc(var(--hero-lift, 0px) + 16px);
     }
 
     /* The statement sits a little higher than dead centre. */
