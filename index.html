@@ -761,6 +761,8 @@
   }
 
   .hero-caption-arrow { display: block; margin-bottom: 0; font-size: 22px; line-height: 0.9; }
+  .hero-caption-arrow::before { content: "\2192"; }
+  @media (max-width: 1023.98px) { .hero-caption-arrow::before { content: "\2191"; } }
 
   .hero-caption a { white-space: nowrap; }
 
@@ -871,7 +873,7 @@
         </video>
       </div>
 
-      <p class="hero-caption"><span class="hero-caption-arrow" aria-hidden="true">&rarr;</span>Quantemplate Pipelines: visual workflow builder<br>for data transformation. <a href="#case-studies-heading">See case studies</a>.</p>
+      <p class="hero-caption"><span class="hero-caption-arrow" aria-hidden="true"></span>Quantemplate Pipelines: visual workflow builder<br>for data transformation. <a href="#case-studies-heading">See case studies</a>.</p>
     </div>
 
     <hr class="rule">
