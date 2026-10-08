@@ -695,6 +695,8 @@
     main > section > .case-blocks.approach-blocks { grid-template-columns: subgrid; }
     main > section > .case-blocks > .case-block { grid-column: span 6; }
     main > section > .case-blocks.approach-blocks > .case-block { grid-column: span 4; }
+    main > section > .case-blocks.approach-blocks.experiments-blocks { grid-template-columns: subgrid; }
+    main > section > .case-blocks.experiments-blocks > .case-block { grid-column: span 6; }
   }
 
   /* -- Case study cards stay in their vertical form (picture above, text
@@ -729,6 +731,10 @@
     .case-pair:nth-child(even) blockquote { grid-column: 1 / 6; }
   }
 
+  /* Experiments: two image cards, in the Approach cards' style. */
+  @media (min-width: 820px) {
+    .case-blocks.approach-blocks.experiments-blocks { grid-template-columns: repeat(2, 1fr); }
+  }
 </style>
 <script>
   /* Arm the entrance animations before first paint, but only when motion is welcome. */
@@ -867,36 +873,10 @@
 
     <hr class="rule">
 
-    <section aria-labelledby="approach-heading">
-      <h2 class="eyebrow" id="approach-heading">Approach</h2>
-      <div class="case-blocks approach-blocks">
-        <a class="case-block has-image" href="/ai">
-          <img class="case-block-media" src="/media/brain-emboss.jpg" width="1986" height="792" alt="A brain icon with circuit-board style connections, blind-embossed on paper." loading="lazy">
-          <span class="case-block-text">
-            <span class="case-block-title">Design and AI</span>
-          </span>
-        </a>
 
-        <a class="case-block has-image" href="/design-craft">
-          <img class="case-block-media" src="/media/approach-craft-full.jpg" width="1100" height="660" alt="The blind-embossed White Rainbow logo, in detail." loading="lazy">
-          <span class="case-block-text">
-            <span class="case-block-title">Design craft</span>
-          </span>
-        </a>
-
-        <a class="case-block has-image" href="/wayfinding">
-          <img class="case-block-media" src="/media/wayfinding-emboss.jpg" width="1983" height="793" alt="Directional signage arrows pointing outward from a junction, blind-embossed on paper." loading="lazy">
-          <span class="case-block-text">
-            <span class="case-block-title">Wayfinding</span>
-          </span>
-        </a>
-      </div>
-    </section>
-
-    <hr class="rule">
 
     <section aria-labelledby="case-studies-heading">
-      <h2 class="eyebrow" id="case-studies-heading">Case studies</h2>
+      <h2 class="eyebrow" id="case-studies-heading">Quantemplate case studies</h2>
       <div class="case-blocks case-blocks-wide">
         <div class="case-pair">
           <a class="case-block has-image mapping-card" id="mapping-card" href="/case-studies/column-mapping">
@@ -970,26 +950,48 @@
 
     <hr class="rule">
 
-    <section aria-labelledby="other-work-heading">
-      <h2 class="eyebrow" id="other-work-heading">Other work</h2>
-      <div class="case-blocks">
-        <a class="case-block has-image is-light" href="/case-studies/image-insight">
-          <img class="case-block-media" src="/case-studies/media/image-insight-card.jpg" width="1484" height="916" alt="The Image Insight logo over a blurred grid of session images." loading="lazy">
+    <section aria-labelledby="approach-heading">
+      <h2 class="eyebrow" id="approach-heading">Approach</h2>
+      <div class="case-blocks approach-blocks">
+        <a class="case-block has-image" href="/ai">
+          <img class="case-block-media" src="/media/brain-emboss.jpg" width="1986" height="792" alt="A brain icon with circuit-board style connections, blind-embossed on paper." loading="lazy">
           <span class="case-block-text">
-            <span class="case-block-kicker">Image Insight</span>
-            <span class="case-block-title">Making space for deeper reflection</span>
-            <span class="case-block-subtitle">Digital coaching tool that uses images and visual metaphors to prompt deeper reflection in online and face-to-face sessions.</span>
-            <span class="case-block-keywords"><span class="case-block-keyword">Interaction design</span><span class="case-block-keyword">Visual design</span><span class="case-block-keyword">Accessibility</span></span>
+            <span class="case-block-title">Design and AI</span>
           </span>
         </a>
 
-        <a class="case-block has-image is-light" href="/case-studies/zonefully">
+        <a class="case-block has-image" href="/design-craft">
+          <img class="case-block-media" src="/media/approach-craft-full.jpg" width="1100" height="660" alt="The blind-embossed White Rainbow logo, in detail." loading="lazy">
+          <span class="case-block-text">
+            <span class="case-block-title">Design craft</span>
+          </span>
+        </a>
+
+        <a class="case-block has-image" href="/wayfinding">
+          <img class="case-block-media" src="/media/wayfinding-emboss.jpg" width="1983" height="793" alt="Directional signage arrows pointing outward from a junction, blind-embossed on paper." loading="lazy">
+          <span class="case-block-text">
+            <span class="case-block-title">Wayfinding</span>
+          </span>
+        </a>
+      </div>
+    </section>
+
+    <hr class="rule">
+
+    <section aria-labelledby="other-work-heading">
+      <h2 class="eyebrow" id="other-work-heading">Experiments</h2>
+      <div class="case-blocks approach-blocks experiments-blocks">
+        <a class="case-block has-image" href="/case-studies/image-insight">
+          <img class="case-block-media" src="/case-studies/media/image-insight-card.jpg" width="1484" height="916" alt="The Image Insight logo over a blurred grid of session images." loading="lazy">
+          <span class="case-block-text">
+            <span class="case-block-title">Image Insight</span>
+          </span>
+        </a>
+
+        <a class="case-block has-image" href="/case-studies/zonefully">
           <img class="case-block-media" src="/case-studies/media/zonefully-card.jpg" width="1484" height="916" alt="The Zonefully logo over a blurred app screenshot." loading="lazy">
           <span class="case-block-text">
-            <span class="case-block-kicker">Zonefully</span>
-            <span class="case-block-title">Connecting long-term goals to everyday routines</span>
-            <span class="case-block-subtitle">A planning app that connects personal goals with recurring routines and a calendar to put them into practice.</span>
-            <span class="case-block-keywords"><span class="case-block-keyword">Interaction design</span><span class="case-block-keyword">Visual design</span></span>
+            <span class="case-block-title">Zonefully</span>
           </span>
         </a>
       </div>
