@@ -544,7 +544,13 @@
       grid-column: 1 / 6;
       grid-row: 1;
       align-self: end;
+      /* The laptop's base stops ~5.3% of the picture's height above the
+         video box's bottom edge; the script below sets --hero-lift to that. */
+      margin-bottom: var(--hero-lift, 0px);
     }
+
+    /* The statement sits a little higher than dead centre. */
+    .hero-spread > section { margin-bottom: clamp(48px, 5.5vw, 88px); }
 
     /* Sized for the 40% column, not the old full-width line. */
     .hero-spread .about-statement { font-size: 36px; }
@@ -1350,5 +1356,20 @@
       }
     })();
   </script>
-  </body>
+  <script>
+  /* Lift the laptop caption so its last line sits on the laptop's base, not
+     on the bottom of the (slightly taller) video box. The base is 54px above
+     the bottom of a 1010px-tall frame, i.e. 5.35% of the box's height. */
+  (function () {
+    var spread = document.querySelector('.hero-spread');
+    var box = spread && spread.querySelector('.hero-video');
+    if (!box) return;
+    function lift() { spread.style.setProperty('--hero-lift', (box.getBoundingClientRect().height * 0.0535).toFixed(1) + 'px'); }
+    lift();
+    window.addEventListener('resize', lift);
+    window.addEventListener('load', lift);
+    if (window.ResizeObserver) new ResizeObserver(lift).observe(box);
+  })();
+</script>
+</body>
 </html>
