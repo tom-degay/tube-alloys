@@ -766,6 +766,12 @@
 
   .hero-caption a { white-space: nowrap; }
 
+  /* On a phone the statement is one block, a sentence to a line. */
+  .about-statement .sentence-break { display: none; }
+  @media (max-width: 640px) {
+    .about-statement .sentence-break { display: inline; }
+  }
+
   @media (max-width: 1023.98px) {
     .hero-spread > section { margin-bottom: clamp(24px, 5vw, 36px); }
     .hero-caption { margin-top: -8px; }
@@ -1055,10 +1061,14 @@
         stmt.textContent = '';
         var wordEls = words.map(function (w, i) {
           var s = document.createElement('span');
-          s.className = 'word';
+          s.className = 'word' + (/[.!?]$/.test(w) ? ' sentence-end' : '');
           s.textContent = w;
           stmt.appendChild(s);
           if (i < words.length - 1) stmt.appendChild(document.createTextNode(' '));
+          if (/[.!?]$/.test(w) && i < words.length - 1) {
+            // a line break that only exists on a phone (see .sentence-break)
+            var br = document.createElement('br'); br.className = 'sentence-break'; stmt.appendChild(br);
+          }
           return s;
         });
 
