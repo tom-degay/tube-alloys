@@ -33,6 +33,32 @@
 <style>
   html { scroll-padding-top: 100px; }
 
+  .case-body blockquote.outcome-quote {
+    box-sizing: border-box;
+    background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
+    border: none;
+    border-radius: 10px;
+    padding: clamp(20px, 2.4vw, 32px);
+    color: rgba(255, 255, 255, 0.82);
+    font-size: clamp(20px, 2vw, 30px);
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+
+  .outcome-quote::before {
+    content: "\201C";
+    display: block;
+    font-family: "Fakt Blond SemiBold", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 600;
+    font-size: clamp(96px, 10vw, 150px);
+    line-height: 0.95;
+    margin-bottom: -0.52em;
+    margin-left: -0.066em;
+    color: rgba(255, 255, 255, 0.22);
+  }
+
+  .outcome-quote cite a[target="_blank"]::after { content: none; }
+
   /* Estimated error counts share one scale: 11 versus 3. */
   .model-chart {
     max-width: 46rem;
@@ -1030,6 +1056,11 @@
         </figcaption>
       </figure>
       <p>Across the four schemas, only three mappings from the new model were assessed as incorrect, even with the Automap confidence threshold set to 0%. It also handled repeated and numbered fields more consistently, reducing incorrect matches between similar-looking fields with distinct meanings.</p>
+
+      <blockquote class="outcome-quote">
+        I cannot adequately express how receptive Tom was to our suggestions for improvement. He would listen, ask questions and make our wishlist items reality; even enhancing our&nbsp;suggestions.
+        <cite><a href="https://www.linkedin.com/in/tom-dg/details/recommendations/?detailScreenTabIndex=0" target="_blank" rel="noopener noreferrer">Lee Ann Dewell Lang</a>, Quantemplate user-client, James River Insurance</cite>
+      </blockquote>
     </section>
 
     <hr class="rule">
