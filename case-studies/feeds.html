@@ -120,15 +120,16 @@
     margin: clamp(32px, 5vw, 48px) 0;
   }
 
-  /* Dividers from Problem onward sit inside the narrow reading column, so
-     they match the text/figure width (46rem) instead of running the full
-     hero width. Earlier dividers are left at hero width, and so is
-     the one footer.js injects immediately before .site-footer, which now
-     spans the wider nav-matching width. */
-  hr.rule:has(+ section[aria-labelledby="problem-heading"]),
-  section[aria-labelledby="problem-heading"] ~ hr.rule:not(:has(+ .site-footer)) {
+  /* Dividers and Key points share the 46rem reading width. The site
+     footer divider sits outside .content and keeps its wider measure. */
+  .content > header > hr.rule,
+  .content > hr.rule,
+  section[aria-labelledby="keypoints-heading"] {
     max-width: 46rem;
   }
+
+  /* Keep the list aligned with the text below at desktop widths too. */
+  .key-points-grid { display: block; }
 
   section .eyebrow, .eyebrow {
     display: block;
