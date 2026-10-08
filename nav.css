@@ -96,6 +96,7 @@ html.identity-menu-open { overflow: hidden; }
 .menu-subsection-icon { display: block; width: 16px; height: 16px; object-fit: contain; justify-self: end; margin-top: 3px; position: relative; left: 25px; }
 .menu-subsection-icon + .menu-subsection-copy > .menu-subsection-kicker { padding-left: 24px; }
 .menu-subsection-kicker { font: 500 14px/20px "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace; color: #00d8aa; text-transform: uppercase; letter-spacing: 2px; word-spacing: -3px; }
+.menu-subsection-group { grid-column: 1 / -1; padding: 6px 12px 2px; font: 500 13px/20px "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace; color: rgba(255,255,255,.45); text-transform: uppercase; letter-spacing: 2px; word-spacing: -3px; }
 .menu-subsection-divider { grid-column: 1 / -1; width: calc(100% - 24px); border: 0; border-top: 1px solid rgba(255,255,255,.14); margin: 8px 12px; }
 .menu-subsections--approach .menu-subsections-grid { grid-template-columns: 1fr; gap: 0; text-align: center; }
 [data-navigation="identity"] .identity-dialog .menu-subsections--approach a { display: block; width: fit-content; max-width: 100%; margin: 0 auto; }

@@ -37,9 +37,18 @@
     trigger.setAttribute('aria-label', label);
     trigger.setAttribute('aria-expanded', 'false'); trigger.setAttribute('aria-controls', panel.id);
     // Read the existing site menu so titles, routes and ordering stay in sync.
+    // The case-studies list is two groups split by a divider: label each.
+    const groupLabels = sectionId === 'case-studies' &&
+      source.querySelector('.nav-dropdown-divider') ? ['Quantemplate case studies', 'Experiments'] : null;
+    const addGroupLabel = (text, delay) => {
+      const group = doc.createElement('div'); group.className = 'menu-subsection-group menu-subsection-item';
+      group.style.setProperty('--entry-delay', delay + 'ms'); group.textContent = text; grid.append(group);
+    };
+    if (groupLabels) addGroupLabel(groupLabels[0], 40);
     cards.forEach((card, index) => {
       if (card.previousElementSibling && card.previousElementSibling.classList.contains('nav-dropdown-divider')) {
         const divider = doc.createElement('hr'); divider.className = 'menu-subsection-divider'; grid.append(divider);
+        if (groupLabels) addGroupLabel(groupLabels[1], 60 + index * 35);
       }
       const item = doc.createElement('div'); item.className = 'menu-subsection-item';
       item.style.setProperty('--entry-delay', (60 + index * 35) + 'ms');
