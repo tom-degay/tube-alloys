@@ -39,7 +39,7 @@
     // Read the existing site menu so titles, routes and ordering stay in sync.
     // The case-studies list is two groups split by a divider: label each.
     const groupLabels = sectionId === 'case-studies' &&
-      source.querySelector('.nav-dropdown-divider') ? ['Quantemplate case studies', 'Experiments'] : null;
+      source.querySelector('.nav-dropdown-divider') ? ['Quantemplate case studies', 'Smaller projects'] : null;
     const addGroupLabel = (text, delay) => {
       const group = doc.createElement('div'); group.className = 'menu-subsection-group menu-subsection-item';
       group.style.setProperty('--entry-delay', delay + 'ms'); group.textContent = text; grid.append(group);
