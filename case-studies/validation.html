@@ -33,6 +33,30 @@
 <style>
   html { scroll-padding-top: 100px; }
 
+  .case-body blockquote.outcome-quote {
+    box-sizing: border-box;
+    background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
+    border: none;
+    border-radius: 10px;
+    padding: clamp(20px, 2.4vw, 32px);
+    color: rgba(255, 255, 255, 0.82);
+    font-size: clamp(20px, 2vw, 30px);
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+
+  .outcome-quote::before {
+    content: "\201C";
+    display: block;
+    font-family: "Fakt Blond SemiBold", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 600;
+    font-size: clamp(96px, 10vw, 150px);
+    line-height: 0.95;
+    margin-bottom: -0.52em;
+    margin-left: -0.066em;
+    color: rgba(255, 255, 255, 0.22);
+  }
+
   .corrections-chart {
     max-width: 46rem;
     margin: 32px 0;
@@ -814,7 +838,7 @@
       </svg>
       <span class="kicker head-fade">Case Study | <a href="https://help.quantemplate.com/validation-corrections" target="_blank" rel="noopener noreferrer">Quantemplate Validations</a></span>
       <h1 class="display head-fade">Closing the loop on data quality</h1>
-      <p class="subtitle head-fade">Lets users fix data errors in place with a full audit trail. Rapid adoption and 12.5 million rows per month corrected.</p>
+      <p class="subtitle head-fade">Lets users fix data errors in place with a full audit trail. 23 million rows corrected and step change in speed of work.</p>
       <p class="keywords"><span class="keyword">Workflow</span><span class="keyword">Information design</span><span class="keyword">Auditability</span></p>
 
       <hr class="rule">
@@ -850,7 +874,7 @@
           <li>Turned dead-end error reports into complete correction workflows</li>
           <li>Made bulk correction authorship traceable, helping clients meet audit goals</li>
           <li>Auto validation eliminates nearly 500 setup steps in a single pipeline</li>
-          <li>23,429 cells corrected by 8 October 2026</li>
+          <li>Achieved step change in speed at which clients could work.</li>
         </ul>
       </div>
     </section>
@@ -884,25 +908,6 @@
           </div>
           <figcaption>Users write their own validation rules in a familiar, Excel-style syntax, with autocomplete surfacing fields and functions as they type.</figcaption>
         </figure>
-      </div>
-
-      <div class="subsection" id="approach-infodesign">
-        <h3>Context: designing the v1</h3>
-        <p>The design of the original report, done in 2017, was driven by <a href="/wayfinding#complexity-heading">information design principles</a>, putting validation failures in the context of a whole dataset to give users a sense of scale.</p>
-        <p>I worked on this with an information designer who I was mentoring in UX. We did a lot of whiteboard prototyping so we could test ideas with subject matter experts and engineers before moving to high fidelity mockups to play back to our user cohort.</p>
-
-        <figure class="figure">
-          <div class="figure-portrait-frame">
-            <img src="media/whiteboard-2.jpg" width="1600" height="1117" alt="Whiteboard sketches exploring the validation report: segmented ring charts with stacked result rows, a filter to select which sources to show, a per-dataset impact filter, drill-down on a segment, and notes on the download use cases." loading="lazy">
-          </div>
-          <figcaption>Collaborative whiteboarding helped us originate a solution to a problem where no prior patterns existed</figcaption>
-        </figure>
-
-        <p>User feedback also helped us decide what to leave out. We explored allowing users to pivot the report to first view results by input file rather than by validation rule. Their response was helpfully direct:</p>
-        <blockquote>Skip the dev on that. Just give me the validations.
-          <cite>User feedback from Senior Analyst</cite>
-        </blockquote>
-        <p>We dropped the alternative view and focused development on the core reporting experience.</p>
       </div>
 
       <div class="subsection" id="approach-ship">
@@ -1085,21 +1090,21 @@
       </figure>
       <p>In a demo of the new capabilities, clients cited the validation improvements as a significant boost to their workflow, with a clear focus on their productivity bottlenecks.</p>
       <p>Being able to see who had made corrections was especially valuable to them for supporting their audit processes.</p>
-      <blockquote>The speed at which we can work now is a real step change. Everything feels much more fluid. I don&rsquo;t even need to click all the way into the validation to see what I need. The changes have helped tremendously: I know what I need to focus on and what I need to download.
-        <cite>Quantemplate user-client</cite>
+      <blockquote class="outcome-quote">The speed at which we can work now is a real step change. Everything feels much more fluid. I don&rsquo;t even need to click all the way into the validation to see what I need. The changes have helped tremendously: I know what I need to focus on and what I need to download.
+        <cite>Quantemplate user-client at major US insurance carrier</cite>
       </blockquote>
       <p>The next release will extend that workflow across organisations, addressing one of Quantemplate&rsquo;s most requested capabilities, according to our user interviews: allowing suppliers to resolve reported issues directly, with both parties working from the same results.</p>
-
-      <figure class="figure figure-wide">
-        <div class="figure-portrait-frame">
-          <img src="/media/agent-corrections-highlight.png" width="1638" height="1350" alt="Quantemplate's agent panel over a data table. A user asks it to correct the invalid zip codes; it replies that it added leading zeros to 12 values and links to review the changes. In the table behind, each corrected zip code is marked with a small cube icon. The user then asks it to change 2907 back, and the agent starts reverting that correction." loading="lazy">
-        </div>
-        <figcaption>The next step is to integrate an agent to suggest corrections. Changes proposed by the agent are marked with the cube motif for human review.</figcaption>
-      </figure>
 
       <div class="subsection" id="outcome-agentic">
         <h3>Agentic suggestions</h3>
         <p>The corrections workflow lays the groundwork for an agent to suggest fixes. Every correction is explicit, previewed and recorded, so an agent can propose changes within the same secure, private context, with people approving them in the existing workflow. That further reduces the time needed to get the data right.</p>
+
+        <figure class="figure figure-wide">
+          <div class="figure-portrait-frame">
+            <img src="/media/agent-corrections-highlight.png" width="1638" height="1350" alt="Quantemplate's agent panel over a data table. A user asks it to correct the invalid zip codes; it replies that it added leading zeros to 12 values and links to review the changes. In the table behind, each corrected zip code is marked with a small cube icon. The user then asks it to change 2907 back, and the agent starts reverting that correction." loading="lazy">
+          </div>
+          <figcaption>The next step is to integrate an agent to suggest corrections. Changes proposed by the agent are marked with the cube motif for human review.</figcaption>
+        </figure>
       </div>
     </section>
 
