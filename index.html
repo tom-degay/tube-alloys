@@ -538,6 +538,14 @@
       margin-right: calc(-1 * (var(--gutter) + var(--outer) + var(--bleed)));
     }
 
+    /* The caption shares the statement's columns, pinned to the row's bottom
+       edge -- which is the bottom of the laptop. */
+    .hero-spread .hero-caption {
+      grid-column: 1 / 6;
+      grid-row: 1;
+      align-self: end;
+    }
+
     /* Sized for the 40% column, not the old full-width line. */
     .hero-spread .about-statement { font-size: 36px; }
 
@@ -735,6 +743,23 @@
   @media (min-width: 820px) {
     .case-blocks.approach-blocks.experiments-blocks { grid-template-columns: repeat(2, 1fr); }
   }
+  /* The laptop's caption: small mono, like a figure caption. Stacked below
+     1024px (statement above the laptop, caption under it). */
+  .hero-caption {
+    margin: 0;
+    max-width: 44ch;
+    color: rgba(255, 255, 255, 0.55);
+    font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .hero-caption a { white-space: nowrap; }
+
+  @media (max-width: 1023.98px) {
+    .hero-spread > section { margin-bottom: clamp(24px, 5vw, 36px); }
+    .hero-caption { margin-top: -8px; }
+  }
 </style>
 <script>
   /* Arm the entrance animations before first paint, but only when motion is welcome. */
@@ -823,19 +848,22 @@
   </nav>
   <main>
       <h1 class="visually-hidden">Tom de Gay &mdash; Digital Product Designer</h1>
-    <!-- Opening spread. Below 1024px this wrapper is inert and the two
-         blocks stack exactly as they always did, video first. Above it,
-         they become one two-column grid: statement left, video right. -->
+    <!-- Opening spread. Below 1024px this wrapper is inert and the blocks
+         stack: statement, then the laptop, then its caption. Above it, they
+         become one two-column grid: statement left, video right, and the
+         caption level with the bottom of the laptop. -->
     <div class="hero-spread">
+      <section>
+        <p class="about-statement display">Product designer. Big-picture thinker. Small-detail obsessive. Complexity to clarity. A&nbsp;human in the loop.</p>
+      </section>
+
       <div class="hero-video">
         <video autoplay muted loop playsinline disablepictureinpicture poster="media/tdg-laptop-demo.jpg">
           <source src="media/tdg-laptop-demo.mp4" type="video/mp4">
         </video>
       </div>
 
-      <section>
-        <p class="about-statement display">Product designer. Big-picture thinker. Small-detail obsessive. Complexity to clarity. A&nbsp;human in the loop.</p>
-      </section>
+      <p class="hero-caption">Quantemplate Pipelines: visual workflow tool for data transformation. <a href="#case-studies-heading">See case studies &rarr;</a></p>
     </div>
 
     <hr class="rule">
