@@ -55,10 +55,11 @@
     margin: clamp(32px, 5vw, 48px) 0;
   }
 
-  /* Dividers and Key points share the 46rem reading width. The site
-     footer divider sits outside .content and keeps its wider measure. */
+  /* Dividers, project metadata and Key points share the 46rem reading
+     width. The footer divider outside .content keeps its wider measure. */
   .content > header > hr.rule,
   .content > hr.rule,
+  .meta-row,
   section[aria-labelledby="keypoints-heading"] {
     max-width: 46rem;
   }
