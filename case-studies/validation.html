@@ -154,10 +154,11 @@
 
   /* Dividers from Problem onward sit inside the narrow reading column, so
      they match the text/figure width (46rem) instead of running the full
-     hero width. The hr's above Summary are left at hero width, and so is
+     hero width. Earlier dividers are left at hero width, and so is
      the one footer.js injects immediately before .site-footer, which now
      spans the wider nav-matching width. */
-  section[aria-labelledby="summary-heading"] ~ hr.rule:not(:has(+ .site-footer)) {
+  hr.rule:has(+ section[aria-labelledby="problem-heading"]),
+  section[aria-labelledby="problem-heading"] ~ hr.rule:not(:has(+ .site-footer)) {
     max-width: 46rem;
   }
 
@@ -856,18 +857,11 @@
 
     <hr class="rule">
 
-    <section aria-labelledby="summary-heading">
-      <h2 class="eyebrow" id="summary-heading">Summary</h2>
-      <p class="about-statement">I led the design and evolution of Quantemplate&rsquo;s validation tooling, from row-level reporting in 2017 to integrated corrections and automated data type checks in 2026.</p>
-      <p class="about-statement">The latest work makes validation results actionable. Users can correct invalid values directly in the report, creating targeted mappings with a complete audit trail. Integrated data type checks simplify configuration, while a sharing workflow will bring data suppliers into the process.</p>
-    </section>
-
-    <hr class="rule">
-
     <section aria-labelledby="problem-heading" class="case-body">
       <h2 class="eyebrow" id="problem-heading">Problem</h2>
       <h3>We&rsquo;d made errors easy to spot but hard to fix</h3>
-      <p>Quantemplate&rsquo;s validation reports already identified problems at a row level. But the static reports were a dead end in the workflow. Resolving problems required users to configure additional pipeline steps or ask suppliers to correct and resubmit their files.</p>
+      <p>I had led the design of Quantemplate&rsquo;s original validation report in 2017, helping users identify data problems at a row level. In 2026, we set out to make those results actionable.</p>
+      <p>But the static reports were a dead end in the workflow. Resolving problems required users to configure additional pipeline steps or ask suppliers to correct and resubmit their files.</p>
       <p>We needed to make the validations feature solve for the whole workflow. Enabling users to add corrections straight into the report was one step. Making the report&rsquo;s user experience more efficient was another.</p>
       <blockquote>Unlocking validation results sharing would truly close the loop, enabling rapid round trip correction across organisations.</blockquote>
     </section>
@@ -1155,7 +1149,6 @@
     <span class="toc-indicator" aria-hidden="true"></span>
     <span class="eyebrow toc-heading">On this page</span>
     <a href="#keypoints-heading">Key points</a>
-    <a href="#summary-heading">Summary</a>
     <a href="#problem-heading">Problem</a>
     <a href="#approach-heading">Approach</a>
     <a href="#keydecisions-heading">Key decisions</a>

@@ -58,10 +58,11 @@
 
   /* Dividers from Problem onward sit inside the narrow reading column, so
      they match the text/figure width (46rem) instead of running the full
-     hero width. The hr's above Summary are left at hero width, and so is
+     hero width. Earlier dividers are left at hero width, and so is
      the one footer.js injects immediately before .site-footer, which now
      spans the wider nav-matching width. */
-  section[aria-labelledby="summary-heading"] ~ hr.rule:not(:has(+ .site-footer)) {
+  hr.rule:has(+ section[aria-labelledby="problem-heading"]),
+  section[aria-labelledby="problem-heading"] ~ hr.rule:not(:has(+ .site-footer)) {
     max-width: 46rem;
   }
 
@@ -839,15 +840,6 @@
 
     <hr class="rule">
 
-    <section aria-labelledby="summary-heading">
-      <h2 class="eyebrow" id="summary-heading">Summary</h2>
-      <p class="about-statement">I led the design and evolution of <a href="https://help.quantemplate.com/about-pipelines" target="_blank" rel="noopener noreferrer">Quantemplate Pipelines</a>, taking it from a code editor to a visual environment for building and managing data transformations.</p>
-      <p class="about-statement">The initial challenge was breadth: clients needed every transformation in their workflow to be possible before the product could be useful. We shipped that capability through code, then progressively made it accessible through stages, operations and dedicated interfaces.</p>
-
-    </section>
-
-    <hr class="rule">
-
     <section aria-labelledby="problem-heading" class="case-body">
       <h2 class="eyebrow" id="problem-heading">Problem</h2>
       <h3>Ferraris on country roads</h3>
@@ -1046,7 +1038,6 @@
     <span class="toc-indicator" aria-hidden="true"></span>
     <span class="eyebrow toc-heading">On this page</span>
     <a href="#keypoints-heading">Key points</a>
-    <a href="#summary-heading">Summary</a>
     <a href="#problem-heading">Problem</a>
     <a href="#approach-heading">Approach</a>
     <a href="#keydecisions-heading">Key decisions</a>

@@ -149,10 +149,11 @@
 
   /* Dividers from Problem onward sit inside the narrow reading column, so
      they match the text/figure width (46rem) instead of running the full
-     hero width. The hr's above Summary are left at hero width, and so is
+     hero width. Earlier dividers are left at hero width, and so is
      the one footer.js injects immediately before .site-footer, which now
      spans the wider nav-matching width. */
-  section[aria-labelledby="summary-heading"] ~ hr.rule:not(:has(+ .site-footer)) {
+  hr.rule:has(+ section[aria-labelledby="problem-heading"]),
+  section[aria-labelledby="problem-heading"] ~ hr.rule:not(:has(+ .site-footer)) {
     max-width: 46rem;
   }
 
@@ -860,15 +861,6 @@
 
     <hr class="rule">
 
-    <section aria-labelledby="summary-heading">
-      <h2 class="eyebrow" id="summary-heading">Summary</h2>
-      <p class="about-statement">Insurance companies struggle to ingest thousands of spreadsheets from different suppliers, in different structures, using different names for the same thing. Quantemplate’s mission is to solve this.</p>
-      <p class="about-statement">As part of this, I designed a new way to map columns across inconsistent data schemas to a common target schema, informed by usage patterns I observed in user research. The Map Column Headers feature, released in 2016, became one of Quantemplate's core capabilities, and is now a central workflow pillar for enterprises, where the average company now maps in 2,000 files per month.</p>
-      <p class="about-statement">In 2026 I refined the user experience to support upgraded technology behind the matching column names. Matching was now done via the semantic fingerprinting of column data using a weighting model I co-developed. Testing showed a 73% reduction in mapping errors for the same coverage.</p>
-    </section>
-
-    <hr class="rule">
-
     <section aria-labelledby="problem-heading" class="case-body">
       <h2 class="eyebrow" id="problem-heading">Problem</h2>
       <h3>Hundreds of schemas, no common language</h3>
@@ -1074,7 +1066,6 @@
     <span class="toc-indicator" aria-hidden="true"></span>
     <span class="eyebrow toc-heading">On this page</span>
     <a href="#keypoints-heading">Key points</a>
-    <a href="#summary-heading">Summary</a>
     <a href="#problem-heading">Problem</a>
     <a href="#approach-heading">Approach</a>
     <a href="#keydecisions-heading">Key decisions</a>

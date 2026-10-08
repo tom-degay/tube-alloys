@@ -57,10 +57,11 @@
 
   /* Dividers from Problem onward sit inside the narrow reading column, so
      they match the text/figure width (46rem) instead of running the full
-     hero width. The hr's above Summary are left at hero width, and so is
+     hero width. Earlier dividers are left at hero width, and so is
      the one footer.js injects immediately before .site-footer, which now
      spans the wider nav-matching width. */
-  section[aria-labelledby="summary-heading"] ~ hr.rule:not(:has(+ .site-footer)) {
+  hr.rule:has(+ section[aria-labelledby="problem-heading"]),
+  section[aria-labelledby="problem-heading"] ~ hr.rule:not(:has(+ .site-footer)) {
     max-width: 46rem;
   }
 
@@ -699,18 +700,11 @@
 
     <hr class="rule">
 
-    <section aria-labelledby="summary-heading">
-      <h2 class="eyebrow" id="summary-heading">Summary</h2>
-      <p class="about-statement">Zonefully&rsquo;s founder approached me to design the UX and UI for an app that organised recurring activities around long-term goals. He had a well-developed conceptual model, and my role was to make it understandable through the interface.</p>
-      <p class="about-statement">During a short engagement, I designed the navigation, editing states and visual treatment, helping translate the concept into a functioning first version.</p>
-    </section>
-
-    <hr class="rule">
-
     <section aria-labelledby="problem-heading" class="case-body">
       <h2 class="eyebrow" id="problem-heading">Problem</h2>
       <h3>Connecting the bigger goal to the next action</h3>
-      <p>Zonefully brought together several related concepts. Activities represented the things people wanted to plan and track. Programmes grouped Routines into sequences, which could then be applied to a calendar.</p>
+      <p>Zonefully&rsquo;s founder had developed a conceptual model for connecting long-term goals with recurring activities. He brought me in to turn that model into a usable interface.</p>
+      <p>Activities represented the things people wanted to plan and track. Programmes grouped Routines into sequences, which could then be applied to a calendar.</p>
       <p>For a cycling goal, that could mean training and recovery programmes containing individual rides and rest days. The design challenge was to make that hierarchy usable: people needed to work on an individual routine, understand how it fitted into a programme, and see where it belonged in their calendar.</p>
 
       <figure class="figure figure-wide">
@@ -806,7 +800,6 @@
     <span class="toc-indicator" aria-hidden="true"></span>
     <span class="eyebrow toc-heading">On this page</span>
     <a href="#keypoints-heading">Key points</a>
-    <a href="#summary-heading">Summary</a>
     <a href="#problem-heading">Problem</a>
     <a href="#approach-heading">Approach</a>
     <a href="#keydecisions-heading">Key decisions</a>

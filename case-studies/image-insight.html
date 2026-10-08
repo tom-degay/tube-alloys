@@ -57,10 +57,11 @@
 
   /* Dividers from Problem onward sit inside the narrow reading column, so
      they match the text/figure width (46rem) instead of running the full
-     hero width. The hr's above Summary are left at hero width, and so is
+     hero width. Earlier dividers are left at hero width, and so is
      the one footer.js injects immediately before .site-footer, which now
      spans the wider nav-matching width. */
-  section[aria-labelledby="summary-heading"] ~ hr.rule:not(:has(+ .site-footer)) {
+  hr.rule:has(+ section[aria-labelledby="problem-heading"]),
+  section[aria-labelledby="problem-heading"] ~ hr.rule:not(:has(+ .site-footer)) {
     max-width: 46rem;
   }
 
@@ -657,19 +658,12 @@
 
     <hr class="rule">
 
-    <section aria-labelledby="summary-heading">
-      <h2 class="eyebrow" id="summary-heading">Summary</h2>
-      <p class="about-statement">Image Insight&rsquo;s co-founder approached me with a working prototype for digital coaching cards. The concept was there, but the visual design felt clunky and the user experience needed simplifying.</p>
-      <p class="about-statement">I refined the interface and key interactions, creating an elegant, low-friction experience where imagery and conversation take centre stage. I subsequently helped refine the product in response to beta feedback.</p>
-    </section>
-
-    <hr class="rule">
-
     <section aria-labelledby="problem-heading" class="case-body">
       <h2 class="eyebrow" id="problem-heading">Problem</h2>
       <h3>Bringing coaching cards into a digital session</h3>
       <p>Physical image cards give people a starting point for conversations that can be difficult to begin with words alone. Taking that approach online makes it possible to explore images together during a video call, then capture the reflections and actions in one place.</p>
       <p>The tool was intended for coaches and therapists, including those working in schools with children from primary age through to teenagers. The design needed to support the conversation without becoming another task to manage.</p>
+      <p>The co-founder approached me with a working prototype. My role was to simplify the interface and key interactions, making the tool easier to use while keeping imagery and conversation at the centre.</p>
 
       <figure class="figure figure-wide">
         <div class="figure-portrait-frame">
@@ -842,7 +836,6 @@
     <span class="toc-indicator" aria-hidden="true"></span>
     <span class="eyebrow toc-heading">On this page</span>
     <a href="#keypoints-heading">Key points</a>
-    <a href="#summary-heading">Summary</a>
     <a href="#problem-heading">Problem</a>
     <a href="#approach-heading">Approach</a>
     <a href="#keydecisions-heading">Key decisions</a>
