@@ -46,10 +46,23 @@
     font-size: 15px;
     color: rgba(255, 255, 255, 0.68);
   }
-  .corrections-chart-plot { position: relative; padding-left: 42px; }
-  .corrections-chart-y-axis { position: absolute; left: 0; top: 0; width: 34px; height: calc(100% - 56px); font: 11px "IBM Plex Mono", monospace; color: rgba(255,255,255,0.55); }
+  .corrections-chart-plot { position: relative; padding: 0 32px 0 42px; }
+  .corrections-chart-y-axis { position: absolute; left: 0; top: 0; width: 34px; height: calc(100% - 28px); font: 11px "IBM Plex Mono", monospace; color: #00d8aa; }
   .corrections-chart-y-axis span { position: absolute; right: 0; transform: translateY(-50%); }
+  .corrections-chart-y-axis--right { left: auto; right: 0; width: 25px; color: #fff; }
+  .corrections-chart-y-axis--right span { left: 0; right: auto; }
+  .corrections-chart-line.corrections-chart-line--rules { stroke: #fff; }
+  .corrections-chart-legend { display: flex; justify-content: space-between; gap: 8px 24px; margin-bottom: 20px; font-size: 12px; color: #00d8aa; }
+  .corrections-chart-legend span:last-child { color: #fff; text-align: right; }
+  .corrections-chart-point { cursor: pointer; stroke: transparent; stroke-width: 12; pointer-events: all; transition: r 160ms ease; }
+  .corrections-chart-point:hover, .corrections-chart-point:focus-visible { r: 6px; }
+  @media (prefers-reduced-motion: reduce) { .corrections-chart-point { transition: none; } }
+  .corrections-chart-point:focus { outline: none; stroke: rgba(255,255,255,.3); stroke-width: 4; }
+  .corrections-chart-tooltip { position:absolute; z-index:2; padding:9px 10px 7px; border-radius:6px; background:rgba(0,0,0,.6); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,.12); color:#fff; font-size:12px; line-height:1.4; pointer-events:none; width:max-content; max-width:calc(100% - 16px); transform:translate(-50%,-100%); }
   .corrections-chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .corrections-chart-series { opacity: .7; transition: opacity 160ms ease; }
+  .corrections-chart-series:hover, .corrections-chart-series:focus-within { opacity: 1; }
+  @media (prefers-reduced-motion: reduce) { .corrections-chart-series { transition: none; } }
   .corrections-chart-line {
     fill: none;
     stroke: #00d8aa;
@@ -836,7 +849,7 @@
           <li>Turned dead-end error reports into complete correction workflows</li>
           <li>Made bulk correction authorship traceable, helping clients meet audit goals</li>
           <li>Auto validation eliminates nearly 500 setup steps in a single pipeline</li>
-          <li>Instant adoption: 23 million cells corrected in two months</li>
+          <li>23,429 cells corrected by 8 October 2026</li>
         </ul>
       </div>
     </section>
@@ -1038,40 +1051,41 @@
     <section aria-labelledby="outcome-heading" class="case-body">
       <h2 class="eyebrow" id="outcome-heading">Outcome</h2>
       <h3>Closing the loop</h3>
-      <p>Validation Corrections launched on 8 July 2026. It was adopted into client production processes immediately, with corrections applied to some 23 million cells by September.</p>
+      <p>Validation Corrections launched on 8 July 2026. By 8 October, corrections had been applied to 23,429 cells across 27 pipeline runs.</p>
       <figure class="corrections-chart" aria-labelledby="corrections-chart-title">
-        <h3 id="corrections-chart-title">23 million cells corrected in two months</h3>
-        <p class="corrections-chart-subtitle">Cumulative cells corrected · millions of cells · 21 Sept 2026</p>
+        <h3 id="corrections-chart-title">23,429 cells corrected</h3>
+        <p class="corrections-chart-subtitle">Cumulative corrections · 8 Oct 2026</p>
+        <div class="corrections-chart-legend"><span>Cells corrected</span><span>Rules corrected</span></div>
         <div class="corrections-chart-plot">
-          <div class="corrections-chart-y-axis" aria-hidden="true"><span style="top:10%">25m</span><span style="top:26%">20m</span><span style="top:58%">10m</span><span style="top:90%">0</span></div>
-        <svg viewBox="0 0 640 240" role="img" aria-label="Cumulative cells corrected, in millions. Zero from launch on 8 July until the first correction on 17 August, rising to approximately 23 million by the September snapshot. The 8 September dot marks the last correction saved on the interpolated line, not a measured cumulative total.">
-          <defs>
-            <linearGradient id="corrections-area-gradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#00d8aa" stop-opacity="0.18"/>
-              <stop offset="100%" stop-color="#00d8aa" stop-opacity="0"/>
-            </linearGradient>
-          </defs>
-          <path class="corrections-chart-area" d="M55.478 216H326.783L564.174 39.36V216Z" fill="url(#corrections-area-gradient)"/>
-          <path d="M8 24H632 M8 62.4H632 M8 139.2H632 M8 216H632" fill="none" stroke="white" stroke-opacity="0.08" vector-effect="non-scaling-stroke"/>
-          <path class="corrections-chart-line" d="M55.478 216H326.783L564.174 39.36"/>
-          <circle cx="55.478" cy="216" r="5" fill="#00d8aa"/>
-          <circle cx="326.783" cy="216" r="5" fill="#00d8aa"><title>17 August: first correction saved</title></circle>
-          <circle cx="476" cy="104.969" r="5" fill="#212121" stroke="#00d8aa" stroke-width="2"><title>8 September: last correction saved; position on interpolated line</title></circle>
-          <circle cx="564.174" cy="39.36" r="5" fill="#00d8aa"/>
-          <text x="576" y="39.36" dy="0.35em" fill="#00d8aa" font-family="IBM Plex Mono, monospace" font-size="18">23m</text>
-          <path d="M55.478 216V230 M326.783 216V230 M476.000 216V230" stroke="#00d8aa" stroke-opacity="0.5" vector-effect="non-scaling-stroke"/>
-        </svg>
-        <div class="corrections-chart-events"><span style="left:8.6685%">8 Jul</span><span style="left:51.0598%">17 Aug</span><span style="left:74.3750%">8 Sep</span></div>
-        <div class="corrections-chart-months" aria-label="July to October 2026"><span style="left:1.2500%">Jul</span><span style="left:34.1033%">Aug</span><span style="left:66.9565%">Sep</span><span style="left:98.7500%">Oct</span></div>
-        </div>
-        <div class="corrections-saved-dates">
-          <span><strong>17 August</strong>First correction saved</span>
-          <span><strong>8 September</strong>Last correction saved</span>
+          <div class="corrections-chart-y-axis" aria-hidden="true"><span style="top:10%">25k</span><span style="top:26%">20k</span><span style="top:58%">10k</span><span style="top:90%">0</span></div>
+          <div class="corrections-chart-y-axis corrections-chart-y-axis--right" aria-hidden="true"><span style="top:10%">40</span><span style="top:30%">30</span><span style="top:50%">20</span><span style="top:70%">10</span><span style="top:90%">0</span></div>
+          <svg viewBox="0 0 640 240" role="group" aria-label="Cumulative corrections through 8 October 2026. Cells, left axis: zero until 17 August, 23,418 on 21 September and 23,429 on 8 October. Rules, right axis: zero on 17 August, 29 on 21 September and 39 on 8 October.">
+            <defs><linearGradient id="corrections-area-gradient" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#00d8aa" stop-opacity="0.18"/><stop offset="100%" stop-color="#00d8aa" stop-opacity="0"/></linearGradient><linearGradient id="corrections-rules-gradient" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff" stop-opacity="0.14"/><stop offset="100%" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
+            <path class="corrections-chart-area" d="M52.121 216H304.242L524.848 39.073L632.000 36.065V216Z" fill="url(#corrections-area-gradient)"/>
+            <path d="M8 24H632 M8 62.4H632 M8 139.2H632 M8 216H632" fill="none" stroke="white" stroke-opacity="0.08" vector-effect="non-scaling-stroke"/>
+            <path class="corrections-chart-area" d="M304.242 216.000L524.848 76.800L632.000 28.800V216Z" fill="url(#corrections-rules-gradient)"/>
+            <g class="corrections-chart-series">
+              <path class="corrections-chart-line corrections-chart-line--rules" d="M304.242 216.000L524.848 76.800L632.000 28.800"/>
+              <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="17 Aug 2026 · 0 cells · 0 rules" data-tooltip="17 Aug 2026 · 0 cells · 0 rules" cx="304.242" cy="216.000" r="4" fill="#fff"><title>17/8/2026: 0 rules corrected</title></circle>
+              <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="21 Sept 2026 · 23,418 cells · 29 rules" data-tooltip="21 Sept 2026 · 23,418 cells · 29 rules" cx="524.848" cy="76.800" r="4" fill="#fff"><title>21/9/2026: 29 rules corrected</title></circle>
+              <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="8 Oct 2026 · 23,429 cells · 39 rules" data-tooltip="8 Oct 2026 · 23,429 cells · 39 rules" cx="632.000" cy="28.800" r="4" fill="#fff"><title>8/10/2026: 39 rules corrected</title></circle>
+            </g>
+            <g class="corrections-chart-series">
+              <path class="corrections-chart-line" d="M52.121 216H304.242L524.848 39.073L632.000 36.065"/>
+              <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="17 Aug 2026 · 0 cells · 0 rules" data-tooltip="17 Aug 2026 · 0 cells · 0 rules" cx="304.242" cy="216.000" r="4" fill="#00d8aa"><title>17/8/2026: 0 cells corrected</title></circle>
+              <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="21 Sept 2026 · 23,418 cells · 29 rules" data-tooltip="21 Sept 2026 · 23,418 cells · 29 rules" cx="524.848" cy="39.073" r="4" fill="#00d8aa"><title>21/9/2026: 23,418 cells corrected</title></circle>
+              <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="8 Oct 2026 · 23,429 cells · 39 rules" data-tooltip="8 Oct 2026 · 23,429 cells · 39 rules" cx="632.000" cy="36.065" r="4" fill="#00d8aa"><title>8/10/2026: 23,429 cells corrected</title></circle>
+            </g>
+
+          </svg>
+          <div class="corrections-chart-tooltip" role="tooltip" hidden></div>
+          <div class="corrections-chart-months" aria-label="July to October 2026"><span style="left:1.2500%">Jul</span><span style="left:31.7803%">Aug</span><span style="left:62.3106%">Sep</span><span style="left:91.8561%">Oct</span></div>
         </div>
         <div class="corrections-snapshot">
           <dl>
-            <div><dt>Pipeline runs with corrections</dt><dd>21</dd></div>
-            <div><dt>Cells fixed</dt><dd>23,418</dd></div>
+            <div><dt>Pipeline runs with corrections</dt><dd>27</dd></div>
+            <div><dt>Cells fixed</dt><dd>23,429</dd></div>
+            <div><dt>Rules corrected</dt><dd>39</dd></div>
           </dl>
         </div>
       </figure>
@@ -1280,7 +1294,28 @@
   <script>
     (function () {
       var chart = document.querySelector('.corrections-chart');
-      if (!chart || !('IntersectionObserver' in window)) return;
+      if (!chart) return;
+      var tooltip = chart.querySelector('.corrections-chart-tooltip');
+      var plot = chart.querySelector('.corrections-chart-plot');
+      chart.querySelectorAll('.corrections-chart-point').forEach(function (point) {
+        function show() {
+          tooltip.textContent = point.getAttribute('data-tooltip');
+          tooltip.hidden = false;
+          var dot = point.getBoundingClientRect();
+          var box = plot.getBoundingClientRect();
+          var half = tooltip.offsetWidth / 2;
+          tooltip.style.left = Math.max(half + 4, Math.min(box.width - half - 4, dot.left + dot.width / 2 - box.left)) + 'px';
+          tooltip.style.top = (dot.top - box.top - 12) + 'px';
+        }
+        function hide() { tooltip.hidden = true; }
+        point.addEventListener('pointerenter', show);
+        point.addEventListener('pointerleave', hide);
+        point.addEventListener('focus', show);
+        point.addEventListener('blur', hide);
+        point.addEventListener('click', show);
+        point.addEventListener('keydown', function (event) { if (event.key === 'Escape') hide(); });
+      });
+      if (!('IntersectionObserver' in window)) return;
       chart.classList.add('is-waiting');
       var observer = new IntersectionObserver(function (entries) {
         if (!entries[0].isIntersecting) return;
