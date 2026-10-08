@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Column mapping</title>
-<meta name="description" content="How Tom de Gay designed Quantemplate's column mapping engine, and later its semantic fingerprinting upgrade — a decade-old feature that still gives clients a 4x improvement in mapping quality.">
+<meta name="description" content="How Tom de Gay designed Quantemplate's column mapping engine, cutting mapping work from weeks to minutes, with 73% fewer serious semantic mapping errors in testing after its 2026 upgrade.">
 <meta name="theme-color" content="#131313">
 <link rel="canonical" href="https://tomdegay.com/case-studies/column-mapping">
 
@@ -837,7 +837,7 @@
       </svg>
       <span class="kicker head-fade">Case Study | <a href="https://help.quantemplate.com/map-columns" target="_blank" rel="noopener noreferrer">Quantemplate Column Mapping</a></span>
       <h1 class="display head-fade">Mapping inconsistent schemas at scale</h1>
-      <p class="subtitle head-fade">Turns a month of manual schema-matching into a job that runs in minutes, +73% more accurate since the 2026 upgrade.</p>
+      <p class="subtitle head-fade">Turns a month of manual schema-matching into a job that runs in minutes. The 2026 upgrade produced 73% fewer serious semantic mapping errors in testing.</p>
       <p class="keywords"><span class="keyword">Interaction design</span><span class="keyword">Human-in-the-loop</span></p>
 
     </header>
@@ -851,7 +851,7 @@
           <li>Created a new mapping interaction model from users’ spreadsheet workarounds</li>
           <li>Achieved 100% adoption in business-critical workflows</li>
           <li>Cut mapping work from weeks to minutes for 2,000 files per month</li>
-          <li>2026 upgrade delivered more reliable mappings, with 73% fewer errors in testing</li>
+          <li>2026 upgrade delivered 73% fewer serious semantic mapping errors in testing</li>
         </ul>
       </div>
     </section>
@@ -930,7 +930,7 @@
     <hr class="rule">
 
     <section aria-labelledby="keydecisions-heading" class="case-body">
-      <h2 class="eyebrow" id="keydecisions-heading">Key decisions</h2>
+      <h2 class="eyebrow" id="keydecisions-heading">Interaction model</h2>
       <h3>Vertically stacked fields, aligned to a common master</h3>
       <p>Other tools had tried to solve this problem by connecting lines between the two sources and master. This was hard to understand and could not scale across the dozens of source schemas seen in our use case.</p>
 
@@ -957,8 +957,6 @@
       </figure>
       <p>Once source schemas were mapped in, the mappings were retained. And if a new variant came in next month, it was just a couple of clicks to get it mapped in.</p>
 
-      <blockquote>Processing those 2000 files a month went from taking most of the month to a job running in the background in minutes.</blockquote>
-
       <div class="figure-portrait-frame figure-wide">
         <div class="ui-video" data-hover-controls>
           <video autoplay muted loop playsinline disablepictureinpicture poster="media/concept-mapping-detail.jpg">
@@ -971,30 +969,31 @@
 
     <hr class="rule">
 
-    <section aria-labelledby="implementation-heading" class="case-body">
-      <h2 class="eyebrow" id="implementation-heading">Implementation</h2>
+    <section aria-labelledby="automation-heading" class="case-body" id="implementation-heading">
+      <h2 class="eyebrow" id="automation-heading">Automation</h2>
+      <h3>Suggestions users could trust</h3>
+      <p>For every unmapped field we used our matching engine to generate suggestions to map to the master schema. The next step was to automate this: allow top-ranking suggestions to be mapped at once.</p>
+      <p>I designed this as a preview mode, so users could see mapping suggestions before committing. I also added a slider, so a minimum confidence threshold could be set: incorrect mappings could be costly, so quality was more important than coverage.</p>
 
-      <div class="subsection" id="automation-heading">
-        <h3>Suggestions users could trust</h3>
-        <p>For every unmapped field we used our matching engine to generate suggestions to map to the master schema. The next step was to automate this: allow top-ranking suggestions to be mapped at once.</p>
-        <p>I designed this as a preview mode, so users could see mapping suggestions before committing. I also added a slider, so a minimum confidence threshold could be set: incorrect mappings could be costly, so quality was more important than coverage.</p>
+      <blockquote>These safeguards helped users trust the automation.</blockquote>
 
-        <blockquote>These safeguards helped users trust the automation.</blockquote>
-
-        <figure class="figure figure-wide">
-          <div class="figure-portrait-frame">
-            <div class="ui-video" data-hover-controls>
-              <video autoplay muted loop playsinline disablepictureinpicture poster="media/automap-preview.jpg">
-                <source src="media/automap-preview.mp4" type="video/mp4">
-              </video>
-            <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
-            </div>
+      <figure class="figure figure-wide">
+        <div class="figure-portrait-frame">
+          <div class="ui-video" data-hover-controls>
+            <video autoplay muted loop playsinline disablepictureinpicture poster="media/automap-preview.jpg">
+              <source src="media/automap-preview.mp4" type="video/mp4">
+            </video>
+          <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
           </div>
-          <figcaption>Automap mode suggests bulk mappings above a user-set confidence threshold. Lower confidence ratings are highlighted yellow for user review. Mappings made before show the avatar of the user who made it, building trust in the suggestion.</figcaption>
-        </figure>
+        </div>
+        <figcaption>Automap mode suggests bulk mappings above a user-set confidence threshold. Lower confidence ratings are highlighted yellow for user review. Mappings made before show the avatar of the user who made it, building trust in the suggestion.</figcaption>
+      </figure>
+    </section>
 
-        
-      </div>
+    <hr class="rule">
+
+    <section aria-labelledby="evolution-heading" class="case-body">
+      <h2 class="eyebrow" id="evolution-heading">Evolution</h2>
 
       <div class="subsection" id="semantics-heading">
         <h3>From column names to column contents</h3>
@@ -1035,37 +1034,47 @@
     <hr class="rule">
 
     <section aria-labelledby="outcome-heading" class="case-body">
-      <h2 class="eyebrow" id="outcome-heading">Outcome</h2>
-      <h3>Evaluating the new model</h3>
-      <p>To evaluate the new mapping behaviour, I created four synthetic schemas based on the 250-column Lloyd&rsquo;s London Market schema, which is widely used in the industry. These contained realistic data, with extensive discrepancies and lexical variation in column names, making the test more demanding than typical product usage.</p>
-      <p>In my LLM-assisted assessment across four demanding synthetic schemas, the new model achieved approximately 12% higher overall match quality and around 73% fewer serious semantic mapping errors.</p>
-      <figure class="model-chart" aria-labelledby="model-chart-title" aria-describedby="model-chart-caption">
-        <h3 class="model-chart-title" id="model-chart-title">73% fewer mapping errors</h3>
-        <p class="model-chart-subtitle">Mapping errors across 207 columns · lower is better</p>
-        <div class="model-chart-row">
-          <span class="model-chart-label">Original model</span>
-          <div class="model-chart-plot"><div class="model-chart-bar">
-            <span class="model-chart-fill" aria-hidden="true"></span>
-            <span class="model-chart-value">11</span>
-          </div></div>
-        </div>
-        <div class="model-chart-row model-chart-row--better">
-          <span class="model-chart-label">New model</span>
-          <div class="model-chart-plot"><div class="model-chart-bar">
-            <span class="model-chart-fill" aria-hidden="true"></span>
-            <span class="model-chart-value">3</span>
-          </div></div>
-        </div>
-        <figcaption id="model-chart-caption">
-          <span>Estimated counts from an LLM-assisted review of screenshots across four synthetic schemas (26–27 August 2026).</span>
-        </figcaption>
-      </figure>
-      <p>Across the four schemas, only three mappings from the new model were assessed as incorrect, even with the Automap confidence threshold set to 0%. It also handled repeated and numbered fields more consistently, reducing incorrect matches between similar-looking fields with distinct meanings.</p>
+      <h2 class="eyebrow" id="outcome-heading">Outcomes</h2>
 
-      <blockquote class="outcome-quote">
-        I cannot adequately express how receptive Tom was to our suggestions for improvement. He would listen, ask questions and make our wishlist items reality; even enhancing our&nbsp;suggestions.
-        <cite><a href="https://www.linkedin.com/in/tom-dg/details/recommendations/?detailScreenTabIndex=0" target="_blank" rel="noopener noreferrer">Lee Ann Dewell Lang</a>, Quantemplate user-client, James River Insurance</cite>
-      </blockquote>
+      <div class="subsection" id="adoption-heading">
+        <h3>Cut mapping work from weeks to minutes for 2,000 files per month</h3>
+        <p>Column mapping achieved 100% adoption and became a tentpole feature of Quantemplate, helping drive the growth of the business.</p>
+        <p>We continued to improve usability and performance in response to user feedback. Search bars made it easier to locate unmapped items, while more informative waiting states helped users understand what was happening during processing.</p>
+        <p>Our original research cohort wanted to assemble master schemas from columns in their source datasets. As the business focus shifted towards delegated authority underwriting, we prioritised setting an existing dataset as the master schema, adapting the workflow to the new cohort&rsquo;s needs.</p>
+
+        <blockquote class="outcome-quote">
+          I cannot adequately express how receptive Tom was to our suggestions for improvement. He would listen, ask questions and make our wishlist items reality; even enhancing our&nbsp;suggestions.
+          <cite><a href="https://www.linkedin.com/in/tom-dg/details/recommendations/?detailScreenTabIndex=0" target="_blank" rel="noopener noreferrer">Lee Ann Dewell Lang</a>, Quantemplate user-client, James River Insurance</cite>
+        </blockquote>
+      </div>
+
+      <div class="subsection" id="evaluation-heading">
+        <h3>Evaluating the upgraded model</h3>
+        <p>To evaluate the new mapping behaviour, I created four synthetic schemas based on the 250-column Lloyd&rsquo;s London Market schema, which is widely used in the industry. These contained realistic data, with extensive discrepancies and lexical variation in column names, making the test more demanding than typical product usage.</p>
+        <p>In my LLM-assisted assessment across four demanding synthetic schemas, the new model achieved approximately 12% higher overall match quality and around 73% fewer serious semantic mapping errors.</p>
+        <figure class="model-chart" aria-labelledby="model-chart-title" aria-describedby="model-chart-caption">
+          <h3 class="model-chart-title" id="model-chart-title">73% fewer serious semantic mapping errors</h3>
+          <p class="model-chart-subtitle">Serious semantic mapping errors across 207 columns · lower is better</p>
+          <div class="model-chart-row">
+            <span class="model-chart-label">Original model</span>
+            <div class="model-chart-plot"><div class="model-chart-bar">
+              <span class="model-chart-fill" aria-hidden="true"></span>
+              <span class="model-chart-value">11</span>
+            </div></div>
+          </div>
+          <div class="model-chart-row model-chart-row--better">
+            <span class="model-chart-label">New model</span>
+            <div class="model-chart-plot"><div class="model-chart-bar">
+              <span class="model-chart-fill" aria-hidden="true"></span>
+              <span class="model-chart-value">3</span>
+            </div></div>
+          </div>
+          <figcaption id="model-chart-caption">
+            <span>Estimated counts from an LLM-assisted review of screenshots across four synthetic schemas (26–27 August 2026).</span>
+          </figcaption>
+        </figure>
+        <p>Across the four schemas, only three mappings from the new model were assessed as incorrect, even with the Automap confidence threshold set to 0%. It also handled repeated and numbered fields more consistently, reducing incorrect matches between similar-looking fields with distinct meanings.</p>
+      </div>
     </section>
 
     <hr class="rule">
@@ -1106,9 +1115,10 @@
     <a href="#keypoints-heading">Key points</a>
     <a href="#problem-heading">Problem</a>
     <a href="#approach-heading">Approach</a>
-    <a href="#keydecisions-heading">Key decisions</a>
-    <a href="#implementation-heading">Implementation</a>
-    <a href="#outcome-heading">Outcome</a>
+    <a href="#keydecisions-heading">Interaction model</a>
+    <a href="#automation-heading">Automation</a>
+    <a href="#evolution-heading">Evolution</a>
+    <a href="#outcome-heading">Outcomes</a>
   </nav>
 
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged image" tabindex="-1">
