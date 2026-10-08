@@ -932,11 +932,16 @@
     <section aria-labelledby="keydecisions-heading" class="case-body">
       <h2 class="eyebrow" id="keydecisions-heading">Key decisions</h2>
       <h3>Vertically stacked fields, aligned to a common master</h3>
-      <p>There was no established product pattern that we could adopt. Instead, a concept emerged directly from the research: an interface with vertically stacked fields, across which multiple schemas could align to a common master.</p>
+      <p>Other tools had tried to solve this problem by connecting lines between the two sources and master. This was hard to understand and could not scale across the dozens of source schemas seen in our use case.</p>
 
       <figure class="figure">
-        <img src="media/mch-alignment.png" width="1472" height="832" alt="Mapped columns from two source schemas horizontally aligned to the same row in the master schema." loading="lazy">
-        <figcaption>Mapping denoted by horizontal alignment across schemas: a layout learnt from user research.</figcaption>
+        <img src="media/mch-traditional-animated.svg" width="1472" height="1280" alt="Traditional approach: connecting lines. Two differently ordered source schemas connect to the master with crossing green lines." loading="lazy">
+      </figure>
+
+      <p>Instead, a concept emerged directly from the research: an interface with vertically stacked fields, across which multiple schemas could align to a common master.</p>
+
+      <figure class="figure">
+        <img src="media/mch-alignment-animated.svg" width="1472" height="1172" alt="A better approach: aligned schemas. Focus moves down the aligned master and source schemas, from Expiration date to New-renewal and the remaining fields." loading="lazy">
       </figure>
 
       <p>The key innovation was separating mapped and unmapped fields into mutually exclusive tabs for each schema. This made it easier to spot gaps and keep track of unmapped items, whilst a progress bar indicated the completeness of each schema.</p>
