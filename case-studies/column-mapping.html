@@ -337,6 +337,60 @@
     border-radius: 6px;
   }
 
+  .mapping-tabs-detail {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px;
+    background: linear-gradient(#1a1a1a, #2c2c2c);
+    border-radius: 10px;
+    font-family: "Fakt Blond", Arial, sans-serif;
+  }
+
+  .mapping-tabs-detail .stage-heading { align-self: stretch; margin-bottom: 24px; }
+  .mapping-tabs-detail .diagram-title { margin: 0; font-size: 20px; line-height: 1.3; }
+  .mapping-tabs-detail .try-hint { margin: 8px 0 0; color: #999; font-size: 18px; line-height: 1.5; letter-spacing: 0.5px; }
+  .mapping-tabs-detail object {
+    display: block;
+    width: 442px;
+    max-width: 100%;
+    aspect-ratio: 442 / 522;
+    border: 0;
+    border-radius: 6px;
+    background: #000;
+    box-shadow: 0 8px 30px #0006;
+  }
+
+  .mapping-tabs-detail .demo-controls { display: flex; gap: 12px; justify-content: center; margin-top: 20px; }
+  .mapping-tabs-detail .control-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 8px 18px;
+    border: 1px solid #666;
+    border-radius: 6px;
+    background: transparent;
+    color: #bbb;
+    font: 400 16px/1.5 "Fakt Blond", Arial, sans-serif;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  .mapping-tabs-detail .control-button > span { transform: translateY(1px); }
+  .mapping-tabs-detail .control-button:hover { background: #ffffff12; color: #fff; }
+  .mapping-tabs-detail .control-button:focus-visible { outline: 2px solid #00d8aa; outline-offset: 4px; }
+  .mapping-tabs-detail .control-button:disabled { opacity: 0.5; cursor: default; }
+  .mapping-tabs-detail .demo-button { min-width: 145px; }
+  .mapping-tabs-detail .stop-icon,
+  .mapping-tabs-detail .demo-button[aria-pressed="true"] .play-icon { display: none; }
+  .mapping-tabs-detail .demo-button[aria-pressed="true"] .stop-icon { display: block; }
+
+  @media (max-width: 560px) {
+    .mapping-tabs-detail { padding: 16px; }
+  }
+
   /* Every content image/video floats on this same grey-gradient backdrop
      card, rather than sitting straight on the page's black background.
      Standalone frames (not inside a <figure>) need their own bottom
@@ -950,6 +1004,25 @@
         <img src="media/mch-wireframe-extended-animated.svg" width="1400" height="792" alt="Mapped and unmapped source lists merge into tabs, allowing three source schemas to fit alongside the master schema." loading="lazy">
         <figcaption>Collapsing the mapped and unmapped items into tabs preserved the horizontal alignment of mapped items across schemas, and doubled the number of schemas which could fit in the view.</figcaption>
       </figure>
+
+      <figure class="figure mapping-tabs-detail" id="mapping-tabs-detail" aria-labelledby="mapping-tabs-title">
+        <div class="stage-heading">
+          <h4 class="diagram-title" id="mapping-tabs-title">Combined tab/progress bar</h4>
+          <p class="try-hint">Click to try</p>
+        </div>
+        <object type="image/svg+xml" data="media/column-mapping-tabs.svg" aria-label="Interactive column mapping with Mapped and Unmapped tabs"><a href="media/column-mapping-tabs.svg">Open the interactive column mapping detail</a>.</object>
+        <div class="demo-controls" role="group" aria-label="Mapping demo controls">
+          <button class="control-button reset-button" type="button" disabled><span>Reset</span></button>
+          <button class="control-button demo-button" type="button" aria-pressed="false" disabled>
+            <svg class="play-icon" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1 11 6 2 11Z" fill="currentColor"/></svg>
+            <svg class="stop-icon" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><rect x="1" y="1" width="10" height="10" rx="1" fill="currentColor"/></svg>
+            <span>Play demo</span>
+          </button>
+        </div>
+        <span class="visually-hidden demo-status" role="status" aria-live="polite"></span>
+      </figure>
+
+      <h3 id="completed-interface-heading">Completed interface</h3>
       <p>Once source schemas were mapped in, the mappings were retained. And if a new variant came in next month, it was just a couple of clicks to get it mapped in.</p>
 
       <div class="figure-portrait-frame figure-wide">
@@ -1128,6 +1201,36 @@
   </div>
   </main>
 
+  <script>
+    (function () {
+      var detail = document.querySelector('.mapping-tabs-detail');
+      var diagram = detail.querySelector('object');
+      var reset = detail.querySelector('.reset-button');
+      var demo = detail.querySelector('.demo-button');
+      var status = detail.querySelector('.demo-status');
+      var connectedRoot;
+      function connect() {
+        var root = diagram.contentDocument && diagram.contentDocument.documentElement;
+        if (!root || root.localName !== 'svg' || root === connectedRoot) return;
+        connectedRoot = root;
+        var running = false;
+        reset.disabled = false;
+        demo.disabled = false;
+        demo.setAttribute('aria-pressed', 'false');
+        demo.querySelector('span').textContent = 'Play demo';
+        reset.onclick = function () { root.dispatchEvent(new Event('mapping-reset')); };
+        demo.onclick = function () { root.dispatchEvent(new Event(running ? 'mapping-demo-stop' : 'mapping-demo-play')); };
+        root.addEventListener('mapping-demo-state', function (event) {
+          running = event.detail.running;
+          demo.setAttribute('aria-pressed', String(running));
+          demo.querySelector('span').textContent = running ? 'Stop demo' : 'Play demo';
+          status.textContent = event.detail.message;
+        });
+      }
+      diagram.addEventListener('load', connect);
+      connect();
+    })();
+  </script>
   <script>
     (function () {
       if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
