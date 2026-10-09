@@ -2818,10 +2818,16 @@
     var wide = window.matchMedia("(min-width: 1024px)");
     function el(id) { var n = document.querySelector(id); return n && (n.classList.contains("p-item") ? n : n.parentElement); }
     var links = [
-      { poster: ".poster-2", above: "#profile-graphic", first: ".p-logo", gap: 56 },
-      { poster: ".poster-3", above: "#isokon-heading", first: 'img[src$="craft-isokon-01.jpg"]', gap: 68 },
-      { poster: ".poster-4", above: "#white-rainbow-heading", first: 'img[src$="craft-white-rainbow-01.jpg"]', gap: 68 },
-      { poster: ".poster-5", above: 'img[src$="craft-white-rainbow-11.jpg"]', first: "#teaching-heading", gap: 68 }
+      /* The Isokon block sits under whichever column it would otherwise run
+         into: its card clears the profile page (left), its logo clears the
+         visual-language card (right); the tighter of the two decides. */
+      { poster: ".poster-2", rules: [
+        { above: "#profile-graphic", first: "#isokon-heading", gap: 68 },
+        { above: "#quantemplate-heading", first: ".p-logo", gap: 56 }
+      ] },
+      { poster: ".poster-3", rules: [{ above: "#isokon-heading", first: 'img[src$="craft-isokon-01.jpg"]', gap: 68 }] },
+      { poster: ".poster-4", rules: [{ above: "#white-rainbow-heading", first: 'img[src$="craft-white-rainbow-01.jpg"]', gap: 68 }] },
+      { poster: ".poster-5", rules: [{ above: 'img[src$="craft-white-rainbow-11.jpg"]', first: "#teaching-heading", gap: 68 }] }
     ];
     function tuck() {
       /* the dashboard (and the cards drawn up with it) sits a fixed distance
@@ -2841,15 +2847,24 @@
     function pull() {
       tuck();
       links.forEach(function (l) {
-        var p = document.querySelector(l.poster), a = el(l.above), f = document.querySelector(l.first);
-        if (!p || !a || !f) return;
-        f = f.closest(".p-item");
+        var p = document.querySelector(l.poster);
+        if (!p) return;
         p.style.removeProperty("--pull");
         if (!wide.matches) return;
-        var t = f.style.translate; f.style.translate = "";
-        var gap = f.getBoundingClientRect().top - a.getBoundingClientRect().bottom;
-        f.style.translate = t;
-        p.style.setProperty("--pull", (gap - l.gap) + "px");
+        /* each rule says how far the block may rise before it comes within
+           its gap of the block above; the smallest rise wins */
+        var rise = null;
+        l.rules.forEach(function (r) {
+          var a = el(r.above), f = document.querySelector(r.first);
+          if (!a || !f) return;
+          f = f.closest(".p-item");
+          var t = f.style.translate; f.style.translate = "";
+          var gap = f.getBoundingClientRect().top - a.getBoundingClientRect().bottom;
+          f.style.translate = t;
+          var v = gap - r.gap;
+          rise = rise === null ? v : Math.min(rise, v);
+        });
+        if (rise !== null) p.style.setProperty("--pull", rise + "px");
       });
     }
     pull();
@@ -2858,7 +2873,7 @@
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(pull);
     if (window.ResizeObserver) {
       var ro = new ResizeObserver(pull);
-      ["#move-fast-heading", "#quantemplate-heading", "#isokon-heading", "#white-rainbow-heading"].forEach(function (id) { var a = el(id); if (a) ro.observe(a); });
+      ["#move-fast-heading", "#quantemplate-heading", "#profile-graphic", "#isokon-heading", "#white-rainbow-heading"].forEach(function (id) { var a = el(id); if (a) ro.observe(a); });
     }
   })();
 </script>
