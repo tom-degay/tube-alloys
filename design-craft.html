@@ -167,6 +167,9 @@
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
   }
 
+  @media (min-width: 1024px) { .poster > .p-item.profile-statistics { margin-top: 56px; } }
+  .p-tabs object { display: block; width: 442px; max-width: 100%; aspect-ratio: 442 / 522; border: 0; border-radius: 6px; background: #000; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4); }
+
   .p-fig > video { display: block; width: 100%; height: auto; border-radius: 6px; }
 
   .figure img {
@@ -599,7 +602,7 @@
   </nav>
   <main>
     <hr class="rule rule-top">
-    <div class="poster" style="--rows:17">
+    <div class="poster" style="--rows:20">
       <div class="p-item p-hero" style="--c:1 / 8;--r:1 / span 1"><h1 class="lede display head-fade">Design craft</h1></div>
 
       <nav class="p-item toc p-toc" aria-label="On this page" style="--c:10 / 13;--r:1 / span 1">
@@ -662,7 +665,9 @@
 
       <div class="p-item p-card p-section p-tuck" style="--c:7 / 13;--r:13 / span 5"><h2 class="principle-title display" id="quantemplate-heading">Quantemplate&rsquo;s visual language</h2><p>Back in 2013, there was nothing that looked quite like <a href="https://quantemplate.com" target="_blank" rel="noopener noreferrer">Quantemplate</a>. We were inspired by the <a href="https://www.bloomberg.com/professional/products/bloomberg-terminal/" target="_blank" rel="noopener noreferrer">Bloomberg Terminal</a> as a power tool, and a <a href="https://media.evo.co.uk/image/private/s--8AFVzv4W--/f_auto,t_content-image-full-desktop@1/v1556258285/evo/images/dir_446/car_photo_223452.jpg" target="_blank" rel="noopener noreferrer">Lamborghini dashboard</a> as, well, a different kind of power tool.</p><p>We wanted an interface that felt comfortable for long work sessions, and I brought the concept to life with a dark UI and a sparingly applied set of neon colours.</p><blockquote>The visual style and the craft that went into the interface were consistently cited by new hires as a reason for joining.</blockquote><p>The look drew some pushback from sales and prospective buyers, but we believed the brand was a core differentiator and stuck with it. Funnily enough, when Apple introduced Dark Mode on iOS in 2019, we stopped hearing those concerns.</p></div>
 
-      <figure id="profile-graphic" class="p-item figure p-fig p-nocrop p-tuck profile-statistics" style="--c:1 / 7;--r:15 / span 4">
+      <figure class="p-item figure p-fig p-nocrop p-tabs" style="--c:1 / 7;--r:13 / span 4"><div class="figure-portrait-frame"><object type="image/svg+xml" data="media/column-mapping-tabs.svg" aria-label="Interactive column mapping with Mapped and Unmapped tabs"></object></div><figcaption>Combined tab/progress bar</figcaption></figure>
+
+      <figure id="profile-graphic" class="p-item figure p-fig p-nocrop profile-statistics" style="--c:1 / 7;--r:17 / span 4">
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1005pt" height="719pt" viewBox="0 0 1005 719">
 <defs>
 <filter id="profile-filter-remove-color" x="0%" y="0%" width="100%" height="100%">
@@ -2697,7 +2702,7 @@
     var wide = window.matchMedia("(min-width: 1024px)");
     function el(id) { var n = document.querySelector(id); return n && (n.classList.contains("p-item") ? n : n.parentElement); }
     var links = [
-      { poster: ".poster-2", above: "#quantemplate-heading", first: ".p-logo", gap: 56 },
+      { poster: ".poster-2", above: "#profile-graphic", first: ".p-logo", gap: 56 },
       { poster: ".poster-3", above: "#isokon-heading", first: 'img[src$="craft-isokon-01.jpg"]', gap: 68 },
       { poster: ".poster-4", above: "#white-rainbow-heading", first: 'img[src$="craft-white-rainbow-01.jpg"]', gap: 68 },
       { poster: ".poster-5", above: 'img[src$="craft-white-rainbow-11.jpg"]', first: "#teaching-heading", gap: 68 }
