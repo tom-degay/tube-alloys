@@ -259,8 +259,17 @@
 
   /* The left-hand stack: that component with the profile page directly
      beneath it, so the pair moves together whatever their heights. */
-  .p-stack-left { display: flex; flex-direction: column; gap: clamp(40px, 4vw, 56px); }
-  .p-stack-left > figure { margin: 0; max-width: none; }
+  /* The cluster under the dashboard: the visual-language card with the profile
+     page beneath it (right), the tab/progress bar alongside (left). One block,
+     so single-column order stays card, tab bar, profile page. */
+  .p-cluster > * { margin: 0 0 clamp(24px, 7.5vw, 40px); }
+  .p-cluster > :last-child { margin-bottom: 0; }
+  .p-cluster > figure { max-width: none; }
+  @media (min-width: 1024px) {
+    .p-cluster { display: grid; grid-template-columns: subgrid; align-items: start; row-gap: clamp(40px, 4vw, 56px); }
+    .p-cluster > * { grid-column: var(--cc); grid-row: var(--rr); margin: 0; }
+    .p-cluster > .p-lift { margin-top: calc(-1 * var(--lift, 0px)); }
+  }
 
   .p-fig > video { display: block; width: 100%; height: auto; border-radius: 6px; }
 
@@ -428,11 +437,11 @@
     /* sits close under the dashboard caption instead of a full row below */
     .poster > .p-item.p-tuck { margin-top: calc(32px - var(--gv) - var(--tuck)); }
 
-    /* The visual-language card rises as far as the dashboard above allows
-       (the script sets --lift): to 24px under the picture's frame, beside
-       the dashboard's short caption where the caption's text ends before the
-       card's left edge, below it where it does not. */
-    .poster > .p-item.p-tuck.p-lift { margin-top: calc(32px - var(--gv) - var(--tuck) - var(--lift, 0px)); }
+    /* The visual-language card (inside the cluster) rises as far as the
+       dashboard above allows -- the script sets --lift: to 24px under the
+       picture's frame, beside the dashboard's short caption where the
+       caption's text ends before the card's left edge, below it where it
+       does not. */
 
     .poster > .p-hero { align-self: start; }
     /* the block hugs the right-hand edge; the links read left to right inside
@@ -761,10 +770,10 @@
 
       <figure class="p-item figure p-fig p-fig-free" style="--c:1 / 13;--r:8 / span 5"><div class="figure-portrait-frame"><img src="media/dashboard.jpg" width="2000" height="915" alt="Concept design for Quantemplate&rsquo;s early analytics dashboard: a solvency-margin chart, a Value at Risk gauge, a sunburst volatility breakdown, and region, industry and risk breakdown tables in a dark theme." loading="lazy"></div><figcaption>Dashboard concept design, c.2013. The &lsquo;Bloomberg for Insurance&rsquo;.</figcaption></figure>
 
-      <div class="p-item p-card p-section p-tuck p-lift" style="--c:7 / 13;--r:13 / span 5"><h2 class="principle-title display" id="quantemplate-heading">Quantemplate&rsquo;s visual language</h2><p>Back in 2013, there was nothing that looked quite like <a href="https://quantemplate.com" target="_blank" rel="noopener noreferrer">Quantemplate</a>. We were inspired by the <a href="https://www.bloomberg.com/professional/products/bloomberg-terminal/" target="_blank" rel="noopener noreferrer">Bloomberg Terminal</a> as a power tool, and a <a href="https://media.evo.co.uk/image/private/s--8AFVzv4W--/f_auto,t_content-image-full-desktop@1/v1556258285/evo/images/dir_446/car_photo_223452.jpg" target="_blank" rel="noopener noreferrer">Lamborghini dashboard</a> as, well, a different kind of power tool.</p><p>We wanted an interface that felt comfortable for long work sessions, and I brought the concept to life with a dark UI and a sparingly applied set of neon colours.</p><blockquote>The visual style and the craft that went into the interface were consistently cited by new hires as a reason for joining.</blockquote><p>The look drew some pushback from sales and prospective buyers, but we believed the brand was a core differentiator and stuck with it. Funnily enough, when Apple introduced Dark Mode on iOS in 2019, we stopped hearing those concerns.</p></div>
+      <div class="p-item p-cluster p-tuck" style="--c:1 / 13;--r:13 / span 5">
+        <div class="p-card p-section p-lift" style="--cc:7 / 13;--rr:1"><h2 class="principle-title display" id="quantemplate-heading">Quantemplate&rsquo;s visual language</h2><p>Back in 2013, there was nothing that looked quite like <a href="https://quantemplate.com" target="_blank" rel="noopener noreferrer">Quantemplate</a>. We were inspired by the <a href="https://www.bloomberg.com/professional/products/bloomberg-terminal/" target="_blank" rel="noopener noreferrer">Bloomberg Terminal</a> as a power tool, and a <a href="https://media.evo.co.uk/image/private/s--8AFVzv4W--/f_auto,t_content-image-full-desktop@1/v1556258285/evo/images/dir_446/car_photo_223452.jpg" target="_blank" rel="noopener noreferrer">Lamborghini dashboard</a> as, well, a different kind of power tool.</p><p>We wanted an interface that felt comfortable for long work sessions, and I brought the concept to life with a dark UI and a sparingly applied set of neon colours.</p><blockquote>The visual style and the craft that went into the interface were consistently cited by new hires as a reason for joining.</blockquote><p>The look drew some pushback from sales and prospective buyers, but we believed the brand was a core differentiator and stuck with it. Funnily enough, when Apple introduced Dark Mode on iOS in 2019, we stopped hearing those concerns.</p></div>
 
-      <div class="p-item p-fig p-nocrop p-tuck p-stack-left" style="--c:1 / 7;--r:13 / span 5">
-        <figure class="figure mapping-tabs-detail" id="mapping-tabs-detail" aria-labelledby="mapping-tabs-title">
+        <figure class="figure mapping-tabs-detail" style="--cc:1 / 7;--rr:1 / span 2" id="mapping-tabs-detail" aria-labelledby="mapping-tabs-title">
           <div class="stage-heading">
             <h4 class="diagram-title" id="mapping-tabs-title">Combined tab/progress bar</h4>
           </div>
@@ -788,7 +797,7 @@
           <span class="visually-hidden demo-status" role="status" aria-live="polite"></span>
         </figure>
 
-        <figure id="profile-graphic" class="figure p-nocrop profile-statistics">
+        <figure id="profile-graphic" class="figure p-nocrop profile-statistics" style="--cc:7 / 13;--rr:2">
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1005pt" height="719pt" viewBox="0 0 1005 719">
 <defs>
 <filter id="profile-filter-remove-color" x="0%" y="0%" width="100%" height="100%">
@@ -2728,12 +2737,13 @@
       </div>
 
 
+
     </div>
 
     <div class="poster poster-2" style="--rows:6">
-      <figure class="p-item p-logo" style="--c:8 / 12;--r:1 / span 5"><img src="media/isokon-gallery-logo.svg" width="541" height="815" alt="Isokon Gallery logo" loading="lazy"><img class="p-logo-lit" src="media/isokon-gallery-logo.svg" width="541" height="815" alt="" aria-hidden="true" loading="lazy"></figure>
+      <figure class="p-item p-logo" style="--c:2 / 6;--r:1 / span 5"><img src="media/isokon-gallery-logo.svg" width="541" height="815" alt="Isokon Gallery logo" loading="lazy"><img class="p-logo-lit" src="media/isokon-gallery-logo.svg" width="541" height="815" alt="" aria-hidden="true" loading="lazy"></figure>
 
-      <div class="p-item p-card p-section" style="--c:1 / 7;--r:3 / span 4"><h2 class="principle-title display" id="isokon-heading">Isokon Gallery</h2><p>I&rsquo;ve had a long involvement with the Isokon building, the famous Grade I listed apartment block in north London. My first contribution was to design a sign for it in 2005. There was no precedent for a sign on the building so the material and finish mattered. Cast aluminium was the hard way, but the right way for durability and quality.</p><p>In 2014 I co-founded a <a href="https://isokongallery.org" target="_blank" rel="noopener noreferrer">micro-museum</a> in the building&rsquo;s former garage space to tell its remarkable history. I co-designed the permanent exhibition, mentoring an MA student through the work.</p><p>Every couple of years we hold a special exhibition focusing on an important resident. Most recently this was Egon Riss, one of modernism&rsquo;s most elusive characters. I spent my weekends designing a <a href="https://isokongallery.org/products/design-displacement-donkeys-the-fractured-life-of-egon-riss" target="_blank" rel="noopener noreferrer">book</a> to tell his story. Uncoated paper, chunky typography and a plywood colour palette capture the spirit of his work.</p></div>
+      <div class="p-item p-card p-section" style="--c:7 / 13;--r:3 / span 4"><h2 class="principle-title display" id="isokon-heading">Isokon Gallery</h2><p>I&rsquo;ve had a long involvement with the Isokon building, the famous Grade I listed apartment block in north London. My first contribution was to design a sign for it in 2005. There was no precedent for a sign on the building so the material and finish mattered. Cast aluminium was the hard way, but the right way for durability and quality.</p><p>In 2014 I co-founded a <a href="https://isokongallery.org" target="_blank" rel="noopener noreferrer">micro-museum</a> in the building&rsquo;s former garage space to tell its remarkable history. I co-designed the permanent exhibition, mentoring an MA student through the work.</p><p>Every couple of years we hold a special exhibition focusing on an important resident. Most recently this was Egon Riss, one of modernism&rsquo;s most elusive characters. I spent my weekends designing a <a href="https://isokongallery.org/products/design-displacement-donkeys-the-fractured-life-of-egon-riss" target="_blank" rel="noopener noreferrer">book</a> to tell his story. Uncoated paper, chunky typography and a plywood colour palette capture the spirit of his work.</p></div>
     </div>
 
     <div class="poster poster-3" style="--rows:22">
@@ -2825,11 +2835,11 @@
     function el(id) { var n = document.querySelector(id); return n && (n.classList.contains("p-item") ? n : n.parentElement); }
     var links = [
       /* The Isokon block sits under whichever column it would otherwise run
-         into: its card clears the profile page (left), its logo clears the
-         visual-language card (right); the tighter of the two decides. */
+         into: its logo (left) clears the tab/progress bar, its card (right)
+         clears the profile page; the tighter of the two decides. */
       { poster: ".poster-2", rules: [
-        { above: "#profile-graphic", first: "#isokon-heading", gap: 68 },
-        { above: "#quantemplate-heading", first: ".p-logo", gap: 56 }
+        { above: ".mapping-tabs-detail", exact: true, first: ".p-logo", gap: 56 },
+        { above: "#profile-graphic", exact: true, first: "#isokon-heading", gap: 68 }
       ] },
       { poster: ".poster-3", rules: [{ above: "#isokon-heading", first: 'img[src$="craft-isokon-01.jpg"]', gap: 68 }] },
       { poster: ".poster-4", rules: [{ above: "#white-rainbow-heading", first: 'img[src$="craft-white-rainbow-01.jpg"]', gap: 68 }] },
@@ -2879,7 +2889,7 @@
            its gap of the block above; the smallest rise wins */
         var rise = null;
         l.rules.forEach(function (r) {
-          var a = el(r.above), f = document.querySelector(r.first);
+          var a = r.exact ? document.querySelector(r.above) : el(r.above), f = document.querySelector(r.first);
           if (!a || !f) return;
           f = f.closest(".p-item");
           var t = f.style.translate; f.style.translate = "";
