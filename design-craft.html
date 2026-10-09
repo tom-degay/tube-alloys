@@ -428,13 +428,11 @@
     /* sits close under the dashboard caption instead of a full row below */
     .poster > .p-item.p-tuck { margin-top: calc(32px - var(--gv) - var(--tuck)); }
 
-    /* The visual-language card rises as far as the dashboard above allows: to
-       24px under the picture's frame, beside (not under) the dashboard's
-       short caption. That is 58px higher than the tuck above; only where the
-       caption's text ends before the card's left edge. */
-    @media (min-width: 1280px) {
-      .poster > .p-item.p-tuck.p-lift { margin-top: calc(32px - var(--gv) - var(--tuck) - 58px); }
-    }
+    /* The visual-language card rises as far as the dashboard above allows
+       (the script sets --lift): to 24px under the picture's frame, beside
+       the dashboard's short caption where the caption's text ends before the
+       card's left edge, below it where it does not. */
+    .poster > .p-item.p-tuck.p-lift { margin-top: calc(32px - var(--gv) - var(--tuck) - var(--lift, 0px)); }
 
     .poster > .p-hero { align-self: start; }
     /* the block hugs the right-hand edge; the links read left to right inside
@@ -2852,8 +2850,26 @@
       dash.style.translate = t;
       p1.style.setProperty("--tuck", (gap - 56) + "px");
     }
+    function lift() {
+      /* the visual-language card: as close under the dashboard as it can sit
+         without touching the picture's frame or the caption's text */
+      var card = el("#quantemplate-heading"), frame = document.querySelector(".figure-portrait-frame");
+      if (!card || !frame) return;
+      card.style.removeProperty("--lift");
+      if (!wide.matches) return;
+      var dash = frame.closest(".p-item"), cap = dash.querySelector("figcaption");
+      var t = dash.style.translate; dash.style.translate = "";
+      var range = document.createRange(); range.selectNodeContents(cap);
+      var text = range.getBoundingClientRect(), fb = frame.getBoundingClientRect().bottom;
+      dash.style.translate = t;
+      var cr = card.getBoundingClientRect();
+      var target = fb + 24;
+      if (text.right > cr.left - 16) target = Math.max(target, text.bottom + 24);
+      card.style.setProperty("--lift", Math.max(0, cr.top - target) + "px");
+    }
     function pull() {
       tuck();
+      lift();
       links.forEach(function (l) {
         var p = document.querySelector(l.poster);
         if (!p) return;
