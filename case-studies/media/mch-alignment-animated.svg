@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1472" height="1172" viewBox="0 0 1472 1172" role="img" aria-labelledby="alignment-title alignment-description">
-  <title id="alignment-title">A better approach — aligned schemas</title>
+  <title id="alignment-title">A better approach — Aligned schemas</title>
   <desc id="alignment-description">The focused row moves down the master schema and its two aligned source schemas. It starts at Expiration date, then New-renewal, Insured name, Street address, City, State and Zip, before continuing from Line of Business. Blank source cells indicate missing mappings. Benefits: clear relationship between source and master items; scales across dozens of schemas.</desc>
   <defs>
     <linearGradient id="background" x1="0" y1="0" x2="0" y2="1">
@@ -65,7 +65,7 @@
     .benefit-label { font-family: "Fakt Title", Arial, sans-serif; font-size: 32px; font-weight: 400; fill: #ddd; }
   </style>
   <rect width="1472" height="1172" fill="url(#background)"/>
-  <text class="diagram-title" x="52" y="112">A better approach <tspan fill="#999">aligned schemas</tspan></text>
+  <text class="diagram-title" x="52" y="112">A better approach <tspan fill="#999" dx="12">Aligned schemas</tspan></text>
   <g transform="translate(0 132)">
   <g fill="#fff">
     <text x="52" y="148">Master schema</text>

@@ -364,7 +364,41 @@
 
   .mapping-tabs-detail .stage-heading { align-self: stretch; margin-bottom: 24px; }
   .mapping-tabs-detail .diagram-title { margin: 0; font-size: 20px; line-height: 1.3; }
-  .mapping-tabs-detail .try-hint { margin: 8px 0 0; color: #999; font-size: 18px; line-height: 1.5; letter-spacing: 0.5px; }
+  .mapping-tabs-detail { container-type: inline-size; }
+  .mapping-tabs-detail .mapping-demo-canvas { position: relative; width: 442px; max-width: 100%; margin-top: 46px; }
+  .mapping-tabs-detail .try-hint {
+    position: absolute;
+    z-index: 1;
+    top: calc(-24px - 1.91571%);
+    right: -75px;
+    width: max-content;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #00d8aa;
+    font-family: inherit;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+  }
+  .mapping-tabs-detail .try-hint:hover, .mapping-tabs-detail .try-hint:focus-visible { color: #63ffd8; }
+  .mapping-tabs-detail .try-hint:focus-visible { outline: 2px solid #00d8aa; outline-offset: 4px; border-radius: 2px; }
+  .mapping-tabs-detail .try-leader { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+  .mapping-tabs-detail .try-leader-compact { display: none; }
+  .mapping-tabs-detail .try-hint, .mapping-tabs-detail .try-leader { opacity: 1; transition: opacity 0.3s ease, visibility 0s linear; }
+  .mapping-tabs-detail .mapping-demo-canvas.is-interacted .try-hint,
+  .mapping-tabs-detail .mapping-demo-canvas.is-interacted .try-leader { opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.3s ease, visibility 0s linear 0.3s; }
+  @media (prefers-reduced-motion: reduce) {
+    .mapping-tabs-detail .try-hint, .mapping-tabs-detail .try-leader { transition: none !important; }
+  }
+  @container (max-width: 660px) {
+    .mapping-tabs-detail .try-hint { right: -4px; }
+    .mapping-tabs-detail .try-leader-wide { display: none; }
+    .mapping-tabs-detail .try-leader-compact { display: block; }
+  }
   .mapping-tabs-detail object {
     display: block;
     width: 442px;
@@ -821,7 +855,7 @@
     .head-armed .key-points li { opacity: 1 !important; transform: none !important; }
   </style>
 </noscript>
-  <script src="/lightbox.js" defer></script>
+  <script src="/lightbox.js?v=20261009-lines2" defer></script>
   <script src="/nav.js?v=20261007" defer></script>
   <script src="/footer.js" defer></script>
 </head>
@@ -1003,13 +1037,13 @@
       <p>Other tools had tried to solve this problem by connecting lines between the two sources and master. This was hard to understand and could not scale across the dozens of source schemas seen in our use case.</p>
 
       <figure class="figure">
-        <img src="media/mch-traditional-animated.svg" width="1472" height="1280" alt="Traditional approach: connecting lines. Two differently ordered source schemas connect to the master with crossing green lines." loading="lazy">
+        <img src="media/mch-traditional-poster.svg" data-scroll-animation="media/mch-traditional-animated.svg?v=20261009-lines2" width="1472" height="1280" alt="Traditional approach: Connecting lines. Two differently ordered source schemas connect to the master with crossing green lines." loading="lazy">
       </figure>
 
       <p>Instead, a concept emerged directly from the research: an interface with vertically stacked fields, across which multiple schemas could align to a common master.</p>
 
       <figure class="figure">
-        <img src="media/mch-alignment-animated.svg" width="1472" height="1172" alt="A better approach: aligned schemas. Focus moves down the aligned master and source schemas, from Expiration date to New-renewal and the remaining fields." loading="lazy">
+        <img src="media/mch-alignment-animated.svg" width="1472" height="1172" alt="A better approach: Aligned schemas. Focus moves down the aligned master and source schemas, from Expiration date to New-renewal and the remaining fields." loading="lazy">
       </figure>
 
       <p>The key innovation was separating mapped and unmapped fields into mutually exclusive tabs for each schema. This made it easier to spot gaps and keep track of unmapped items, whilst a progress bar indicated the completeness of each schema.</p>
@@ -1022,9 +1056,16 @@
       <figure class="figure mapping-tabs-detail" id="mapping-tabs-detail" aria-labelledby="mapping-tabs-title">
         <div class="stage-heading">
           <h4 class="diagram-title" id="mapping-tabs-title">Combined tab/progress bar</h4>
-          <p class="try-hint">Click to try</p>
         </div>
-        <object type="image/svg+xml" data="media/column-mapping-tabs.svg" aria-label="Interactive column mapping with Mapped and Unmapped tabs"><a href="media/column-mapping-tabs.svg">Open the interactive column mapping detail</a>.</object>
+        <div class="mapping-demo-canvas">
+          <object type="image/svg+xml" data="media/column-mapping-tabs.svg?v=20261009-hint3" aria-label="Interactive column mapping with Mapped and Unmapped tabs"><a href="media/column-mapping-tabs.svg">Open the interactive column mapping detail</a>.</object>
+          <svg class="try-leader" viewBox="0 0 442 522" aria-hidden="true">
+            <path class="try-leader-wide" d="M418 29C448 29 472 16 472-10" fill="none" stroke="#00d8aa" stroke-width="1"/>
+            <path class="try-leader-compact" d="M418 29C438 29 440 0 418-10" fill="none" stroke="#00d8aa" stroke-width="1"/>
+            <circle cx="418" cy="29" r="2.5" fill="#00d8aa"/>
+          </svg>
+          <button class="try-hint" type="button">Click to try</button>
+        </div>
         <div class="demo-controls" role="group" aria-label="Mapping demo controls">
           <button class="control-button reset-button" type="button" disabled><span>Reset</span></button>
           <button class="control-button demo-button" type="button" aria-pressed="false" disabled>
@@ -1217,6 +1258,22 @@
 
   <script>
     (function () {
+      var diagram = document.querySelector('[data-scroll-animation]');
+      if (!diagram) return;
+      function play() {
+        diagram.src = diagram.getAttribute('data-scroll-animation');
+      }
+      if (!('IntersectionObserver' in window)) { play(); return; }
+      var observer = new IntersectionObserver(function (entries) {
+        if (entries[0].intersectionRatio < 0.25) return;
+        play();
+        observer.disconnect();
+      }, { threshold: 0.25 });
+      observer.observe(diagram);
+    })();
+  </script>
+  <script>
+    (function () {
       var detail = document.querySelector('.mapping-tabs-detail');
       var diagram = detail.querySelector('object');
       var reset = detail.querySelector('.reset-button');
@@ -1232,6 +1289,18 @@
         demo.disabled = false;
         demo.setAttribute('aria-pressed', 'false');
         demo.querySelector('span').textContent = 'Play demo';
+        var hint = detail.querySelector('.try-hint');
+        var canvas = hint.closest('.mapping-demo-canvas');
+        function showHint(visible) {
+          canvas.classList.toggle('is-interacted', !visible);
+          hint.disabled = !visible;
+          hint.setAttribute('aria-hidden', String(!visible));
+        }
+        showHint(true);
+        root.addEventListener('mapping-hint-state', function (event) { showHint(event.detail.visible); });
+        hint.onmouseenter = hint.onfocus = function () { root.dispatchEvent(new Event('mapping-hint-hover')); };
+        hint.onmouseleave = hint.onblur = function () { root.dispatchEvent(new Event('mapping-hint-leave')); };
+        hint.onclick = function () { root.dispatchEvent(new Event('mapping-hint-activate')); };
         reset.onclick = function () { root.dispatchEvent(new Event('mapping-reset')); };
         demo.onclick = function () { root.dispatchEvent(new Event(running ? 'mapping-demo-stop' : 'mapping-demo-play')); };
         root.addEventListener('mapping-demo-state', function (event) {

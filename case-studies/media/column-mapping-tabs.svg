@@ -11,6 +11,7 @@
     .bar { fill: #3b3d6b; transition: fill 0.3s ease, x 0.3s ease, width 0.3s ease; }
     .tab[aria-selected="false"]:hover .bar, .tab[aria-selected="false"].demo-hover .bar { fill: #62658f; }
     .tab[aria-selected="false"]:hover text, .tab[aria-selected="false"].demo-hover text { fill: #858ab0; }
+    .tab[aria-selected="false"].hint-hover text { fill: #858ab0; }
     .tab[aria-disabled="true"] { cursor: default; }
     .tab[aria-disabled="true"]:hover text { fill: #474b76; }
     .panel-background { fill: #161328; transition: fill 0.3s ease; }
@@ -116,7 +117,7 @@
     <g class="tab" id="unmapped-tab" role="tab" aria-label="2 Unmapped" aria-controls="unmapped-panel" aria-selected="false" tabindex="-1">
       <rect class="tab-target" x="221" y="100" width="197" height="29" fill="transparent"/>
       <rect class="bar" x="287.7" y="86" width="130.3" height="10" clip-path="url(#progress-clip)"/>
-      <text id="unmapped-count" x="418" y="117" text-anchor="end">2 Unmapped</text>
+      <g id="unmapped-label"><text id="unmapped-count" x="418" y="117" text-anchor="end">2 Unmapped</text></g>
       <rect class="focus-ring" x="289" y="80" width="133" height="48" rx="3"/>
     </g>
   </g>
@@ -268,6 +269,43 @@
           if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); action(); }
         });
       }
+      var hintWiggle;
+      var hintVisible = true;
+      var unmappedLabelGroup = document.getElementById('unmapped-label');
+      function setHintVisible(visible) {
+        if (hintVisible === visible) return;
+        hintVisible = visible;
+        stopHintWiggle();
+        root.dispatchEvent(new CustomEvent('mapping-hint-state', { detail: { visible: visible } }));
+      }
+      function stopHintWiggle() {
+        cancelAnimationFrame(hintWiggle);
+        unmappedLabelGroup.removeAttribute('transform');
+        tabs[1].classList.remove('hint-hover');
+      }
+      root.addEventListener('mapping-hint-hover', function () {
+        stopHintWiggle();
+        if (tabs[1].getAttribute('aria-disabled') === 'true') return;
+        tabs[1].classList.add('hint-hover');
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        var started;
+        // Animate the SVG transform directly so embedded SVG text also repaints in Safari.
+        function wiggle(time) {
+          if (started === undefined) started = time;
+          var progress = Math.min(1, (time - started) / 700);
+          var offset = Math.sin(progress * Math.PI * 6) * 6 * (1 - progress);
+          unmappedLabelGroup.setAttribute('transform', 'translate(' + offset + ' 0)');
+          if (progress < 1) hintWiggle = requestAnimationFrame(wiggle);
+          else unmappedLabelGroup.removeAttribute('transform');
+        }
+        hintWiggle = requestAnimationFrame(wiggle);
+      });
+      root.addEventListener('mapping-hint-leave', stopHintWiggle);
+      root.addEventListener('mapping-hint-activate', function () {
+        setHintVisible(false);
+        stopDemo();
+        selectTab(tabs[1], true);
+      });
       function highlight(text, name, query) {
         text.textContent = '';
         if (!query) { text.textContent = name; return; }
@@ -540,6 +578,7 @@
         renderCounts();
         selectTab(tabs[0], false);
         announce('Reset. Four mapped and two unmapped items.');
+        setHintVisible(true);
       }
       function reportDemo(message) {
         root.dispatchEvent(new CustomEvent('mapping-demo-state', { detail: { running: demoRunning, message: message } }));
@@ -587,6 +626,7 @@
       function playDemo() {
         stopDemo();
         resetState();
+        setHintVisible(false);
         demoRunning = true;
         var generation = ++demoGeneration;
         reportDemo('Demo playing.');
@@ -624,6 +664,11 @@
         schedule(function () { resetState(); stopDemo('Demo finished and reset.'); }, steps.length * 3000);
       }
       // Any direct interaction hands control back to the viewer immediately.
+      document.addEventListener('pointerdown', function () { setHintVisible(false); }, true);
+      document.addEventListener('input', function () { setHintVisible(false); }, true);
+      document.addEventListener('keydown', function (event) {
+        if (['Enter', ' ', 'ArrowLeft', 'ArrowRight'].includes(event.key)) setHintVisible(false);
+      }, true);
       ['pointerdown', 'keydown', 'input', 'focusin'].forEach(function (type) {
         document.addEventListener(type, function () { stopDemo(); }, true);
       });

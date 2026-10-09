@@ -160,8 +160,12 @@
   var figureItems = figNodes.map(function (img) {
     var figure = img.closest("figure");
     var captionEl = figure ? figure.querySelector("figcaption") : null;
+    var animation = img.getAttribute("data-scroll-animation");
+    var animationUrl = animation ? new URL(animation, document.baseURI) : null;
+    // Give enlarged animations their own image instance instead of sharing the inline render.
+    if (animationUrl) animationUrl.searchParams.set("view", "lightbox");
     return {
-      src: img.src,
+      src: animationUrl ? animationUrl.href : img.src,
       alt: img.alt,
       caption: captionEl ? captionEl.innerHTML.trim() : ""
     };
