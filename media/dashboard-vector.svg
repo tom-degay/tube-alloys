@@ -1,0 +1,740 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 915" width="2000" height="915" role="img" aria-labelledby="title desc">
+<title id="title">Quantemplate risk dashboard</title><desc id="desc">Vector recreation of the supplied dashboard. Solvency margin, value at risk at 25.710 percent, volatility breakdown, and risk distributions.</desc>
+<defs><clipPath id="chart-clip"><rect x="42" y="54" width="463" height="260"/></clipPath><clipPath id="line-clip"><rect id="line-reveal" x="42" y="54" width="463" height="260"/></clipPath><clipPath id="fan-clip"><rect id="fan-reveal" x="181" y="54" width="324" height="261"/></clipPath><filter id="glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="5"/></filter></defs>
+<g font-family="Arial, Helvetica, sans-serif">
+<rect x="0" y="0" width="2000" height="915" rx="0" fill="#020119" />
+<text x="16" y="31" fill="#b8bbd1" font-size="16" font-weight="bold" text-anchor="start" >Solvency margin</text>
+<rect x="42" y="54" width="139" height="260" rx="0" fill="#040623" />
+<path d="M42,315.0 L505,315.0" stroke="#171a37" stroke-width="1" fill="none" />
+<text x="33" y="319.0" fill="#898aa4" font-size="11" font-weight="normal" text-anchor="end" >0.5</text>
+<path d="M42,282.4 L505,282.4" stroke="#171a37" stroke-width="1" fill="none" />
+<text x="33" y="286.4" fill="#898aa4" font-size="11" font-weight="normal" text-anchor="end" >1.0</text>
+<path d="M42,249.8 L505,249.8" stroke="#171a37" stroke-width="1" fill="none" />
+<text x="33" y="253.8" fill="#898aa4" font-size="11" font-weight="normal" text-anchor="end" >1.5</text>
+<path d="M42,217.2 L505,217.2" stroke="#171a37" stroke-width="1" fill="none" />
+<text x="33" y="221.2" fill="#898aa4" font-size="11" font-weight="normal" text-anchor="end" >2.0</text>
+<path d="M42,184.6 L505,184.6" stroke="#171a37" stroke-width="1" fill="none" />
+<text x="33" y="188.6" fill="#898aa4" font-size="11" font-weight="normal" text-anchor="end" >2.5</text>
+<path d="M42,152.0 L505,152.0" stroke="#171a37" stroke-width="1" fill="none" />
+<text x="33" y="156.0" fill="#898aa4" font-size="11" font-weight="normal" text-anchor="end" >3.0</text>
+<path d="M42,119.39999999999998 L505,119.39999999999998" stroke="#171a37" stroke-width="1" fill="none" />
+<text x="33" y="123.39999999999998" fill="#898aa4" font-size="11" font-weight="normal" text-anchor="end" >3.5</text>
+<path d="M42,86.79999999999998 L505,86.79999999999998" stroke="#171a37" stroke-width="1" fill="none" />
+<text x="33" y="90.79999999999998" fill="#898aa4" font-size="11" font-weight="normal" text-anchor="end" >4.0</text>
+<path d="M42,54.19999999999999 L505,54.19999999999999" stroke="#171a37" stroke-width="1" fill="none" />
+<text x="33" y="58.19999999999999" fill="#898aa4" font-size="11" font-weight="normal" text-anchor="end" >4.5</text>
+<path d="M42,315 L505,315" stroke="#5a5b77" stroke-width="1" fill="none" />
+<path d="M42.0,315 L42.0,309" stroke="#7e7e94" stroke-width="1" fill="none" />
+<text x="42.0" y="333" fill="#626681" font-size="10" font-weight="normal" text-anchor="middle" >J</text>
+<path d="M83.9,315 L83.9,309" stroke="#7e7e94" stroke-width="1" fill="none" />
+<text x="83.9" y="333" fill="#626681" font-size="10" font-weight="normal" text-anchor="middle" >F</text>
+<path d="M125.8,315 L125.8,309" stroke="#7e7e94" stroke-width="1" fill="none" />
+<text x="125.8" y="333" fill="#626681" font-size="10" font-weight="normal" text-anchor="middle" >M</text>
+<path d="M167.7,315 L167.7,309" stroke="#7e7e94" stroke-width="1" fill="none" />
+<text x="167.7" y="333" fill="#626681" font-size="10" font-weight="normal" text-anchor="middle" >A</text>
+<path d="M209.6,315 L209.6,309" stroke="#7e7e94" stroke-width="1" fill="none" />
+<text x="209.6" y="333" fill="#626681" font-size="10" font-weight="normal" text-anchor="middle" >M</text>
+<path d="M251.5,315 L251.5,309" stroke="#7e7e94" stroke-width="1" fill="none" />
+<text x="251.5" y="333" fill="#626681" font-size="10" font-weight="normal" text-anchor="middle" >J</text>
+<path d="M293.4,315 L293.4,309" stroke="#7e7e94" stroke-width="1" fill="none" />
+<text x="293.4" y="333" fill="#626681" font-size="10" font-weight="normal" text-anchor="middle" >J</text>
+<path d="M335.3,315 L335.3,309" stroke="#7e7e94" stroke-width="1" fill="none" />
+<text x="335.3" y="333" fill="#626681" font-size="10" font-weight="normal" text-anchor="middle" >A</text>
+<path d="M377.2,315 L377.2,309" stroke="#7e7e94" stroke-width="1" fill="none" />
+<text x="377.2" y="333" fill="#626681" font-size="10" font-weight="normal" text-anchor="middle" >S</text>
+<path d="M419.09999999999997,315 L419.09999999999997,309" stroke="#7e7e94" stroke-width="1" fill="none" />
+<text x="419.09999999999997" y="333" fill="#626681" font-size="10" font-weight="normal" text-anchor="middle" >O</text>
+<path d="M461.0,315 L461.0,309" stroke="#7e7e94" stroke-width="1" fill="none" />
+<text x="461.0" y="333" fill="#626681" font-size="10" font-weight="normal" text-anchor="middle" >N</text>
+<path d="M502.9,315 L502.9,309" stroke="#7e7e94" stroke-width="1" fill="none" />
+<text x="502.9" y="333" fill="#626681" font-size="10" font-weight="normal" text-anchor="middle" >D</text>
+<g clip-path="url(#fan-clip)" id="forecast-fan">
+<path d="M181,232 L233,153 L337,117 L422,63 L504,57 L504,270 L422,244 L337,244 L263,266 Z" fill="#081534" stroke="none" stroke-width="1" />
+<path d="M181,232 L263,161 L337,133 L422,96 L504,88 L504,220 L422,203 L337,219 L263,253 Z" fill="#1d2d4b" stroke="none" stroke-width="1" />
+</g>
+<path d="M43,145 L44,144 L45,144 L46,144 L47,144 L48,145 L49,145 L50,159 L51,159 L52,164 L53,164 L54,158 L55,158 L56,151 L57,151 L58,151 L59,151 L60,151 L61,147 L62,142 L63,141 L64,136 L65,136 L66,127 L67,127 L68,125 L69,125 L70,124 L71,124 L72,119 L73,119 L74,122 L75,122 L76,112 L77,112 L78,130 L79,130 L80,126 L81,126 L82,124 L83,124 L84,121 L85,121 L86,115 L87,115 L88,113 L89,113 L90,115 L91,115 L92,119 L93,119 L94,115 L95,115 L96,114 L97,114 L98,114 L99,114 L100,104 L101,104 L102,107 L103,107 L104,100 L105,100 L106,100 L107,100 L108,115 L109,115 L110,115 L111,115 L112,113 L113,113 L114,118 L115,118 L116,123 L117,123 L118,120 L119,120 L120,120 L121,120 L122,123 L123,123 L124,123 L125,123 L126,135 L127,135 L128,136 L129,136 L130,132 L131,132 L132,137 L133,137 L134,139 L135,139 L136,142 L137,142 L138,138 L139,138 L140,143 L141,143 L142,145 L143,145 L144,153 L145,153 L146,154 L147,154 L148,152 L149,152 L150,142 L151,142 L152,145 L153,146 L154,160 L155,160 L156,171 L157,171 L158,180 L159,180 L160,190 L161,190 L162,190 L163,190 L164,193 L165,193 L166,202 L167,202 L168,206 L169,206 L170,206 L171,206 L172,221 L173,221 L174,224 L175,224 L176,227 L177,227 L178,227 L179,227 L180,227 L181,227 L182,224 L183,224 L184,224 L185,224 L186,225 L187,225 L188,230 L189,230 L190,235 L191,235 L192,231 L193,231 L194,231 L195,231 L196,232 L197,232 L198,232 L199,232 L200,230 L201,230 L202,230 L203,230 L204,232 L205,232 L206,232 L207,232 L208,232 L209,232 L210,232 L211,232 L212,229 L213,229 L214,230 L215,230 L216,231 L217,231 L218,231 L219,231 L220,234 L221,234 L222,232 L223,232 L224,232 L225,232 L226,228 L227,228 L228,226 L229,226 L230,227 L231,227 L232,154 L233,154 L234,227 L235,227 L236,230 L237,230 L238,230 L239,230 L240,228 L241,228 L242,228 L243,228 L244,225 L245,225 L246,221 L247,221 L248,220 L249,220 L250,222 L251,222 L252,216 L253,216 L254,215 L255,215 L256,211 L257,211 L258,210 L259,210 L260,211 L261,211 L262,211 L263,211 L264,209 L265,209 L266,209 L267,209 L268,193 L269,193 L270,198 L271,198 L272,199 L273,199 L274,196 L275,196 L276,196 L277,196 L278,195 L279,195 L280,193 L281,193 L282,195 L283,195 L284,193 L285,193 L286,197 L287,197 L288,200 L289,200 L290,201 L291,201 L292,199 L293,199 L294,199 L295,199 L296,202 L297,202 L298,202 L299,202 L300,196 L301,196 L302,196 L303,196 L304,186 L305,186 L306,184 L307,184 L308,177 L309,177 L310,176 L311,176 L312,180 L313,180 L314,180 L315,180 L316,178 L317,178 L318,174 L319,174 L320,172 L321,172 L322,173 L323,173 L324,173 L325,173 L326,163 L327,163 L328,161 L329,161 L330,161 L331,161 L332,164 L333,164 L334,164 L335,164 L336,168 L337,168 L338,166 L339,166 L340,156 L341,156 L342,148 L343,148 L344,147 L345,147 L346,148 L347,148 L348,157 L349,157 L350,160 L351,160 L352,152 L353,152 L354,148 L355,148 L356,148 L357,148 L358,146 L359,146 L360,147 L361,147 L362,151 L363,151 L364,147 L365,147 L366,149 L367,149 L368,151 L369,151 L370,148 L371,148 L372,149 L373,149 L374,148 L375,148 L376,145 L377,145 L378,142 L379,142 L380,135 L381,135 L382,129 L383,129 L384,135 L385,135 L386,136 L387,136 L388,146 L389,146 L390,149 L391,149 L392,147 L393,147 L394,152 L395,152 L396,149 L397,149 L398,149 L399,149 L400,143 L401,143 L402,142 L403,142 L404,141 L405,141 L406,130 L407,130 L408,128 L409,128 L410,129 L411,129 L412,129 L413,129 L414,130 L415,130 L416,130 L417,130 L418,126 L419,126 L420,122 L421,122 L422,122 L423,122 L424,126 L425,126 L426,126 L427,126 L428,133 L429,133 L430,134 L431,134 L432,136 L433,136 L434,145 L435,145 L436,147 L437,147 L438,146 L439,146 L440,153 L441,153 L442,161 L443,161 L444,160 L445,160 L446,160 L447,160 L448,158 L449,158 L450,163 L451,163 L452,158 L453,158 L454,154 L455,154 L456,153 L457,153 L458,163 L459,163 L460,168 L461,168 L462,171 L463,171 L464,166 L465,166 L466,164 L467,164 L468,167 L469,167 L470,160 L471,160 L472,154 L473,154 L474,154 L475,154 L476,148 L477,148 L478,148 L479,148 L480,156 L481,156 L482,155 L483,155 L484,158 L485,158 L486,159 L487,159 L488,158 L489,158 L490,149 L491,149 L492,148 L493,148 L494,145 L495,145 L496,140 L497,140 L498,137 L499,137 L500,136 L501,136 L502,133 L503,133 L504,133" fill="none" stroke="#47875b" stroke-width="1.2" id="solvency-line" clip-path="url(#line-clip)"/>
+<path d="M233,43 L233,315" stroke="#398488" stroke-width="1.5" fill="none" />
+<rect x="230" y="35" width="6" height="18" rx="3" fill="#3a7f86" />
+<circle cx="181" cy="232" r="3.5" fill="#020119" stroke="#d9e4d5" stroke-width="2"/>
+<circle cx="233" cy="154" r="2.3" fill="#66a65b" />
+<circle cx="233" cy="230" r="2.3" fill="#66a65b" />
+<circle cx="233" cy="252" r="2.3" fill="#66a65b" />
+<text x="519" y="59" fill="#e9e9f0" font-size="13" font-weight="normal" text-anchor="start" >Current</text>
+<text x="519" y="84" fill="#f3f2f7" font-size="24" font-weight="bold" text-anchor="start" >2.802%</text>
+<text x="519" y="103" fill="#dddce7" font-size="12" font-weight="normal" text-anchor="start" >01 May 2012</text>
+<text x="519" y="131" fill="#59ae69" font-size="13" font-weight="normal" text-anchor="start" >Forecast</text>
+<text x="519" y="156" fill="#59ae69" font-size="24" font-weight="bold" text-anchor="start" >5.002%</text>
+<text x="519" y="175" fill="#59ae69" font-size="12" font-weight="normal" text-anchor="start" >14 Sep 2012</text>
+<text x="519" y="205" fill="#b8bbd1" font-size="13" font-weight="normal" text-anchor="start" >Percentile</text>
+<text x="581" y="205" fill="#dedde9" font-size="13" font-weight="normal" text-anchor="start" >95th</text>
+<text x="519" y="229" fill="#b8bbd1" font-size="13" font-weight="normal" text-anchor="start" >Upper</text>
+<text x="581" y="229" fill="#59ae69" font-size="12" font-weight="bold" text-anchor="start" >4.200%</text>
+<text x="519" y="244" fill="#b8bbd1" font-size="13" font-weight="normal" text-anchor="start" >Lower</text>
+<text x="581" y="244" fill="#59ae69" font-size="12" font-weight="bold" text-anchor="start" >3.405%</text>
+<text x="665" y="30" fill="#8a8ca8" font-size="13" font-weight="normal" text-anchor="start" >Stress test</text>
+<rect x="665" y="39" width="174" height="22" rx="11" fill="#2e385f" />
+<text x="678" y="54" fill="#b8bbd1" font-size="13" font-weight="normal" text-anchor="start" >None</text>
+<text x="827" y="48" fill="#929ab9" font-size="8" font-weight="normal" text-anchor="middle" >▴</text>
+<text x="827" y="56" fill="#929ab9" font-size="8" font-weight="normal" text-anchor="middle" >▾</text>
+<text x="865" y="30" fill="#8a8ca8" font-size="13" font-weight="normal" text-anchor="start" >Macro model</text>
+<rect x="865" y="39" width="174" height="22" rx="11" fill="#2e385f" />
+<text x="878" y="54" fill="#b8bbd1" font-size="13" font-weight="normal" text-anchor="start" >Model name</text>
+<text x="1027" y="48" fill="#929ab9" font-size="8" font-weight="normal" text-anchor="middle" >▴</text>
+<text x="1027" y="56" fill="#929ab9" font-size="8" font-weight="normal" text-anchor="middle" >▾</text>
+<text x="1058" y="30" fill="#8a8ca8" font-size="13" font-weight="normal" text-anchor="start" >Time Horizon</text>
+<rect x="1077" y="39" width="68" height="22" rx="11" fill="#2e385f" />
+<text x="1090" y="54" fill="#b8bbd1" font-size="13" font-weight="normal" text-anchor="start" >Years</text>
+<text x="1133" y="48" fill="#929ab9" font-size="8" font-weight="normal" text-anchor="middle" >▴</text>
+<text x="1133" y="56" fill="#929ab9" font-size="8" font-weight="normal" text-anchor="middle" >▾</text>
+<text x="1061" y="55" fill="#b8bbd1" font-size="13" font-weight="normal" text-anchor="start" >5</text>
+<path d="M792.417,282.000 A130,130 0 1 1 1017.583,282.000" fill="none" stroke="#171a39" stroke-width="2" />
+<path d="M814.067,269.500 A105,105 0 0 1 812.768,267.182" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M811.949,265.646 A105,105 0 0 1 810.747,263.276" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M809.993,261.707 A105,105 0 0 1 808.892,259.288" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M808.204,257.689 A105,105 0 0 1 807.206,255.227" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M806.585,253.600 A105,105 0 0 1 805.691,251.098" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M805.139,249.447 A105,105 0 0 1 804.350,246.909" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M803.868,245.237 A105,105 0 0 1 803.186,242.668" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M802.774,240.977 A105,105 0 0 1 802.200,238.382" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M801.860,236.675 A105,105 0 0 1 801.395,234.059" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M801.126,232.339 A105,105 0 0 1 800.772,229.705" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M800.575,227.975 A105,105 0 0 1 800.331,225.330" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M800.207,223.593 A105,105 0 0 1 800.074,220.939" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M800.023,219.199 A105,105 0 0 1 800.001,216.542" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M800.023,214.801 A105,105 0 0 1 800.112,212.145" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M800.207,210.407 A105,105 0 0 1 800.408,207.757" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M800.575,206.025 A105,105 0 0 1 800.886,203.386" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M801.126,201.661 A105,105 0 0 1 801.548,199.038" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M801.860,197.325 A105,105 0 0 1 802.391,194.721" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M802.774,193.023 A105,105 0 0 1 803.414,190.444" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M803.868,188.763 A105,105 0 0 1 804.615,186.213" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M805.139,184.553 A105,105 0 0 1 805.992,182.037" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M806.585,180.400 A105,105 0 0 1 807.543,177.921" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M808.204,176.311 A105,105 0 0 1 809.265,173.875" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M809.993,172.293 A105,105 0 0 1 811.155,169.903" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M811.949,168.354 A105,105 0 0 1 813.209,166.015" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M814.067,164.500 A105,105 0 0 1 815.425,162.216" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M816.346,160.738 A105,105 0 0 1 817.798,158.513" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M818.779,157.075 A105,105 0 0 1 820.323,154.912" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M821.364,153.517 A105,105 0 0 1 822.998,151.421" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M824.096,150.070 A105,105 0 0 1 825.816,148.045" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M826.970,146.741 A105,105 0 0 1 828.773,144.789" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M829.980,143.535 A105,105 0 0 1 831.863,141.661" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M833.123,140.458 A105,105 0 0 1 835.082,138.664" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M836.391,137.516 A105,105 0 0 1 838.424,135.805" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M839.779,134.712 A105,105 0 0 1 841.883,133.088" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M843.283,132.053 A105,105 0 0 1 845.452,130.519" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M846.894,129.543 A105,105 0 0 1 849.126,128.101" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M850.607,127.187 A105,105 0 0 1 852.897,125.839" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M854.416,124.988 A105,105 0 0 1 856.760,123.737" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M858.313,122.950 A105,105 0 0 1 860.708,121.799" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M862.293,121.078 A105,105 0 0 1 864.734,120.028" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M866.347,119.373 A105,105 0 0 1 868.830,118.427" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M870.469,117.840 A105,105 0 0 1 872.989,116.998" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M874.652,116.481 A105,105 0 0 1 877.205,115.746" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M878.888,115.299 A105,105 0 0 1 881.469,114.671" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M883.169,114.295 A105,105 0 0 1 885.775,113.775" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M887.489,113.470 A105,105 0 0 1 890.115,113.060" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M891.840,112.828 A105,105 0 0 1 894.480,112.528" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M896.214,112.368 A105,105 0 0 1 898.864,112.179" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M900.603,112.092 A105,105 0 0 1 903.259,112.014" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M905.000,112.000 A105,105 0 0 1 907.657,112.034" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M909.397,112.092 A105,105 0 0 1 912.050,112.237" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M913.786,112.368 A105,105 0 0 1 916.431,112.624" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M918.160,112.828 A105,105 0 0 1 920.792,113.194" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M922.511,113.470 A105,105 0 0 1 925.125,113.947" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M926.831,114.295 A105,105 0 0 1 929.423,114.880" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M931.112,115.299 A105,105 0 0 1 933.678,115.992" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M935.348,116.481 A105,105 0 0 1 937.882,117.282" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M939.531,117.840 A105,105 0 0 1 942.029,118.746" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M943.653,119.373 A105,105 0 0 1 946.111,120.383" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M947.707,121.078 A105,105 0 0 1 950.121,122.189" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M951.687,122.950 A105,105 0 0 1 954.052,124.162" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M955.584,124.988 A105,105 0 0 1 957.896,126.297" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M959.393,127.187 A105,105 0 0 1 961.648,128.592" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M963.106,129.543 A105,105 0 0 1 965.301,131.042" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M966.717,132.053 A105,105 0 0 1 968.847,133.642" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M970.221,134.712 A105,105 0 0 1 972.282,136.389" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M973.609,137.516 A105,105 0 0 1 975.599,139.277" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M976.877,140.458 A105,105 0 0 1 978.791,142.302" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M980.020,143.535 A105,105 0 0 1 981.855,145.457" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M983.030,146.741 A105,105 0 0 1 984.783,148.738" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M985.904,150.070 A105,105 0 0 1 987.572,152.139" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M988.636,153.517 A105,105 0 0 1 990.215,155.654" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M991.221,157.075 A105,105 0 0 1 992.709,159.276" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M993.654,160.738 A105,105 0 0 1 995.050,163.000" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M995.933,164.500 A105,105 0 0 1 997.232,166.818" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M998.051,168.354 A105,105 0 0 1 999.253,170.724" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M1000.007,172.293 A105,105 0 0 1 1001.108,174.712" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M1001.796,176.311 A105,105 0 0 1 1002.794,178.773" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M1003.415,180.400 A105,105 0 0 1 1004.309,182.902" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M1004.861,184.553 A105,105 0 0 1 1005.650,187.091" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M1006.132,188.763 A105,105 0 0 1 1006.814,191.332" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M1007.226,193.023 A105,105 0 0 1 1007.800,195.618" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M1008.140,197.325 A105,105 0 0 1 1008.605,199.941" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M1008.874,201.661 A105,105 0 0 1 1009.228,204.295" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M1009.425,206.025 A105,105 0 0 1 1009.669,208.670" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M1009.793,210.407 A105,105 0 0 1 1009.926,213.061" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M1009.977,214.801 A105,105 0 0 1 1009.999,217.458" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M1009.977,219.199 A105,105 0 0 1 1009.888,221.855" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M1009.793,223.593 A105,105 0 0 1 1009.592,226.243" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M1009.425,227.975 A105,105 0 0 1 1009.114,230.614" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M1008.874,232.339 A105,105 0 0 1 1008.452,234.962" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M1008.140,236.675 A105,105 0 0 1 1007.609,239.279" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M1007.226,240.977 A105,105 0 0 1 1006.586,243.556" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M1006.132,245.237 A105,105 0 0 1 1005.385,247.787" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M1004.861,249.447 A105,105 0 0 1 1004.008,251.963" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M1003.415,253.600 A105,105 0 0 1 1002.457,256.079" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M1001.796,257.689 A105,105 0 0 1 1000.735,260.125" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M1000.007,261.707 A105,105 0 0 1 998.845,264.097" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M998.051,265.646 A105,105 0 0 1 996.791,267.985" fill="none" stroke="#202d57" stroke-width="34" />
+<path d="M814.067,269.500 A105,105 0 0 1 812.768,267.182" fill="none" stroke="#7dff40" stroke-width="36" class="dial-tick" data-step="0"/>
+<path d="M811.949,265.646 A105,105 0 0 1 810.747,263.276" fill="none" stroke="#7dff40" stroke-width="36" class="dial-tick" data-step="1"/>
+<path d="M809.993,261.707 A105,105 0 0 1 808.892,259.288" fill="none" stroke="#7dff40" stroke-width="36" class="dial-tick" data-step="2"/>
+<path d="M808.204,257.689 A105,105 0 0 1 807.206,255.227" fill="none" stroke="#7dff40" stroke-width="36" class="dial-tick" data-step="3"/>
+<path d="M806.585,253.600 A105,105 0 0 1 805.691,251.098" fill="none" stroke="#7dff40" stroke-width="36" class="dial-tick" data-step="4"/>
+<path d="M805.139,249.447 A105,105 0 0 1 804.350,246.909" fill="none" stroke="#7dff40" stroke-width="36" class="dial-tick" data-step="5"/>
+<path d="M803.868,245.237 A105,105 0 0 1 803.186,242.668" fill="none" stroke="#7dff40" stroke-width="36" class="dial-tick" data-step="6"/>
+<path d="M802.774,240.977 A105,105 0 0 1 802.200,238.382" fill="none" stroke="#7dff40" stroke-width="36" class="dial-tick" data-step="7"/>
+<path d="M801.860,236.675 A105,105 0 0 1 801.395,234.059" fill="none" stroke="#7dff40" stroke-width="36" class="dial-tick" data-step="8"/>
+<path d="M801.126,232.339 A105,105 0 0 1 800.772,229.705" fill="none" stroke="#7dff40" stroke-width="36" class="dial-tick" data-step="9"/>
+<path d="M800.575,227.975 A105,105 0 0 1 800.331,225.330" fill="none" stroke="#7dff40" stroke-width="36" class="dial-tick" data-step="10"/>
+<path d="M800.207,223.593 A105,105 0 0 1 800.074,220.939" fill="none" stroke="#7dff40" stroke-width="36" class="dial-tick" data-step="11"/>
+<path d="M800.023,219.199 A105,105 0 0 1 800.001,216.542" fill="none" stroke="#7dff40" stroke-width="36" class="dial-tick" data-step="12"/>
+<path d="M800.023,214.801 A105,105 0 0 1 800.112,212.145" fill="none" stroke="#7dff40" stroke-width="36" class="dial-tick" data-step="13"/>
+<path d="M800.207,210.407 A105,105 0 0 1 800.408,207.757" fill="none" stroke="#7dff40" stroke-width="36" class="dial-tick" data-step="14"/>
+<path d="M800.575,206.025 A105,105 0 0 1 800.886,203.386" fill="none" stroke="#7dff40" stroke-width="36" class="dial-tick" data-step="15"/>
+<path d="M801.126,201.661 A105,105 0 0 1 801.548,199.038" fill="none" stroke="#7dff40" stroke-width="36" class="dial-tick" data-step="16"/>
+<path d="M801.860,197.325 A105,105 0 0 1 802.391,194.721" fill="none" stroke="#7dff40" stroke-width="36" class="dial-tick" data-step="17"/>
+<path d="M802.774,193.023 A105,105 0 0 1 803.414,190.444" fill="none" stroke="#7dff40" stroke-width="36" class="dial-tick" data-step="18"/>
+<path d="M803.868,188.763 A105,105 0 0 1 804.615,186.213" fill="none" stroke="#7dff40" stroke-width="36" class="dial-tick" data-step="19"/>
+<path d="M805.139,184.553 A105,105 0 0 1 805.992,182.037" fill="none" stroke="#7dff40" stroke-width="36" class="dial-tick" data-step="20"/>
+<path d="M806.585,180.400 A105,105 0 0 1 807.543,177.921" fill="none" stroke="#7dff40" stroke-width="36" class="dial-tick" data-step="21"/>
+<path d="M808.204,176.311 A105,105 0 0 1 809.265,173.875" fill="none" stroke="#7dff40" stroke-width="36" class="dial-tick" data-step="22"/>
+<path d="M809.993,172.293 A105,105 0 0 1 811.155,169.903" fill="none" stroke="#7dff40" stroke-width="36" class="dial-tick" data-step="23"/>
+<path d="M811.949,168.354 A105,105 0 0 1 813.209,166.015" fill="none" stroke="#7dff40" stroke-width="36" class="dial-tick" data-step="24"/>
+<path d="M814.067,164.500 A105,105 0 0 1 815.425,162.216" fill="none" stroke="#7dff40" stroke-width="36" class="dial-tick" data-step="25"/>
+<path d="M811.469,271.000 A108,108 0 0 1 813.112,160.249" fill="none" stroke="#6bff45" stroke-width="29" opacity=".28" filter="url(#glow)" id="dial-glow"/>
+<circle cx="1027.16" cy="172.54" r="3.5" fill="#020119" stroke="#fc374f" stroke-width="2"/>
+<text x="905" y="191" fill="#b8bbd1" font-size="16" font-weight="bold" text-anchor="middle" >Value at Risk</text>
+<text x="905" y="225" fill="#f9f9ff" font-size="32" font-weight="bold" text-anchor="middle" id="var-value">25.710%</text>
+<text x="827" y="285" fill="#b8bbd1" font-size="12" font-weight="normal" text-anchor="start" >0.000</text>
+<text x="981" y="285" fill="#b8bbd1" font-size="12" font-weight="normal" text-anchor="end" >100.000</text>
+<text x="664" y="188" fill="#b8bbd1" font-size="13" font-weight="normal" text-anchor="start" >Confidence</text>
+<text x="664" y="205" fill="#b8bbd1" font-size="13" font-weight="normal" text-anchor="start" >Level</text>
+<text x="664" y="222" fill="#b8bbd1" font-size="13" font-weight="normal" text-anchor="start" >99.500 %</text>
+<text x="1083" y="198" fill="#b8bbd1" font-size="13" font-weight="normal" text-anchor="start" >Warning</text>
+<text x="1083" y="215" fill="#b8bbd1" font-size="13" font-weight="normal" text-anchor="start" >75.000 %</text>
+<rect x="796" y="312" width="126" height="22" rx="11" fill="#2e385f" />
+<text x="809" y="327" fill="#b8bbd1" font-size="13" font-weight="normal" text-anchor="start" >Solvency margin</text>
+<text x="910" y="321" fill="#929ab9" font-size="8" font-weight="normal" text-anchor="middle" >▴</text>
+<text x="910" y="329" fill="#929ab9" font-size="8" font-weight="normal" text-anchor="middle" >▾</text>
+<rect x="929" y="312" width="35" height="22" rx="11" fill="#2e385f" />
+<text x="942" y="327" fill="#b8bbd1" font-size="13" font-weight="normal" text-anchor="start" >≤</text>
+<text x="952" y="321" fill="#929ab9" font-size="8" font-weight="normal" text-anchor="middle" >▴</text>
+<text x="952" y="329" fill="#929ab9" font-size="8" font-weight="normal" text-anchor="middle" >▾</text>
+<text x="973" y="327" fill="#b8bbd1" font-size="12" font-weight="normal" text-anchor="start" >0.800 %</text>
+<path d="M15,347 L1147,347" stroke="#222442" stroke-width="1" fill="none" />
+<text x="16" y="388" fill="#b8bbd1" font-size="16" font-weight="bold" text-anchor="start" >Highlight</text>
+<rect x="102" y="373" width="159" height="27" rx="14" fill="#2e385f" />
+<text x="115" y="391" fill="#a1a6c3" font-size="14" font-weight="bold" text-anchor="start" >FX</text>
+<circle cx="248" cy="386" r="5.5" fill="#ee315f" />
+<rect x="277" y="373" width="159" height="27" rx="14" fill="#2e385f" />
+<text x="290" y="391" fill="#a1a6c3" font-size="14" font-weight="bold" text-anchor="start" >Interest Rates</text>
+<circle cx="423" cy="386" r="5.5" fill="#17264b" />
+<rect x="452" y="373" width="159" height="27" rx="14" fill="#2e385f" />
+<text x="465" y="391" fill="#a1a6c3" font-size="14" font-weight="bold" text-anchor="start" >GDP</text>
+<circle cx="598" cy="386" r="5.5" fill="#17264b" />
+<rect x="102" y="409" width="159" height="27" rx="14" fill="#2e385f" />
+<text x="115" y="427" fill="#a1a6c3" font-size="14" font-weight="bold" text-anchor="start" >Counterparty Risk</text>
+<circle cx="248" cy="422" r="5.5" fill="#17264b" />
+<rect x="277" y="409" width="159" height="27" rx="14" fill="#2e385f" />
+<text x="290" y="427" fill="#a1a6c3" font-size="14" font-weight="bold" text-anchor="start" >Inflation</text>
+<circle cx="423" cy="422" r="5.5" fill="#17264b" />
+<rect x="452" y="409" width="159" height="27" rx="14" fill="#2e385f" />
+<text x="465" y="427" fill="#a1a6c3" font-size="14" font-weight="bold" text-anchor="start" >Unemployment</text>
+<circle cx="598" cy="422" r="5.5" fill="#17264b" />
+<rect x="16" y="462" width="280" height="37" rx="0" fill="#2c365d" />
+<text x="25" y="486" fill="#b8bbd1" font-size="14" font-weight="bold" text-anchor="start" >Region</text>
+<rect x="152" y="471" width="55" height="19" rx="10" fill="#112143" />
+<text x="180" y="485" fill="#b8bbd1" font-size="13" font-weight="bold" text-anchor="middle" >Filter</text>
+<circle cx="222" cy="481" r="5.5" fill="#142649" />
+<text x="236" y="486" fill="#9ca1bb" font-size="13" font-weight="normal" text-anchor="start" >% of VaR</text>
+<path d="M23,513.0 l4,5 -4,5 Z" fill="#8992b4" stroke="none" stroke-width="1" />
+<text x="31" y="522.0" fill="#c3c3d4" font-size="12" font-weight="normal" text-anchor="start" >Antarctica</text>
+<circle cx="222" cy="518.0" r="5.5" fill="#1a2a50" class="region-dot"/>
+<text x="289" y="522.0" fill="#c5c7dd" font-size="12" font-weight="normal" text-anchor="end" >00.000</text>
+<path d="M16,536.0 L296,536.0" stroke="#64647f" stroke-width="1.1" fill="none" />
+<path d="M23,549.7 l4,5 -4,5 Z" fill="#8992b4" stroke="none" stroke-width="1" />
+<text x="31" y="558.7" fill="#c3c3d4" font-size="12" font-weight="normal" text-anchor="start" >Asia</text>
+<circle cx="222" cy="554.7" r="5.5" fill="#1a2a50" class="region-dot"/>
+<text x="289" y="558.7" fill="#c5c7dd" font-size="12" font-weight="normal" text-anchor="end" >12.304</text>
+<path d="M16,572.7 L296,572.7" stroke="#64647f" stroke-width="1.1" fill="none" />
+<path d="M23,586.4 l4,5 -4,5 Z" fill="#8992b4" stroke="none" stroke-width="1" />
+<text x="31" y="595.4" fill="#c3c3d4" font-size="12" font-weight="normal" text-anchor="start" >Australia and Oceania</text>
+<circle cx="222" cy="591.4" r="5.5" fill="#1a2a50" class="region-dot"/>
+<text x="289" y="595.4" fill="#c5c7dd" font-size="12" font-weight="normal" text-anchor="end" >13.109</text>
+<path d="M16,609.4 L296,609.4" stroke="#64647f" stroke-width="1.1" fill="none" />
+<path d="M23,623.1 l4,5 -4,5 Z" fill="#8992b4" stroke="none" stroke-width="1" />
+<text x="31" y="632.1" fill="#c3c3d4" font-size="12" font-weight="normal" text-anchor="start" >Central America &amp; Caribbean</text>
+<circle cx="222" cy="628.1" r="5.5" fill="#1a2a50" class="region-dot"/>
+<text x="289" y="632.1" fill="#c5c7dd" font-size="12" font-weight="normal" text-anchor="end" >04.234</text>
+<path d="M16,646.1 L296,646.1" stroke="#64647f" stroke-width="1.1" fill="none" />
+<path d="M23,659.8 l4,5 -4,5 Z" fill="#8992b4" stroke="none" stroke-width="1" />
+<text x="31" y="668.8" fill="#c3c3d4" font-size="12" font-weight="normal" text-anchor="start" >Europe</text>
+<circle cx="222" cy="664.8" r="5.5" fill="#1a2a50" class="region-dot"/>
+<text x="289" y="668.8" fill="#c5c7dd" font-size="12" font-weight="normal" text-anchor="end" >19.023</text>
+<path d="M16,682.8 L296,682.8" stroke="#64647f" stroke-width="1.1" fill="none" />
+<path d="M23,696.5 l4,5 -4,5 Z" fill="#8992b4" stroke="none" stroke-width="1" />
+<text x="31" y="705.5" fill="#c3c3d4" font-size="12" font-weight="normal" text-anchor="start" >M.E, N.A. and Greater Arabia</text>
+<circle cx="222" cy="701.5" r="5.5" fill="#1a2a50" class="region-dot"/>
+<text x="289" y="705.5" fill="#c5c7dd" font-size="12" font-weight="normal" text-anchor="end" >01.015</text>
+<path d="M16,719.5 L296,719.5" stroke="#64647f" stroke-width="1.1" fill="none" />
+<path d="M23,733.2 l4,5 -4,5 Z" fill="#8992b4" stroke="none" stroke-width="1" />
+<text x="31" y="742.2" fill="#c3c3d4" font-size="12" font-weight="normal" text-anchor="start" >North America</text>
+<circle cx="222" cy="738.2" r="5.5" fill="#1a2a50" class="region-dot"/>
+<text x="289" y="742.2" fill="#c5c7dd" font-size="12" font-weight="normal" text-anchor="end" >23.023</text>
+<path d="M16,756.2 L296,756.2" stroke="#64647f" stroke-width="1.1" fill="none" />
+<path d="M23,769.9000000000001 l4,5 -4,5 Z" fill="#8992b4" stroke="none" stroke-width="1" />
+<text x="31" y="778.9000000000001" fill="#c3c3d4" font-size="12" font-weight="normal" text-anchor="start" >South America</text>
+<circle cx="222" cy="774.9000000000001" r="5.5" fill="#1a2a50" class="region-dot"/>
+<text x="289" y="778.9000000000001" fill="#c5c7dd" font-size="12" font-weight="normal" text-anchor="end" >02.012</text>
+<path d="M16,792.9000000000001 L296,792.9000000000001" stroke="#64647f" stroke-width="1.1" fill="none" />
+<path d="M23,806.6 l4,5 -4,5 Z" fill="#8992b4" stroke="none" stroke-width="1" />
+<text x="31" y="815.6" fill="#c3c3d4" font-size="12" font-weight="normal" text-anchor="start" >Sub-Sahara Africa</text>
+<circle cx="222" cy="811.6" r="5.5" fill="#1a2a50" class="region-dot"/>
+<text x="289" y="815.6" fill="#c5c7dd" font-size="12" font-weight="normal" text-anchor="end" >00.019</text>
+<path d="M16,829.6 L296,829.6" stroke="#64647f" stroke-width="1.1" fill="none" />
+<circle cx="222" cy="518.0" r="7" fill="#70d58c" class="region-glow" opacity="0" filter="url(#glow)" pointer-events="none"/>
+<circle cx="222" cy="554.7" r="7" fill="#70d58c" class="region-glow" opacity="0" filter="url(#glow)" pointer-events="none"/>
+<circle cx="222" cy="591.4" r="7" fill="#70d58c" class="region-glow" opacity="0" filter="url(#glow)" pointer-events="none"/>
+<circle cx="222" cy="628.1" r="7" fill="#70d58c" class="region-glow" opacity="0" filter="url(#glow)" pointer-events="none"/>
+<circle cx="222" cy="664.8" r="7" fill="#70d58c" class="region-glow" opacity="0" filter="url(#glow)" pointer-events="none"/>
+<circle cx="222" cy="701.5" r="7" fill="#70d58c" class="region-glow" opacity="0" filter="url(#glow)" pointer-events="none"/>
+<circle cx="222" cy="738.2" r="7" fill="#70d58c" class="region-glow" opacity="0" filter="url(#glow)" pointer-events="none"/>
+<circle cx="222" cy="774.9000000000001" r="7" fill="#70d58c" class="region-glow" opacity="0" filter="url(#glow)" pointer-events="none"/>
+<circle cx="222" cy="811.6" r="7" fill="#70d58c" class="region-glow" opacity="0" filter="url(#glow)" pointer-events="none"/>
+<rect x="301" y="501" width="8" height="325" rx="4" fill="#182442" />
+<rect x="331" y="462" width="280" height="37" rx="0" fill="#2c365d" />
+<text x="340" y="486" fill="#b8bbd1" font-size="14" font-weight="bold" text-anchor="start" >Industry</text>
+<rect x="467" y="471" width="55" height="19" rx="10" fill="#112143" />
+<text x="495" y="485" fill="#b8bbd1" font-size="13" font-weight="bold" text-anchor="middle" >Filter</text>
+<circle cx="537" cy="481" r="5.5" fill="#142649" />
+<text x="551" y="486" fill="#9ca1bb" font-size="13" font-weight="normal" text-anchor="start" >% of VaR</text>
+<path d="M338,513.0 l4,5 -4,5 Z" fill="#8992b4" stroke="none" stroke-width="1" />
+<text x="346" y="522.0" fill="#c3c3d4" font-size="12" font-weight="normal" text-anchor="start" >Consumer Discretionary</text>
+<circle cx="537" cy="518.0" r="5.5" fill="#1a2a50" class="industry-dot"/>
+<text x="604" y="522.0" fill="#c5c7dd" font-size="12" font-weight="normal" text-anchor="end" >19.023</text>
+<path d="M331,536.0 L611,536.0" stroke="#64647f" stroke-width="1.1" fill="none" />
+<path d="M338,549.7 l4,5 -4,5 Z" fill="#8992b4" stroke="none" stroke-width="1" />
+<text x="346" y="558.7" fill="#c3c3d4" font-size="12" font-weight="normal" text-anchor="start" >Consumer Staples</text>
+<circle cx="537" cy="554.7" r="5.5" fill="#1a2a50" class="industry-dot"/>
+<text x="604" y="558.7" fill="#c5c7dd" font-size="12" font-weight="normal" text-anchor="end" >01.015</text>
+<path d="M331,572.7 L611,572.7" stroke="#64647f" stroke-width="1.1" fill="none" />
+<path d="M338,586.4 l4,5 -4,5 Z" fill="#8992b4" stroke="none" stroke-width="1" />
+<text x="346" y="595.4" fill="#c3c3d4" font-size="12" font-weight="normal" text-anchor="start" >Energy</text>
+<circle cx="537" cy="591.4" r="5.5" fill="#1a2a50" class="industry-dot"/>
+<text x="604" y="595.4" fill="#c5c7dd" font-size="12" font-weight="normal" text-anchor="end" >23.023</text>
+<path d="M331,609.4 L611,609.4" stroke="#64647f" stroke-width="1.1" fill="none" />
+<path d="M338,623.1 l4,5 -4,5 Z" fill="#8992b4" stroke="none" stroke-width="1" />
+<text x="346" y="632.1" fill="#c3c3d4" font-size="12" font-weight="normal" text-anchor="start" >Financials</text>
+<circle cx="537" cy="628.1" r="5.5" fill="#1a2a50" class="industry-dot"/>
+<text x="604" y="632.1" fill="#c5c7dd" font-size="12" font-weight="normal" text-anchor="end" >02.012</text>
+<path d="M331,646.1 L611,646.1" stroke="#64647f" stroke-width="1.1" fill="none" />
+<path d="M338,659.8 l4,5 -4,5 Z" fill="#8992b4" stroke="none" stroke-width="1" />
+<text x="346" y="668.8" fill="#c3c3d4" font-size="12" font-weight="normal" text-anchor="start" >Health Care</text>
+<circle cx="537" cy="664.8" r="5.5" fill="#1a2a50" class="industry-dot"/>
+<text x="604" y="668.8" fill="#c5c7dd" font-size="12" font-weight="normal" text-anchor="end" >00.019</text>
+<path d="M331,682.8 L611,682.8" stroke="#64647f" stroke-width="1.1" fill="none" />
+<path d="M338,696.5 l4,5 -4,5 Z" fill="#8992b4" stroke="none" stroke-width="1" />
+<text x="346" y="705.5" fill="#c3c3d4" font-size="12" font-weight="normal" text-anchor="start" >Industrials</text>
+<circle cx="537" cy="701.5" r="5.5" fill="#1a2a50" class="industry-dot"/>
+<text x="604" y="705.5" fill="#c5c7dd" font-size="12" font-weight="normal" text-anchor="end" >19.023</text>
+<path d="M331,719.5 L611,719.5" stroke="#64647f" stroke-width="1.1" fill="none" />
+<path d="M338,733.2 l4,5 -4,5 Z" fill="#8992b4" stroke="none" stroke-width="1" />
+<text x="346" y="742.2" fill="#c3c3d4" font-size="12" font-weight="normal" text-anchor="start" >Information Technology</text>
+<circle cx="537" cy="738.2" r="5.5" fill="#1a2a50" class="industry-dot"/>
+<text x="604" y="742.2" fill="#c5c7dd" font-size="12" font-weight="normal" text-anchor="end" >01.015</text>
+<path d="M331,756.2 L611,756.2" stroke="#64647f" stroke-width="1.1" fill="none" />
+<path d="M338,769.9000000000001 l4,5 -4,5 Z" fill="#8992b4" stroke="none" stroke-width="1" />
+<text x="346" y="778.9000000000001" fill="#c3c3d4" font-size="12" font-weight="normal" text-anchor="start" >Materials</text>
+<circle cx="537" cy="774.9000000000001" r="5.5" fill="#1a2a50" class="industry-dot"/>
+<text x="604" y="778.9000000000001" fill="#c5c7dd" font-size="12" font-weight="normal" text-anchor="end" >23.023</text>
+<path d="M331,792.9000000000001 L611,792.9000000000001" stroke="#64647f" stroke-width="1.1" fill="none" />
+<path d="M338,806.6 l4,5 -4,5 Z" fill="#8992b4" stroke="none" stroke-width="1" />
+<text x="346" y="815.6" fill="#c3c3d4" font-size="12" font-weight="normal" text-anchor="start" >Telecommunication Services</text>
+<circle cx="537" cy="811.6" r="5.5" fill="#1a2a50" class="industry-dot"/>
+<text x="604" y="815.6" fill="#c5c7dd" font-size="12" font-weight="normal" text-anchor="end" >02.012</text>
+<path d="M331,829.6 L611,829.6" stroke="#64647f" stroke-width="1.1" fill="none" />
+<path d="M338,843.3 l4,5 -4,5 Z" fill="#8992b4" stroke="none" stroke-width="1" />
+<text x="346" y="852.3" fill="#c3c3d4" font-size="12" font-weight="normal" text-anchor="start" >Utilities</text>
+<circle cx="537" cy="848.3" r="5.5" fill="#1a2a50" class="industry-dot"/>
+<text x="604" y="852.3" fill="#c5c7dd" font-size="12" font-weight="normal" text-anchor="end" >00.019</text>
+<path d="M331,866.3 L611,866.3" stroke="#64647f" stroke-width="1.1" fill="none" />
+<circle cx="537" cy="518.0" r="7" fill="#70d58c" class="industry-glow" opacity="0" filter="url(#glow)" pointer-events="none"/>
+<circle cx="537" cy="554.7" r="7" fill="#70d58c" class="industry-glow" opacity="0" filter="url(#glow)" pointer-events="none"/>
+<circle cx="537" cy="591.4" r="7" fill="#70d58c" class="industry-glow" opacity="0" filter="url(#glow)" pointer-events="none"/>
+<circle cx="537" cy="628.1" r="7" fill="#70d58c" class="industry-glow" opacity="0" filter="url(#glow)" pointer-events="none"/>
+<circle cx="537" cy="664.8" r="7" fill="#70d58c" class="industry-glow" opacity="0" filter="url(#glow)" pointer-events="none"/>
+<circle cx="537" cy="701.5" r="7" fill="#70d58c" class="industry-glow" opacity="0" filter="url(#glow)" pointer-events="none"/>
+<circle cx="537" cy="738.2" r="7" fill="#70d58c" class="industry-glow" opacity="0" filter="url(#glow)" pointer-events="none"/>
+<circle cx="537" cy="774.9000000000001" r="7" fill="#70d58c" class="industry-glow" opacity="0" filter="url(#glow)" pointer-events="none"/>
+<circle cx="537" cy="811.6" r="7" fill="#70d58c" class="industry-glow" opacity="0" filter="url(#glow)" pointer-events="none"/>
+<circle cx="537" cy="848.3" r="7" fill="#70d58c" class="industry-glow" opacity="0" filter="url(#glow)" pointer-events="none"/>
+<rect x="616" y="501" width="8" height="298" rx="4" fill="#182442" />
+<text x="663" y="388" fill="#b8bbd1" font-size="16" font-weight="bold" text-anchor="start" >Volatility Breakdown</text>
+<text x="663" y="406" fill="#9396b0" font-size="13" font-weight="normal" text-anchor="start" >% of VaR</text>
+<path d="M911.000,494.000 A128,128 0 0 1 1026.046,678.112 L980.207,655.755 A77,77 0 0 0 911.000,545.000 Z" fill="#434359" stroke="#07071f" stroke-width="1.5" id="segment-current-assets"/>
+<path d="M1024.017,682.092 A128,128 0 0 1 931.024,748.424 L923.045,698.052 A77,77 0 0 0 978.987,658.149 Z" fill="#404157" stroke="#07071f" stroke-width="1.5" id="segment-long-term-assets"/>
+<path d="M926.599,749.046 A128,128 0 0 1 869.327,743.026 L885.931,694.805 A77,77 0 0 0 920.384,698.426 Z" fill="#303149" stroke="#07071f" stroke-width="1.5" id="segment-current-liabilities"/>
+<path d="M865.129,741.498 A128,128 0 0 1 873.576,499.593 L888.487,548.365 A77,77 0 0 0 883.406,693.886 Z" fill="#45455a" stroke="#07071f" stroke-width="1.5" id="segment-long-term-liabilities"/>
+<path d="M877.871,498.361 A128,128 0 0 1 908.766,494.019 L909.656,545.012 A77,77 0 0 0 891.071,547.624 Z" fill="#45455a" stroke="#07071f" stroke-width="1.5" id="segment-equities"/>
+<path d="M911.000,440.000 A182,182 0 0 1 1015.391,472.914 L984.418,517.149 A128,128 0 0 0 911.000,494.000 Z" fill="#292a42" stroke="#07071f" stroke-width="1.5" id="segment-assets-upper"/>
+<path d="M911.000,432.000 A190,190 0 0 1 1019.980,466.361 L1016.538,471.276 A184,184 0 0 0 911.000,438.000 Z" fill="#292a42" stroke="#07071f" stroke-width="1.5" />
+<path d="M1013.097,476.191 A178,178 0 0 1 1088.973,618.893 L1038.981,619.766 A128,128 0 0 0 984.418,517.149 Z" fill="#292a42" stroke="#07071f" stroke-width="1.5" id="segment-assets-right"/>
+<path d="M1092.000,622.000 A181,181 0 0 1 1075.042,698.494 L1027.007,676.095 A128,128 0 0 0 1039.000,622.000 Z" fill="#27283f" stroke="#07071f" stroke-width="1.5" id="segment-assets-lower"/>
+<path d="M1100.000,622.000 A189,189 0 0 1 1082.292,701.875 L1076.854,699.339 A183,183 0 0 0 1094.000,622.000 Z" fill="#27283f" stroke="#07071f" stroke-width="1.5" />
+<path d="M1069.599,702.810 A178,178 0 0 1 1030.105,754.280 L996.649,717.123 A128,128 0 0 0 1025.049,680.111 Z" fill="#282940" stroke="#07071f" stroke-width="1.5" id="segment-long-assets-upper"/>
+<path d="M1076.727,706.442 A186,186 0 0 1 1035.458,760.225 L1031.444,755.766 A180,180 0 0 0 1071.381,703.718 Z" fill="#282940" stroke="#07071f" stroke-width="1.5" />
+<path d="M1027.779,756.338 A178,178 0 0 1 989.030,781.985 L967.112,737.046 A128,128 0 0 0 994.976,718.603 Z" fill="#282940" stroke="#07071f" stroke-width="1.5" id="segment-long-assets-lower"/>
+<path d="M986.649,784.229 A179,179 0 0 1 939.002,798.796 L931.024,748.424 A128,128 0 0 0 965.095,738.007 Z" fill="#272940" stroke="#07071f" stroke-width="1.5" id="segment-long-assets-highlight"/>
+<path d="M990.030,791.480 A187,187 0 0 1 940.253,806.698 L939.315,800.772 A181,181 0 0 0 987.494,786.042 Z" fill="#272940" stroke="#07071f" stroke-width="1.5" />
+<path d="M932.571,797.681 A177,177 0 0 1 907.911,798.973 L908.766,749.981 A128,128 0 0 0 926.599,749.046 Z" fill="#2e2f47" stroke="#07071f" stroke-width="1.5" id="segment-current-liab-a"/>
+<path d="M933.546,805.621 A185,185 0 0 1 907.771,806.972 L907.876,800.973 A179,179 0 0 0 932.815,799.666 Z" fill="#2e2f47" stroke="#07071f" stroke-width="1.5" />
+<path d="M904.788,799.892 A178,178 0 0 1 877.036,796.730 L886.576,747.648 A128,128 0 0 0 906.533,749.922 Z" fill="#2c2d45" stroke="#07071f" stroke-width="1.5" id="segment-current-liab-b"/>
+<path d="M904.509,807.887 A186,186 0 0 1 875.510,804.583 L876.654,798.693 A180,180 0 0 0 904.718,801.890 Z" fill="#2c2d45" stroke="#07071f" stroke-width="1.5" />
+<path d="M873.784,797.088 A179,179 0 0 1 852.723,791.248 L869.327,743.026 A128,128 0 0 0 884.387,747.203 Z" fill="#2b2c43" stroke="#07071f" stroke-width="1.5" id="segment-current-liab-c"/>
+<path d="M872.121,804.914 A187,187 0 0 1 850.119,798.812 L852.072,793.139 A181,181 0 0 0 873.368,799.045 Z" fill="#2b2c43" stroke="#07071f" stroke-width="1.5" />
+<path d="M847.211,788.177 A178,178 0 0 1 770.734,512.412 L810.135,543.195 A128,128 0 0 0 865.129,741.498 Z" fill="#2c2c44" stroke="#07071f" stroke-width="1.5" id="segment-long-liab-middle"/>
+<path d="M768.782,506.834 A183,183 0 0 1 798.334,477.794 L832.195,521.135 A128,128 0 0 0 811.525,541.447 Z" fill="#2c2c44" stroke="#07071f" stroke-width="1.5" id="segment-equities-a"/>
+<path d="M762.565,501.800 A191,191 0 0 1 793.409,471.490 L797.103,476.218 A185,185 0 0 0 767.228,505.576 Z" fill="#2c2c44" stroke="#07071f" stroke-width="1.5" />
+<path d="M798.334,477.794 A183,183 0 0 1 842.447,452.325 L863.050,503.320 A128,128 0 0 0 832.195,521.135 Z" fill="#2c2c44" stroke="#07071f" stroke-width="1.5" id="segment-equities-highlight"/>
+<path d="M793.409,471.490 A191,191 0 0 1 839.450,444.908 L841.698,450.471 A185,185 0 0 0 797.103,476.218 Z" fill="#2c2c44" stroke="#07071f" stroke-width="1.5" />
+<path d="M842.447,452.325 A183,183 0 0 1 848.410,450.036 L867.221,501.719 A128,128 0 0 0 863.050,503.320 Z" fill="#2c2c44" stroke="#07071f" stroke-width="1.5" id="segment-equities-b"/>
+<path d="M839.450,444.908 A191,191 0 0 1 845.674,442.519 L847.726,448.157 A185,185 0 0 0 841.698,450.471 Z" fill="#2c2c44" stroke="#07071f" stroke-width="1.5" />
+<path d="M851.095,448.025 A184,184 0 0 1 872.744,442.021 L884.387,496.797 A128,128 0 0 0 869.327,500.974 Z" fill="#303048" stroke="#07071f" stroke-width="1.5" id="segment-equities-c"/>
+<path d="M848.491,440.460 A192,192 0 0 1 871.081,434.196 L872.328,440.065 A186,186 0 0 0 850.444,446.134 Z" fill="#303048" stroke="#07071f" stroke-width="1.5" />
+<path d="M875.891,441.381 A184,184 0 0 1 904.578,438.112 L906.533,494.078 A128,128 0 0 0 886.576,496.352 Z" fill="#35354d" stroke="#07071f" stroke-width="1.5" id="segment-equities-d"/>
+<path d="M874.365,433.528 A192,192 0 0 1 904.299,430.117 L904.509,436.113 A186,186 0 0 0 875.510,439.417 Z" fill="#35354d" stroke="#07071f" stroke-width="1.5" />
+<path d="M1042.923,433.595 A230,230 0 0 1 1140.965,617.986 L1092.972,618.824 A182,182 0 0 0 1015.391,472.914 Z" fill="#1e1f38" stroke="#07071f" stroke-width="1.5" id="segment-assets-outer"/>
+<path d="M1047.511,427.042 A238,238 0 0 1 1148.964,617.846 L1142.965,617.951 A232,232 0 0 0 1044.070,431.957 Z" fill="#17182e" stroke="#07071f" stroke-width="1.5" />
+<path d="M1065.174,799.357 A235,235 0 0 1 1014.017,833.217 L990.784,785.581 A182,182 0 0 0 1030.403,759.357 Z" fill="#1e1f38" stroke="#07071f" stroke-width="1.5" id="segment-long-assets-outer"/>
+<path d="M1070.422,805.394 A243,243 0 0 1 1017.524,840.407 L1014.894,835.014 A237,237 0 0 0 1066.486,800.866 Z" fill="#17182e" stroke="#07071f" stroke-width="1.5" />
+<path d="M826.425,842.325 A236,236 0 0 1 750.048,794.599 L786.876,755.106 A182,182 0 0 0 845.777,791.912 Z" fill="#1e1f38" stroke="#07071f" stroke-width="1.5" id="segment-long-liab-outer-highlight"/>
+<path d="M823.558,849.794 A244,244 0 0 1 744.592,800.450 L748.684,796.062 A238,238 0 0 0 825.708,844.192 Z" fill="#17182e" stroke="#07071f" stroke-width="1.5" />
+<path d="M750.048,794.599 A236,236 0 0 1 676.293,646.669 L729.997,641.024 A182,182 0 0 0 786.876,755.106 Z" fill="#1e1f38" stroke="#07071f" stroke-width="1.5" id="segment-long-liab-outer-a"/>
+<path d="M744.592,800.450 A244,244 0 0 1 668.337,647.505 L674.304,646.878 A238,238 0 0 0 748.684,796.062 Z" fill="#17182e" stroke="#07071f" stroke-width="1.5" />
+<path d="M676.293,646.669 A236,236 0 0 1 675.144,630.236 L729.111,628.352 A182,182 0 0 0 729.997,641.024 Z" fill="#1e1f38" stroke="#07071f" stroke-width="1.5" id="segment-long-liab-outer-sliver"/>
+<path d="M668.337,647.505 A244,244 0 0 1 667.149,630.515 L673.145,630.306 A238,238 0 0 0 674.304,646.878 Z" fill="#17182e" stroke="#07071f" stroke-width="1.5" />
+<path d="M675.144,630.236 A236,236 0 0 1 725.029,476.704 L767.582,509.950 A182,182 0 0 0 729.111,628.352 Z" fill="#1e1f38" stroke="#07071f" stroke-width="1.5" id="segment-long-liab-outer-b"/>
+<path d="M667.149,630.515 A244,244 0 0 1 718.725,471.779 L723.453,475.473 A238,238 0 0 0 673.145,630.306 Z" fill="#17182e" stroke="#07071f" stroke-width="1.5" />
+<path d="M915.5369345713251,492.07919248751756 L917.3168089031527,441.11026030954366" stroke="#07071c" stroke-width="1" fill="none" />
+<path d="M926.8430146426691,492.9690002866281 L933.0583511563317,442.34914655292073" stroke="#07071c" stroke-width="1" fill="none" />
+<path d="M933.574263096701,493.97499210841295 L942.4303201577144,443.74979670479036" stroke="#07071c" stroke-width="1" fill="none" />
+<path d="M1028.8200123147644,676.9403740262909 L1075.0417094536338,698.4939053750666" stroke="#07071c" stroke-width="1" fill="none" />
+<path d="M1024.7005619281215,685.0252506320238 L1069.3061669922306,709.750541264587" stroke="#07071c" stroke-width="1" fill="none" />
+<path d="M1001.3055881596697,715.5141740440247 L1036.7331650530784,752.2005038612958" stroke="#07071c" stroke-width="1" fill="none" />
+<path d="M935.8051693989509,749.6115338481964 L945.5364281631546,799.6745202040272" stroke="#07071c" stroke-width="1" fill="none" />
+<path d="M929.0925031248086,750.7348489364042 L936.1903312737719,801.2385204422242" stroke="#07071c" stroke-width="1" fill="none" />
+<path d="M886.1948306010491,749.6115338481964 L876.4635718368454,799.6745202040272" stroke="#07071c" stroke-width="1" fill="none" />
+<path d="M881.7563629352976,748.6681084220805 L870.2838591637604,798.3609817261276" stroke="#07071c" stroke-width="1" fill="none" />
+<path d="M877.3535241366723,747.5703574175789 L864.1537528364437,796.8325745583213" stroke="#07071c" stroke-width="1" fill="none" />
+<path d="M864.4121665591109,500.6345445553638 L846.1354011323006,453.0219428040065" stroke="#07071c" stroke-width="1" fill="none" />
+<path d="M872.9916783860442,497.68038172480544 L858.0807214451846,448.9088391706906" stroke="#07071c" stroke-width="1" fill="none" />
+<path d="M881.7563629352975,495.33189157791946 L870.2838591637604,445.63901827387247" stroke="#07071c" stroke-width="1" fill="none" />
+<path d="M888.425736903299,493.97499210841295 L879.5696798422856,443.74979670479036" stroke="#07071c" stroke-width="1" fill="none" />
+<defs><clipPath id="clip-long-term-liabilities"><path d="M865.129,741.498 A128,128 0 0 1 873.576,499.593 L888.487,548.365 A77,77 0 0 0 883.406,693.886 Z"/></clipPath></defs>
+<path d="M879.822,703.221 A87.0,87.0 0 0 1 885.564,538.801" fill="none" stroke="#f02e5d" stroke-width="20" class="red-arc" pathLength="1" data-segment="long-term-liabilities" data-inner="77" data-start="111" data-end="253" clip-path="url(#clip-long-term-liabilities)"/>
+<path d="M865.129,741.498 A128,128 0 0 1 873.576,499.593 L888.487,548.365 A77,77 0 0 0 883.406,693.886 Z" fill="none" stroke="#07071f" stroke-width="1.5" />
+<defs><clipPath id="clip-long-term-assets"><path d="M1024.017,682.092 A128,128 0 0 1 931.024,748.424 L923.045,698.052 A77,77 0 0 0 978.987,658.149 Z"/></clipPath></defs>
+<path d="M988.699,663.313 A88.0,88.0 0 0 1 924.766,708.917" fill="none" stroke="#f02e5d" stroke-width="22" class="red-arc" pathLength="1" data-segment="long-term-assets" data-inner="77" data-start="28" data-end="81" clip-path="url(#clip-long-term-assets)"/>
+<path d="M1024.017,682.092 A128,128 0 0 1 931.024,748.424 L923.045,698.052 A77,77 0 0 0 978.987,658.149 Z" fill="none" stroke="#07071f" stroke-width="1.5" />
+<defs><clipPath id="clip-long-liab-middle"><path d="M847.211,788.177 A178,178 0 0 1 770.734,512.412 L810.135,543.195 A128,128 0 0 0 865.129,741.498 Z"/></clipPath></defs>
+<path d="M862.979,747.100 A134.0,134.0 0 0 1 805.407,539.501" fill="none" stroke="#851c47" stroke-width="12" class="red-arc" pathLength="1" data-segment="long-liab-middle" data-inner="128" data-start="111" data-end="218" clip-path="url(#clip-long-liab-middle)"/>
+<path d="M847.211,788.177 A178,178 0 0 1 770.734,512.412 L810.135,543.195 A128,128 0 0 0 865.129,741.498 Z" fill="none" stroke="#07071f" stroke-width="1.5" />
+<defs><clipPath id="clip-long-assets-highlight"><path d="M986.649,784.229 A179,179 0 0 1 939.002,798.796 L931.024,748.424 A128,128 0 0 0 965.095,738.007 Z"/></clipPath></defs>
+<path d="M970.167,748.883 A140.0,140.0 0 0 1 932.901,760.276" fill="none" stroke="#851c47" stroke-width="24" class="red-arc" pathLength="1" data-segment="long-assets-highlight" data-inner="128" data-start="65" data-end="81" clip-path="url(#clip-long-assets-highlight)"/>
+<path d="M986.649,784.229 A179,179 0 0 1 939.002,798.796 L931.024,748.424 A128,128 0 0 0 965.095,738.007 Z" fill="none" stroke="#07071f" stroke-width="1.5" />
+<defs><clipPath id="clip-long-liab-outer-highlight"><path d="M826.425,842.325 A236,236 0 0 1 750.048,794.599 L786.876,755.106 A182,182 0 0 0 845.777,791.912 Z"/></clipPath></defs>
+<path d="M844.344,795.646 A186.0,186.0 0 0 1 784.148,758.032" fill="none" stroke="#5c173b" stroke-width="8" class="red-arc" pathLength="1" data-segment="long-liab-outer-highlight" data-inner="182" data-start="111" data-end="133" clip-path="url(#clip-long-liab-outer-highlight)"/>
+<path d="M826.425,842.325 A236,236 0 0 1 750.048,794.599 L786.876,755.106 A182,182 0 0 0 845.777,791.912 Z" fill="none" stroke="#07071f" stroke-width="1.5" />
+<defs><clipPath id="clip-long-liab-outer-sliver"><path d="M676.293,646.669 A236,236 0 0 1 675.144,630.236 L729.111,628.352 A182,182 0 0 0 729.997,641.024 Z"/></clipPath></defs>
+<path d="M727.511,641.286 A184.5,184.5 0 0 1 726.612,628.439" fill="none" stroke="#6e193f" stroke-width="5" class="red-arc" pathLength="1" data-segment="long-liab-outer-sliver" data-inner="182" data-start="174" data-end="178" clip-path="url(#clip-long-liab-outer-sliver)"/>
+<path d="M676.293,646.669 A236,236 0 0 1 675.144,630.236 L729.111,628.352 A182,182 0 0 0 729.997,641.024 Z" fill="none" stroke="#07071f" stroke-width="1.5" />
+<defs><clipPath id="clip-equities-highlight"><path d="M798.334,477.794 A183,183 0 0 1 842.447,452.325 L863.050,503.320 A128,128 0 0 0 832.195,521.135 Z"/></clipPath></defs>
+<path d="M831.580,520.347 A129.0,129.0 0 0 1 862.676,502.393" fill="none" stroke="#ac2452" stroke-width="2" class="red-arc" pathLength="1" data-segment="equities-highlight" data-inner="128" data-start="232" data-end="248" clip-path="url(#clip-equities-highlight)"/>
+<path d="M798.334,477.794 A183,183 0 0 1 842.447,452.325 L863.050,503.320 A128,128 0 0 0 832.195,521.135 Z" fill="none" stroke="#07071f" stroke-width="1.5" />
+<text x="911" y="625" fill="#fff" font-size="32" font-weight="bold" text-anchor="middle" >100.000</text>
+<text x="911" y="648" fill="#d5d4df" font-size="14" font-weight="normal" text-anchor="middle" >Total % of VaR</text>
+<text x="898" y="498" fill="#f7f6fb" font-size="16" font-weight="bold" text-anchor="middle" >Equities</text>
+<text x="1022" y="547" fill="#f7f6fb" font-size="16" font-weight="bold" text-anchor="middle" >Current</text>
+<text x="1022" y="566" fill="#f7f6fb" font-size="16" font-weight="bold" text-anchor="middle" >Assets</text>
+<text x="990" y="721" fill="#f7f6fb" font-size="16" font-weight="bold" text-anchor="middle" >Long Term</text>
+<text x="990" y="740" fill="#f7f6fb" font-size="16" font-weight="bold" text-anchor="middle" >Assets</text>
+<text x="902" y="746" fill="#f7f6fb" font-size="16" font-weight="bold" text-anchor="middle" >Current</text>
+<text x="902" y="765" fill="#f7f6fb" font-size="16" font-weight="bold" text-anchor="middle" >Liabilities</text>
+<text x="785" y="625" fill="#f7f6fb" font-size="16" font-weight="bold" text-anchor="middle" >Long Term</text>
+<text x="785" y="644" fill="#f7f6fb" font-size="16" font-weight="bold" text-anchor="middle" >Liabilities</text>
+<text x="1189" y="31" fill="#b8bbd1" font-size="16" font-weight="bold" text-anchor="start" >Risk Breakdown</text>
+<text x="1189" y="50" fill="#969ab7" font-size="13" font-weight="normal" text-anchor="start" >% of VaR</text>
+<text x="1676" y="50" fill="#969ab7" font-size="13" font-weight="normal" text-anchor="middle" >0</text>
+<text x="1978" y="50" fill="#969ab7" font-size="13" font-weight="normal" text-anchor="end" >Mean position (GBP)</text>
+<rect x="1189" y="57" width="781" height="38" rx="0" fill="#10285d" />
+<text x="1197" y="81.0" fill="#8c95b2" font-size="12" font-weight="normal" text-anchor="start" >31.039</text>
+<text x="1252" y="81.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="start" >Current Assets</text>
+<text x="1962" y="81.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="end" >62,400,000</text>
+<path d="M1676,57 L1676,95" stroke="#080e2a" stroke-width="1" fill="none" />
+<g class="risk-curve" data-x="1818" data-baseline="94" data-row="0">
+<path d="M1765.00,93.32 L1766.77,93.15 L1768.53,92.95 L1770.30,92.71 L1772.07,92.42 L1773.83,92.09 L1775.60,91.70 L1777.37,91.26 L1779.13,90.75 L1780.90,90.18 L1782.67,89.55 L1784.43,88.84 L1786.20,88.08 L1787.97,87.24 L1789.73,86.35 L1791.50,85.41 L1793.27,84.42 L1795.03,83.40 L1796.80,82.35 L1798.57,81.30 L1800.33,80.26 L1802.10,79.25 L1803.87,78.27 L1805.63,77.36 L1807.40,76.53 L1809.17,75.79 L1810.93,75.17 L1812.70,74.66 L1814.47,74.30 L1816.23,74.07 L1818.00,74.00 L1819.77,74.07 L1821.53,74.30 L1823.30,74.66 L1825.07,75.17 L1826.83,75.79 L1828.60,76.53 L1830.37,77.36 L1832.13,78.27 L1833.90,79.25 L1835.67,80.26 L1837.43,81.30 L1839.20,82.35 L1840.97,83.40 L1842.73,84.42 L1844.50,85.41 L1846.27,86.35 L1848.03,87.24 L1849.80,88.08 L1851.57,88.84 L1853.33,89.55 L1855.10,90.18 L1856.87,90.75 L1858.63,91.26 L1860.40,91.70 L1862.17,92.09 L1863.93,92.42 L1865.70,92.71 L1867.47,92.95 L1869.23,93.15 L1871.00,93.32 L1871,94 L1765,94 Z" fill="#3a6dc5" stroke="none" stroke-width="1" opacity=".24"/>
+<path d="M1765.00,93.32 L1766.77,93.15 L1768.53,92.95 L1770.30,92.71 L1772.07,92.42 L1773.83,92.09 L1775.60,91.70 L1777.37,91.26 L1779.13,90.75 L1780.90,90.18 L1782.67,89.55 L1784.43,88.84 L1786.20,88.08 L1787.97,87.24 L1789.73,86.35 L1791.50,85.41 L1793.27,84.42 L1795.03,83.40 L1796.80,82.35 L1798.57,81.30 L1800.33,80.26 L1802.10,79.25 L1803.87,78.27 L1805.63,77.36 L1807.40,76.53 L1809.17,75.79 L1810.93,75.17 L1812.70,74.66 L1814.47,74.30 L1816.23,74.07 L1818.00,74.00 L1819.77,74.07 L1821.53,74.30 L1823.30,74.66 L1825.07,75.17 L1826.83,75.79 L1828.60,76.53 L1830.37,77.36 L1832.13,78.27 L1833.90,79.25 L1835.67,80.26 L1837.43,81.30 L1839.20,82.35 L1840.97,83.40 L1842.73,84.42 L1844.50,85.41 L1846.27,86.35 L1848.03,87.24 L1849.80,88.08 L1851.57,88.84 L1853.33,89.55 L1855.10,90.18 L1856.87,90.75 L1858.63,91.26 L1860.40,91.70 L1862.17,92.09 L1863.93,92.42 L1865.70,92.71 L1867.47,92.95 L1869.23,93.15 L1871.00,93.32" fill="none" stroke="#3a6dc5" stroke-width="1.4" opacity=".85"/>
+<path d="M1818,57 L1818,94" stroke="#3a6dc5" stroke-width="0.7" fill="none" opacity=".65"/>
+</g>
+<rect x="1189" y="104" width="781" height="38" rx="0" fill="#17395e" />
+<text x="1197" y="128.0" fill="#8c95b2" font-size="12" font-weight="normal" text-anchor="start" >19.124</text>
+<text x="1252" y="128.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="start" >Long Term Assets</text>
+<text x="1962" y="128.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="end" >22,400,000</text>
+<path d="M1676,104 L1676,142" stroke="#080e2a" stroke-width="1" fill="none" />
+<g class="risk-curve" data-x="1745" data-baseline="141" data-row="1">
+<path d="M1723.00,139.81 L1723.73,139.51 L1724.47,139.16 L1725.20,138.74 L1725.93,138.24 L1726.67,137.65 L1727.40,136.98 L1728.13,136.20 L1728.87,135.32 L1729.60,134.32 L1730.33,133.21 L1731.07,131.98 L1731.80,130.63 L1732.53,129.18 L1733.27,127.62 L1734.00,125.97 L1734.73,124.24 L1735.47,122.45 L1736.20,120.62 L1736.93,118.78 L1737.67,116.96 L1738.40,115.18 L1739.13,113.48 L1739.87,111.88 L1740.60,110.43 L1741.33,109.14 L1742.07,108.04 L1742.80,107.16 L1743.53,106.52 L1744.27,106.13 L1745.00,106.00 L1745.73,106.13 L1746.47,106.52 L1747.20,107.16 L1747.93,108.04 L1748.67,109.14 L1749.40,110.43 L1750.13,111.88 L1750.87,113.48 L1751.60,115.18 L1752.33,116.96 L1753.07,118.78 L1753.80,120.62 L1754.53,122.45 L1755.27,124.24 L1756.00,125.97 L1756.73,127.62 L1757.47,129.18 L1758.20,130.63 L1758.93,131.98 L1759.67,133.21 L1760.40,134.32 L1761.13,135.32 L1761.87,136.20 L1762.60,136.98 L1763.33,137.65 L1764.07,138.24 L1764.80,138.74 L1765.53,139.16 L1766.27,139.51 L1767.00,139.81 L1767,141 L1723,141 Z" fill="#55a3cb" stroke="none" stroke-width="1" opacity=".24"/>
+<path d="M1723.00,139.81 L1723.73,139.51 L1724.47,139.16 L1725.20,138.74 L1725.93,138.24 L1726.67,137.65 L1727.40,136.98 L1728.13,136.20 L1728.87,135.32 L1729.60,134.32 L1730.33,133.21 L1731.07,131.98 L1731.80,130.63 L1732.53,129.18 L1733.27,127.62 L1734.00,125.97 L1734.73,124.24 L1735.47,122.45 L1736.20,120.62 L1736.93,118.78 L1737.67,116.96 L1738.40,115.18 L1739.13,113.48 L1739.87,111.88 L1740.60,110.43 L1741.33,109.14 L1742.07,108.04 L1742.80,107.16 L1743.53,106.52 L1744.27,106.13 L1745.00,106.00 L1745.73,106.13 L1746.47,106.52 L1747.20,107.16 L1747.93,108.04 L1748.67,109.14 L1749.40,110.43 L1750.13,111.88 L1750.87,113.48 L1751.60,115.18 L1752.33,116.96 L1753.07,118.78 L1753.80,120.62 L1754.53,122.45 L1755.27,124.24 L1756.00,125.97 L1756.73,127.62 L1757.47,129.18 L1758.20,130.63 L1758.93,131.98 L1759.67,133.21 L1760.40,134.32 L1761.13,135.32 L1761.87,136.20 L1762.60,136.98 L1763.33,137.65 L1764.07,138.24 L1764.80,138.74 L1765.53,139.16 L1766.27,139.51 L1767.00,139.81" fill="none" stroke="#55a3cb" stroke-width="1.4" opacity=".85"/>
+<path d="M1745,104 L1745,141" stroke="#55a3cb" stroke-width="0.7" fill="none" opacity=".65"/>
+</g>
+<rect x="1189" y="152" width="781" height="37" rx="0" fill="#1d435c" />
+<text x="1197" y="175.5" fill="#8c95b2" font-size="12" font-weight="normal" text-anchor="start" >08.234</text>
+<text x="1252" y="175.5" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="start" >Current Liabilities</text>
+<text x="1962" y="175.5" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="end" >- 12,000,000</text>
+<path d="M1676,152 L1676,189" stroke="#080e2a" stroke-width="1" fill="none" />
+<g class="risk-curve" data-x="1637" data-baseline="188" data-row="2">
+<path d="M1610.00,186.91 L1610.90,186.64 L1611.80,186.32 L1612.70,185.93 L1613.60,185.47 L1614.50,184.94 L1615.40,184.32 L1616.30,183.61 L1617.20,182.80 L1618.10,181.89 L1619.00,180.88 L1619.90,179.75 L1620.80,178.52 L1621.70,177.19 L1622.60,175.76 L1623.50,174.25 L1624.40,172.67 L1625.30,171.04 L1626.20,169.37 L1627.10,167.69 L1628.00,166.02 L1628.90,164.39 L1629.80,162.84 L1630.70,161.38 L1631.60,160.05 L1632.50,158.87 L1633.40,157.87 L1634.30,157.06 L1635.20,156.48 L1636.10,156.12 L1637.00,156.00 L1637.90,156.12 L1638.80,156.48 L1639.70,157.06 L1640.60,157.87 L1641.50,158.87 L1642.40,160.05 L1643.30,161.38 L1644.20,162.84 L1645.10,164.39 L1646.00,166.02 L1646.90,167.69 L1647.80,169.37 L1648.70,171.04 L1649.60,172.67 L1650.50,174.25 L1651.40,175.76 L1652.30,177.19 L1653.20,178.52 L1654.10,179.75 L1655.00,180.88 L1655.90,181.89 L1656.80,182.80 L1657.70,183.61 L1658.60,184.32 L1659.50,184.94 L1660.40,185.47 L1661.30,185.93 L1662.20,186.32 L1663.10,186.64 L1664.00,186.91 L1664,188 L1610,188 Z" fill="#63c6cb" stroke="none" stroke-width="1" opacity=".24"/>
+<path d="M1610.00,186.91 L1610.90,186.64 L1611.80,186.32 L1612.70,185.93 L1613.60,185.47 L1614.50,184.94 L1615.40,184.32 L1616.30,183.61 L1617.20,182.80 L1618.10,181.89 L1619.00,180.88 L1619.90,179.75 L1620.80,178.52 L1621.70,177.19 L1622.60,175.76 L1623.50,174.25 L1624.40,172.67 L1625.30,171.04 L1626.20,169.37 L1627.10,167.69 L1628.00,166.02 L1628.90,164.39 L1629.80,162.84 L1630.70,161.38 L1631.60,160.05 L1632.50,158.87 L1633.40,157.87 L1634.30,157.06 L1635.20,156.48 L1636.10,156.12 L1637.00,156.00 L1637.90,156.12 L1638.80,156.48 L1639.70,157.06 L1640.60,157.87 L1641.50,158.87 L1642.40,160.05 L1643.30,161.38 L1644.20,162.84 L1645.10,164.39 L1646.00,166.02 L1646.90,167.69 L1647.80,169.37 L1648.70,171.04 L1649.60,172.67 L1650.50,174.25 L1651.40,175.76 L1652.30,177.19 L1653.20,178.52 L1654.10,179.75 L1655.00,180.88 L1655.90,181.89 L1656.80,182.80 L1657.70,183.61 L1658.60,184.32 L1659.50,184.94 L1660.40,185.47 L1661.30,185.93 L1662.20,186.32 L1663.10,186.64 L1664.00,186.91" fill="none" stroke="#63c6cb" stroke-width="1.4" opacity=".85"/>
+<path d="M1637,152 L1637,188" stroke="#63c6cb" stroke-width="0.7" fill="none" opacity=".65"/>
+</g>
+<rect x="1189" y="199" width="781" height="36" rx="0" fill="#1e494f" />
+<text x="1197" y="222.0" fill="#8c95b2" font-size="12" font-weight="normal" text-anchor="start" >38.480</text>
+<text x="1252" y="222.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="start" >Long Term Liabilities</text>
+<text x="1962" y="222.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="end" >- 66,800,000</text>
+<path d="M1676,199 L1676,235" stroke="#080e2a" stroke-width="1" fill="none" />
+<g class="risk-curve" data-x="1487" data-baseline="234" data-row="3">
+<path d="M1409.00,233.46 L1411.60,233.32 L1414.20,233.16 L1416.80,232.96 L1419.40,232.74 L1422.00,232.47 L1424.60,232.16 L1427.20,231.81 L1429.80,231.40 L1432.40,230.95 L1435.00,230.44 L1437.60,229.88 L1440.20,229.26 L1442.80,228.60 L1445.40,227.88 L1448.00,227.13 L1450.60,226.34 L1453.20,225.52 L1455.80,224.68 L1458.40,223.84 L1461.00,223.01 L1463.60,222.20 L1466.20,221.42 L1468.80,220.69 L1471.40,220.02 L1474.00,219.43 L1476.60,218.93 L1479.20,218.53 L1481.80,218.24 L1484.40,218.06 L1487.00,218.00 L1489.60,218.06 L1492.20,218.24 L1494.80,218.53 L1497.40,218.93 L1500.00,219.43 L1502.60,220.02 L1505.20,220.69 L1507.80,221.42 L1510.40,222.20 L1513.00,223.01 L1515.60,223.84 L1518.20,224.68 L1520.80,225.52 L1523.40,226.34 L1526.00,227.13 L1528.60,227.88 L1531.20,228.60 L1533.80,229.26 L1536.40,229.88 L1539.00,230.44 L1541.60,230.95 L1544.20,231.40 L1546.80,231.81 L1549.40,232.16 L1552.00,232.47 L1554.60,232.74 L1557.20,232.96 L1559.80,233.16 L1562.40,233.32 L1565.00,233.46 L1565,234 L1409,234 Z" fill="#6fcfb7" stroke="none" stroke-width="1" opacity=".24"/>
+<path d="M1409.00,233.46 L1411.60,233.32 L1414.20,233.16 L1416.80,232.96 L1419.40,232.74 L1422.00,232.47 L1424.60,232.16 L1427.20,231.81 L1429.80,231.40 L1432.40,230.95 L1435.00,230.44 L1437.60,229.88 L1440.20,229.26 L1442.80,228.60 L1445.40,227.88 L1448.00,227.13 L1450.60,226.34 L1453.20,225.52 L1455.80,224.68 L1458.40,223.84 L1461.00,223.01 L1463.60,222.20 L1466.20,221.42 L1468.80,220.69 L1471.40,220.02 L1474.00,219.43 L1476.60,218.93 L1479.20,218.53 L1481.80,218.24 L1484.40,218.06 L1487.00,218.00 L1489.60,218.06 L1492.20,218.24 L1494.80,218.53 L1497.40,218.93 L1500.00,219.43 L1502.60,220.02 L1505.20,220.69 L1507.80,221.42 L1510.40,222.20 L1513.00,223.01 L1515.60,223.84 L1518.20,224.68 L1520.80,225.52 L1523.40,226.34 L1526.00,227.13 L1528.60,227.88 L1531.20,228.60 L1533.80,229.26 L1536.40,229.88 L1539.00,230.44 L1541.60,230.95 L1544.20,231.40 L1546.80,231.81 L1549.40,232.16 L1552.00,232.47 L1554.60,232.74 L1557.20,232.96 L1559.80,233.16 L1562.40,233.32 L1565.00,233.46" fill="none" stroke="#6fcfb7" stroke-width="1.4" opacity=".85"/>
+<path d="M1487,199 L1487,234" stroke="#6fcfb7" stroke-width="0.7" fill="none" opacity=".65"/>
+</g>
+<rect x="1189" y="238" width="781" height="23" rx="0" fill="#29293f" />
+<text x="1197" y="254.5" fill="#8c95b2" font-size="12" font-weight="normal" text-anchor="start" >22.009</text>
+<text x="1278" y="254.5" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="start" >Insurance Provisions</text>
+<text x="1962" y="254.5" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="end" >- 48,700,000</text>
+<path d="M1252,249.5 l9,0 -4.5,5 Z" fill="#929ebd" stroke="none" stroke-width="1" />
+<path d="M1676,238 L1676,261" stroke="#52536a" stroke-width="1" fill="none" />
+<g class="risk-curve" data-x="1539" data-baseline="260" data-row="4">
+<path d="M1526.00,259.29 L1526.43,259.11 L1526.87,258.89 L1527.30,258.64 L1527.73,258.34 L1528.17,257.99 L1528.60,257.59 L1529.03,257.12 L1529.47,256.59 L1529.90,255.99 L1530.33,255.32 L1530.77,254.59 L1531.20,253.78 L1531.63,252.91 L1532.07,251.97 L1532.50,250.98 L1532.93,249.94 L1533.37,248.87 L1533.80,247.77 L1534.23,246.67 L1534.67,245.57 L1535.10,244.51 L1535.53,243.49 L1535.97,242.53 L1536.40,241.66 L1536.83,240.88 L1537.27,240.22 L1537.70,239.70 L1538.13,239.31 L1538.57,239.08 L1539.00,239.00 L1539.43,239.08 L1539.87,239.31 L1540.30,239.70 L1540.73,240.22 L1541.17,240.88 L1541.60,241.66 L1542.03,242.53 L1542.47,243.49 L1542.90,244.51 L1543.33,245.57 L1543.77,246.67 L1544.20,247.77 L1544.63,248.87 L1545.07,249.94 L1545.50,250.98 L1545.93,251.97 L1546.37,252.91 L1546.80,253.78 L1547.23,254.59 L1547.67,255.32 L1548.10,255.99 L1548.53,256.59 L1548.97,257.12 L1549.40,257.59 L1549.83,257.99 L1550.27,258.34 L1550.70,258.64 L1551.13,258.89 L1551.57,259.11 L1552.00,259.29 L1552,260 L1526,260 Z" fill="#6fa3a5" stroke="none" stroke-width="1" opacity=".24"/>
+<path d="M1526.00,259.29 L1526.43,259.11 L1526.87,258.89 L1527.30,258.64 L1527.73,258.34 L1528.17,257.99 L1528.60,257.59 L1529.03,257.12 L1529.47,256.59 L1529.90,255.99 L1530.33,255.32 L1530.77,254.59 L1531.20,253.78 L1531.63,252.91 L1532.07,251.97 L1532.50,250.98 L1532.93,249.94 L1533.37,248.87 L1533.80,247.77 L1534.23,246.67 L1534.67,245.57 L1535.10,244.51 L1535.53,243.49 L1535.97,242.53 L1536.40,241.66 L1536.83,240.88 L1537.27,240.22 L1537.70,239.70 L1538.13,239.31 L1538.57,239.08 L1539.00,239.00 L1539.43,239.08 L1539.87,239.31 L1540.30,239.70 L1540.73,240.22 L1541.17,240.88 L1541.60,241.66 L1542.03,242.53 L1542.47,243.49 L1542.90,244.51 L1543.33,245.57 L1543.77,246.67 L1544.20,247.77 L1544.63,248.87 L1545.07,249.94 L1545.50,250.98 L1545.93,251.97 L1546.37,252.91 L1546.80,253.78 L1547.23,254.59 L1547.67,255.32 L1548.10,255.99 L1548.53,256.59 L1548.97,257.12 L1549.40,257.59 L1549.83,257.99 L1550.27,258.34 L1550.70,258.64 L1551.13,258.89 L1551.57,259.11 L1552.00,259.29" fill="none" stroke="#6fa3a5" stroke-width="0.8" opacity=".85"/>
+<path d="M1539,238 L1539,260" stroke="#6fa3a5" stroke-width="0.7" fill="none" opacity=".65"/>
+</g>
+<rect x="1189" y="264" width="781" height="24" rx="0" fill="#1e1e36" />
+<text x="1197" y="281.0" fill="#8c95b2" font-size="12" font-weight="normal" text-anchor="start" >02.012</text>
+<text x="1304" y="281.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="start" >Accident &amp; Health</text>
+<text x="1962" y="281.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="end" >- 6,000,000</text>
+<path d="M1278,272.0 l4,5 -4,5 Z" fill="#929ebd" stroke="none" stroke-width="1" />
+<path d="M1676,264 L1676,288" stroke="#52536a" stroke-width="1" fill="none" />
+<g class="risk-curve" data-x="1657" data-baseline="287" data-row="5">
+<path d="M1653.00,286.59 L1653.13,286.49 L1653.27,286.37 L1653.40,286.22 L1653.53,286.05 L1653.67,285.85 L1653.80,285.62 L1653.93,285.35 L1654.07,285.05 L1654.20,284.71 L1654.33,284.33 L1654.47,283.91 L1654.60,283.45 L1654.73,282.95 L1654.87,282.41 L1655.00,281.85 L1655.13,281.25 L1655.27,280.64 L1655.40,280.01 L1655.53,279.38 L1655.67,278.76 L1655.80,278.15 L1655.93,277.56 L1656.07,277.02 L1656.20,276.52 L1656.33,276.08 L1656.47,275.70 L1656.60,275.40 L1656.73,275.18 L1656.87,275.04 L1657.00,275.00 L1657.13,275.04 L1657.27,275.18 L1657.40,275.40 L1657.53,275.70 L1657.67,276.08 L1657.80,276.52 L1657.93,277.02 L1658.07,277.56 L1658.20,278.15 L1658.33,278.76 L1658.47,279.38 L1658.60,280.01 L1658.73,280.64 L1658.87,281.25 L1659.00,281.85 L1659.13,282.41 L1659.27,282.95 L1659.40,283.45 L1659.53,283.91 L1659.67,284.33 L1659.80,284.71 L1659.93,285.05 L1660.07,285.35 L1660.20,285.62 L1660.33,285.85 L1660.47,286.05 L1660.60,286.22 L1660.73,286.37 L1660.87,286.49 L1661.00,286.59 L1661,287 L1653,287 Z" fill="#67b6b3" stroke="none" stroke-width="1" opacity=".24"/>
+<path d="M1653.00,286.59 L1653.13,286.49 L1653.27,286.37 L1653.40,286.22 L1653.53,286.05 L1653.67,285.85 L1653.80,285.62 L1653.93,285.35 L1654.07,285.05 L1654.20,284.71 L1654.33,284.33 L1654.47,283.91 L1654.60,283.45 L1654.73,282.95 L1654.87,282.41 L1655.00,281.85 L1655.13,281.25 L1655.27,280.64 L1655.40,280.01 L1655.53,279.38 L1655.67,278.76 L1655.80,278.15 L1655.93,277.56 L1656.07,277.02 L1656.20,276.52 L1656.33,276.08 L1656.47,275.70 L1656.60,275.40 L1656.73,275.18 L1656.87,275.04 L1657.00,275.00 L1657.13,275.04 L1657.27,275.18 L1657.40,275.40 L1657.53,275.70 L1657.67,276.08 L1657.80,276.52 L1657.93,277.02 L1658.07,277.56 L1658.20,278.15 L1658.33,278.76 L1658.47,279.38 L1658.60,280.01 L1658.73,280.64 L1658.87,281.25 L1659.00,281.85 L1659.13,282.41 L1659.27,282.95 L1659.40,283.45 L1659.53,283.91 L1659.67,284.33 L1659.80,284.71 L1659.93,285.05 L1660.07,285.35 L1660.20,285.62 L1660.33,285.85 L1660.47,286.05 L1660.60,286.22 L1660.73,286.37 L1660.87,286.49 L1661.00,286.59" fill="none" stroke="#67b6b3" stroke-width="0.8" opacity=".85"/>
+<path d="M1657,264 L1657,287" stroke="#67b6b3" stroke-width="0.7" fill="none" opacity=".65"/>
+</g>
+<rect x="1189" y="290" width="781" height="24" rx="0" fill="#1e1e36" />
+<text x="1197" y="307.0" fill="#8c95b2" font-size="12" font-weight="normal" text-anchor="start" >05.023</text>
+<text x="1304" y="307.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="start" >Aviation Liability</text>
+<text x="1962" y="307.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="end" >- 12,000,000</text>
+<path d="M1278,302.0 l9,0 -4.5,5 Z" fill="#929ebd" stroke="none" stroke-width="1" />
+<path d="M1676,290 L1676,314" stroke="#52536a" stroke-width="1" fill="none" />
+<g class="risk-curve" data-x="1639" data-baseline="313" data-row="6">
+<path d="M1635.00,312.49 L1635.13,312.36 L1635.27,312.21 L1635.40,312.03 L1635.53,311.82 L1635.67,311.57 L1635.80,311.28 L1635.93,310.94 L1636.07,310.56 L1636.20,310.14 L1636.33,309.66 L1636.47,309.13 L1636.60,308.56 L1636.73,307.93 L1636.87,307.26 L1637.00,306.56 L1637.13,305.82 L1637.27,305.05 L1637.40,304.27 L1637.53,303.48 L1637.67,302.70 L1637.80,301.93 L1637.93,301.20 L1638.07,300.52 L1638.20,299.90 L1638.33,299.34 L1638.47,298.87 L1638.60,298.50 L1638.73,298.22 L1638.87,298.06 L1639.00,298.00 L1639.13,298.06 L1639.27,298.22 L1639.40,298.50 L1639.53,298.87 L1639.67,299.34 L1639.80,299.90 L1639.93,300.52 L1640.07,301.20 L1640.20,301.93 L1640.33,302.70 L1640.47,303.48 L1640.60,304.27 L1640.73,305.05 L1640.87,305.82 L1641.00,306.56 L1641.13,307.26 L1641.27,307.93 L1641.40,308.56 L1641.53,309.13 L1641.67,309.66 L1641.80,310.14 L1641.93,310.56 L1642.07,310.94 L1642.20,311.28 L1642.33,311.57 L1642.47,311.82 L1642.60,312.03 L1642.73,312.21 L1642.87,312.36 L1643.00,312.49 L1643,313 L1635,313 Z" fill="#65b3af" stroke="none" stroke-width="1" opacity=".24"/>
+<path d="M1635.00,312.49 L1635.13,312.36 L1635.27,312.21 L1635.40,312.03 L1635.53,311.82 L1635.67,311.57 L1635.80,311.28 L1635.93,310.94 L1636.07,310.56 L1636.20,310.14 L1636.33,309.66 L1636.47,309.13 L1636.60,308.56 L1636.73,307.93 L1636.87,307.26 L1637.00,306.56 L1637.13,305.82 L1637.27,305.05 L1637.40,304.27 L1637.53,303.48 L1637.67,302.70 L1637.80,301.93 L1637.93,301.20 L1638.07,300.52 L1638.20,299.90 L1638.33,299.34 L1638.47,298.87 L1638.60,298.50 L1638.73,298.22 L1638.87,298.06 L1639.00,298.00 L1639.13,298.06 L1639.27,298.22 L1639.40,298.50 L1639.53,298.87 L1639.67,299.34 L1639.80,299.90 L1639.93,300.52 L1640.07,301.20 L1640.20,301.93 L1640.33,302.70 L1640.47,303.48 L1640.60,304.27 L1640.73,305.05 L1640.87,305.82 L1641.00,306.56 L1641.13,307.26 L1641.27,307.93 L1641.40,308.56 L1641.53,309.13 L1641.67,309.66 L1641.80,310.14 L1641.93,310.56 L1642.07,310.94 L1642.20,311.28 L1642.33,311.57 L1642.47,311.82 L1642.60,312.03 L1642.73,312.21 L1642.87,312.36 L1643.00,312.49" fill="none" stroke="#65b3af" stroke-width="0.8" opacity=".85"/>
+<path d="M1639,290 L1639,313" stroke="#65b3af" stroke-width="0.7" fill="none" opacity=".65"/>
+</g>
+<rect x="1189" y="317" width="781" height="24" rx="0" fill="#111129" />
+<text x="1197" y="334.0" fill="#8c95b2" font-size="12" font-weight="normal" text-anchor="start" >–</text>
+<text x="1330" y="334.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="start" >Aerospace Product Liability</text>
+<text x="1962" y="334.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="end" >–</text>
+<path d="M1676,317 L1676,341" stroke="#52536a" stroke-width="1" fill="none" />
+<rect x="1189" y="343" width="781" height="24" rx="0" fill="#111129" />
+<text x="1197" y="360.0" fill="#8c95b2" font-size="12" font-weight="normal" text-anchor="start" >01.985</text>
+<text x="1330" y="360.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="start" >Aircraft Operators &amp; Owners Liability</text>
+<text x="1962" y="360.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="end" >- 4,000,000</text>
+<path d="M1676,343 L1676,367" stroke="#52536a" stroke-width="1" fill="none" />
+<g class="risk-curve" data-x="1662" data-baseline="366" data-row="8">
+<path d="M1656.00,365.76 L1656.20,365.70 L1656.40,365.63 L1656.60,365.55 L1656.80,365.45 L1657.00,365.33 L1657.20,365.20 L1657.40,365.04 L1657.60,364.86 L1657.80,364.66 L1658.00,364.44 L1658.20,364.20 L1658.40,363.93 L1658.60,363.64 L1658.80,363.32 L1659.00,362.99 L1659.20,362.65 L1659.40,362.29 L1659.60,361.92 L1659.80,361.56 L1660.00,361.19 L1660.20,360.84 L1660.40,360.50 L1660.60,360.18 L1660.80,359.89 L1661.00,359.63 L1661.20,359.41 L1661.40,359.23 L1661.60,359.10 L1661.80,359.03 L1662.00,359.00 L1662.20,359.03 L1662.40,359.10 L1662.60,359.23 L1662.80,359.41 L1663.00,359.63 L1663.20,359.89 L1663.40,360.18 L1663.60,360.50 L1663.80,360.84 L1664.00,361.19 L1664.20,361.56 L1664.40,361.92 L1664.60,362.29 L1664.80,362.65 L1665.00,362.99 L1665.20,363.32 L1665.40,363.64 L1665.60,363.93 L1665.80,364.20 L1666.00,364.44 L1666.20,364.66 L1666.40,364.86 L1666.60,365.04 L1666.80,365.20 L1667.00,365.33 L1667.20,365.45 L1667.40,365.55 L1667.60,365.63 L1667.80,365.70 L1668.00,365.76 L1668,366 L1656,366 Z" fill="#67b6b3" stroke="none" stroke-width="1" opacity=".24"/>
+<path d="M1656.00,365.76 L1656.20,365.70 L1656.40,365.63 L1656.60,365.55 L1656.80,365.45 L1657.00,365.33 L1657.20,365.20 L1657.40,365.04 L1657.60,364.86 L1657.80,364.66 L1658.00,364.44 L1658.20,364.20 L1658.40,363.93 L1658.60,363.64 L1658.80,363.32 L1659.00,362.99 L1659.20,362.65 L1659.40,362.29 L1659.60,361.92 L1659.80,361.56 L1660.00,361.19 L1660.20,360.84 L1660.40,360.50 L1660.60,360.18 L1660.80,359.89 L1661.00,359.63 L1661.20,359.41 L1661.40,359.23 L1661.60,359.10 L1661.80,359.03 L1662.00,359.00 L1662.20,359.03 L1662.40,359.10 L1662.60,359.23 L1662.80,359.41 L1663.00,359.63 L1663.20,359.89 L1663.40,360.18 L1663.60,360.50 L1663.80,360.84 L1664.00,361.19 L1664.20,361.56 L1664.40,361.92 L1664.60,362.29 L1664.80,362.65 L1665.00,362.99 L1665.20,363.32 L1665.40,363.64 L1665.60,363.93 L1665.80,364.20 L1666.00,364.44 L1666.20,364.66 L1666.40,364.86 L1666.60,365.04 L1666.80,365.20 L1667.00,365.33 L1667.20,365.45 L1667.40,365.55 L1667.60,365.63 L1667.80,365.70 L1668.00,365.76" fill="none" stroke="#67b6b3" stroke-width="0.8" opacity=".85"/>
+<path d="M1662,343 L1662,366" stroke="#67b6b3" stroke-width="0.7" fill="none" opacity=".65"/>
+</g>
+<rect x="1189" y="370" width="781" height="24" rx="0" fill="#111129" />
+<text x="1197" y="387.0" fill="#8c95b2" font-size="12" font-weight="normal" text-anchor="start" >00.601</text>
+<text x="1330" y="387.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="start" >Airport Owners Contractor Liability</text>
+<text x="1962" y="387.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="end" >- 500,000</text>
+<path d="M1676,370 L1676,394" stroke="#52536a" stroke-width="1" fill="none" />
+<g class="risk-curve" data-x="1670" data-baseline="393" data-row="9">
+<path d="M1665.00,392.80 L1665.17,392.75 L1665.33,392.68 L1665.50,392.61 L1665.67,392.53 L1665.83,392.43 L1666.00,392.31 L1666.17,392.18 L1666.33,392.03 L1666.50,391.85 L1666.67,391.66 L1666.83,391.45 L1667.00,391.22 L1667.17,390.97 L1667.33,390.71 L1667.50,390.42 L1667.67,390.13 L1667.83,389.82 L1668.00,389.51 L1668.17,389.19 L1668.33,388.88 L1668.50,388.57 L1668.67,388.28 L1668.83,388.01 L1669.00,387.76 L1669.17,387.54 L1669.33,387.35 L1669.50,387.20 L1669.67,387.09 L1669.83,387.02 L1670.00,387.00 L1670.17,387.02 L1670.33,387.09 L1670.50,387.20 L1670.67,387.35 L1670.83,387.54 L1671.00,387.76 L1671.17,388.01 L1671.33,388.28 L1671.50,388.57 L1671.67,388.88 L1671.83,389.19 L1672.00,389.51 L1672.17,389.82 L1672.33,390.13 L1672.50,390.42 L1672.67,390.71 L1672.83,390.97 L1673.00,391.22 L1673.17,391.45 L1673.33,391.66 L1673.50,391.85 L1673.67,392.03 L1673.83,392.18 L1674.00,392.31 L1674.17,392.43 L1674.33,392.53 L1674.50,392.61 L1674.67,392.68 L1674.83,392.75 L1675.00,392.80 L1675,393 L1665,393 Z" fill="#67b6b3" stroke="none" stroke-width="1" opacity=".24"/>
+<path d="M1665.00,392.80 L1665.17,392.75 L1665.33,392.68 L1665.50,392.61 L1665.67,392.53 L1665.83,392.43 L1666.00,392.31 L1666.17,392.18 L1666.33,392.03 L1666.50,391.85 L1666.67,391.66 L1666.83,391.45 L1667.00,391.22 L1667.17,390.97 L1667.33,390.71 L1667.50,390.42 L1667.67,390.13 L1667.83,389.82 L1668.00,389.51 L1668.17,389.19 L1668.33,388.88 L1668.50,388.57 L1668.67,388.28 L1668.83,388.01 L1669.00,387.76 L1669.17,387.54 L1669.33,387.35 L1669.50,387.20 L1669.67,387.09 L1669.83,387.02 L1670.00,387.00 L1670.17,387.02 L1670.33,387.09 L1670.50,387.20 L1670.67,387.35 L1670.83,387.54 L1671.00,387.76 L1671.17,388.01 L1671.33,388.28 L1671.50,388.57 L1671.67,388.88 L1671.83,389.19 L1672.00,389.51 L1672.17,389.82 L1672.33,390.13 L1672.50,390.42 L1672.67,390.71 L1672.83,390.97 L1673.00,391.22 L1673.17,391.45 L1673.33,391.66 L1673.50,391.85 L1673.67,392.03 L1673.83,392.18 L1674.00,392.31 L1674.17,392.43 L1674.33,392.53 L1674.50,392.61 L1674.67,392.68 L1674.83,392.75 L1675.00,392.80" fill="none" stroke="#67b6b3" stroke-width="0.8" opacity=".85"/>
+<path d="M1670,370 L1670,393" stroke="#67b6b3" stroke-width="0.7" fill="none" opacity=".65"/>
+</g>
+<rect x="1189" y="396" width="781" height="24" rx="0" fill="#111129" />
+<text x="1197" y="413.0" fill="#8c95b2" font-size="12" font-weight="normal" text-anchor="start" >03.034</text>
+<text x="1330" y="413.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="start" >Aviation Liability</text>
+<text x="1962" y="413.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="end" >- 7,500,000</text>
+<path d="M1676,396 L1676,420" stroke="#52536a" stroke-width="1" fill="none" />
+<g class="risk-curve" data-x="1654" data-baseline="419" data-row="10">
+<path d="M1649.00,418.80 L1649.17,418.75 L1649.33,418.68 L1649.50,418.61 L1649.67,418.53 L1649.83,418.43 L1650.00,418.31 L1650.17,418.18 L1650.33,418.03 L1650.50,417.85 L1650.67,417.66 L1650.83,417.45 L1651.00,417.22 L1651.17,416.97 L1651.33,416.71 L1651.50,416.42 L1651.67,416.13 L1651.83,415.82 L1652.00,415.51 L1652.17,415.19 L1652.33,414.88 L1652.50,414.57 L1652.67,414.28 L1652.83,414.01 L1653.00,413.76 L1653.17,413.54 L1653.33,413.35 L1653.50,413.20 L1653.67,413.09 L1653.83,413.02 L1654.00,413.00 L1654.17,413.02 L1654.33,413.09 L1654.50,413.20 L1654.67,413.35 L1654.83,413.54 L1655.00,413.76 L1655.17,414.01 L1655.33,414.28 L1655.50,414.57 L1655.67,414.88 L1655.83,415.19 L1656.00,415.51 L1656.17,415.82 L1656.33,416.13 L1656.50,416.42 L1656.67,416.71 L1656.83,416.97 L1657.00,417.22 L1657.17,417.45 L1657.33,417.66 L1657.50,417.85 L1657.67,418.03 L1657.83,418.18 L1658.00,418.31 L1658.17,418.43 L1658.33,418.53 L1658.50,418.61 L1658.67,418.68 L1658.83,418.75 L1659.00,418.80 L1659,419 L1649,419 Z" fill="#67b6b3" stroke="none" stroke-width="1" opacity=".24"/>
+<path d="M1649.00,418.80 L1649.17,418.75 L1649.33,418.68 L1649.50,418.61 L1649.67,418.53 L1649.83,418.43 L1650.00,418.31 L1650.17,418.18 L1650.33,418.03 L1650.50,417.85 L1650.67,417.66 L1650.83,417.45 L1651.00,417.22 L1651.17,416.97 L1651.33,416.71 L1651.50,416.42 L1651.67,416.13 L1651.83,415.82 L1652.00,415.51 L1652.17,415.19 L1652.33,414.88 L1652.50,414.57 L1652.67,414.28 L1652.83,414.01 L1653.00,413.76 L1653.17,413.54 L1653.33,413.35 L1653.50,413.20 L1653.67,413.09 L1653.83,413.02 L1654.00,413.00 L1654.17,413.02 L1654.33,413.09 L1654.50,413.20 L1654.67,413.35 L1654.83,413.54 L1655.00,413.76 L1655.17,414.01 L1655.33,414.28 L1655.50,414.57 L1655.67,414.88 L1655.83,415.19 L1656.00,415.51 L1656.17,415.82 L1656.33,416.13 L1656.50,416.42 L1656.67,416.71 L1656.83,416.97 L1657.00,417.22 L1657.17,417.45 L1657.33,417.66 L1657.50,417.85 L1657.67,418.03 L1657.83,418.18 L1658.00,418.31 L1658.17,418.43 L1658.33,418.53 L1658.50,418.61 L1658.67,418.68 L1658.83,418.75 L1659.00,418.80" fill="none" stroke="#67b6b3" stroke-width="0.8" opacity=".85"/>
+<path d="M1654,396 L1654,419" stroke="#67b6b3" stroke-width="0.7" fill="none" opacity=".65"/>
+</g>
+<rect x="1189" y="422" width="781" height="24" rx="0" fill="#111129" />
+<text x="1197" y="439.0" fill="#8c95b2" font-size="12" font-weight="normal" text-anchor="start" >–</text>
+<text x="1330" y="439.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="start" >Space Risk Liability</text>
+<text x="1962" y="439.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="end" >–</text>
+<path d="M1676,422 L1676,446" stroke="#52536a" stroke-width="1" fill="none" />
+<rect x="1189" y="449" width="781" height="24" rx="0" fill="#1e1e36" />
+<text x="1197" y="466.0" fill="#8c95b2" font-size="12" font-weight="normal" text-anchor="start" >03.102</text>
+<text x="1304" y="466.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="start" >Aviation Physical Loss</text>
+<text x="1962" y="466.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="end" >- 4,000,000</text>
+<path d="M1278,457.0 l4,5 -4,5 Z" fill="#929ebd" stroke="none" stroke-width="1" />
+<path d="M1676,449 L1676,473" stroke="#52536a" stroke-width="1" fill="none" />
+<g class="risk-curve" data-x="1662" data-baseline="472" data-row="12">
+<path d="M1656.00,471.76 L1656.20,471.70 L1656.40,471.63 L1656.60,471.55 L1656.80,471.45 L1657.00,471.33 L1657.20,471.20 L1657.40,471.04 L1657.60,470.86 L1657.80,470.66 L1658.00,470.44 L1658.20,470.20 L1658.40,469.93 L1658.60,469.64 L1658.80,469.32 L1659.00,468.99 L1659.20,468.65 L1659.40,468.29 L1659.60,467.92 L1659.80,467.56 L1660.00,467.19 L1660.20,466.84 L1660.40,466.50 L1660.60,466.18 L1660.80,465.89 L1661.00,465.63 L1661.20,465.41 L1661.40,465.23 L1661.60,465.10 L1661.80,465.03 L1662.00,465.00 L1662.20,465.03 L1662.40,465.10 L1662.60,465.23 L1662.80,465.41 L1663.00,465.63 L1663.20,465.89 L1663.40,466.18 L1663.60,466.50 L1663.80,466.84 L1664.00,467.19 L1664.20,467.56 L1664.40,467.92 L1664.60,468.29 L1664.80,468.65 L1665.00,468.99 L1665.20,469.32 L1665.40,469.64 L1665.60,469.93 L1665.80,470.20 L1666.00,470.44 L1666.20,470.66 L1666.40,470.86 L1666.60,471.04 L1666.80,471.20 L1667.00,471.33 L1667.20,471.45 L1667.40,471.55 L1667.60,471.63 L1667.80,471.70 L1668.00,471.76 L1668,472 L1656,472 Z" fill="#67b6b3" stroke="none" stroke-width="1" opacity=".24"/>
+<path d="M1656.00,471.76 L1656.20,471.70 L1656.40,471.63 L1656.60,471.55 L1656.80,471.45 L1657.00,471.33 L1657.20,471.20 L1657.40,471.04 L1657.60,470.86 L1657.80,470.66 L1658.00,470.44 L1658.20,470.20 L1658.40,469.93 L1658.60,469.64 L1658.80,469.32 L1659.00,468.99 L1659.20,468.65 L1659.40,468.29 L1659.60,467.92 L1659.80,467.56 L1660.00,467.19 L1660.20,466.84 L1660.40,466.50 L1660.60,466.18 L1660.80,465.89 L1661.00,465.63 L1661.20,465.41 L1661.40,465.23 L1661.60,465.10 L1661.80,465.03 L1662.00,465.00 L1662.20,465.03 L1662.40,465.10 L1662.60,465.23 L1662.80,465.41 L1663.00,465.63 L1663.20,465.89 L1663.40,466.18 L1663.60,466.50 L1663.80,466.84 L1664.00,467.19 L1664.20,467.56 L1664.40,467.92 L1664.60,468.29 L1664.80,468.65 L1665.00,468.99 L1665.20,469.32 L1665.40,469.64 L1665.60,469.93 L1665.80,470.20 L1666.00,470.44 L1666.20,470.66 L1666.40,470.86 L1666.60,471.04 L1666.80,471.20 L1667.00,471.33 L1667.20,471.45 L1667.40,471.55 L1667.60,471.63 L1667.80,471.70 L1668.00,471.76" fill="none" stroke="#67b6b3" stroke-width="0.8" opacity=".85"/>
+<path d="M1662,449 L1662,472" stroke="#67b6b3" stroke-width="0.7" fill="none" opacity=".65"/>
+</g>
+<rect x="1189" y="475" width="781" height="24" rx="0" fill="#1e1e36" />
+<text x="1197" y="492.0" fill="#8c95b2" font-size="12" font-weight="normal" text-anchor="start" >02.012</text>
+<text x="1304" y="492.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="start" >Energy</text>
+<text x="1962" y="492.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="end" >- 6,000,000</text>
+<path d="M1278,483.0 l4,5 -4,5 Z" fill="#929ebd" stroke="none" stroke-width="1" />
+<path d="M1676,475 L1676,499" stroke="#52536a" stroke-width="1" fill="none" />
+<g class="risk-curve" data-x="1657" data-baseline="498" data-row="13">
+<path d="M1654.00,497.59 L1654.10,497.49 L1654.20,497.37 L1654.30,497.22 L1654.40,497.05 L1654.50,496.85 L1654.60,496.62 L1654.70,496.35 L1654.80,496.05 L1654.90,495.71 L1655.00,495.33 L1655.10,494.91 L1655.20,494.45 L1655.30,493.95 L1655.40,493.41 L1655.50,492.85 L1655.60,492.25 L1655.70,491.64 L1655.80,491.01 L1655.90,490.38 L1656.00,489.76 L1656.10,489.15 L1656.20,488.56 L1656.30,488.02 L1656.40,487.52 L1656.50,487.08 L1656.60,486.70 L1656.70,486.40 L1656.80,486.18 L1656.90,486.04 L1657.00,486.00 L1657.10,486.04 L1657.20,486.18 L1657.30,486.40 L1657.40,486.70 L1657.50,487.08 L1657.60,487.52 L1657.70,488.02 L1657.80,488.56 L1657.90,489.15 L1658.00,489.76 L1658.10,490.38 L1658.20,491.01 L1658.30,491.64 L1658.40,492.25 L1658.50,492.85 L1658.60,493.41 L1658.70,493.95 L1658.80,494.45 L1658.90,494.91 L1659.00,495.33 L1659.10,495.71 L1659.20,496.05 L1659.30,496.35 L1659.40,496.62 L1659.50,496.85 L1659.60,497.05 L1659.70,497.22 L1659.80,497.37 L1659.90,497.49 L1660.00,497.59 L1660,498 L1654,498 Z" fill="#67b6b3" stroke="none" stroke-width="1" opacity=".24"/>
+<path d="M1654.00,497.59 L1654.10,497.49 L1654.20,497.37 L1654.30,497.22 L1654.40,497.05 L1654.50,496.85 L1654.60,496.62 L1654.70,496.35 L1654.80,496.05 L1654.90,495.71 L1655.00,495.33 L1655.10,494.91 L1655.20,494.45 L1655.30,493.95 L1655.40,493.41 L1655.50,492.85 L1655.60,492.25 L1655.70,491.64 L1655.80,491.01 L1655.90,490.38 L1656.00,489.76 L1656.10,489.15 L1656.20,488.56 L1656.30,488.02 L1656.40,487.52 L1656.50,487.08 L1656.60,486.70 L1656.70,486.40 L1656.80,486.18 L1656.90,486.04 L1657.00,486.00 L1657.10,486.04 L1657.20,486.18 L1657.30,486.40 L1657.40,486.70 L1657.50,487.08 L1657.60,487.52 L1657.70,488.02 L1657.80,488.56 L1657.90,489.15 L1658.00,489.76 L1658.10,490.38 L1658.20,491.01 L1658.30,491.64 L1658.40,492.25 L1658.50,492.85 L1658.60,493.41 L1658.70,493.95 L1658.80,494.45 L1658.90,494.91 L1659.00,495.33 L1659.10,495.71 L1659.20,496.05 L1659.30,496.35 L1659.40,496.62 L1659.50,496.85 L1659.60,497.05 L1659.70,497.22 L1659.80,497.37 L1659.90,497.49 L1660.00,497.59" fill="none" stroke="#67b6b3" stroke-width="0.8" opacity=".85"/>
+<path d="M1657,475 L1657,498" stroke="#67b6b3" stroke-width="0.7" fill="none" opacity=".65"/>
+</g>
+<rect x="1189" y="501" width="781" height="24" rx="0" fill="#1e1e36" />
+<text x="1197" y="518.0" fill="#8c95b2" font-size="12" font-weight="normal" text-anchor="start" >00.429</text>
+<text x="1304" y="518.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="start" >Goods in Transit</text>
+<text x="1962" y="518.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="end" >- 1,000,000</text>
+<path d="M1278,509.0 l4,5 -4,5 Z" fill="#929ebd" stroke="none" stroke-width="1" />
+<path d="M1676,501 L1676,525" stroke="#52536a" stroke-width="1" fill="none" />
+<g class="risk-curve" data-x="1668" data-baseline="524" data-row="14">
+<path d="M1662.00,523.80 L1662.20,523.75 L1662.40,523.68 L1662.60,523.61 L1662.80,523.53 L1663.00,523.43 L1663.20,523.31 L1663.40,523.18 L1663.60,523.03 L1663.80,522.85 L1664.00,522.66 L1664.20,522.45 L1664.40,522.22 L1664.60,521.97 L1664.80,521.71 L1665.00,521.42 L1665.20,521.13 L1665.40,520.82 L1665.60,520.51 L1665.80,520.19 L1666.00,519.88 L1666.20,519.57 L1666.40,519.28 L1666.60,519.01 L1666.80,518.76 L1667.00,518.54 L1667.20,518.35 L1667.40,518.20 L1667.60,518.09 L1667.80,518.02 L1668.00,518.00 L1668.20,518.02 L1668.40,518.09 L1668.60,518.20 L1668.80,518.35 L1669.00,518.54 L1669.20,518.76 L1669.40,519.01 L1669.60,519.28 L1669.80,519.57 L1670.00,519.88 L1670.20,520.19 L1670.40,520.51 L1670.60,520.82 L1670.80,521.13 L1671.00,521.42 L1671.20,521.71 L1671.40,521.97 L1671.60,522.22 L1671.80,522.45 L1672.00,522.66 L1672.20,522.85 L1672.40,523.03 L1672.60,523.18 L1672.80,523.31 L1673.00,523.43 L1673.20,523.53 L1673.40,523.61 L1673.60,523.68 L1673.80,523.75 L1674.00,523.80 L1674,524 L1662,524 Z" fill="#67b6b3" stroke="none" stroke-width="1" opacity=".24"/>
+<path d="M1662.00,523.80 L1662.20,523.75 L1662.40,523.68 L1662.60,523.61 L1662.80,523.53 L1663.00,523.43 L1663.20,523.31 L1663.40,523.18 L1663.60,523.03 L1663.80,522.85 L1664.00,522.66 L1664.20,522.45 L1664.40,522.22 L1664.60,521.97 L1664.80,521.71 L1665.00,521.42 L1665.20,521.13 L1665.40,520.82 L1665.60,520.51 L1665.80,520.19 L1666.00,519.88 L1666.20,519.57 L1666.40,519.28 L1666.60,519.01 L1666.80,518.76 L1667.00,518.54 L1667.20,518.35 L1667.40,518.20 L1667.60,518.09 L1667.80,518.02 L1668.00,518.00 L1668.20,518.02 L1668.40,518.09 L1668.60,518.20 L1668.80,518.35 L1669.00,518.54 L1669.20,518.76 L1669.40,519.01 L1669.60,519.28 L1669.80,519.57 L1670.00,519.88 L1670.20,520.19 L1670.40,520.51 L1670.60,520.82 L1670.80,521.13 L1671.00,521.42 L1671.20,521.71 L1671.40,521.97 L1671.60,522.22 L1671.80,522.45 L1672.00,522.66 L1672.20,522.85 L1672.40,523.03 L1672.60,523.18 L1672.80,523.31 L1673.00,523.43 L1673.20,523.53 L1673.40,523.61 L1673.60,523.68 L1673.80,523.75 L1674.00,523.80" fill="none" stroke="#67b6b3" stroke-width="0.8" opacity=".85"/>
+<path d="M1668,501 L1668,524" stroke="#67b6b3" stroke-width="0.7" fill="none" opacity=".65"/>
+</g>
+<rect x="1189" y="527" width="781" height="24" rx="0" fill="#1e1e36" />
+<text x="1197" y="544.0" fill="#8c95b2" font-size="12" font-weight="normal" text-anchor="start" >07.009</text>
+<text x="1304" y="544.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="start" >Liability</text>
+<text x="1962" y="544.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="end" >- 17,000,000</text>
+<path d="M1278,535.0 l4,5 -4,5 Z" fill="#929ebd" stroke="none" stroke-width="1" />
+<path d="M1676,527 L1676,551" stroke="#52536a" stroke-width="1" fill="none" />
+<g class="risk-curve" data-x="1592" data-baseline="550" data-row="15">
+<path d="M1590.00,549.15 L1590.07,548.94 L1590.13,548.68 L1590.20,548.38 L1590.27,548.03 L1590.33,547.61 L1590.40,547.13 L1590.47,546.57 L1590.53,545.94 L1590.60,545.23 L1590.67,544.43 L1590.73,543.56 L1590.80,542.60 L1590.87,541.56 L1590.93,540.44 L1591.00,539.26 L1591.07,538.03 L1591.13,536.75 L1591.20,535.44 L1591.27,534.13 L1591.33,532.83 L1591.40,531.56 L1591.47,530.34 L1591.53,529.20 L1591.60,528.16 L1591.67,527.24 L1591.73,526.46 L1591.80,525.83 L1591.87,525.37 L1591.93,525.09 L1592.00,525.00 L1592.07,525.09 L1592.13,525.37 L1592.20,525.83 L1592.27,526.46 L1592.33,527.24 L1592.40,528.16 L1592.47,529.20 L1592.53,530.34 L1592.60,531.56 L1592.67,532.83 L1592.73,534.13 L1592.80,535.44 L1592.87,536.75 L1592.93,538.03 L1593.00,539.26 L1593.07,540.44 L1593.13,541.56 L1593.20,542.60 L1593.27,543.56 L1593.33,544.43 L1593.40,545.23 L1593.47,545.94 L1593.53,546.57 L1593.60,547.13 L1593.67,547.61 L1593.73,548.03 L1593.80,548.38 L1593.87,548.68 L1593.93,548.94 L1594.00,549.15 L1594,550 L1590,550 Z" fill="#67b6b3" stroke="none" stroke-width="1" opacity=".24"/>
+<path d="M1590.00,549.15 L1590.07,548.94 L1590.13,548.68 L1590.20,548.38 L1590.27,548.03 L1590.33,547.61 L1590.40,547.13 L1590.47,546.57 L1590.53,545.94 L1590.60,545.23 L1590.67,544.43 L1590.73,543.56 L1590.80,542.60 L1590.87,541.56 L1590.93,540.44 L1591.00,539.26 L1591.07,538.03 L1591.13,536.75 L1591.20,535.44 L1591.27,534.13 L1591.33,532.83 L1591.40,531.56 L1591.47,530.34 L1591.53,529.20 L1591.60,528.16 L1591.67,527.24 L1591.73,526.46 L1591.80,525.83 L1591.87,525.37 L1591.93,525.09 L1592.00,525.00 L1592.07,525.09 L1592.13,525.37 L1592.20,525.83 L1592.27,526.46 L1592.33,527.24 L1592.40,528.16 L1592.47,529.20 L1592.53,530.34 L1592.60,531.56 L1592.67,532.83 L1592.73,534.13 L1592.80,535.44 L1592.87,536.75 L1592.93,538.03 L1593.00,539.26 L1593.07,540.44 L1593.13,541.56 L1593.20,542.60 L1593.27,543.56 L1593.33,544.43 L1593.40,545.23 L1593.47,545.94 L1593.53,546.57 L1593.60,547.13 L1593.67,547.61 L1593.73,548.03 L1593.80,548.38 L1593.87,548.68 L1593.93,548.94 L1594.00,549.15" fill="none" stroke="#67b6b3" stroke-width="0.8" opacity=".85"/>
+<path d="M1592,527 L1592,550" stroke="#67b6b3" stroke-width="0.7" fill="none" opacity=".65"/>
+</g>
+<rect x="1189" y="553" width="781" height="24" rx="0" fill="#1e1e36" />
+<text x="1197" y="570.0" fill="#8c95b2" font-size="12" font-weight="normal" text-anchor="start" >00.009</text>
+<text x="1304" y="570.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="start" >Marine Liability</text>
+<text x="1962" y="570.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="end" >- 200,000</text>
+<path d="M1278,561.0 l4,5 -4,5 Z" fill="#929ebd" stroke="none" stroke-width="1" />
+<path d="M1676,553 L1676,577" stroke="#52536a" stroke-width="1" fill="none" />
+<g class="risk-curve" data-x="1672" data-baseline="576" data-row="16">
+<path d="M1667.00,575.80 L1667.17,575.75 L1667.33,575.68 L1667.50,575.61 L1667.67,575.53 L1667.83,575.43 L1668.00,575.31 L1668.17,575.18 L1668.33,575.03 L1668.50,574.85 L1668.67,574.66 L1668.83,574.45 L1669.00,574.22 L1669.17,573.97 L1669.33,573.71 L1669.50,573.42 L1669.67,573.13 L1669.83,572.82 L1670.00,572.51 L1670.17,572.19 L1670.33,571.88 L1670.50,571.57 L1670.67,571.28 L1670.83,571.01 L1671.00,570.76 L1671.17,570.54 L1671.33,570.35 L1671.50,570.20 L1671.67,570.09 L1671.83,570.02 L1672.00,570.00 L1672.17,570.02 L1672.33,570.09 L1672.50,570.20 L1672.67,570.35 L1672.83,570.54 L1673.00,570.76 L1673.17,571.01 L1673.33,571.28 L1673.50,571.57 L1673.67,571.88 L1673.83,572.19 L1674.00,572.51 L1674.17,572.82 L1674.33,573.13 L1674.50,573.42 L1674.67,573.71 L1674.83,573.97 L1675.00,574.22 L1675.17,574.45 L1675.33,574.66 L1675.50,574.85 L1675.67,575.03 L1675.83,575.18 L1676.00,575.31 L1676.17,575.43 L1676.33,575.53 L1676.50,575.61 L1676.67,575.68 L1676.83,575.75 L1677.00,575.80 L1677,576 L1667,576 Z" fill="#67b6b3" stroke="none" stroke-width="1" opacity=".24"/>
+<path d="M1667.00,575.80 L1667.17,575.75 L1667.33,575.68 L1667.50,575.61 L1667.67,575.53 L1667.83,575.43 L1668.00,575.31 L1668.17,575.18 L1668.33,575.03 L1668.50,574.85 L1668.67,574.66 L1668.83,574.45 L1669.00,574.22 L1669.17,573.97 L1669.33,573.71 L1669.50,573.42 L1669.67,573.13 L1669.83,572.82 L1670.00,572.51 L1670.17,572.19 L1670.33,571.88 L1670.50,571.57 L1670.67,571.28 L1670.83,571.01 L1671.00,570.76 L1671.17,570.54 L1671.33,570.35 L1671.50,570.20 L1671.67,570.09 L1671.83,570.02 L1672.00,570.00 L1672.17,570.02 L1672.33,570.09 L1672.50,570.20 L1672.67,570.35 L1672.83,570.54 L1673.00,570.76 L1673.17,571.01 L1673.33,571.28 L1673.50,571.57 L1673.67,571.88 L1673.83,572.19 L1674.00,572.51 L1674.17,572.82 L1674.33,573.13 L1674.50,573.42 L1674.67,573.71 L1674.83,573.97 L1675.00,574.22 L1675.17,574.45 L1675.33,574.66 L1675.50,574.85 L1675.67,575.03 L1675.83,575.18 L1676.00,575.31 L1676.17,575.43 L1676.33,575.53 L1676.50,575.61 L1676.67,575.68 L1676.83,575.75 L1677.00,575.80" fill="none" stroke="#67b6b3" stroke-width="0.8" opacity=".85"/>
+<path d="M1672,553 L1672,576" stroke="#67b6b3" stroke-width="0.7" fill="none" opacity=".65"/>
+</g>
+<rect x="1189" y="580" width="781" height="24" rx="0" fill="#1e1e36" />
+<text x="1197" y="597.0" fill="#8c95b2" font-size="12" font-weight="normal" text-anchor="start" >00.009</text>
+<text x="1304" y="597.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="start" >Marine Physical Loss</text>
+<text x="1962" y="597.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="end" >- 500,000</text>
+<path d="M1278,588.0 l4,5 -4,5 Z" fill="#929ebd" stroke="none" stroke-width="1" />
+<path d="M1676,580 L1676,604" stroke="#52536a" stroke-width="1" fill="none" />
+<g class="risk-curve" data-x="1669" data-baseline="603" data-row="17">
+<path d="M1665.00,602.73 L1665.13,602.66 L1665.27,602.58 L1665.40,602.48 L1665.53,602.37 L1665.67,602.23 L1665.80,602.08 L1665.93,601.90 L1666.07,601.70 L1666.20,601.47 L1666.33,601.22 L1666.47,600.94 L1666.60,600.63 L1666.73,600.30 L1666.87,599.94 L1667.00,599.56 L1667.13,599.17 L1667.27,598.76 L1667.40,598.34 L1667.53,597.92 L1667.67,597.50 L1667.80,597.10 L1667.93,596.71 L1668.07,596.34 L1668.20,596.01 L1668.33,595.72 L1668.47,595.47 L1668.60,595.27 L1668.73,595.12 L1668.87,595.03 L1669.00,595.00 L1669.13,595.03 L1669.27,595.12 L1669.40,595.27 L1669.53,595.47 L1669.67,595.72 L1669.80,596.01 L1669.93,596.34 L1670.07,596.71 L1670.20,597.10 L1670.33,597.50 L1670.47,597.92 L1670.60,598.34 L1670.73,598.76 L1670.87,599.17 L1671.00,599.56 L1671.13,599.94 L1671.27,600.30 L1671.40,600.63 L1671.53,600.94 L1671.67,601.22 L1671.80,601.47 L1671.93,601.70 L1672.07,601.90 L1672.20,602.08 L1672.33,602.23 L1672.47,602.37 L1672.60,602.48 L1672.73,602.58 L1672.87,602.66 L1673.00,602.73 L1673,603 L1665,603 Z" fill="#67b6b3" stroke="none" stroke-width="1" opacity=".24"/>
+<path d="M1665.00,602.73 L1665.13,602.66 L1665.27,602.58 L1665.40,602.48 L1665.53,602.37 L1665.67,602.23 L1665.80,602.08 L1665.93,601.90 L1666.07,601.70 L1666.20,601.47 L1666.33,601.22 L1666.47,600.94 L1666.60,600.63 L1666.73,600.30 L1666.87,599.94 L1667.00,599.56 L1667.13,599.17 L1667.27,598.76 L1667.40,598.34 L1667.53,597.92 L1667.67,597.50 L1667.80,597.10 L1667.93,596.71 L1668.07,596.34 L1668.20,596.01 L1668.33,595.72 L1668.47,595.47 L1668.60,595.27 L1668.73,595.12 L1668.87,595.03 L1669.00,595.00 L1669.13,595.03 L1669.27,595.12 L1669.40,595.27 L1669.53,595.47 L1669.67,595.72 L1669.80,596.01 L1669.93,596.34 L1670.07,596.71 L1670.20,597.10 L1670.33,597.50 L1670.47,597.92 L1670.60,598.34 L1670.73,598.76 L1670.87,599.17 L1671.00,599.56 L1671.13,599.94 L1671.27,600.30 L1671.40,600.63 L1671.53,600.94 L1671.67,601.22 L1671.80,601.47 L1671.93,601.70 L1672.07,601.90 L1672.20,602.08 L1672.33,602.23 L1672.47,602.37 L1672.60,602.48 L1672.73,602.58 L1672.87,602.66 L1673.00,602.73" fill="none" stroke="#67b6b3" stroke-width="0.8" opacity=".85"/>
+<path d="M1669,580 L1669,603" stroke="#67b6b3" stroke-width="0.7" fill="none" opacity=".65"/>
+</g>
+<rect x="1189" y="606" width="781" height="24" rx="0" fill="#1e1e36" />
+<text x="1197" y="623.0" fill="#8c95b2" font-size="12" font-weight="normal" text-anchor="start" >–</text>
+<text x="1304" y="623.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="start" >Pecuniary Loss</text>
+<text x="1962" y="623.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="end" >–</text>
+<path d="M1278,614.0 l4,5 -4,5 Z" fill="#929ebd" stroke="none" stroke-width="1" />
+<path d="M1676,606 L1676,630" stroke="#52536a" stroke-width="1" fill="none" />
+<rect x="1189" y="633" width="781" height="24" rx="0" fill="#1e1e36" />
+<text x="1197" y="650.0" fill="#8c95b2" font-size="12" font-weight="normal" text-anchor="start" >05.023</text>
+<text x="1304" y="650.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="start" >Property</text>
+<text x="1962" y="650.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="end" >- 12,000,000</text>
+<path d="M1278,641.0 l4,5 -4,5 Z" fill="#929ebd" stroke="none" stroke-width="1" />
+<path d="M1676,633 L1676,657" stroke="#52536a" stroke-width="1" fill="none" />
+<g class="risk-curve" data-x="1611" data-baseline="656" data-row="19">
+<path d="M1606.00,655.63 L1606.17,655.53 L1606.33,655.42 L1606.50,655.29 L1606.67,655.13 L1606.83,654.95 L1607.00,654.74 L1607.17,654.49 L1607.33,654.21 L1607.50,653.90 L1607.67,653.55 L1607.83,653.16 L1608.00,652.74 L1608.17,652.28 L1608.33,651.79 L1608.50,651.27 L1608.67,650.73 L1608.83,650.17 L1609.00,649.59 L1609.17,649.02 L1609.33,648.44 L1609.50,647.89 L1609.67,647.35 L1609.83,646.85 L1610.00,646.39 L1610.17,645.99 L1610.33,645.64 L1610.50,645.37 L1610.67,645.16 L1610.83,645.04 L1611.00,645.00 L1611.17,645.04 L1611.33,645.16 L1611.50,645.37 L1611.67,645.64 L1611.83,645.99 L1612.00,646.39 L1612.17,646.85 L1612.33,647.35 L1612.50,647.89 L1612.67,648.44 L1612.83,649.02 L1613.00,649.59 L1613.17,650.17 L1613.33,650.73 L1613.50,651.27 L1613.67,651.79 L1613.83,652.28 L1614.00,652.74 L1614.17,653.16 L1614.33,653.55 L1614.50,653.90 L1614.67,654.21 L1614.83,654.49 L1615.00,654.74 L1615.17,654.95 L1615.33,655.13 L1615.50,655.29 L1615.67,655.42 L1615.83,655.53 L1616.00,655.63 L1616,656 L1606,656 Z" fill="#67b6b3" stroke="none" stroke-width="1" opacity=".24"/>
+<path d="M1606.00,655.63 L1606.17,655.53 L1606.33,655.42 L1606.50,655.29 L1606.67,655.13 L1606.83,654.95 L1607.00,654.74 L1607.17,654.49 L1607.33,654.21 L1607.50,653.90 L1607.67,653.55 L1607.83,653.16 L1608.00,652.74 L1608.17,652.28 L1608.33,651.79 L1608.50,651.27 L1608.67,650.73 L1608.83,650.17 L1609.00,649.59 L1609.17,649.02 L1609.33,648.44 L1609.50,647.89 L1609.67,647.35 L1609.83,646.85 L1610.00,646.39 L1610.17,645.99 L1610.33,645.64 L1610.50,645.37 L1610.67,645.16 L1610.83,645.04 L1611.00,645.00 L1611.17,645.04 L1611.33,645.16 L1611.50,645.37 L1611.67,645.64 L1611.83,645.99 L1612.00,646.39 L1612.17,646.85 L1612.33,647.35 L1612.50,647.89 L1612.67,648.44 L1612.83,649.02 L1613.00,649.59 L1613.17,650.17 L1613.33,650.73 L1613.50,651.27 L1613.67,651.79 L1613.83,652.28 L1614.00,652.74 L1614.17,653.16 L1614.33,653.55 L1614.50,653.90 L1614.67,654.21 L1614.83,654.49 L1615.00,654.74 L1615.17,654.95 L1615.33,655.13 L1615.50,655.29 L1615.67,655.42 L1615.83,655.53 L1616.00,655.63" fill="none" stroke="#67b6b3" stroke-width="0.8" opacity=".85"/>
+<path d="M1611,633 L1611,656" stroke="#67b6b3" stroke-width="0.7" fill="none" opacity=".65"/>
+</g>
+<rect x="1189" y="660" width="781" height="23" rx="0" fill="#29293f" />
+<text x="1197" y="676.5" fill="#8c95b2" font-size="12" font-weight="normal" text-anchor="start" >01.985</text>
+<text x="1278" y="676.5" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="start" >Long Term Debt</text>
+<text x="1962" y="676.5" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="end" >- 4,000,000</text>
+<path d="M1252,667.5 l4,5 -4,5 Z" fill="#929ebd" stroke="none" stroke-width="1" />
+<path d="M1676,660 L1676,683" stroke="#52536a" stroke-width="1" fill="none" />
+<g class="risk-curve" data-x="1662" data-baseline="682" data-row="20">
+<path d="M1655.00,681.80 L1655.23,681.75 L1655.47,681.68 L1655.70,681.61 L1655.93,681.53 L1656.17,681.43 L1656.40,681.31 L1656.63,681.18 L1656.87,681.03 L1657.10,680.85 L1657.33,680.66 L1657.57,680.45 L1657.80,680.22 L1658.03,679.97 L1658.27,679.71 L1658.50,679.42 L1658.73,679.13 L1658.97,678.82 L1659.20,678.51 L1659.43,678.19 L1659.67,677.88 L1659.90,677.57 L1660.13,677.28 L1660.37,677.01 L1660.60,676.76 L1660.83,676.54 L1661.07,676.35 L1661.30,676.20 L1661.53,676.09 L1661.77,676.02 L1662.00,676.00 L1662.23,676.02 L1662.47,676.09 L1662.70,676.20 L1662.93,676.35 L1663.17,676.54 L1663.40,676.76 L1663.63,677.01 L1663.87,677.28 L1664.10,677.57 L1664.33,677.88 L1664.57,678.19 L1664.80,678.51 L1665.03,678.82 L1665.27,679.13 L1665.50,679.42 L1665.73,679.71 L1665.97,679.97 L1666.20,680.22 L1666.43,680.45 L1666.67,680.66 L1666.90,680.85 L1667.13,681.03 L1667.37,681.18 L1667.60,681.31 L1667.83,681.43 L1668.07,681.53 L1668.30,681.61 L1668.53,681.68 L1668.77,681.75 L1669.00,681.80 L1669,682 L1655,682 Z" fill="#67b6b3" stroke="none" stroke-width="1" opacity=".24"/>
+<path d="M1655.00,681.80 L1655.23,681.75 L1655.47,681.68 L1655.70,681.61 L1655.93,681.53 L1656.17,681.43 L1656.40,681.31 L1656.63,681.18 L1656.87,681.03 L1657.10,680.85 L1657.33,680.66 L1657.57,680.45 L1657.80,680.22 L1658.03,679.97 L1658.27,679.71 L1658.50,679.42 L1658.73,679.13 L1658.97,678.82 L1659.20,678.51 L1659.43,678.19 L1659.67,677.88 L1659.90,677.57 L1660.13,677.28 L1660.37,677.01 L1660.60,676.76 L1660.83,676.54 L1661.07,676.35 L1661.30,676.20 L1661.53,676.09 L1661.77,676.02 L1662.00,676.00 L1662.23,676.02 L1662.47,676.09 L1662.70,676.20 L1662.93,676.35 L1663.17,676.54 L1663.40,676.76 L1663.63,677.01 L1663.87,677.28 L1664.10,677.57 L1664.33,677.88 L1664.57,678.19 L1664.80,678.51 L1665.03,678.82 L1665.27,679.13 L1665.50,679.42 L1665.73,679.71 L1665.97,679.97 L1666.20,680.22 L1666.43,680.45 L1666.67,680.66 L1666.90,680.85 L1667.13,681.03 L1667.37,681.18 L1667.60,681.31 L1667.83,681.43 L1668.07,681.53 L1668.30,681.61 L1668.53,681.68 L1668.77,681.75 L1669.00,681.80" fill="none" stroke="#67b6b3" stroke-width="0.8" opacity=".85"/>
+<path d="M1662,660 L1662,682" stroke="#67b6b3" stroke-width="0.7" fill="none" opacity=".65"/>
+</g>
+<rect x="1189" y="685" width="781" height="24" rx="0" fill="#29293f" />
+<text x="1197" y="702.0" fill="#8c95b2" font-size="12" font-weight="normal" text-anchor="start" >04.809</text>
+<text x="1278" y="702.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="start" >Total Creditors</text>
+<text x="1962" y="702.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="end" >- 10,000,000</text>
+<path d="M1252,693.0 l4,5 -4,5 Z" fill="#929ebd" stroke="none" stroke-width="1" />
+<path d="M1676,685 L1676,709" stroke="#52536a" stroke-width="1" fill="none" />
+<g class="risk-curve" data-x="1632" data-baseline="708" data-row="21">
+<path d="M1627.00,707.66 L1627.17,707.58 L1627.33,707.47 L1627.50,707.35 L1627.67,707.21 L1627.83,707.04 L1628.00,706.85 L1628.17,706.63 L1628.33,706.38 L1628.50,706.09 L1628.67,705.77 L1628.83,705.42 L1629.00,705.04 L1629.17,704.62 L1629.33,704.18 L1629.50,703.70 L1629.67,703.21 L1629.83,702.70 L1630.00,702.18 L1630.17,701.65 L1630.33,701.13 L1630.50,700.62 L1630.67,700.14 L1630.83,699.68 L1631.00,699.26 L1631.17,698.90 L1631.33,698.58 L1631.50,698.33 L1631.67,698.15 L1631.83,698.04 L1632.00,698.00 L1632.17,698.04 L1632.33,698.15 L1632.50,698.33 L1632.67,698.58 L1632.83,698.90 L1633.00,699.26 L1633.17,699.68 L1633.33,700.14 L1633.50,700.62 L1633.67,701.13 L1633.83,701.65 L1634.00,702.18 L1634.17,702.70 L1634.33,703.21 L1634.50,703.70 L1634.67,704.18 L1634.83,704.62 L1635.00,705.04 L1635.17,705.42 L1635.33,705.77 L1635.50,706.09 L1635.67,706.38 L1635.83,706.63 L1636.00,706.85 L1636.17,707.04 L1636.33,707.21 L1636.50,707.35 L1636.67,707.47 L1636.83,707.58 L1637.00,707.66 L1637,708 L1627,708 Z" fill="#67b6b3" stroke="none" stroke-width="1" opacity=".24"/>
+<path d="M1627.00,707.66 L1627.17,707.58 L1627.33,707.47 L1627.50,707.35 L1627.67,707.21 L1627.83,707.04 L1628.00,706.85 L1628.17,706.63 L1628.33,706.38 L1628.50,706.09 L1628.67,705.77 L1628.83,705.42 L1629.00,705.04 L1629.17,704.62 L1629.33,704.18 L1629.50,703.70 L1629.67,703.21 L1629.83,702.70 L1630.00,702.18 L1630.17,701.65 L1630.33,701.13 L1630.50,700.62 L1630.67,700.14 L1630.83,699.68 L1631.00,699.26 L1631.17,698.90 L1631.33,698.58 L1631.50,698.33 L1631.67,698.15 L1631.83,698.04 L1632.00,698.00 L1632.17,698.04 L1632.33,698.15 L1632.50,698.33 L1632.67,698.58 L1632.83,698.90 L1633.00,699.26 L1633.17,699.68 L1633.33,700.14 L1633.50,700.62 L1633.67,701.13 L1633.83,701.65 L1634.00,702.18 L1634.17,702.70 L1634.33,703.21 L1634.50,703.70 L1634.67,704.18 L1634.83,704.62 L1635.00,705.04 L1635.17,705.42 L1635.33,705.77 L1635.50,706.09 L1635.67,706.38 L1635.83,706.63 L1636.00,706.85 L1636.17,707.04 L1636.33,707.21 L1636.50,707.35 L1636.67,707.47 L1636.83,707.58 L1637.00,707.66" fill="none" stroke="#67b6b3" stroke-width="0.8" opacity=".85"/>
+<path d="M1632,685 L1632,708" stroke="#67b6b3" stroke-width="0.7" fill="none" opacity=".65"/>
+</g>
+<rect x="1189" y="712" width="781" height="24" rx="0" fill="#29293f" />
+<text x="1197" y="729.0" fill="#8c95b2" font-size="12" font-weight="normal" text-anchor="start" >00.041</text>
+<text x="1278" y="729.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="start" >Deferred Taxes Debit</text>
+<text x="1962" y="729.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="end" >- 100,000</text>
+<path d="M1252,720.0 l4,5 -4,5 Z" fill="#929ebd" stroke="none" stroke-width="1" />
+<path d="M1676,712 L1676,736" stroke="#52536a" stroke-width="1" fill="none" />
+<g class="risk-curve" data-x="1671" data-baseline="735" data-row="22">
+<path d="M1665.00,734.80 L1665.20,734.75 L1665.40,734.68 L1665.60,734.61 L1665.80,734.53 L1666.00,734.43 L1666.20,734.31 L1666.40,734.18 L1666.60,734.03 L1666.80,733.85 L1667.00,733.66 L1667.20,733.45 L1667.40,733.22 L1667.60,732.97 L1667.80,732.71 L1668.00,732.42 L1668.20,732.13 L1668.40,731.82 L1668.60,731.51 L1668.80,731.19 L1669.00,730.88 L1669.20,730.57 L1669.40,730.28 L1669.60,730.01 L1669.80,729.76 L1670.00,729.54 L1670.20,729.35 L1670.40,729.20 L1670.60,729.09 L1670.80,729.02 L1671.00,729.00 L1671.20,729.02 L1671.40,729.09 L1671.60,729.20 L1671.80,729.35 L1672.00,729.54 L1672.20,729.76 L1672.40,730.01 L1672.60,730.28 L1672.80,730.57 L1673.00,730.88 L1673.20,731.19 L1673.40,731.51 L1673.60,731.82 L1673.80,732.13 L1674.00,732.42 L1674.20,732.71 L1674.40,732.97 L1674.60,733.22 L1674.80,733.45 L1675.00,733.66 L1675.20,733.85 L1675.40,734.03 L1675.60,734.18 L1675.80,734.31 L1676.00,734.43 L1676.20,734.53 L1676.40,734.61 L1676.60,734.68 L1676.80,734.75 L1677.00,734.80 L1677,735 L1665,735 Z" fill="#67b6b3" stroke="none" stroke-width="1" opacity=".24"/>
+<path d="M1665.00,734.80 L1665.20,734.75 L1665.40,734.68 L1665.60,734.61 L1665.80,734.53 L1666.00,734.43 L1666.20,734.31 L1666.40,734.18 L1666.60,734.03 L1666.80,733.85 L1667.00,733.66 L1667.20,733.45 L1667.40,733.22 L1667.60,732.97 L1667.80,732.71 L1668.00,732.42 L1668.20,732.13 L1668.40,731.82 L1668.60,731.51 L1668.80,731.19 L1669.00,730.88 L1669.20,730.57 L1669.40,730.28 L1669.60,730.01 L1669.80,729.76 L1670.00,729.54 L1670.20,729.35 L1670.40,729.20 L1670.60,729.09 L1670.80,729.02 L1671.00,729.00 L1671.20,729.02 L1671.40,729.09 L1671.60,729.20 L1671.80,729.35 L1672.00,729.54 L1672.20,729.76 L1672.40,730.01 L1672.60,730.28 L1672.80,730.57 L1673.00,730.88 L1673.20,731.19 L1673.40,731.51 L1673.60,731.82 L1673.80,732.13 L1674.00,732.42 L1674.20,732.71 L1674.40,732.97 L1674.60,733.22 L1674.80,733.45 L1675.00,733.66 L1675.20,733.85 L1675.40,734.03 L1675.60,734.18 L1675.80,734.31 L1676.00,734.43 L1676.20,734.53 L1676.40,734.61 L1676.60,734.68 L1676.80,734.75 L1677.00,734.80" fill="none" stroke="#67b6b3" stroke-width="0.8" opacity=".85"/>
+<path d="M1671,712 L1671,735" stroke="#67b6b3" stroke-width="0.7" fill="none" opacity=".65"/>
+</g>
+<rect x="1189" y="738" width="781" height="24" rx="0" fill="#29293f" />
+<text x="1197" y="755.0" fill="#8c95b2" font-size="12" font-weight="normal" text-anchor="start" >–</text>
+<text x="1278" y="755.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="start" >Total Other Liabilities</text>
+<text x="1962" y="755.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="end" >–</text>
+<path d="M1252,746.0 l4,5 -4,5 Z" fill="#929ebd" stroke="none" stroke-width="1" />
+<path d="M1676,738 L1676,762" stroke="#52536a" stroke-width="1" fill="none" />
+<rect x="1189" y="765" width="781" height="23" rx="0" fill="#29293f" />
+<text x="1197" y="781.5" fill="#8c95b2" font-size="12" font-weight="normal" text-anchor="start" >01.985</text>
+<text x="1278" y="781.5" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="start" >Provisions For Risks And Charges</text>
+<text x="1962" y="781.5" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="end" >- 4,000,000</text>
+<path d="M1252,772.5 l4,5 -4,5 Z" fill="#929ebd" stroke="none" stroke-width="1" />
+<path d="M1676,765 L1676,788" stroke="#52536a" stroke-width="1" fill="none" />
+<g class="risk-curve" data-x="1659" data-baseline="787" data-row="24">
+<path d="M1620.00,786.83 L1621.30,786.79 L1622.60,786.74 L1623.90,786.68 L1625.20,786.61 L1626.50,786.52 L1627.80,786.43 L1629.10,786.31 L1630.40,786.19 L1631.70,786.05 L1633.00,785.89 L1634.30,785.71 L1635.60,785.52 L1636.90,785.31 L1638.20,785.09 L1639.50,784.85 L1640.80,784.61 L1642.10,784.35 L1643.40,784.09 L1644.70,783.83 L1646.00,783.57 L1647.30,783.31 L1648.60,783.07 L1649.90,782.84 L1651.20,782.63 L1652.50,782.45 L1653.80,782.29 L1655.10,782.17 L1656.40,782.07 L1657.70,782.02 L1659.00,782.00 L1660.30,782.02 L1661.60,782.07 L1662.90,782.17 L1664.20,782.29 L1665.50,782.45 L1666.80,782.63 L1668.10,782.84 L1669.40,783.07 L1670.70,783.31 L1672.00,783.57 L1673.30,783.83 L1674.60,784.09 L1675.90,784.35 L1677.20,784.61 L1678.50,784.85 L1679.80,785.09 L1681.10,785.31 L1682.40,785.52 L1683.70,785.71 L1685.00,785.89 L1686.30,786.05 L1687.60,786.19 L1688.90,786.31 L1690.20,786.43 L1691.50,786.52 L1692.80,786.61 L1694.10,786.68 L1695.40,786.74 L1696.70,786.79 L1698.00,786.83 L1698,787 L1620,787 Z" fill="#67b6b3" stroke="none" stroke-width="1" opacity=".24"/>
+<path d="M1620.00,786.83 L1621.30,786.79 L1622.60,786.74 L1623.90,786.68 L1625.20,786.61 L1626.50,786.52 L1627.80,786.43 L1629.10,786.31 L1630.40,786.19 L1631.70,786.05 L1633.00,785.89 L1634.30,785.71 L1635.60,785.52 L1636.90,785.31 L1638.20,785.09 L1639.50,784.85 L1640.80,784.61 L1642.10,784.35 L1643.40,784.09 L1644.70,783.83 L1646.00,783.57 L1647.30,783.31 L1648.60,783.07 L1649.90,782.84 L1651.20,782.63 L1652.50,782.45 L1653.80,782.29 L1655.10,782.17 L1656.40,782.07 L1657.70,782.02 L1659.00,782.00 L1660.30,782.02 L1661.60,782.07 L1662.90,782.17 L1664.20,782.29 L1665.50,782.45 L1666.80,782.63 L1668.10,782.84 L1669.40,783.07 L1670.70,783.31 L1672.00,783.57 L1673.30,783.83 L1674.60,784.09 L1675.90,784.35 L1677.20,784.61 L1678.50,784.85 L1679.80,785.09 L1681.10,785.31 L1682.40,785.52 L1683.70,785.71 L1685.00,785.89 L1686.30,786.05 L1687.60,786.19 L1688.90,786.31 L1690.20,786.43 L1691.50,786.52 L1692.80,786.61 L1694.10,786.68 L1695.40,786.74 L1696.70,786.79 L1698.00,786.83" fill="none" stroke="#67b6b3" stroke-width="0.8" opacity=".85"/>
+<path d="M1659,765 L1659,787" stroke="#67b6b3" stroke-width="0.7" fill="none" opacity=".65"/>
+</g>
+<rect x="1189" y="800" width="781" height="36" rx="0" fill="#1f4844" />
+<text x="1197" y="823.0" fill="#8c95b2" font-size="12" font-weight="normal" text-anchor="start" >03.123</text>
+<text x="1252" y="823.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="start" >Equity</text>
+<text x="1962" y="823.0" fill="#c3c7d9" font-size="13" font-weight="normal" text-anchor="end" >6,000,000</text>
+<path d="M1676,800 L1676,836" stroke="#52536a" stroke-width="1" fill="none" />
+<g class="risk-curve" data-x="1653" data-baseline="835" data-row="25">
+<path d="M1634.00,834.08 L1634.63,833.85 L1635.27,833.58 L1635.90,833.25 L1636.53,832.87 L1637.17,832.42 L1637.80,831.90 L1638.43,831.30 L1639.07,830.62 L1639.70,829.85 L1640.33,828.99 L1640.97,828.04 L1641.60,827.00 L1642.23,825.88 L1642.87,824.68 L1643.50,823.40 L1644.13,822.07 L1644.77,820.69 L1645.40,819.28 L1646.03,817.86 L1646.67,816.45 L1647.30,815.08 L1647.93,813.77 L1648.57,812.54 L1649.20,811.41 L1649.83,810.42 L1650.47,809.57 L1651.10,808.90 L1651.73,808.40 L1652.37,808.10 L1653.00,808.00 L1653.63,808.10 L1654.27,808.40 L1654.90,808.90 L1655.53,809.57 L1656.17,810.42 L1656.80,811.41 L1657.43,812.54 L1658.07,813.77 L1658.70,815.08 L1659.33,816.45 L1659.97,817.86 L1660.60,819.28 L1661.23,820.69 L1661.87,822.07 L1662.50,823.40 L1663.13,824.68 L1663.77,825.88 L1664.40,827.00 L1665.03,828.04 L1665.67,828.99 L1666.30,829.85 L1666.93,830.62 L1667.57,831.30 L1668.20,831.90 L1668.83,832.42 L1669.47,832.87 L1670.10,833.25 L1670.73,833.58 L1671.37,833.85 L1672.00,834.08 L1672,835 L1634,835 Z" fill="#76d79a" stroke="none" stroke-width="1" opacity=".24"/>
+<path d="M1634.00,834.08 L1634.63,833.85 L1635.27,833.58 L1635.90,833.25 L1636.53,832.87 L1637.17,832.42 L1637.80,831.90 L1638.43,831.30 L1639.07,830.62 L1639.70,829.85 L1640.33,828.99 L1640.97,828.04 L1641.60,827.00 L1642.23,825.88 L1642.87,824.68 L1643.50,823.40 L1644.13,822.07 L1644.77,820.69 L1645.40,819.28 L1646.03,817.86 L1646.67,816.45 L1647.30,815.08 L1647.93,813.77 L1648.57,812.54 L1649.20,811.41 L1649.83,810.42 L1650.47,809.57 L1651.10,808.90 L1651.73,808.40 L1652.37,808.10 L1653.00,808.00 L1653.63,808.10 L1654.27,808.40 L1654.90,808.90 L1655.53,809.57 L1656.17,810.42 L1656.80,811.41 L1657.43,812.54 L1658.07,813.77 L1658.70,815.08 L1659.33,816.45 L1659.97,817.86 L1660.60,819.28 L1661.23,820.69 L1661.87,822.07 L1662.50,823.40 L1663.13,824.68 L1663.77,825.88 L1664.40,827.00 L1665.03,828.04 L1665.67,828.99 L1666.30,829.85 L1666.93,830.62 L1667.57,831.30 L1668.20,831.90 L1668.83,832.42 L1669.47,832.87 L1670.10,833.25 L1670.73,833.58 L1671.37,833.85 L1672.00,834.08" fill="none" stroke="#76d79a" stroke-width="1.4" opacity=".85"/>
+<path d="M1653,800 L1653,835" stroke="#76d79a" stroke-width="0.7" fill="none" opacity=".65"/>
+</g>
+<rect x="1978" y="57" width="7" height="731" rx="3" fill="#131b39" />
+</g>
+</svg>
