@@ -428,6 +428,14 @@
     /* sits close under the dashboard caption instead of a full row below */
     .poster > .p-item.p-tuck { margin-top: calc(32px - var(--gv) - var(--tuck)); }
 
+    /* The visual-language card rises as far as the dashboard above allows: to
+       24px under the picture's frame, beside (not under) the dashboard's
+       short caption. That is 58px higher than the tuck above; only where the
+       caption's text ends before the card's left edge. */
+    @media (min-width: 1280px) {
+      .poster > .p-item.p-tuck.p-lift { margin-top: calc(32px - var(--gv) - var(--tuck) - 58px); }
+    }
+
     .poster > .p-hero { align-self: start; }
     /* the block hugs the right-hand edge; the links read left to right inside
        it. The script sets margin-top so the last link's baseline meets the
@@ -755,7 +763,7 @@
 
       <figure class="p-item figure p-fig p-fig-free" style="--c:1 / 13;--r:8 / span 5"><div class="figure-portrait-frame"><img src="media/dashboard.jpg" width="2000" height="915" alt="Concept design for Quantemplate&rsquo;s early analytics dashboard: a solvency-margin chart, a Value at Risk gauge, a sunburst volatility breakdown, and region, industry and risk breakdown tables in a dark theme." loading="lazy"></div><figcaption>Dashboard concept design, c.2013. The &lsquo;Bloomberg for Insurance&rsquo;.</figcaption></figure>
 
-      <div class="p-item p-card p-section p-tuck" style="--c:7 / 13;--r:13 / span 5"><h2 class="principle-title display" id="quantemplate-heading">Quantemplate&rsquo;s visual language</h2><p>Back in 2013, there was nothing that looked quite like <a href="https://quantemplate.com" target="_blank" rel="noopener noreferrer">Quantemplate</a>. We were inspired by the <a href="https://www.bloomberg.com/professional/products/bloomberg-terminal/" target="_blank" rel="noopener noreferrer">Bloomberg Terminal</a> as a power tool, and a <a href="https://media.evo.co.uk/image/private/s--8AFVzv4W--/f_auto,t_content-image-full-desktop@1/v1556258285/evo/images/dir_446/car_photo_223452.jpg" target="_blank" rel="noopener noreferrer">Lamborghini dashboard</a> as, well, a different kind of power tool.</p><p>We wanted an interface that felt comfortable for long work sessions, and I brought the concept to life with a dark UI and a sparingly applied set of neon colours.</p><blockquote>The visual style and the craft that went into the interface were consistently cited by new hires as a reason for joining.</blockquote><p>The look drew some pushback from sales and prospective buyers, but we believed the brand was a core differentiator and stuck with it. Funnily enough, when Apple introduced Dark Mode on iOS in 2019, we stopped hearing those concerns.</p></div>
+      <div class="p-item p-card p-section p-tuck p-lift" style="--c:7 / 13;--r:13 / span 5"><h2 class="principle-title display" id="quantemplate-heading">Quantemplate&rsquo;s visual language</h2><p>Back in 2013, there was nothing that looked quite like <a href="https://quantemplate.com" target="_blank" rel="noopener noreferrer">Quantemplate</a>. We were inspired by the <a href="https://www.bloomberg.com/professional/products/bloomberg-terminal/" target="_blank" rel="noopener noreferrer">Bloomberg Terminal</a> as a power tool, and a <a href="https://media.evo.co.uk/image/private/s--8AFVzv4W--/f_auto,t_content-image-full-desktop@1/v1556258285/evo/images/dir_446/car_photo_223452.jpg" target="_blank" rel="noopener noreferrer">Lamborghini dashboard</a> as, well, a different kind of power tool.</p><p>We wanted an interface that felt comfortable for long work sessions, and I brought the concept to life with a dark UI and a sparingly applied set of neon colours.</p><blockquote>The visual style and the craft that went into the interface were consistently cited by new hires as a reason for joining.</blockquote><p>The look drew some pushback from sales and prospective buyers, but we believed the brand was a core differentiator and stuck with it. Funnily enough, when Apple introduced Dark Mode on iOS in 2019, we stopped hearing those concerns.</p></div>
 
       <div class="p-item p-fig p-nocrop p-tuck p-stack-left" style="--c:1 / 7;--r:13 / span 5">
         <figure class="figure mapping-tabs-detail" id="mapping-tabs-detail" aria-labelledby="mapping-tabs-title">
