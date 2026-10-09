@@ -198,29 +198,35 @@ function ease(value){
  }
  return 3*(1-t)*t*t+t*t*t;
 }
-const duration=4600, reduced=matchMedia('(prefers-reduced-motion: reduce)');
-const states=Object.fromEntries(['solvency','dial','donut','risk','region','industry'].map(name=>[name,{time:0,start:0,running:false}]));
+const quickEase=v=>1-Math.pow(1-clamp(v),3);
+const duration=4600, hoverDuration=1600, reduced=matchMedia('(prefers-reduced-motion: reduce)');
+const states=Object.fromEntries(['solvency','dial','donut','risk','region','industry'].map(name=>[name,{time:0,start:0,running:false,mode:'entrance',duration}]));
 let frame=0, started=false, active='solvency';
 function render(name,time){
+ const hover=states[name].mode==='hover',progress=hover?quickEase:ease;
  if(name==='dial'){
-  const dial=ease((time-250)/2400);
+  const dial=progress((time-(hover?0:250))/(hover?1100:2400));
   svg.getElementById('var-value').textContent=(25.710*dial).toFixed(3)+'%';
   ticks.forEach((el,i)=>el.style.opacity=clamp(dial*25.71-i));
   svg.getElementById('dial-glow').style.opacity=.28*dial;
  }else if(name==='solvency'){
-  const lp=ease((time-150)/2900);
+  const lp=progress((time-(hover?0:150))/(hover?1400:2900));
   svg.getElementById('line-reveal').setAttribute('width',463*lp);
-  svg.getElementById('fan-reveal').setAttribute('width',324*ease((time-1100)/2400));
+  svg.getElementById('fan-reveal').setAttribute('width',324*progress((time-(hover?0:1100))/(hover?1400:2400)));
  }else if(name==='donut'){
-  const sweep=360*ease((time-450)/3000);
+  // Hover starts at the first painted arc, without sweeping an invisible gap.
+  const first=hover?Math.min(...reds.map(el=>+el.dataset.start)):0;
+  const last=hover?Math.max(...reds.map(el=>+el.dataset.end)):360;
+  const sweep=first+(last-first)*progress((time-(hover?0:450))/(hover?1400:3000));
   reds.forEach(el=>{const a=+el.dataset.start,b=+el.dataset.end;el.style.strokeDasharray='1';el.style.strokeDashoffset=1-clamp((sweep-a)/(b-a));});
  }else if(name==='risk'){
-  curves.forEach(el=>{const q=ease((time-500-Number(el.dataset.row)*45)/2100),x=+el.dataset.x,y=+el.dataset.baseline;el.setAttribute('transform',`translate(${(1676-x)*(1-q)} ${y*(1-q)}) scale(1 ${q})`);el.style.opacity=clamp(q*4);});
+  curves.forEach(el=>{const q=progress((time-(hover?0:500+Number(el.dataset.row)*45))/(hover?1200:2100)),x=+el.dataset.x,y=+el.dataset.baseline;el.setAttribute('transform',`translate(${(1676-x)*(1-q)} ${y*(1-q)}) scale(1 ${q})`);el.style.opacity=clamp(q*4);});
  }else if(filterDots[name]){
   const {dots,halos}=filterDots[name];
   dots.forEach((el,i)=>{
-   const t=time-250-i*210;
-   const intensity=t<0?0:t<480?.5-.5*Math.cos(Math.PI*t/480):t<1500?.5+.5*Math.cos(Math.PI*(t-480)/1020):0;
+   const t=time-(hover?0:250)-i*(hover?100:210);
+   const rise=hover?150:480,fall=hover?450:1020;
+   const intensity=t<0?0:t<rise?.5-.5*Math.cos(Math.PI*t/rise):t<rise+fall?.5+.5*Math.cos(Math.PI*(t-rise)/fall):0;
    const base=[26,42,80], green=[112,213,140];
    el.setAttribute('fill',`rgb(${base.map((v,j)=>Math.round(v+(green[j]-v)*intensity)).join(',')})`);
    halos[i].setAttribute('opacity',String(.32*intensity));
@@ -230,24 +236,24 @@ function render(name,time){
 function pause(){cancelAnimationFrame(frame);frame=0;Object.values(states).forEach(s=>s.running=false);}
 function tick(now){
  frame=0;
- for(const [name,s] of Object.entries(states))if(s.running){s.time=Math.min(duration,now-s.start);render(name,s.time);if(s.time===duration)s.running=false;}
+ for(const [name,s] of Object.entries(states))if(s.running){s.time=Math.min(s.duration,now-s.start);render(name,s.time);if(s.time===s.duration)s.running=false;}
  if(Object.values(states).some(s=>s.running))frame=requestAnimationFrame(tick);
 }
 function schedule(){if(!frame)frame=requestAnimationFrame(tick);}
-function seek(ms){pause();for(const [name,s] of Object.entries(states)){s.time=Math.max(0,Math.min(duration,ms));render(name,s.time);}}
+function seek(ms){pause();for(const [name,s] of Object.entries(states)){s.mode='entrance';s.duration=duration;s.time=Math.max(0,Math.min(duration,ms));render(name,s.time);}}
 function play(){
  started=true;
  if(reduced.matches){seek(duration);return;}
  const now=performance.now();
- for(const s of Object.values(states))if(s.time<duration){s.start=now-s.time;s.running=true;}
+ for(const s of Object.values(states))if(s.time<s.duration){s.start=now-s.time;s.running=true;}
  schedule();
 }
 function replay(name){
  started=true;
  if(!name){active='solvency';seek(0);play();return;}
- if(!states[name]||states[name].running)return;
+ if(!states[name])return;
  active=name;
- const s=states[name];s.time=reduced.matches?duration:0;render(name,s.time);
+ const s=states[name];s.mode='hover';s.duration=hoverDuration;s.time=reduced.matches?s.duration:0;render(name,s.time);
  if(!reduced.matches){s.start=performance.now();s.running=true;schedule();}
 }
 function firstScroll(){
@@ -262,10 +268,10 @@ function firstScroll(){
  }catch(e){}
  replay();
 }
-svg.dashboard={play,pause,replay,seek(ms){started=true;seek(ms);},firstScroll,get time(){return states[active].time;},get playing(){return Object.values(states).some(s=>s.running);},get started(){return started;},duration};
+svg.dashboard={play,pause,replay,seek(ms){started=true;seek(ms);},firstScroll,get time(){return states[active].time;},get playing(){return Object.values(states).some(s=>s.running);},get started(){return started;},get duration(){return states[active].duration;}};
 svg.querySelectorAll('.animation-target').forEach(el=>{
- el.addEventListener('pointerenter',e=>{if(started&&e.pointerType!=='touch')replay(el.dataset.animation);});
- el.addEventListener('click',()=>replay(el.dataset.animation));
+ el.addEventListener('pointerenter',e=>{if(e.pointerType==='touch')return;if(!started)replay();replay(el.dataset.animation);});
+ el.addEventListener('click',()=>{if(!states[el.dataset.animation].running)replay(el.dataset.animation);});
  el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();replay(el.dataset.animation);}});
 });
 // Same-origin object embeds can respond to the containing page's first scroll.
