@@ -167,8 +167,100 @@
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
   }
 
-  @media (min-width: 1024px) { .poster > .p-item.profile-statistics { margin-top: 56px; } }
-  .p-tabs object { display: block; width: 442px; max-width: 100%; aspect-ratio: 442 / 522; border: 0; border-radius: 6px; background: #000; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4); }
+  /* ---- The combined tab/progress bar, exactly as on the column mapping
+     case study (copied from there, unchanged) ---- */
+  .mapping-tabs-detail {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px;
+    background: linear-gradient(#1a1a1a, #2c2c2c);
+    border-radius: 10px;
+    font-family: "Fakt Blond", Arial, sans-serif;
+  }
+
+  .mapping-tabs-detail .stage-heading { align-self: stretch; margin-bottom: 24px; }
+  .mapping-tabs-detail .diagram-title { margin: 0; font-size: 20px; line-height: 1.3; }
+  .mapping-tabs-detail { container-type: inline-size; }
+  .mapping-tabs-detail .mapping-demo-canvas { position: relative; width: 442px; max-width: 100%; margin-top: 46px; }
+  .mapping-tabs-detail .try-hint {
+    position: absolute;
+    z-index: 1;
+    top: calc(-24px - 1.91571%);
+    right: -75px;
+    width: max-content;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #00d8aa;
+    font-family: inherit;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+  }
+  .mapping-tabs-detail .try-hint:hover, .mapping-tabs-detail .try-hint:focus-visible { color: #63ffd8; }
+  .mapping-tabs-detail .try-hint:focus-visible { outline: 2px solid #00d8aa; outline-offset: 4px; border-radius: 2px; }
+  .mapping-tabs-detail .try-leader { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+  .mapping-tabs-detail .try-leader-compact { display: none; }
+  .mapping-tabs-detail .try-hint, .mapping-tabs-detail .try-leader { opacity: 1; transition: opacity 0.3s ease, visibility 0s linear; }
+  .mapping-tabs-detail .mapping-demo-canvas.is-interacted .try-hint,
+  .mapping-tabs-detail .mapping-demo-canvas.is-interacted .try-leader { opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.3s ease, visibility 0s linear 0.3s; }
+  @media (prefers-reduced-motion: reduce) {
+    .mapping-tabs-detail .try-hint, .mapping-tabs-detail .try-leader { transition: none !important; }
+  }
+  @container (max-width: 660px) {
+    .mapping-tabs-detail .try-hint { right: -4px; }
+    .mapping-tabs-detail .try-leader-wide { display: none; }
+    .mapping-tabs-detail .try-leader-compact { display: block; }
+  }
+  .mapping-tabs-detail object {
+    display: block;
+    width: 442px;
+    max-width: 100%;
+    aspect-ratio: 442 / 522;
+    border: 0;
+    border-radius: 6px;
+    background: #000;
+    box-shadow: 0 8px 30px #0006;
+  }
+
+  .mapping-tabs-detail .demo-controls { display: flex; gap: 12px; justify-content: center; margin-top: 20px; }
+  .mapping-tabs-detail .control-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 8px 18px;
+    border: 1px solid #666;
+    border-radius: 6px;
+    background: transparent;
+    color: #bbb;
+    font: 400 16px/1.5 "Fakt Blond", Arial, sans-serif;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  .mapping-tabs-detail .control-button > span { transform: translateY(1px); }
+  .mapping-tabs-detail .control-button:hover { background: #ffffff12; color: #fff; }
+  .mapping-tabs-detail .control-button:focus-visible { outline: 2px solid #00d8aa; outline-offset: 4px; }
+  .mapping-tabs-detail .control-button:disabled { opacity: 0.5; cursor: default; }
+  .mapping-tabs-detail .demo-button { min-width: 145px; }
+  .mapping-tabs-detail .stop-icon,
+  .mapping-tabs-detail .demo-button[aria-pressed="true"] .play-icon { display: none; }
+  .mapping-tabs-detail .demo-button[aria-pressed="true"] .stop-icon { display: block; }
+
+  @media (max-width: 560px) {
+    .mapping-tabs-detail { padding: 16px; }
+  }
+
+  /* The left-hand stack: that component with the profile page directly
+     beneath it, so the pair moves together whatever their heights. */
+  .p-stack-left { display: flex; flex-direction: column; gap: clamp(40px, 4vw, 56px); }
+  .p-stack-left > figure { margin: 0; max-width: none; }
 
   .p-fig > video { display: block; width: 100%; height: auto; border-radius: 6px; }
 
@@ -602,7 +694,7 @@
   </nav>
   <main>
     <hr class="rule rule-top">
-    <div class="poster" style="--rows:20">
+    <div class="poster" style="--rows:17">
       <div class="p-item p-hero" style="--c:1 / 8;--r:1 / span 1"><h1 class="lede display head-fade">Design craft</h1></div>
 
       <nav class="p-item toc p-toc" aria-label="On this page" style="--c:10 / 13;--r:1 / span 1">
@@ -665,9 +757,32 @@
 
       <div class="p-item p-card p-section p-tuck" style="--c:7 / 13;--r:13 / span 5"><h2 class="principle-title display" id="quantemplate-heading">Quantemplate&rsquo;s visual language</h2><p>Back in 2013, there was nothing that looked quite like <a href="https://quantemplate.com" target="_blank" rel="noopener noreferrer">Quantemplate</a>. We were inspired by the <a href="https://www.bloomberg.com/professional/products/bloomberg-terminal/" target="_blank" rel="noopener noreferrer">Bloomberg Terminal</a> as a power tool, and a <a href="https://media.evo.co.uk/image/private/s--8AFVzv4W--/f_auto,t_content-image-full-desktop@1/v1556258285/evo/images/dir_446/car_photo_223452.jpg" target="_blank" rel="noopener noreferrer">Lamborghini dashboard</a> as, well, a different kind of power tool.</p><p>We wanted an interface that felt comfortable for long work sessions, and I brought the concept to life with a dark UI and a sparingly applied set of neon colours.</p><blockquote>The visual style and the craft that went into the interface were consistently cited by new hires as a reason for joining.</blockquote><p>The look drew some pushback from sales and prospective buyers, but we believed the brand was a core differentiator and stuck with it. Funnily enough, when Apple introduced Dark Mode on iOS in 2019, we stopped hearing those concerns.</p></div>
 
-      <figure class="p-item figure p-fig p-nocrop p-tabs" style="--c:1 / 7;--r:13 / span 4"><div class="figure-portrait-frame"><object type="image/svg+xml" data="media/column-mapping-tabs.svg" aria-label="Interactive column mapping with Mapped and Unmapped tabs"></object></div><figcaption>Combined tab/progress bar</figcaption></figure>
+      <div class="p-item p-fig p-nocrop p-tuck p-stack-left" style="--c:1 / 7;--r:13 / span 5">
+        <figure class="figure mapping-tabs-detail" id="mapping-tabs-detail" aria-labelledby="mapping-tabs-title">
+          <div class="stage-heading">
+            <h4 class="diagram-title" id="mapping-tabs-title">Combined tab/progress bar</h4>
+          </div>
+          <div class="mapping-demo-canvas">
+            <object type="image/svg+xml" data="/case-studies/media/column-mapping-tabs.svg?v=20261009-hint3" aria-label="Interactive column mapping with Mapped and Unmapped tabs"><a href="/case-studies/media/column-mapping-tabs.svg">Open the interactive column mapping detail</a>.</object>
+            <svg class="try-leader" viewBox="0 0 442 522" aria-hidden="true">
+              <path class="try-leader-wide" d="M418 29C448 29 472 16 472-10" fill="none" stroke="#00d8aa" stroke-width="1"/>
+              <path class="try-leader-compact" d="M418 29C438 29 440 0 418-10" fill="none" stroke="#00d8aa" stroke-width="1"/>
+              <circle cx="418" cy="29" r="2.5" fill="#00d8aa"/>
+            </svg>
+            <button class="try-hint" type="button">Click to try</button>
+          </div>
+          <div class="demo-controls" role="group" aria-label="Mapping demo controls">
+            <button class="control-button reset-button" type="button" disabled><span>Reset</span></button>
+            <button class="control-button demo-button" type="button" aria-pressed="false" disabled>
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1 11 6 2 11Z" fill="currentColor"/></svg>
+              <svg class="stop-icon" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><rect x="1" y="1" width="10" height="10" rx="1" fill="currentColor"/></svg>
+              <span>Play demo</span>
+            </button>
+          </div>
+          <span class="visually-hidden demo-status" role="status" aria-live="polite"></span>
+        </figure>
 
-      <figure id="profile-graphic" class="p-item figure p-fig p-nocrop profile-statistics" style="--c:1 / 7;--r:17 / span 4">
+        <figure id="profile-graphic" class="figure p-nocrop profile-statistics">
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1005pt" height="719pt" viewBox="0 0 1005 719">
 <defs>
 <filter id="profile-filter-remove-color" x="0%" y="0%" width="100%" height="100%">
@@ -2604,6 +2719,7 @@
 <mask id="profile-animated-regions" maskUnits="userSpaceOnUse" x="0" y="0" width="1005" height="719"><rect width="1005" height="719" fill="white"/><rect x="316" y="391" width="187" height="10" fill="black"/><rect x="316" y="439" width="187" height="10" fill="black"/><rect x="316" y="487" width="187" height="10" fill="black"/><rect x="316" y="535" width="187" height="10" fill="black"/><rect x="316" y="583" width="187" height="10" fill="black"/><rect x="316" y="631" width="187" height="10" fill="black"/><rect x="601" y="391" width="203" height="10" fill="black"/><rect x="601" y="439" width="203" height="10" fill="black"/><rect x="601" y="487" width="203" height="10" fill="black"/><rect x="601" y="535" width="203" height="10" fill="black"/><rect x="601" y="583" width="203" height="10" fill="black"/><rect x="601" y="631" width="203" height="10" fill="black"/><rect x="316" y="320" width="90" height="49" fill="black"/><rect x="599" y="320" width="114" height="49" fill="black"/></mask><rect x="80" y="243" width="842" height="431" rx="8" fill="#0f1434"/><use xlink:href="#profile-source-28" mask="url(#profile-animated-regions)"/>
 <rect class="animated-bar" x="317" y="392" width="185.0" height="8" rx="4" fill="#00d3ed" data-width="185.0" data-delay="0"/><rect class="animated-bar" x="317" y="440" width="15.408106607440311" height="8" rx="4" fill="#00d3ed" data-width="15.408106607440311" data-delay="85"/><rect class="animated-bar" x="317" y="488" width="35.43864519711271" height="8" rx="4" fill="#00d3ed" data-width="35.43864519711271" data-delay="170"/><rect class="animated-bar" x="317" y="536" width="0.3081621321488062" height="8" rx="0.1540810660744031" fill="#00d3ed" data-width="0.3081621321488062" data-delay="255"/><rect class="animated-bar" x="317" y="584" width="24.036646307606887" height="8" rx="4" fill="#00d3ed" data-width="24.036646307606887" data-delay="340"/><rect class="animated-bar" x="317" y="632" width="24.652970571904497" height="8" rx="4" fill="#00d3ed" data-width="24.652970571904497" data-delay="425"/><rect class="animated-bar" x="602" y="392" width="185.0" height="8" rx="4" fill="#00cfa4" data-width="185.0" data-delay="0"/><rect class="animated-bar" x="602" y="440" width="45.936440677966104" height="8" rx="4" fill="#00cfa4" data-width="45.936440677966104" data-delay="85"/><rect class="animated-bar" x="602" y="488" width="5.408898305084746" height="8" rx="2.704449152542373" fill="#00cfa4" data-width="5.408898305084746" data-delay="170"/><rect class="animated-bar" x="602" y="536" width="61.144067796610166" height="8" rx="4" fill="#00cfa4" data-width="61.144067796610166" data-delay="255"/><rect class="animated-bar" x="602" y="584" width="97.04661016949153" height="8" rx="4" fill="#00cfa4" data-width="97.04661016949153" data-delay="340"/><rect class="animated-bar" x="602" y="632" width="111.62711864406779" height="8" rx="4" fill="#00cfa4" data-width="111.62711864406779" data-delay="425"/><g id="profile-headline-left" fill="#00d3ed"/><g id="profile-headline-right" fill="#00cfa4"/></svg>
 <figcaption>Quantemplate profile page showing usage statistics</figcaption></figure>
+      </div>
 
 
     </div>
@@ -2886,6 +3002,50 @@
     if (!window.matchMedia || !window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     document.querySelectorAll(".p-fig video").forEach(function (v) { v.removeAttribute("autoplay"); v.pause(); });
   })();
+</script>
+<script>
+  /* The combined tab/progress bar's controls and "Click to try" hint, exactly
+     as on the column mapping case study. */
+    (function () {
+      var detail = document.querySelector('.mapping-tabs-detail');
+      var diagram = detail.querySelector('object');
+      var reset = detail.querySelector('.reset-button');
+      var demo = detail.querySelector('.demo-button');
+      var status = detail.querySelector('.demo-status');
+      var connectedRoot;
+      function connect() {
+        var root = diagram.contentDocument && diagram.contentDocument.documentElement;
+        if (!root || root.localName !== 'svg' || root === connectedRoot) return;
+        connectedRoot = root;
+        var running = false;
+        reset.disabled = false;
+        demo.disabled = false;
+        demo.setAttribute('aria-pressed', 'false');
+        demo.querySelector('span').textContent = 'Play demo';
+        var hint = detail.querySelector('.try-hint');
+        var canvas = hint.closest('.mapping-demo-canvas');
+        function showHint(visible) {
+          canvas.classList.toggle('is-interacted', !visible);
+          hint.disabled = !visible;
+          hint.setAttribute('aria-hidden', String(!visible));
+        }
+        showHint(true);
+        root.addEventListener('mapping-hint-state', function (event) { showHint(event.detail.visible); });
+        hint.onmouseenter = hint.onfocus = function () { root.dispatchEvent(new Event('mapping-hint-hover')); };
+        hint.onmouseleave = hint.onblur = function () { root.dispatchEvent(new Event('mapping-hint-leave')); };
+        hint.onclick = function () { root.dispatchEvent(new Event('mapping-hint-activate')); };
+        reset.onclick = function () { root.dispatchEvent(new Event('mapping-reset')); };
+        demo.onclick = function () { root.dispatchEvent(new Event(running ? 'mapping-demo-stop' : 'mapping-demo-play')); };
+        root.addEventListener('mapping-demo-state', function (event) {
+          running = event.detail.running;
+          demo.setAttribute('aria-pressed', String(running));
+          demo.querySelector('span').textContent = running ? 'Stop demo' : 'Play demo';
+          status.textContent = event.detail.message;
+        });
+      }
+      diagram.addEventListener('load', connect);
+      connect();
+    })();
 </script>
 <script src="/media/agent-interactive.js?v=2"></script>
 <script src="/media/agent-cube-studies.js"></script>
