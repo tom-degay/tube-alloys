@@ -82,7 +82,7 @@ html.identity-menu-open { overflow: hidden; }
 [data-navigation="identity"] .identity-dialog .menu-subsections a[aria-current] { color: #fff; text-decoration: none; }
 .menu-section { width: 100%; text-align: center; }
 .menu-section-toggle { position: relative; margin: 0 auto; }
-.menu-section-toggle::after { content: "+"; position: absolute; left: 100%; top: 50%; transform: translateY(-50%); font: 20px/1 "Fakt", sans-serif; color: #888; }
+.menu-section-toggle::after { content: "+"; position: absolute; left: 100%; top: 50%; margin-left: 6px; transform: translateY(-50%); font: 28px/1 "Fakt", sans-serif; color: #00d8aa; }
 .menu-section-toggle[aria-expanded="true"]::after { content: "−"; }
 /* Animate the section's real height, then gently reveal its contents. */
 .menu-subsections { display: grid; grid-template-rows: 0fr; width: 100%; margin: 0 auto; text-align: left; visibility: hidden; transition: grid-template-rows 520ms cubic-bezier(.22,1,.36,1), visibility 0s 520ms; }
