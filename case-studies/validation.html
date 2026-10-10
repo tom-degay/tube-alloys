@@ -492,11 +492,9 @@
   .problem-item summary {
     list-style: none;
     cursor: pointer;
-    width: fit-content;  /* click target hugs the text, not the column */
-    max-width: calc(100% + 32px);
-    /* Hover shape matches the nav dropdown cards (.nav-dropdown-card):
-       the padding is taken back with negative margins so the text stays
-       exactly where it was. */
+    /* Hover shape matches the nav dropdown cards (.nav-dropdown-card) and
+       spans the full content column; the padding is taken back with
+       negative margins so the text stays exactly where it was. */
     margin: -18px -16px -16px;
     padding: 18px 16px 16px;
     border-radius: 8px;
