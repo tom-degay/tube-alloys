@@ -184,6 +184,16 @@
     max-width: 46rem;
   }
 
+  /* Keep the five project-info fields arranged like Column Mapping. */
+  .meta-row { grid-template-columns: 1fr; }
+  @media (min-width: 700px) {
+    .meta-row { grid-template-columns: repeat(2, 1fr); }
+    .meta-item:last-child { grid-column: span 2; }
+  }
+  @media (min-width: 1100px) {
+    .meta-row { grid-template-columns: repeat(3, 1fr); }
+  }
+
   /* Keep the list aligned with the text below at desktop widths too. */
   .key-points-grid { display: block; }
 
@@ -1023,31 +1033,9 @@
       </svg>
       <span class="kicker head-fade">Case Study | <a href="https://help.quantemplate.com/validation-corrections" target="_blank" rel="noopener noreferrer">Quantemplate Validations</a></span>
       <h1 class="display head-fade">Closing the loop on data quality</h1>
-      <p class="subtitle head-fade">Lets users fix data errors in place with a full audit trail. 23 million rows corrected and step change in speed of work.</p>
+      <p class="subtitle head-fade">Enabled users to fix data errors where they find them, with the control of rules-based corrections and a full audit trail. Over 23,000 cells corrected in the first three months.</p>
       <p class="keywords"><span class="keyword">Workflow</span><span class="keyword">Information design</span><span class="keyword">Auditability</span></p>
 
-      <hr class="rule">
-
-      <div class="meta-row">
-        <div class="meta-item">
-          <span class="eyebrow">Role</span>
-          <p>Lead product designer, end to end</p>
-        </div>
-        <div class="meta-item">
-          <span class="eyebrow">Team</span>
-          <p>Design, engineering, domain experts and customers</p>
-        </div>
-        <div class="meta-item">
-          <span class="eyebrow">Timeframe</span>
-          <div class="timeframe-with-donut">
-            <svg class="timeframe-donut" viewBox="0 0 44 44" width="44" height="44" role="img" aria-label="Design time: about 90 days">
-              <circle class="timeframe-donut-track" cx="22" cy="22" r="18"></circle>
-              <circle class="timeframe-donut-value" cx="22" cy="22" r="18" pathLength="180" style="--donut-offset: 90" transform="rotate(-90 22 22)"></circle>
-            </svg>
-            <p>3 months</p>
-          </div>
-        </div>
-      </div>
     </header>
 
     <hr class="rule">
@@ -1062,6 +1050,37 @@
         </ul>
       </div>
     </section>
+
+    <hr class="rule">
+
+    <div class="meta-row">
+      <div class="meta-item">
+        <span class="eyebrow">Role</span>
+        <p>Lead product designer, end to end</p>
+      </div>
+      <div class="meta-item">
+        <span class="eyebrow">Team</span>
+        <p>Product owner, clients, engineers.</p>
+      </div>
+      <div class="meta-item">
+        <span class="eyebrow">Timeframe</span>
+        <div class="timeframe-with-donut">
+          <svg class="timeframe-donut" viewBox="0 0 44 44" width="44" height="44" role="img" aria-label="Design time: about 90 days">
+            <circle class="timeframe-donut-track" cx="22" cy="22" r="18"></circle>
+            <circle class="timeframe-donut-value" cx="22" cy="22" r="18" pathLength="180" style="--donut-offset: 90" transform="rotate(-90 22 22)"></circle>
+          </svg>
+          <p>3 months</p>
+        </div>
+      </div>
+      <div class="meta-item">
+        <span class="eyebrow">Domain</span>
+        <p>Wholesale insurance data management.</p>
+      </div>
+      <div class="meta-item">
+        <span class="eyebrow">User profiles</span>
+        <p>Data analyst: domain expert with deep knowledge of the data.<br>Technical skill level: competent Excel user.</p>
+      </div>
+    </div>
 
     <hr class="rule">
 
@@ -1299,12 +1318,7 @@
         <p class="framing-term">Client feedback</p>
         <p class="framing-quote">&lsquo;Give us an API so we can build our own validation feedback rig&rsquo;</p>
         <p class="framing-term">Strategic decision</p>
-        <p>For workflow features we want to keep the solution in-product, rather than controlling externally via API. In-product control is:</p>
-        <ul class="evidence-list">
-          <li>Actionable by business users and doesn&rsquo;t require specialist setup</li>
-          <li>Increases the value of our product, improving retention</li>
-          <li>Reduces external dependency</li>
-        </ul>
+        <p>Bringing the feedback workflow into Quantemplate would let business users request and manage supplier corrections without needing their IT team to build and maintain a separate system. It would also keep results and corrections connected in one auditable workflow, increasing the product&rsquo;s value and supporting retention.</p>
       </div>
     </section>
 
@@ -1350,7 +1364,7 @@
                 </div>
               </div>
             </figure>
-            <p>The first prototype exposed two issues in testing: users didn&rsquo;t recognise the correction fields as editable, and adjacent failed columns made it difficult to tell which values belonged together.</p>
+            <p>I tested the prototype with a small cohort of expert users. Testing exposed two issues: users didn&rsquo;t recognise the correction fields as editable, and adjacent failed columns made it difficult to tell which values belonged together.</p>
             <p>I revised the design to give each row a clearly defined entry field, strengthen the link between original and corrected values, and refine the colour palette.</p>
           </div>
             </div>
@@ -1760,7 +1774,7 @@
           </dl>
         </div>
       </figure>
-      <p>In a demo of the in-product correction and report improvements, clients cited a significant boost to their workflow, with a clear focus on their productivity bottlenecks.</p>
+      <p>Clients using the in-product correction and report improvements reported a significant boost to their workflow, with the changes addressing their productivity bottlenecks.</p>
       <p>Being able to see who had made corrections was especially valuable to them for supporting their audit processes.</p>
       <p>Supplier sharing is now in limited beta; we don&rsquo;t yet have usage results or client feedback.</p>
       <blockquote class="outcome-quote">The speed at which we can work now is a real step change. Everything feels much more fluid. I don&rsquo;t even need to click all the way into the validation to see what I need. The changes have helped tremendously: I know what I need to focus on and what I need to download.
