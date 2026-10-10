@@ -1315,6 +1315,135 @@
     <section aria-labelledby="keydecisions-heading" class="case-body">
       <h2 class="eyebrow" id="keydecisions-heading">Design decisions</h2>
 
+      <div class="subsection" id="applying-corrections">
+        <h3>Applying corrections</h3>
+        <div class="problem-items">
+          <details class="problem-item" id="kd-entering">
+            <summary>
+              <span class="problem-item-icon" aria-hidden="true"></span>
+              <span class="problem-item-title">Show before and after</span>
+              <span class="problem-item-teaser">Keep the original value beside the <span class="problem-item-tail">correction <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+            </summary>
+            <div class="problem-item-body">
+<figure class="figure">
+            <div class="figure-portrait-frame">
+              <img src="media/corrections-detail.png" width="2000" height="1351" alt="The validation report with corrections: for the failed Effective and Expiry columns, each original value in red sits beside an editable correction field, one per row." loading="lazy">
+            </div>
+          </figure>
+          <p>Corrections are shown beside the original submitted values. I chose this side-by-side layout to preserve the source data and make it clear that users are creating a mapping, rather than editing the original cell.</p>
+          <p>Corrected values stand out in bright green. If no correction has been applied, the placeholder text shows the current value. This helps the user understand exactly what the output data will be.</p>
+
+          <div class="evidence-card framing-card">
+            <div class="framing-head">
+              <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
+              <span class="framing-label">Design validation</span>
+            </div>
+            <figure class="figure">
+              <div class="figure-portrait-frame">
+                <div class="design-pair">
+                  <figure>
+                    <img src="media/corrections-before.png" width="1150" height="885" alt="First prototype of the corrections view: correction fields that don&rsquo;t read as editable, beside adjacent failed columns." loading="lazy">
+                    <figcaption>First prototype</figcaption>
+                  </figure>
+                  <figure>
+                    <img src="media/corrections-after.png" width="1150" height="885" alt="Revised corrections view: each row has a clearly defined entry field, linked to its original value, in a refined colour palette." loading="lazy">
+                    <figcaption>Improved design</figcaption>
+                  </figure>
+                </div>
+              </div>
+            </figure>
+            <p>The first prototype exposed two issues in testing: users didn&rsquo;t recognise the correction fields as editable, and adjacent failed columns made it difficult to tell which values belonged together.</p>
+            <p>I revised the design to give each row a clearly defined entry field, strengthen the link between original and corrected values, and refine the colour palette.</p>
+          </div>
+            </div>
+          </details>
+
+          <details class="problem-item" id="kd-scope">
+            <summary>
+              <span class="problem-item-icon" aria-hidden="true"></span>
+              <span class="problem-item-title">Make the scope of changes obvious</span>
+              <span class="problem-item-teaser">Make clear which values a correction will <span class="problem-item-tail">affect <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+            </summary>
+            <div class="problem-item-body">
+<p>Quantemplate applies corrections to bulk data rather than isolated cells, so we needed to make this clear. When a user selects a field, it opens a popup where they enter the correction. The UI makes it clear that corrections can apply to every matching value or use conditions, such as correcting Premium only for a specific Policy Number.</p>
+          <p>We added a formula bar, so users could derive a value from another column. For example, if a date is missing, take the date from another column and subtract one month. Based on what we&rsquo;d observed in production pipelines, this would be a necessary addition.</p>
+
+          <figure class="figure figure-wide">
+            <div class="figure-portrait-frame">
+              <img src="media/validation-corrections-preview.png" width="1899" height="1068" alt="Quantemplate's validation report: flagged errors beside an editable corrections column, with the correction popup open on a row." loading="lazy">
+            </div>
+            <figcaption>Entering a correction. The popup makes the scope explicit &mdash; every matching value, or only where a condition is met &mdash; with a formula bar for deriving the value from another column.</figcaption>
+          </figure>
+            </div>
+          </details>
+
+          <details class="problem-item" id="kd-evidence">
+            <summary>
+              <span class="problem-item-icon" aria-hidden="true"></span>
+              <span class="problem-item-title">Preserve evidence</span>
+              <span class="problem-item-teaser">Keep a record of who changed what and <span class="problem-item-tail">when <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+            </summary>
+            <div class="problem-item-body">
+<p>Audit was important to our clients, who use Quantemplate as a system-of-record for financial reporting. To support this we displayed the original failed values alongside the corrected rows in the report. The full change history of each edit was displayed.</p>
+
+          <figure class="figure">
+            <div class="figure-portrait-frame">
+              <img src="media/validation-history.png" width="1254" height="1004" alt="The correction popup with a Correction history section below the Apply button, listing successive edits to a value with the editor's name and a timestamp for each." loading="lazy">
+            </div>
+            <figcaption>Each edit to a failed value is recorded and displayed, building trust in the change and helping our clients meet their audit goals</figcaption>
+          </figure>
+            </div>
+          </details>
+
+          <details class="problem-item" id="kd-feedback">
+            <summary>
+              <span class="problem-item-icon" aria-hidden="true"></span>
+              <span class="problem-item-title">Give immediate feedback</span>
+              <span class="problem-item-teaser">Check the correction now, apply it on the next <span class="problem-item-tail">run <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+            </summary>
+            <div class="problem-item-body">
+<p>Corrections are applied to the output on the next pipeline run, so we called this out with a notification bar. But as a user types in a correction, we check that their entered value will pass the rule, and warn if it&rsquo;s still a fail.</p>
+
+          <div class="figure-portrait-frame">
+            <div class="ui-video" data-hover-controls>
+              <video autoplay muted loop playsinline disablepictureinpicture poster="media/validation-instant-check.jpg">
+                <source src="media/validation-instant-check.mp4" type="video/mp4">
+              </video>
+            <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+            </div>
+          </div>
+            </div>
+          </details>
+
+          <details class="problem-item" id="impl-ordering">
+            <summary>
+              <span class="problem-item-icon" aria-hidden="true"></span>
+              <span class="problem-item-title" id="implementation-heading">Ordering matters</span>
+              <span class="problem-item-teaser">Let users review and reorder overlapping <span class="problem-item-tail">corrections <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+            </summary>
+            <div class="problem-item-body">
+<p>One of the things we discovered in testing, as part of our internal QA process, was that the order in which corrections apply is important, since one correction could overwrite a prior one. We created an interface showing all corrections applied to any validation rule, allowing users to reorder or remove them.</p>
+
+          <figure class="figure figure-wide">
+            <div class="figure-portrait-frame">
+              <img src="media/validation-correction-log.jpg" width="2000" height="1206" alt="A table of all corrections attached to one validation rule, with columns for order, column, the correction rule, last editor and last edit date." loading="lazy">
+            </div>
+            <figcaption>Behind each validation is a log of all corrections applied, allowing reordering of correction rules. We uncovered the need for this in QA testing.</figcaption>
+          </figure>
+            </div>
+          </details>
+        </div>
+
+        <figure class="figure figure-wide hero-repeat">
+          <div class="ui-video" data-hover-controls>
+            <video autoplay muted loop playsinline disablepictureinpicture poster="media/validation-hero-poster.jpg">
+              <source src="media/validation-hero.mp4" type="video/mp4">
+            </video>
+            <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+          </div>
+        </figure>
+      </div>
+
       <div class="subsection" id="improved-workflow">
         <h3>Improved workflow</h3>
         <div class="problem-items">
@@ -1473,135 +1602,6 @@
 </svg>
       </figure>
 
-      </div>
-
-      <div class="subsection" id="applying-corrections">
-        <h3>Applying corrections</h3>
-        <div class="problem-items">
-          <details class="problem-item" id="kd-entering">
-            <summary>
-              <span class="problem-item-icon" aria-hidden="true"></span>
-              <span class="problem-item-title">Show before and after</span>
-              <span class="problem-item-teaser">Keep the original value beside the <span class="problem-item-tail">correction <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
-            </summary>
-            <div class="problem-item-body">
-<figure class="figure">
-            <div class="figure-portrait-frame">
-              <img src="media/corrections-detail.png" width="2000" height="1351" alt="The validation report with corrections: for the failed Effective and Expiry columns, each original value in red sits beside an editable correction field, one per row." loading="lazy">
-            </div>
-          </figure>
-          <p>Corrections are shown beside the original submitted values. I chose this side-by-side layout to preserve the source data and make it clear that users are creating a mapping, rather than editing the original cell.</p>
-          <p>Corrected values stand out in bright green. If no correction has been applied, the placeholder text shows the current value. This helps the user understand exactly what the output data will be.</p>
-
-          <div class="evidence-card framing-card">
-            <div class="framing-head">
-              <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
-              <span class="framing-label">Design validation</span>
-            </div>
-            <figure class="figure">
-              <div class="figure-portrait-frame">
-                <div class="design-pair">
-                  <figure>
-                    <img src="media/corrections-before.png" width="1150" height="885" alt="First prototype of the corrections view: correction fields that don&rsquo;t read as editable, beside adjacent failed columns." loading="lazy">
-                    <figcaption>First prototype</figcaption>
-                  </figure>
-                  <figure>
-                    <img src="media/corrections-after.png" width="1150" height="885" alt="Revised corrections view: each row has a clearly defined entry field, linked to its original value, in a refined colour palette." loading="lazy">
-                    <figcaption>Improved design</figcaption>
-                  </figure>
-                </div>
-              </div>
-            </figure>
-            <p>The first prototype exposed two issues in testing: users didn&rsquo;t recognise the correction fields as editable, and adjacent failed columns made it difficult to tell which values belonged together.</p>
-            <p>I revised the design to give each row a clearly defined entry field, strengthen the link between original and corrected values, and refine the colour palette.</p>
-          </div>
-            </div>
-          </details>
-
-          <details class="problem-item" id="kd-scope">
-            <summary>
-              <span class="problem-item-icon" aria-hidden="true"></span>
-              <span class="problem-item-title">Make the scope of changes obvious</span>
-              <span class="problem-item-teaser">Make clear which values a correction will <span class="problem-item-tail">affect <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
-            </summary>
-            <div class="problem-item-body">
-<p>Quantemplate applies corrections to bulk data rather than isolated cells, so we needed to make this clear. When a user selects a field, it opens a popup where they enter the correction. The UI makes it clear that corrections can apply to every matching value or use conditions, such as correcting Premium only for a specific Policy Number.</p>
-          <p>We added a formula bar, so users could derive a value from another column. For example, if a date is missing, take the date from another column and subtract one month. Based on what we&rsquo;d observed in production pipelines, this would be a necessary addition.</p>
-
-          <figure class="figure figure-wide">
-            <div class="figure-portrait-frame">
-              <img src="media/validation-corrections-preview.png" width="1899" height="1068" alt="Quantemplate's validation report: flagged errors beside an editable corrections column, with the correction popup open on a row." loading="lazy">
-            </div>
-            <figcaption>Entering a correction. The popup makes the scope explicit &mdash; every matching value, or only where a condition is met &mdash; with a formula bar for deriving the value from another column.</figcaption>
-          </figure>
-            </div>
-          </details>
-
-          <details class="problem-item" id="kd-evidence">
-            <summary>
-              <span class="problem-item-icon" aria-hidden="true"></span>
-              <span class="problem-item-title">Preserve evidence</span>
-              <span class="problem-item-teaser">Keep a record of who changed what and <span class="problem-item-tail">when <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
-            </summary>
-            <div class="problem-item-body">
-<p>Audit was important to our clients, who use Quantemplate as a system-of-record for financial reporting. To support this we displayed the original failed values alongside the corrected rows in the report. The full change history of each edit was displayed.</p>
-
-          <figure class="figure">
-            <div class="figure-portrait-frame">
-              <img src="media/validation-history.png" width="1254" height="1004" alt="The correction popup with a Correction history section below the Apply button, listing successive edits to a value with the editor's name and a timestamp for each." loading="lazy">
-            </div>
-            <figcaption>Each edit to a failed value is recorded and displayed, building trust in the change and helping our clients meet their audit goals</figcaption>
-          </figure>
-            </div>
-          </details>
-
-          <details class="problem-item" id="kd-feedback">
-            <summary>
-              <span class="problem-item-icon" aria-hidden="true"></span>
-              <span class="problem-item-title">Give immediate feedback</span>
-              <span class="problem-item-teaser">Check the correction now, apply it on the next <span class="problem-item-tail">run <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
-            </summary>
-            <div class="problem-item-body">
-<p>Corrections are applied to the output on the next pipeline run, so we called this out with a notification bar. But as a user types in a correction, we check that their entered value will pass the rule, and warn if it&rsquo;s still a fail.</p>
-
-          <div class="figure-portrait-frame">
-            <div class="ui-video" data-hover-controls>
-              <video autoplay muted loop playsinline disablepictureinpicture poster="media/validation-instant-check.jpg">
-                <source src="media/validation-instant-check.mp4" type="video/mp4">
-              </video>
-            <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
-            </div>
-          </div>
-            </div>
-          </details>
-
-          <details class="problem-item" id="impl-ordering">
-            <summary>
-              <span class="problem-item-icon" aria-hidden="true"></span>
-              <span class="problem-item-title" id="implementation-heading">Ordering matters</span>
-              <span class="problem-item-teaser">Let users review and reorder overlapping <span class="problem-item-tail">corrections <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
-            </summary>
-            <div class="problem-item-body">
-<p>One of the things we discovered in testing, as part of our internal QA process, was that the order in which corrections apply is important, since one correction could overwrite a prior one. We created an interface showing all corrections applied to any validation rule, allowing users to reorder or remove them.</p>
-
-          <figure class="figure figure-wide">
-            <div class="figure-portrait-frame">
-              <img src="media/validation-correction-log.jpg" width="2000" height="1206" alt="A table of all corrections attached to one validation rule, with columns for order, column, the correction rule, last editor and last edit date." loading="lazy">
-            </div>
-            <figcaption>Behind each validation is a log of all corrections applied, allowing reordering of correction rules. We uncovered the need for this in QA testing.</figcaption>
-          </figure>
-            </div>
-          </details>
-        </div>
-
-        <figure class="figure figure-wide hero-repeat">
-          <div class="ui-video" data-hover-controls>
-            <video autoplay muted loop playsinline disablepictureinpicture poster="media/validation-hero-poster.jpg">
-              <source src="media/validation-hero.mp4" type="video/mp4">
-            </video>
-            <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
-          </div>
-        </figure>
       </div>
     </section>
 
