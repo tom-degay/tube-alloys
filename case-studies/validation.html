@@ -249,7 +249,8 @@
     overflow: hidden;
   }
 
-  /* The hero video, repeated unframed under "Applying corrections". */
+  /* Unframed videos (the hero repeated under "Applying corrections", the
+     pass filter): a hairline border instead of the grey frame. */
   .hero-repeat .ui-video { border: 1px solid rgba(255, 255, 255, 0.1); }
 
   .ui-video video {
@@ -542,7 +543,6 @@
   }
   /* The pill and the last word wrap together, so the pill never ends up
      alone on a line of its own. */
-  .principle-number { opacity: 0.5; }
   .problem-item-tail { white-space: nowrap; }
   /* "More" cue: a small tag (keyword-tag colours) holding three dots,
      drawn rather than typed so they sit centred in the pill. */
@@ -1157,6 +1157,7 @@
       </details>
       </div>
 
+
       <figure class="figure figure-wide wf-figure">
         <svg class="wf-diagram" viewBox="0 0 725 335" fill="none" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Validation workflow: original and improved">
 <defs><filter id="wf-shadow" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="3" stdDeviation="6" flood-color="#000" flood-opacity="0.18"/></filter><linearGradient id="wf-bg" x1="362.5" y1="0" x2="362.5" y2="335" gradientUnits="userSpaceOnUse"><stop stop-color="#1A1A1A"/><stop offset="1" stop-color="#2C2C2C"/></linearGradient></defs>
@@ -1316,9 +1317,56 @@
 
       <div class="subsection" id="improved-workflow">
         <h3>Improved workflow</h3>
-        <p>Passed rules are filtered out by default when viewing the report for the first time, helping users focus on their actionable task: reviewing the failures and warnings.</p>
-        <p>Knocking out the intermediate step for reviewing multiple input files takes the user straight to the data grid of the first failed input. In this view, popups let them switch between inputs without leaving the grid. The popup gives an indication of the number of failed rows within each input.</p>
-        <p>Adding buttons to navigate between rules within the data grid view, without returning to the report, removed three fiddly steps from the user&rsquo;s workflow. Multiplied over hundreds of validation rules every month, that&rsquo;s a significant time saving.</p>
+        <div class="problem-items">
+          <details class="problem-item" id="iw-filter">
+            <summary>
+              <span class="problem-item-icon" aria-hidden="true"></span>
+              <span class="problem-item-title">Filter out passes</span>
+              <span class="problem-item-teaser">Focus on the failures and <span class="problem-item-tail">warnings <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+            </summary>
+            <div class="problem-item-body">
+          <p>Passed rules are filtered out by default when viewing the report for the first time, helping users focus on their actionable task: reviewing the failures and warnings.</p>
+          <figure class="figure hero-repeat">
+            <div class="ui-video" data-hover-controls>
+              <video autoplay muted loop playsinline disablepictureinpicture poster="media/validation-pass-filter.jpg">
+                <source src="media/validation-pass-filter.mp4" type="video/mp4">
+              </video>
+              <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+            </div>
+          </figure>
+            </div>
+          </details>
+          <details class="problem-item" id="iw-skip">
+            <summary>
+              <span class="problem-item-icon" aria-hidden="true"></span>
+              <span class="problem-item-title">Skip the input drill-down step</span>
+              <span class="problem-item-teaser">Go straight to the first failed <span class="problem-item-tail">input <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+            </summary>
+            <div class="problem-item-body">
+          <p>Knocking out the intermediate step for reviewing multiple input files takes the user straight to the data grid of the first failed input. Popups let them switch between inputs without leaving the grid, or jump to a specific input straight from the top-level view. The popup gives an indication of the number of failed rows within each input.</p>
+          <figure class="figure">
+            <div class="figure-portrait-frame">
+              <img src="media/input-selector-2.png" width="1888" height="1046" alt="The input selection popup over the validation report: &lsquo;2 of 9 files have failures&rsquo;, listing each input file with its count of failed rows, or &lsquo;All rows passed&rsquo;." loading="lazy">
+            </div>
+          </figure>
+            </div>
+          </details>
+          <details class="problem-item" id="iw-navigation">
+            <summary>
+              <span class="problem-item-icon" aria-hidden="true"></span>
+              <span class="problem-item-title">Add direct rule navigation</span>
+              <span class="problem-item-teaser">Move between rules without leaving the <span class="problem-item-tail">grid <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+            </summary>
+            <div class="problem-item-body">
+          <p>Adding buttons to navigate between rules within the data grid view, without returning to the report, removed three fiddly steps from the user&rsquo;s workflow. Multiplied over hundreds of validation rules every month, that&rsquo;s a significant time saving.</p>
+          <figure class="figure">
+            <div class="figure-portrait-frame">
+              <img src="media/direct-rule-navigation.png" width="924" height="580" alt="Previous rule and Next rule buttons above the data grid, for moving between validation rules without returning to the report." loading="lazy">
+            </div>
+          </figure>
+            </div>
+          </details>
+        </div>
 
       <figure class="figure figure-wide wf-figure">
         <svg class="wf-diagram" data-id-prefix="wf-improved-" data-initial-state="1" viewBox="0 0 725 335" fill="none" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Validation workflow: original and improved">
@@ -1424,26 +1472,16 @@
 </g>
 </svg>
       </figure>
+
       </div>
 
       <div class="subsection" id="applying-corrections">
         <h3>Applying corrections</h3>
-        <figure class="figure figure-wide hero-repeat">
-          <div class="ui-video" data-hover-controls>
-            <video autoplay muted loop playsinline disablepictureinpicture poster="media/validation-hero-poster.jpg">
-              <source src="media/validation-hero.mp4" type="video/mp4">
-            </video>
-            <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
-          </div>
-        </figure>
-
-        <p>The corrections workflow was designed around five principles.</p>
-
         <div class="problem-items">
           <details class="problem-item" id="kd-entering">
             <summary>
               <span class="problem-item-icon" aria-hidden="true"></span>
-              <span class="problem-item-title"><span class="principle-number">1</span>&nbsp;&nbsp;Show before and after</span>
+              <span class="problem-item-title">Show before and after</span>
               <span class="problem-item-teaser">Keep the original value beside the <span class="problem-item-tail">correction <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
             </summary>
             <div class="problem-item-body">
@@ -1483,7 +1521,7 @@
           <details class="problem-item" id="kd-scope">
             <summary>
               <span class="problem-item-icon" aria-hidden="true"></span>
-              <span class="problem-item-title"><span class="principle-number">2</span>&nbsp;&nbsp;Make the scope of changes obvious</span>
+              <span class="problem-item-title">Make the scope of changes obvious</span>
               <span class="problem-item-teaser">Make clear which values a correction will <span class="problem-item-tail">affect <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
             </summary>
             <div class="problem-item-body">
@@ -1502,7 +1540,7 @@
           <details class="problem-item" id="kd-evidence">
             <summary>
               <span class="problem-item-icon" aria-hidden="true"></span>
-              <span class="problem-item-title"><span class="principle-number">3</span>&nbsp;&nbsp;Preserve evidence</span>
+              <span class="problem-item-title">Preserve evidence</span>
               <span class="problem-item-teaser">Keep a record of who changed what and <span class="problem-item-tail">when <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
             </summary>
             <div class="problem-item-body">
@@ -1520,7 +1558,7 @@
           <details class="problem-item" id="kd-feedback">
             <summary>
               <span class="problem-item-icon" aria-hidden="true"></span>
-              <span class="problem-item-title"><span class="principle-number">4</span>&nbsp;&nbsp;Give immediate feedback</span>
+              <span class="problem-item-title">Give immediate feedback</span>
               <span class="problem-item-teaser">Check the correction now, apply it on the next <span class="problem-item-tail">run <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
             </summary>
             <div class="problem-item-body">
@@ -1540,7 +1578,7 @@
           <details class="problem-item" id="impl-ordering">
             <summary>
               <span class="problem-item-icon" aria-hidden="true"></span>
-              <span class="problem-item-title" id="implementation-heading"><span class="principle-number">5</span>&nbsp;&nbsp;Ordering matters</span>
+              <span class="problem-item-title" id="implementation-heading">Ordering matters</span>
               <span class="problem-item-teaser">Let users review and reorder overlapping <span class="problem-item-tail">corrections <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
             </summary>
             <div class="problem-item-body">
@@ -1555,6 +1593,15 @@
             </div>
           </details>
         </div>
+
+        <figure class="figure figure-wide hero-repeat">
+          <div class="ui-video" data-hover-controls>
+            <video autoplay muted loop playsinline disablepictureinpicture poster="media/validation-hero-poster.jpg">
+              <source src="media/validation-hero.mp4" type="video/mp4">
+            </video>
+            <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+          </div>
+        </figure>
       </div>
     </section>
 
