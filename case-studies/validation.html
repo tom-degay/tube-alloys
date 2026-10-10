@@ -1416,7 +1416,14 @@
 
       <div class="subsection" id="applying-corrections">
         <h3>Applying corrections</h3>
-        <p>I designed a correction workflow that lets users fix errors where they find them, with clear scope, immediate feedback and a full audit trail.</p>
+        <p>The key challenges in designing the corrections workflow were to make it clear:</p>
+        <ul class="evidence-list">
+          <li>Where users should enter corrections, and what the original values were</li>
+          <li>How widely the changes apply</li>
+          <li>How to use calculated values and make row-level changes</li>
+          <li>Who changed what and when</li>
+          <li>That the pipeline needs to be run to apply the changes</li>
+        </ul>
 
         <h4>Entering corrections</h4>
         <p>We show corrections beside the original submitted values. I chose this side-by-side layout to preserve the source data and make it clear that users are creating a mapping, rather than editing the original cell.</p>
