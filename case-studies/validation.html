@@ -153,7 +153,6 @@
     }
   }
 
-
   body {
     font-family: "Fakt Blond", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -1155,7 +1154,6 @@
       </details>
       </div>
 
-
       <figure class="figure figure-wide wf-figure">
         <svg class="wf-diagram" viewBox="0 0 725 335" fill="none" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Validation workflow: original and improved">
 <defs><filter id="wf-shadow" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="3" stdDeviation="6" flood-color="#000" flood-opacity="0.18"/></filter><linearGradient id="wf-bg" x1="362.5" y1="0" x2="362.5" y2="335" gradientUnits="userSpaceOnUse"><stop stop-color="#1A1A1A"/><stop offset="1" stop-color="#2C2C2C"/></linearGradient></defs>
@@ -1400,7 +1398,7 @@
               <span class="problem-item-teaser">Check the correction now, apply it on the next <span class="problem-item-tail">run <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
             </summary>
             <div class="problem-item-body">
-<p>Corrections are applied to the output on the next pipeline run, so we called this out with a notification bar. But as a user types in a correction, we check that their entered value will pass the rule, and warn if it&rsquo;s still a fail.</p>
+<p>Corrections are applied to the output on the next pipeline run. Rather than wait for the run to complete to find out if a correction will now pass, after a field is completed, we check that the entered value will pass the rule, and warn if it&rsquo;s still a fail.</p>
 
           <div class="figure-portrait-frame">
             <div class="ui-video" data-hover-controls>
@@ -1489,6 +1487,12 @@
           <figure class="figure">
             <div class="figure-portrait-frame">
               <img src="media/direct-rule-navigation.png" width="924" height="580" alt="Previous rule and Next rule buttons above the data grid, for moving between validation rules without returning to the report." loading="lazy">
+            </div>
+          </figure>
+          <p>A rule navigator also allows instant navigation between any rule.</p>
+          <figure class="figure">
+            <div class="figure-portrait-frame">
+              <img src="media/rule-navigator.png" width="1152" height="854" alt="The rule navigator dropdown over the data grid, listing every validation rule with its fail or warning icon, the current rule marked with a dot." loading="lazy">
             </div>
           </figure>
             </div>
@@ -1614,11 +1618,18 @@
         <blockquote>The aim is to remove several manual back-and-forth steps currently handled over email.</blockquote>
         <p>The workflow covers preparing corrections, explicitly submitting them back, tracking progress and notifying both parties through in-app updates and email.</p>
 
-        <figure class="figure figure-wide">
+        <figure class="figure">
           <div class="figure-portrait-frame">
-            <img src="media/validation-sharing-spec.jpg" width="2000" height="1451" alt="Design specification board for the validation sharing workflow: the sharing popup across states, from selecting rules and a partner organisation, through a confirmation step, to automatic sharing settings." loading="lazy">
+            <img src="media/correction-sharing-popup.png" width="2418" height="2216" alt="The sharing popup: &lsquo;Share with 2 partners&rsquo;, listing each partner organisation with its submitters and the validation results selected to share, with a Review sharing button." loading="lazy">
           </div>
-          <figcaption>Design specification showing steps in the validation sharing workflow. The user chooses what to share, and to whom, then passes a confirmation step.</figcaption>
+          <figcaption>Corrections sharing popup: the user can select which rules to share, which organisations and users to share with.</figcaption>
+        </figure>
+
+        <figure class="figure">
+          <div class="figure-portrait-frame">
+            <img src="media/corrections-request.png" width="2066" height="634" alt="A data submission with a corrections request attached: requested by and last edit submitted, each with the organisation and person, and a progress bar showing 63% corrected." loading="lazy">
+          </div>
+          <figcaption>Correction requests are attached to the submitted data and visible to both parties.</figcaption>
         </figure>
 
         <p>Sharing raised a raft of new questions, for instance: should the validation progress bar reflect the entire dataset or only the validations shared with the supplier? I chose the shared validations, ensuring requester and supplier saw the same measure of completion, and made this clear in the UI.</p>
@@ -1740,8 +1751,6 @@
         </span>
       </a>
     </section>
-
-
 
   </div>
 
