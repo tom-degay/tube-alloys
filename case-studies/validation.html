@@ -478,6 +478,16 @@
   #wf-tabs:has(.wf-tab.is-active:hover) #wf-tabbg { fill: #303030; }
   .wf-tab:not(.is-active):hover .wf-tab-hit { fill: #232323; }
 
+  /* -- Key-points list on a dark card (Problem summary) -- */
+  .points-card {
+    max-width: 46rem;
+    box-sizing: border-box;
+    margin: 0 0 36px;
+    padding: 24px 28px;
+    background: rgb(33, 33, 33);
+    border-radius: 10px;
+  }
+
   .toc-heading { margin: 0 0 16px; }
 
   /* -- next case study link block -- */
@@ -910,11 +920,42 @@
 
     <section aria-labelledby="problem-heading" class="case-body">
       <h2 class="eyebrow" id="problem-heading">Problem</h2>
+      <div class="points-card">
+        <ul class="key-points">
+          <li>No easy way to fix errors in data</li>
+          <li>Clients wanted to report data quality back to suppliers</li>
+          <li>Workflow was inefficient at enterprise scale</li>
+        </ul>
+      </div>
       <h3>We&rsquo;d made errors easy to spot but hard to fix</h3>
-      <p>I had led the design of Quantemplate&rsquo;s original validation report in 2017, helping users identify data problems at a row level. In 2026, we set out to make those results actionable.</p>
-      <p>But the static reports were a dead end in the workflow. Resolving problems required users to configure additional pipeline steps or ask suppliers to correct and resubmit their files.</p>
-      <p>We needed to make the validations feature solve for the whole workflow. Enabling users to add corrections straight into the report was one step. Making the report&rsquo;s user experience more efficient was another.</p>
-      <blockquote>Unlocking validation results sharing would truly close the loop, enabling rapid round trip correction across organisations.</blockquote>
+      <p>Quantemplate&rsquo;s validation report helps users identify data problems at a row level. When we first released it, being able to see every row that had failed a validation was a breakthrough for our users, and the graphical presentation of the report helped win clients.</p>
+
+      <figure class="figure figure-wide">
+        <div class="figure-portrait-frame">
+          <div class="ui-video" data-hover-controls>
+            <video id="drilldown-video" autoplay muted loop playsinline disablepictureinpicture poster="media/validations-drill-down.jpg">
+              <source src="media/validations-drill-down.mp4" type="video/mp4">
+            </video>
+          <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+          </div>
+        </div>
+        <figcaption>An earlier version of the validation report. We later compressed the multi-step drill-down into a single step, based on observed usage</figcaption>
+      </figure>
+
+      <p>But there was a problem: our users could now find errors in their data, but fixing them was painful. To make a change, they had to go back to the pipeline and create a custom value mapping. This needed to be done via Excel-style syntax, which was a barrier for some users.</p>
+
+      <figure class="figure">
+        <div class="figure-portrait-frame">
+          <img src="media/ad-hoc-correction.png" width="1240" height="218" alt="A pipeline calculation step containing a hand-written IF statement that sets the Accident State to a fixed value when the policy number matches." loading="lazy">
+        </div>
+        <figcaption>Desire lines in the product: an ad-hoc correction added by a user to a pipeline. A manually-entered IF statement to modify the Accident State for a specific policy number.</figcaption>
+      </figure>
+
+      <h4>Validation sharing</h4>
+      <p>When we spoke to clients at the management level, they wanted to play their validation reports back to their suppliers, to inform them of their data quality performance. Currently they did this by downloading failed rows and emailing them, which was a slow process. We spotted an opportunity for value-add here: show suppliers validation results and ask them for corrections.</p>
+
+      <h4>Workflow efficiency</h4>
+      <p>Validations were being used on a much larger scale than anticipated. Clients had hundreds of rules and users spent days in the report analysing the results. There were aspects of the navigation and interaction that were proving cumbersome. We set out to fix this.</p>
 
       <figure class="figure figure-wide wf-figure">
         <svg class="wf-diagram" viewBox="0 0 725 335" fill="none" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Validation workflow: original and improved">
@@ -1047,27 +1088,9 @@
         <blockquote>Our philosophy was to get a working version into users&rsquo; hands sooner rather than later. We needed to see how the report held up to real data and business use.</blockquote>
         <p>We shipped a capable V1, then observed and progressively refined the experience.</p>
 
-        <figure class="figure figure-wide">
-          <div class="figure-portrait-frame">
-            <div class="ui-video" data-hover-controls>
-              <video id="drilldown-video" autoplay muted loop playsinline disablepictureinpicture poster="media/validations-drill-down.jpg">
-                <source src="media/validations-drill-down.mp4" type="video/mp4">
-              </video>
-            <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
-            </div>
-          </div>
-          <figcaption>An earlier version of the validation report. We later compressed the multi-step drill-down into a single step, based on observed usage</figcaption>
-        </figure>
-
         <p>For the 2026 upgrade to add corrections, we looked at how users were already making spot edits to their data by inserting calculation steps into their pipelines. These would typically map one value to another, sometimes making the mapping conditional on another value, such as the policy ID. This was a &lsquo;desire line&rsquo; in the product.</p>
         <blockquote>The opportunity was to bring that existing pattern into the report, making corrections easier to configure and trace.</blockquote>
 
-        <figure class="figure">
-          <div class="figure-portrait-frame">
-            <img src="media/ad-hoc-correction.png" width="1240" height="218" alt="A pipeline calculation step containing a hand-written IF statement that sets the Accident State to a fixed value when the policy number matches." loading="lazy">
-          </div>
-          <figcaption>Desire lines in the product: an ad-hoc correction added by a user to a pipeline. A manually-entered IF statement to modify the Accident State for a specific policy number.</figcaption>
-        </figure>
 
         <p class="see-also"><a href="/ai#ai-with-heading">How AI now helps me shorten this feedback loop &rarr;</a></p>
       </div>
@@ -1397,27 +1420,28 @@
     (function () {
       var root = document.documentElement;
       if (!root.classList.contains('head-armed')) return;
-      var list = document.querySelector('.key-points');
-      var items = list ? list.querySelectorAll('li') : [];
-      if (!items.length) return;
+      Array.prototype.forEach.call(document.querySelectorAll('.key-points'), function (list) {
+        var items = list.querySelectorAll('li');
+        if (!items.length) return;
 
-      function reveal() {
-        Array.prototype.forEach.call(items, function (li, i) {
-          li.style.transitionDelay = (i * 90) + 'ms';
-          li.classList.add('kp-in');
-        });
-        setTimeout(function () {
-          Array.prototype.forEach.call(items, function (li) { li.style.transitionDelay = ''; });
-        }, items.length * 90 + 700);
-      }
+        function reveal() {
+          Array.prototype.forEach.call(items, function (li, i) {
+            li.style.transitionDelay = (i * 90) + 'ms';
+            li.classList.add('kp-in');
+          });
+          setTimeout(function () {
+            Array.prototype.forEach.call(items, function (li) { li.style.transitionDelay = ''; });
+          }, items.length * 90 + 700);
+        }
 
-      if (!('IntersectionObserver' in window)) { reveal(); return; }
-      var io = new IntersectionObserver(function (entries) {
-        if (!entries.some(function (e) { return e.isIntersecting; })) return;
-        io.disconnect();
-        reveal();
-      }, { threshold: 0.2 });
-      io.observe(list);
+        if (!('IntersectionObserver' in window)) { reveal(); return; }
+        var io = new IntersectionObserver(function (entries) {
+          if (!entries.some(function (e) { return e.isIntersecting; })) return;
+          io.disconnect();
+          reveal();
+        }, { threshold: 0.2 });
+        io.observe(list);
+      });
     })();
   </script>
   <script data-goatcounter="https://tomdegay.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
