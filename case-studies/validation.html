@@ -562,8 +562,8 @@
   .problem-item-more svg { display: block; }
   .problem-item summary:hover .problem-item-more,
   .problem-item summary:focus-visible .problem-item-more { background: rgb(56, 56, 56); color: #fff; }
-  /* Evidence card at the foot of each problem: dark card, mono label,
-     green-arrow list at body size. */
+  /* Evidence card at the foot of each problem: dark card, diamond and grey
+     mono label (shared with the framing cards), green-arrow list. */
   .evidence-card {
     max-width: 46rem;
     box-sizing: border-box;
@@ -571,16 +571,6 @@
     padding: 20px 24px 22px;
     background: rgb(33, 33, 33);
     border-radius: 10px;
-  }
-  .evidence-label {
-    margin: 0 0 12px;
-    font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: 2px;
-    word-spacing: -3px;
-    text-transform: uppercase;
-    color: #00d8aa;
   }
   .evidence-list {
     list-style: none;
@@ -1110,7 +1100,10 @@
       </figure>
 
       <div class="evidence-card">
-        <h5 class="evidence-label">Evidence</h5>
+        <div class="framing-head">
+          <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M12.1426 2.85254L2.82812 12.167L12.1426 21.4814V24.3096L0 12.167L12.1426 0.0244141V2.85254Z" fill="#00D8AA"/><path d="M45.832 12.167L33.665 24.334L22.916 13.585L12.168 24.333V21.5049L21.502 12.1709L21.498 12.167L21.502 12.1631L12.168 2.8291V0.000976562L22.916 10.749L33.665 0L45.832 12.167ZM24.3301 12.1631L24.334 12.167L24.3301 12.1709L33.665 21.5059L43.0039 12.167L33.665 2.82812L24.3301 12.1631Z" fill="#605F5F"/></svg>
+          <span class="framing-label">Evidence</span>
+        </div>
         <ul class="evidence-list">
             <li>Users making ad hoc corrections in the pipeline</li>
             <li>Specifically mentioned in sales process loss analysis</li>
@@ -1129,7 +1122,10 @@
       <p>When we spoke to clients at the management level, they wanted to play their validation reports back to their suppliers, to inform them of their data quality performance. Currently they did this by downloading failed rows and emailing them, which was a slow process. We spotted an opportunity for value-add here: show suppliers validation results and ask them for corrections.</p>
 
       <div class="evidence-card">
-        <h5 class="evidence-label">Evidence</h5>
+        <div class="framing-head">
+          <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M12.1426 2.85254L2.82812 12.167L12.1426 21.4814V24.3096L0 12.167L12.1426 0.0244141V2.85254Z" fill="#00D8AA"/><path d="M45.832 12.167L33.665 24.334L22.916 13.585L12.168 24.333V21.5049L21.502 12.1709L21.498 12.167L21.502 12.1631L12.168 2.8291V0.000976562L22.916 10.749L33.665 0L45.832 12.167ZM24.3301 12.1631L24.334 12.167L24.3301 12.1709L33.665 21.5059L43.0039 12.167L33.665 2.82812L24.3301 12.1631Z" fill="#605F5F"/></svg>
+          <span class="framing-label">Evidence</span>
+        </div>
         <ul class="evidence-list">
             <li>Management had objectives to improve the quality coming from their suppliers.</li>
             <li>IT teams asked for an API to access validation results, to build their own feedback rig.</li>
@@ -1148,7 +1144,10 @@
       <p>Implementations had become ambitious: clients had hundreds of rules and users spent days in the report analysing the results. There were aspects of the navigation and interaction that were proving cumbersome. We set out to fix this.</p>
 
       <div class="evidence-card">
-        <h5 class="evidence-label">Evidence</h5>
+        <div class="framing-head">
+          <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M12.1426 2.85254L2.82812 12.167L12.1426 21.4814V24.3096L0 12.167L12.1426 0.0244141V2.85254Z" fill="#00D8AA"/><path d="M45.832 12.167L33.665 24.334L22.916 13.585L12.168 24.333V21.5049L21.502 12.1709L21.498 12.167L21.502 12.1631L12.168 2.8291V0.000976562L22.916 10.749L33.665 0L45.832 12.167ZM24.3301 12.1631L24.334 12.167L24.3301 12.1709L33.665 21.5059L43.0039 12.167L33.665 2.82812L24.3301 12.1631Z" fill="#605F5F"/></svg>
+          <span class="framing-label">Evidence</span>
+        </div>
         <ul class="evidence-list">
             <li>User feedback like &lsquo;I don&rsquo;t care about seeing the passed rules&rsquo; and &lsquo;When I go back to the report view after looking at a rule, my scroll position is lost&rsquo;.</li>
             <li>Production pipelines had hundreds of rules, we&rsquo;d planned for dozens.</li>
@@ -1273,7 +1272,7 @@
 
       <div class="evidence-card framing-card">
         <div class="framing-head">
-          <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M12.1426 2.85254L2.82812 12.167L12.1426 21.4814V24.3096L0 12.167L12.1426 0.0244141V2.85254Z" fill="#00D8AA"/><path d="M45.832 12.167L33.665 24.334L22.916 13.585L12.168 24.333V21.5049L21.502 12.1709L21.498 12.167L21.502 12.1631L12.168 2.8291V0.000976562L22.916 10.749L33.665 0L45.832 12.167ZM24.3301 12.1631L24.334 12.167L24.3301 12.1709L33.665 21.5059L43.0039 12.167L33.665 2.82812L24.3301 12.1631Z" fill="#605F5F"/></svg>
+          <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><rect x="22.9123" y="12.1673" width="15.2071" height="15.2071" transform="rotate(-45 22.9123 12.1673)" stroke="#B7B7B7" stroke-opacity="0.5" stroke-width="2"/><rect x="1.41421" y="12.1673" width="15.2071" height="15.2071" transform="rotate(-45 1.41421 12.1673)" stroke="#00D8AA" stroke-width="2"/></svg>
           <span class="framing-label">Framing</span>
         </div>
         <p class="framing-term">Client feedback</p>
@@ -1284,7 +1283,7 @@
 
       <div class="evidence-card framing-card">
         <div class="framing-head">
-          <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M12.1426 2.85254L2.82812 12.167L12.1426 21.4814V24.3096L0 12.167L12.1426 0.0244141V2.85254Z" fill="#00D8AA"/><path d="M45.832 12.167L33.665 24.334L22.916 13.585L12.168 24.333V21.5049L21.502 12.1709L21.498 12.167L21.502 12.1631L12.168 2.8291V0.000976562L22.916 10.749L33.665 0L45.832 12.167ZM24.3301 12.1631L24.334 12.167L24.3301 12.1709L33.665 21.5059L43.0039 12.167L33.665 2.82812L24.3301 12.1631Z" fill="#605F5F"/></svg>
+          <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><rect x="22.9123" y="12.1673" width="15.2071" height="15.2071" transform="rotate(-45 22.9123 12.1673)" stroke="#B7B7B7" stroke-opacity="0.5" stroke-width="2"/><rect x="1.41421" y="12.1673" width="15.2071" height="15.2071" transform="rotate(-45 1.41421 12.1673)" stroke="#00D8AA" stroke-width="2"/></svg>
           <span class="framing-label">Framing</span>
         </div>
         <p class="framing-term">Client feedback</p>
@@ -1295,7 +1294,7 @@
 
       <div class="evidence-card framing-card">
         <div class="framing-head">
-          <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M12.1426 2.85254L2.82812 12.167L12.1426 21.4814V24.3096L0 12.167L12.1426 0.0244141V2.85254Z" fill="#00D8AA"/><path d="M45.832 12.167L33.665 24.334L22.916 13.585L12.168 24.333V21.5049L21.502 12.1709L21.498 12.167L21.502 12.1631L12.168 2.8291V0.000976562L22.916 10.749L33.665 0L45.832 12.167ZM24.3301 12.1631L24.334 12.167L24.3301 12.1709L33.665 21.5059L43.0039 12.167L33.665 2.82812L24.3301 12.1631Z" fill="#605F5F"/></svg>
+          <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><rect x="22.9123" y="12.1673" width="15.2071" height="15.2071" transform="rotate(-45 22.9123 12.1673)" stroke="#B7B7B7" stroke-opacity="0.5" stroke-width="2"/><rect x="1.41421" y="12.1673" width="15.2071" height="15.2071" transform="rotate(-45 1.41421 12.1673)" stroke="#00D8AA" stroke-width="2"/></svg>
           <span class="framing-label">Framing</span>
         </div>
         <p class="framing-term">Client feedback</p>
@@ -1448,7 +1447,7 @@
             <div class="problem-item-body">
 <figure class="figure">
             <div class="figure-portrait-frame">
-              <img src="media/corrections-detail.png" width="2898" height="1958" alt="The validation report with corrections: for the failed Effective and Expiry columns, each original value in red sits beside an editable correction field, one per row." loading="lazy">
+              <img src="media/corrections-detail.png" width="2000" height="1351" alt="The validation report with corrections: for the failed Effective and Expiry columns, each original value in red sits beside an editable correction field, one per row." loading="lazy">
             </div>
           </figure>
           <p>Corrections are shown beside the original submitted values. I chose this side-by-side layout to preserve the source data and make it clear that users are creating a mapping, rather than editing the original cell.</p>
