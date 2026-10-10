@@ -599,7 +599,7 @@
   .framing-card p { margin: 0 0 16px; }
   .framing-card p:last-child { margin-bottom: 0; }
   .framing-card .framing-term {
-    margin-bottom: 4px;
+    margin: 0 0 4px;
     color: #00d8aa;
     font-size: 15px;
     font-family: "Fakt Blond SemiBold", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -1617,7 +1617,6 @@
       <div class="subsection" id="impl-sharing">
         <h3>Bringing suppliers into the correction workflow</h3>
         <p>Clients were downloading failed rows and emailing them to suppliers to request corrections. We extended the correction workflow through <a href="/case-studies/feeds">Feeds</a>, so clients could share selected validation results and suppliers could prepare and submit corrections within Quantemplate. This has now shipped in a limited beta.</p>
-        <blockquote>The aim is to remove several manual back-and-forth steps currently handled over email.</blockquote>
         <p>The workflow covers preparing corrections, explicitly submitting them back, tracking progress and notifying both parties through in-app updates and email.</p>
 
         <div class="problem-items">
@@ -1635,7 +1634,7 @@
                 <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M12.1426 2.85254L2.82812 12.167L12.1426 21.4814V24.3096L0 12.167L12.1426 0.0244141V2.85254Z" fill="#00D8AA"/><path d="M45.832 12.167L33.665 24.334L22.916 13.585L12.168 24.333V21.5049L21.502 12.1709L21.498 12.167L21.502 12.1631L12.168 2.8291V0.000976562L22.916 10.749L33.665 0L45.832 12.167ZM24.3301 12.1631L24.334 12.167L24.3301 12.1709L33.665 21.5059L43.0039 12.167L33.665 2.82812L24.3301 12.1631Z" fill="#605F5F"/></svg>
                 <span class="framing-label">Evidence</span>
               </div>
-              <p>Clients wanted to share their results but were concerned about sharing proprietary data. We addressed this by allowing them to select specific rules to share.</p>
+              <p>Clients told us they wanted to share their results but were concerned about sharing proprietary data. We addressed this by allowing them to select specific rules to share.</p>
             </div>
             <figure class="figure">
               <div class="figure-portrait-frame">
@@ -1656,10 +1655,10 @@
 
             <div class="evidence-card framing-card">
               <div class="framing-head">
-                <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M12.1426 2.85254L2.82812 12.167L12.1426 21.4814V24.3096L0 12.167L12.1426 0.0244141V2.85254Z" fill="#00D8AA"/><path d="M45.832 12.167L33.665 24.334L22.916 13.585L12.168 24.333V21.5049L21.502 12.1709L21.498 12.167L21.502 12.1631L12.168 2.8291V0.000976562L22.916 10.749L33.665 0L45.832 12.167ZM24.3301 12.1631L24.334 12.167L24.3301 12.1709L33.665 21.5059L43.0039 12.167L33.665 2.82812L24.3301 12.1631Z" fill="#605F5F"/></svg>
-                <span class="framing-label">Evidence</span>
+                <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
+                <span class="framing-label">Design exploration</span>
               </div>
-              <p>Suppliers need room to prepare and check corrections before passing them back. Sending every edit immediately could expose unfinished or incorrect changes to the receiver, and potentially trigger pipeline runs.</p>
+              <p>Exploring the handoff revealed a risk: sending every edit immediately could expose unfinished corrections to the receiver and trigger pipeline runs. I separated preparation from submission, giving suppliers time to check their changes before passing them back.</p>
             </div>
             <figure class="figure" id="corrections-submit-mockup">
               <div class="figure-portrait-frame">
@@ -1696,6 +1695,15 @@
               </div>
               <figcaption>Correction requests are attached to the submitted data and visible to both parties.</figcaption>
             </figure>
+
+            <div class="evidence-card framing-card" id="progress-design-exploration">
+              <div class="framing-head">
+                <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
+                <span class="framing-label">Design exploration</span>
+              </div>
+              <p>Not every failure needed correcting, so I explored tracking only checks users had started working on. But starting another check added all its failures to the total, making progress appear to drop.</p>
+              <p>I kept it simple: show how many corrections had been requested and how many were complete.</p>
+            </div>
 
             <figure class="figure">
               <div class="figure-portrait-frame">
