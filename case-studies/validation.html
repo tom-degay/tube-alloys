@@ -620,6 +620,10 @@
   .framing-card .figure { margin: 0 0 16px; }
   /* Before and after, side by side in one frame. */
   .design-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; width: 100%; }
+  .design-pair figure { margin: 0; }
+  @media (max-width: 560px) {
+    .design-pair { grid-template-columns: 1fr; gap: 20px; }
+  }
   .framing-head {
     display: flex;
     align-items: center;
@@ -1442,7 +1446,13 @@
               <span class="problem-item-teaser">Keep the original value beside the <span class="problem-item-tail">correction <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
             </summary>
             <div class="problem-item-body">
-<p>We show corrections beside the original submitted values. I chose this side-by-side layout to preserve the source data and make it clear that users are creating a mapping, rather than editing the original cell.</p>
+<figure class="figure">
+            <div class="figure-portrait-frame">
+              <img src="media/corrections-detail.png" width="2898" height="1958" alt="The validation report with corrections: for the failed Effective and Expiry columns, each original value in red sits beside an editable correction field, one per row." loading="lazy">
+            </div>
+          </figure>
+          <p>Corrections are shown beside the original submitted values. I chose this side-by-side layout to preserve the source data and make it clear that users are creating a mapping, rather than editing the original cell.</p>
+          <p>Corrected values stand out in bright green. If no correction has been applied, the placeholder text shows the current value. This helps the user understand exactly what the output data will be.</p>
 
           <div class="evidence-card framing-card">
             <div class="framing-head">
@@ -1452,8 +1462,14 @@
             <figure class="figure">
               <div class="figure-portrait-frame">
                 <div class="design-pair">
-                  <img src="media/corrections-before.png" width="1150" height="885" alt="First prototype of the corrections view: correction fields that don&rsquo;t read as editable, beside adjacent failed columns." loading="lazy">
-                  <img src="media/corrections-after.png" width="1150" height="885" alt="Revised corrections view: each row has a clearly defined entry field, linked to its original value, in a refined colour palette." loading="lazy">
+                  <figure>
+                    <img src="media/corrections-before.png" width="1150" height="885" alt="First prototype of the corrections view: correction fields that don&rsquo;t read as editable, beside adjacent failed columns." loading="lazy">
+                    <figcaption>First prototype</figcaption>
+                  </figure>
+                  <figure>
+                    <img src="media/corrections-after.png" width="1150" height="885" alt="Revised corrections view: each row has a clearly defined entry field, linked to its original value, in a refined colour palette." loading="lazy">
+                    <figcaption>Improved design</figcaption>
+                  </figure>
                 </div>
               </div>
             </figure>
