@@ -1302,7 +1302,7 @@
     <hr class="rule">
 
     <section aria-labelledby="keydecisions-heading" class="case-body">
-      <h2 class="eyebrow" id="keydecisions-heading">Interaction model</h2>
+      <h2 class="eyebrow" id="keydecisions-heading">Design decisions</h2>
 
       <div class="subsection" id="kd-scope">
         <h3>Make the scope of changes obvious</h3>
@@ -1342,15 +1342,8 @@
           </div>
         </div>
       </div>
-    </section>
-
-    <hr class="rule">
-
-    <section aria-labelledby="implementation-heading" class="case-body">
-      <h2 class="eyebrow" id="implementation-heading">Implementation</h2>
-
       <div class="subsection" id="impl-ordering">
-        <h3>Ordering and audit</h3>
+        <h3 id="implementation-heading">Ordering and audit</h3>
         <p>One of the things we discovered in testing, as part of our internal QA process, was that the order in which corrections apply is important, since one correction could overwrite a prior one. We created an interface showing all corrections applied to any validation rule, allowing users to reorder or remove them.</p>
 
         <figure class="figure figure-wide">
@@ -1365,12 +1358,12 @@
     <hr class="rule">
 
     <section aria-labelledby="sharing-heading" class="case-body">
-      <h2 class="eyebrow" id="sharing-heading">Sharing</h2>
+      <h2 class="eyebrow" id="sharing-heading">Extending the workflow to suppliers</h2>
 
       <div class="subsection" id="impl-sharing">
         <h3>A shared correction workflow</h3>
-        <p>The next step is to allow clients to send selected validation results back to the supplier through a <a href="/case-studies/feeds">Feed</a> where they can make corrections.</p>
-        <blockquote>This will take out several manual back-and-forth steps which are currently done over email.</blockquote>
+        <p>We extended the correction workflow so clients could send selected validation results back to suppliers through a <a href="/case-studies/feeds">Feed</a> and request corrections directly. This has now shipped in a limited beta.</p>
+        <blockquote>The aim is to remove several manual back-and-forth steps currently handled over email.</blockquote>
         <p>The workflow covers preparing corrections, explicitly submitting them back, tracking progress and notifying both parties through in-app updates and email.</p>
 
         <figure class="figure figure-wide">
@@ -1389,7 +1382,6 @@
           <figcaption>The progress bar tracks completion of the shared validations specifically, not the full dataset, so requester and supplier see the same number.</figcaption>
         </figure>
 
-        <p>Validation Corrections are live in production. Correction sharing is currently under construction, targeting release in October 2026.</p>
       </div>
     </section>
 
@@ -1398,7 +1390,7 @@
     <section aria-labelledby="outcome-heading" class="case-body">
       <h2 class="eyebrow" id="outcome-heading">Outcome</h2>
       <h3>Closing the loop</h3>
-      <p>Validation Corrections launched on 8 July 2026. By 8 October, corrections had been applied to 23,429 cells across 27 pipeline runs.</p>
+      <p>In-product Validation Corrections launched on 8 July 2026. By 8 October, corrections had been applied to 23,429 cells across 27 pipeline runs.</p>
       <figure class="corrections-chart" aria-labelledby="corrections-chart-title">
         <h3 id="corrections-chart-title">23,429 cells corrected</h3>
         <p class="corrections-chart-subtitle">Cumulative corrections · 8 Oct 2026</p>
@@ -1436,12 +1428,18 @@
           </dl>
         </div>
       </figure>
-      <p>In a demo of the new capabilities, clients cited the validation improvements as a significant boost to their workflow, with a clear focus on their productivity bottlenecks.</p>
+      <p>In a demo of the in-product correction and report improvements, clients cited a significant boost to their workflow, with a clear focus on their productivity bottlenecks.</p>
       <p>Being able to see who had made corrections was especially valuable to them for supporting their audit processes.</p>
       <blockquote class="outcome-quote">The speed at which we can work now is a real step change. Everything feels much more fluid. I don&rsquo;t even need to click all the way into the validation to see what I need. The changes have helped tremendously: I know what I need to focus on and what I need to download.
         <cite>Quantemplate user-client at major US insurance carrier</cite>
       </blockquote>
-      <p>The next release will extend that workflow across organisations, addressing one of Quantemplate&rsquo;s most requested capabilities, according to our user interviews: allowing suppliers to resolve reported issues directly, with both parties working from the same results.</p>
+      <p>Supplier sharing is now in limited beta; we don&rsquo;t yet have usage results or client feedback.</p>
+    </section>
+
+    <hr class="rule">
+
+    <section aria-labelledby="nextsteps-heading" class="case-body">
+      <h2 class="eyebrow" id="nextsteps-heading">Next steps</h2>
 
       <div class="subsection" id="outcome-agentic">
         <h3>Agentic suggestions</h3>
@@ -1504,10 +1502,10 @@
     <a href="#keypoints-heading">Key points</a>
     <a href="#problem-heading">Problem</a>
     <a href="#approach-heading">Approach</a>
-    <a href="#keydecisions-heading">Interaction model</a>
-    <a href="#implementation-heading">Implementation</a>
-    <a href="#sharing-heading">Sharing</a>
+    <a href="#keydecisions-heading">Design decisions</a>
+    <a href="#sharing-heading">Extending the workflow to suppliers</a>
     <a href="#outcome-heading">Outcome</a>
+    <a href="#nextsteps-heading">Next steps</a>
   </nav>
 
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged image" tabindex="-1">
