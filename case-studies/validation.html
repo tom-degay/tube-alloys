@@ -526,7 +526,11 @@
     grid-column: 2;
     margin-top: 6px;
     color: rgba(255, 255, 255, 0.68);
+    line-height: 1.5;
   }
+  /* The pill and the last word wrap together, so the pill never ends up
+     alone on a line of its own. */
+  .problem-item-tail { white-space: nowrap; }
   /* "More" cue: a small tag (keyword-tag colours) holding three dots,
      drawn rather than typed so they sit centred in the pill. */
   .problem-item-more {
@@ -986,7 +990,7 @@
         <summary>
           <span class="problem-item-icon" aria-hidden="true"></span>
           <span class="problem-item-title">No easy way to fix errors in data</span>
-          <span class="problem-item-teaser">We&rsquo;d made errors easy to spot but hard to fix. <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span>
+          <span class="problem-item-teaser">We&rsquo;d made errors easy to spot but hard to <span class="problem-item-tail">fix. <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
         </summary>
         <div class="problem-item-body">
       <p>Quantemplate&rsquo;s validation report helps users identify data problems at a row level. When we first released it, being able to see every row that had failed a validation was a breakthrough for our users, and the graphical presentation of the report helped win clients.</p>
@@ -1019,7 +1023,7 @@
         <summary>
           <span class="problem-item-icon" aria-hidden="true"></span>
           <span class="problem-item-title">Results were siloed in Quantemplate</span>
-          <span class="problem-item-teaser">Clients wanted an easier way to share results with suppliers. <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span>
+          <span class="problem-item-teaser">Clients wanted an easier way to share results with <span class="problem-item-tail">suppliers. <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
         </summary>
         <div class="problem-item-body">
       <p>When we spoke to clients at the management level, they wanted to play their validation reports back to their suppliers, to inform them of their data quality performance. Currently they did this by downloading failed rows and emailing them, which was a slow process. We spotted an opportunity for value-add here: show suppliers validation results and ask them for corrections.</p>
@@ -1031,7 +1035,7 @@
         <summary>
           <span class="problem-item-icon" aria-hidden="true"></span>
           <span class="problem-item-title">Workflow was inefficient at enterprise scale</span>
-          <span class="problem-item-teaser">Usage had outgrown original design intent. <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span>
+          <span class="problem-item-teaser">Usage had outgrown original design <span class="problem-item-tail">intent. <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
         </summary>
         <div class="problem-item-body">
       <p>Validations were being used on a much larger scale than anticipated. Clients had hundreds of rules and users spent days in the report analysing the results. There were aspects of the navigation and interaction that were proving cumbersome. We set out to fix this.</p>
