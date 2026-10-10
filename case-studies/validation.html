@@ -600,6 +600,19 @@
     color: #00d8aa;
   }
 
+  /* Problem framing cards: the evidence card, holding a client quote and
+     the analysis of it (or the constraint it ran into). */
+  .framing-card + .framing-card { margin-top: 20px; }
+  .framing-card p { margin: 0 0 16px; }
+  .framing-card p:last-child { margin-bottom: 0; }
+  .framing-card .framing-term {
+    margin-bottom: 4px;
+    color: #00d8aa;
+    font-size: 15px;
+  }
+  .framing-card .framing-quote { color: #fff; }
+  .framing-card .evidence-list { margin-top: -6px; }
+
   /* flow-root keeps the children's margins inside the body, so the height
      the script animates to (scrollHeight) is the height it settles at. */
   .problem-item-body { display: flow-root; box-sizing: border-box; padding-left: 28px; }  /* 14px icon + 14px gap */
@@ -1108,7 +1121,7 @@
       <div class="evidence-card">
         <h5 class="evidence-label">Evidence</h5>
         <ul class="evidence-list">
-            <li>User feedback like &ldquo;I don&rsquo;t care about seeing the passed rules&rdquo; and &ldquo;When I go back to the report view after looking at a rule, my scroll position is lost&rdquo;.</li>
+            <li>User feedback like &lsquo;I don&rsquo;t care about seeing the passed rules&rsquo; and &lsquo;When I go back to the report view after looking at a rule, my scroll position is lost&rsquo;.</li>
             <li>Production pipelines had hundreds of rules, we&rsquo;d planned for dozens.</li>
         </ul>
       </div>
@@ -1225,33 +1238,32 @@
     <hr class="rule">
 
     <section aria-labelledby="approach-heading" class="case-body">
-      <h2 class="eyebrow" id="approach-heading">Approach</h2>
+      <h2 class="eyebrow" id="approach-heading">Framing</h2>
 
-      <div class="subsection" id="approach-context-rules">
-        <h3>Context: setting validation rules</h3>
-        <p>Engineering had already created an Excel-style formula editor for creating calculated values. This was a syntax that was second-nature to power users and had proven its usefulness. We decided to allow users to set their own validation queries, as this would allow complete flexibility. Validation rules were accompanied by a description and a fail/warn action &ndash; another requirement we&rsquo;d learnt from the research.</p>
-
-        <figure class="figure figure-strip figure-wide">
-          <div class="figure-portrait-frame">
-            <div class="figure-strip-imgs">
-              <img src="media/validation-operation.png" width="3404" height="1426" alt="The formula-based validation rule editor, showing eight example rules such as effective-date and premium checks, each with a description and a warn/fail action." loading="lazy">
-              <img src="media/calculate-editor.png" width="1860" height="1338" alt="Autocomplete in the rule editor: typing a letter lists matching columns and functions, with the ENDOFMONTH function&rsquo;s description and syntax shown in a side panel." loading="lazy">
-            </div>
-          </div>
-          <figcaption>Users write their own validation rules in a familiar, Excel-style syntax, with autocomplete surfacing fields and functions as they type.</figcaption>
-        </figure>
+      <div class="evidence-card framing-card">
+        <p class="framing-term">Client feedback</p>
+        <p class="framing-quote">&lsquo;I just want to edit the failed cell&rsquo;</p>
+        <p class="framing-term">Engineering constraint</p>
+        <p>Quantemplate is designed around rules-based transformations to data, so cell-level editing is not possible. Instead we need to make adding a rule as easy as editing a cell, and make its effect obvious.</p>
       </div>
 
-      <div class="subsection" id="approach-ship">
-        <h3>Ship, learn, repeat</h3>
-        <blockquote>Our philosophy was to get a working version into users&rsquo; hands sooner rather than later. We needed to see how the report held up to real data and business use.</blockquote>
-        <p>We shipped a capable V1, then observed and progressively refined the experience.</p>
+      <div class="evidence-card framing-card">
+        <p class="framing-term">Client feedback</p>
+        <p class="framing-quote">&lsquo;When I go back to the report view after looking at a rule, my scroll position is lost&rsquo;.</p>
+        <p class="framing-term">Analysis</p>
+        <p>The root problem isn&rsquo;t just the scroll position, but having to go back to the report to navigate to the next rule.</p>
+      </div>
 
-        <p>For the 2026 upgrade to add corrections, we looked at how users were already making spot edits to their data by inserting calculation steps into their pipelines. These would typically map one value to another, sometimes making the mapping conditional on another value, such as the policy ID. This was a &lsquo;desire line&rsquo; in the product.</p>
-        <blockquote>The opportunity was to bring that existing pattern into the report, making corrections easier to configure and trace.</blockquote>
-
-
-        <p class="see-also"><a href="/ai#ai-with-heading">How AI now helps me shorten this feedback loop &rarr;</a></p>
+      <div class="evidence-card framing-card">
+        <p class="framing-term">Client feedback</p>
+        <p class="framing-quote">&lsquo;Give us an API so we can build our own validation feedback rig&rsquo;</p>
+        <p class="framing-term">Analysis</p>
+        <p>In this case we want to provide a solution in the product, not an API:</p>
+        <ul class="evidence-list">
+          <li>In-product solutions are actionable by business users and don&rsquo;t require specialist setup</li>
+          <li>They increase the value and stickiness of our product</li>
+          <li>The maintenance is on us, no external dependency</li>
+        </ul>
       </div>
     </section>
 
@@ -1469,7 +1481,7 @@
     <span class="eyebrow toc-heading">On this page</span>
     <a href="#keypoints-heading">Key points</a>
     <a href="#problem-heading">Problem</a>
-    <a href="#approach-heading">Approach</a>
+    <a href="#approach-heading">Framing</a>
     <a href="#keydecisions-heading">Key decisions</a>
     <a href="#implementation-heading">Implementation</a>
     <a href="#outcome-heading">Outcome</a>
