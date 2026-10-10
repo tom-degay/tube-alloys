@@ -602,16 +602,6 @@
 
   /* Problem framing cards: the evidence card, holding a client quote and
      the analysis of it (or the constraint it ran into). */
-  .reflections-list {
-    max-width: 46rem;
-    margin: 0;
-    padding-left: 24px;
-    color: rgba(255, 255, 255, 0.82);
-    font-size: 18px;
-    line-height: 1.6;
-  }
-  .reflections-list li + li { margin-top: 16px; }
-
   .framing-card + .framing-card { margin-top: 20px; }
   .framing-card p { margin: 0 0 16px; }
   .framing-card p:last-child { margin-bottom: 0; }
@@ -1448,33 +1438,17 @@
 
     <hr class="rule">
 
-    <section aria-labelledby="nextsteps-heading" class="case-body">
-      <h2 class="eyebrow" id="nextsteps-heading">Next steps</h2>
+    <section aria-labelledby="reflections-heading" class="case-body" id="nextsteps-heading">
+      <h2 class="eyebrow" id="reflections-heading">Reflections</h2>
+      <p>We designed around existing workflows, but easier validation encouraged clients to attempt more. Better tools changed the scale of the work and exposed the next bottleneck: entering corrections could itself become repetitive.</p>
+      <p>This creates an opportunity for an agent to suggest corrections for people to review. The workflow already makes changes explicit, previewable and traceable, providing a foundation for assistance as the volume grows.</p>
 
-      <div class="subsection" id="outcome-agentic">
-        <h3>Agentic suggestions</h3>
-        <p>The corrections workflow lays the groundwork for an agent to suggest fixes. Every correction is explicit, previewed and recorded, so an agent can propose changes within the same secure, private context, with people approving them in the existing workflow. That further reduces the time needed to get the data right.</p>
-
-        <figure class="figure figure-wide">
+        <figure class="figure figure-wide" id="outcome-agentic">
           <div class="figure-portrait-frame">
             <img src="/media/agent-corrections-highlight.png" width="1638" height="1350" alt="Quantemplate's agent panel over a data table. A user asks it to correct the invalid zip codes; it replies that it added leading zeros to 12 values and links to review the changes. In the table behind, each corrected zip code is marked with a small cube icon. The user then asks it to change 2907 back, and the agent starts reverting that correction." loading="lazy">
           </div>
-          <figcaption>The next step is to integrate an agent to suggest corrections. Changes proposed by the agent are marked with the cube motif for human review.</figcaption>
+          <figcaption>Proposed next step: an agent suggests corrections for human review. Changes proposed by the agent are marked with the cube motif for human review.</figcaption>
         </figure>
-      </div>
-    </section>
-
-    <hr class="rule">
-
-    <section aria-labelledby="reflections-heading" class="case-body">
-      <h2 class="eyebrow" id="reflections-heading">Reflections</h2>
-      <p>The project made correcting data easier and gave clients greater confidence in their changes. It also highlighted a few lessons:</p>
-      <ul class="reflections-list">
-        <li><strong>Better tools change the scale of the work.</strong> We designed around existing workflows; easier validation encouraged clients to attempt more. I&rsquo;d explore that potential demand earlier.</li>
-        <li><strong>Auditability builds everyday trust.</strong> Showing change history beside a correction helped users trust the result, beyond meeting compliance needs.</li>
-        <li><strong>Sharing needs operator confidence.</strong> Management wanted supplier involvement, but operators were more cautious. The beta will help us understand what they need to feel confident using it.</li>
-        <li><strong>Measure time saved.</strong> A before-and-after comparison of task completion times would have quantified clients&rsquo; reported gains and strengthened the wider business&rsquo;s sales and renewal case.</li>
-      </ul>
     </section>
 
     <hr class="rule">
@@ -1528,7 +1502,6 @@
     <a href="#keydecisions-heading">Design decisions</a>
     <a href="#sharing-heading">Sharing</a>
     <a href="#outcome-heading">Outcome</a>
-    <a href="#nextsteps-heading">Next steps</a>
     <a href="#reflections-heading">Reflections</a>
   </nav>
 
