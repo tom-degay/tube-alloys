@@ -322,6 +322,8 @@
     background: #000;
   }
 
+  .submit-mockup-frame { display: block; width: 100%; height: auto; border-radius: 6px; }
+
   /* -- inline screenshot with caption -- */
   .figure {
     margin: 28px 0 24px;
@@ -1613,34 +1615,97 @@
       <h2 class="eyebrow" id="sharing-heading">Sharing</h2>
 
       <div class="subsection" id="impl-sharing">
-        <h3>A shared correction workflow</h3>
-        <p>We extended the correction workflow so clients could send selected validation results back to suppliers through a <a href="/case-studies/feeds">Feed</a> and request corrections directly. This has now shipped in a limited beta.</p>
+        <h3>Bringing suppliers into the correction workflow</h3>
+        <p>Clients were downloading failed rows and emailing them to suppliers to request corrections. We extended the correction workflow through <a href="/case-studies/feeds">Feeds</a>, so clients could share selected validation results and suppliers could prepare and submit corrections within Quantemplate. This has now shipped in a limited beta.</p>
         <blockquote>The aim is to remove several manual back-and-forth steps currently handled over email.</blockquote>
         <p>The workflow covers preparing corrections, explicitly submitting them back, tracking progress and notifying both parties through in-app updates and email.</p>
 
-        <figure class="figure">
-          <div class="figure-portrait-frame">
-            <img src="media/correction-sharing-popup.png" width="2418" height="2216" alt="The sharing popup: &lsquo;Share with 2 partners&rsquo;, listing each partner organisation with its submitters and the validation results selected to share, with a Review sharing button." loading="lazy">
-          </div>
-          <figcaption>Corrections sharing popup: the user can select which rules to share, which organisations and users to share with.</figcaption>
-        </figure>
+        <div class="problem-items">
+          <details class="problem-item" id="sh-choose">
+            <summary>
+              <span class="problem-item-icon" aria-hidden="true"></span>
+              <span class="problem-item-title">Choose what to share</span>
+              <span class="problem-item-teaser">Select the results, organisations and <span class="problem-item-tail">people <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+            </summary>
+            <div class="problem-item-body">
+            <p>Clients select the validation results, organisations and people to include, then review the selection before sharing.</p>
 
-        <figure class="figure">
-          <div class="figure-portrait-frame">
-            <img src="media/corrections-request.png" width="2066" height="634" alt="A data submission with a corrections request attached: requested by and last edit submitted, each with the organisation and person, and a progress bar showing 63% corrected." loading="lazy">
-          </div>
-          <figcaption>Correction requests are attached to the submitted data and visible to both parties.</figcaption>
-        </figure>
+            <div class="evidence-card framing-card">
+              <div class="framing-head">
+                <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M12.1426 2.85254L2.82812 12.167L12.1426 21.4814V24.3096L0 12.167L12.1426 0.0244141V2.85254Z" fill="#00D8AA"/><path d="M45.832 12.167L33.665 24.334L22.916 13.585L12.168 24.333V21.5049L21.502 12.1709L21.498 12.167L21.502 12.1631L12.168 2.8291V0.000976562L22.916 10.749L33.665 0L45.832 12.167ZM24.3301 12.1631L24.334 12.167L24.3301 12.1709L33.665 21.5059L43.0039 12.167L33.665 2.82812L24.3301 12.1631Z" fill="#605F5F"/></svg>
+                <span class="framing-label">Evidence</span>
+              </div>
+              <p>Clients wanted to share their results but were concerned about sharing proprietary data. We addressed this by allowing them to select specific rules to share.</p>
+            </div>
+            <figure class="figure">
+              <div class="figure-portrait-frame">
+                <img src="media/correction-sharing-popup.png" width="2418" height="2216" alt="The sharing popup: &lsquo;Share with 2 partners&rsquo;, listing each partner organisation with its submitters and the validation results selected to share, with a Review sharing button." loading="lazy">
+              </div>
+              <figcaption>Corrections sharing popup: the user can select which rules to share, which organisations and users to share with.</figcaption>
+            </figure>
+            </div>
+          </details>
+          <details class="problem-item" id="sh-submit">
+            <summary>
+              <span class="problem-item-icon" aria-hidden="true"></span>
+              <span class="problem-item-title">Submit only when ready</span>
+              <span class="problem-item-teaser">Prepare corrections privately, then <span class="problem-item-tail">submit <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+            </summary>
+            <div class="problem-item-body">
+            <p>I separated preparing corrections from submitting them. A &lsquo;Corrections pending&rsquo; indicator makes the outstanding changes visible, with an explicit Submit action to pass them back when ready.</p>
 
-        <p>Sharing raised a raft of new questions, for instance: should the validation progress bar reflect the entire dataset or only the validations shared with the supplier? I chose the shared validations, ensuring requester and supplier saw the same measure of completion, and made this clear in the UI.</p>
+            <div class="evidence-card framing-card">
+              <div class="framing-head">
+                <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M12.1426 2.85254L2.82812 12.167L12.1426 21.4814V24.3096L0 12.167L12.1426 0.0244141V2.85254Z" fill="#00D8AA"/><path d="M45.832 12.167L33.665 24.334L22.916 13.585L12.168 24.333V21.5049L21.502 12.1709L21.498 12.167L21.502 12.1631L12.168 2.8291V0.000976562L22.916 10.749L33.665 0L45.832 12.167ZM24.3301 12.1631L24.334 12.167L24.3301 12.1709L33.665 21.5059L43.0039 12.167L33.665 2.82812L24.3301 12.1631Z" fill="#605F5F"/></svg>
+                <span class="framing-label">Evidence</span>
+              </div>
+              <p>Suppliers need room to prepare and check corrections before passing them back. Sending every edit immediately could expose unfinished or incorrect changes to the receiver, and potentially trigger pipeline runs.</p>
+            </div>
+            <figure class="figure" id="corrections-submit-mockup">
+              <div class="figure-portrait-frame">
+                <svg class="submit-mockup-frame" viewBox="448.5 65 480 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Interaction mockup: a Corrections pending indicator and Submit action appear above the validation report.">
+                  <image width="1377" height="846" href="media/corrections-submit-frame.png"/>
+                  <g transform="translate(558.5 102)"><g data-submit-indicator>
+      <path fill="#252525" d="M13.5 0H246.5A13.5 13.5 0 0 1 246.5 27H13.5A13.5 13.5 0 0 1 13.5 0Z"/>
+      <path stroke="#060606" stroke-width="2" d="M169 0V27"/>
+      <text x="12" y="18" fill="#a7a7a7" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="600">Corrections pending</text>
+      <circle cx="153.5" cy="13.5" r="6.5" fill="#999"/>
+      <path fill="#292929" d="M152.7 12.3h1.6v5h-1.6zm0-3h1.6v1.7h-1.6z"/>
+      <path d="M185 10.2h-2.5a3.4 3.4 0 1 0 0 6.8h2.5" fill="none" stroke="#51fbd8" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M182 13.6h10m-3.5-3.4 3.5 3.4-3.5 3.4" fill="none" stroke="#51fbd8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="199" y="18" fill="#51fbd8" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="600">Submit</text>
+    </g></g>
+                </svg>
+              </div>
+              <figcaption>Interaction mockup: pending corrections stay with the supplier until explicitly submitted.</figcaption>
+            </figure>
+            </div>
+          </details>
+          <details class="problem-item" id="sh-progress">
+            <summary>
+              <span class="problem-item-icon" aria-hidden="true"></span>
+              <span class="problem-item-title">Give both parties the same measure of progress</span>
+              <span class="problem-item-teaser">Track only the validations that were <span class="problem-item-tail">shared <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+            </summary>
+            <div class="problem-item-body">
+            <p>A supplier may only be asked to address some of a dataset’s validations. Measuring progress across the entire dataset could include validations they weren’t asked to correct. I chose to measure progress against the shared validations, so requester and supplier would see the same percentage and have a consistent understanding of what remained.</p>
 
-        <figure class="figure">
-          <div class="figure-portrait-frame">
-            <img src="media/validation-progress-bar.png" width="1254" height="680" alt="Two notifications: validations ready to share with a partner organisation, and a progress bar on the sent validations showing '10 results, 88% corrected'." loading="lazy">
-          </div>
-          <figcaption>The progress bar tracks completion of the shared validations specifically, not the full dataset, so requester and supplier see the same number.</figcaption>
-        </figure>
+            <figure class="figure">
+              <div class="figure-portrait-frame">
+                <img src="media/corrections-request.png" width="2066" height="634" alt="A data submission with a corrections request attached: requested by and last edit submitted, each with the organisation and person, and a progress bar showing 63% corrected." loading="lazy">
+              </div>
+              <figcaption>Correction requests are attached to the submitted data and visible to both parties.</figcaption>
+            </figure>
 
+            <figure class="figure">
+              <div class="figure-portrait-frame">
+                <img src="media/validation-progress-bar.png" width="1254" height="680" alt="Two notifications: validations ready to share with a partner organisation, and a progress bar on the sent validations showing '10 results, 88% corrected'." loading="lazy">
+              </div>
+              <figcaption>The progress bar tracks completion of the shared validations specifically, not the full dataset, so requester and supplier see the same number.</figcaption>
+            </figure>
+            </div>
+          </details>
+        </div>
       </div>
     </section>
 
@@ -1777,6 +1842,51 @@
     <p class="lightbox-caption" hidden></p>
   </div>
   </main>
+
+  <script>
+    (function () {
+      var figure = document.getElementById('corrections-submit-mockup');
+      var indicator = figure.querySelector('[data-submit-indicator]');
+      var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+      var motion;
+      var visible = false;
+      function update() {
+        if (reduced.matches) {
+          if (motion) motion.cancel();
+          motion = null;
+          return;
+        }
+        if (!motion) {
+          motion = indicator.animate([
+            { offset: 0, opacity: 0, transform: 'translateY(-132px)', easing: 'cubic-bezier(.42,0,.7,1)' },
+            { offset: .0864, opacity: 0, transform: 'translateY(-19px)', easing: 'cubic-bezier(.35,0,.8,1)' },
+            { offset: .1152, opacity: 1, transform: 'translateY(2px)', easing: 'cubic-bezier(.15,.6,.35,1)' },
+            { offset: .144, opacity: 1, transform: 'translateY(-3px)', easing: 'ease-in-out' },
+            { offset: .18, opacity: 1, transform: 'translateY(0)' },
+            { offset: .88, opacity: 1, transform: 'translateY(0)' },
+            { offset: .94, opacity: 0, transform: 'translateY(0)' },
+            { offset: 1, opacity: 0, transform: 'translateY(0)' }
+          ], { duration: 4000, iterations: Infinity });
+        }
+        if (visible) motion.play();
+        else motion.pause();
+      }
+      if (!indicator.animate) return;
+      reduced.addEventListener('change', update);
+      if ('IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function (entries) {
+          visible = entries.some(function (entry) { return entry.isIntersecting; });
+          update();
+        }, { threshold: .4 });
+        observer.observe(figure);
+      } else {
+        visible = true;
+        update();
+      }
+    })();
+  </script>
+
+
 
   <script>
     (function () {
