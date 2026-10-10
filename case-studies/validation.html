@@ -478,15 +478,77 @@
   #wf-tabs:has(.wf-tab.is-active:hover) #wf-tabbg { fill: #303030; }
   .wf-tab:not(.is-active):hover .wf-tab-hit { fill: #232323; }
 
-  /* -- Key-points list on a dark card (Problem summary) -- */
-  .points-card {
-    max-width: 46rem;
-    box-sizing: border-box;
-    margin: 0 0 36px;
-    padding: 24px 28px;
-    background: rgb(33, 33, 33);
-    border-radius: 10px;
+  /* -- Problem: each problem is a collapsible <details>. The summary
+     reads like a key point -- a green plus that folds to a minus when
+     open -- and the body is indented to line up with the title. The
+     script below animates the body's height; without it, plain
+     <details> behaviour still works. -- */
+  .problem-items { max-width: 46rem; margin-bottom: 8px; }
+  .problem-item + .problem-item { margin-top: 16px; }
+  .problem-item summary {
+    list-style: none;
+    cursor: pointer;
+    width: fit-content;  /* click target hugs the text, not the column */
+    max-width: 100%;
+    display: grid;
+    grid-template-columns: 14px 1fr;
+    column-gap: 14px;
   }
+  .problem-item summary::-webkit-details-marker { display: none; }
+  .problem-item-icon {
+    position: relative;
+    grid-row: 1;
+    height: 33px;  /* the title's line height, so the icon centres on it */
+  }
+  .problem-item-icon::before,
+  .problem-item-icon::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 14px;
+    height: 1.5px;
+    margin-top: -0.75px;
+    background: #00d8aa;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .problem-item-icon::after { transform: rotate(90deg); }
+  .problem-item[open]:not(.is-closing) .problem-item-icon::after { transform: rotate(0deg); }
+  .problem-item-title {
+    grid-column: 2;
+    color: #fff;
+    font-family: "Fakt Blond", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 33px;
+  }
+  .problem-item-teaser {
+    grid-column: 2;
+    margin-top: 6px;
+    color: rgba(255, 255, 255, 0.68);
+  }
+  /* "More" cue: a small tag (keyword-tag colours) holding three dots,
+     drawn rather than typed so they sit centred in the pill. */
+  .problem-item-more {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 18px;
+    padding: 0 7px;
+    margin-left: 4px;
+    vertical-align: 4px;
+    border-radius: 6px;
+    background: rgb(40, 40, 40);
+    color: rgba(255, 255, 255, 0.72);
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+  .problem-item-more svg { display: block; }
+  .problem-item summary:hover .problem-item-more,
+  .problem-item summary:focus-visible .problem-item-more { background: rgb(56, 56, 56); color: #fff; }
+  /* flow-root keeps the children's margins inside the body, so the height
+     the script animates to (scrollHeight) is the height it settles at. */
+  .problem-item-body { display: flow-root; box-sizing: border-box; padding-left: 28px; }  /* 14px icon + 14px gap */
+  .problem-item-body > :first-child { margin-top: 20px; }
 
   .toc-heading { margin: 0 0 16px; }
 
@@ -910,7 +972,6 @@
         <ul class="key-points">
           <li>Turned dead-end error reports into complete correction workflows</li>
           <li>Made bulk correction authorship traceable, helping clients meet audit goals</li>
-          <li>Auto validation eliminates nearly 500 setup steps in a single pipeline</li>
           <li>Achieved step change in speed at which clients could work.</li>
         </ul>
       </div>
@@ -920,14 +981,14 @@
 
     <section aria-labelledby="problem-heading" class="case-body">
       <h2 class="eyebrow" id="problem-heading">Problem</h2>
-      <div class="points-card">
-        <ul class="key-points">
-          <li>No easy way to fix errors in data</li>
-          <li>Clients wanted to report data quality back to suppliers</li>
-          <li>Workflow was inefficient at enterprise scale</li>
-        </ul>
-      </div>
-      <h3>We&rsquo;d made errors easy to spot but hard to fix</h3>
+      <div class="problem-items">
+      <details class="problem-item">
+        <summary>
+          <span class="problem-item-icon" aria-hidden="true"></span>
+          <span class="problem-item-title">No easy way to fix errors in data</span>
+          <span class="problem-item-teaser">We&rsquo;d made errors easy to spot but hard to fix. <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span>
+        </summary>
+        <div class="problem-item-body">
       <p>Quantemplate&rsquo;s validation report helps users identify data problems at a row level. When we first released it, being able to see every row that had failed a validation was a breakthrough for our users, and the graphical presentation of the report helped win clients.</p>
 
       <figure class="figure figure-wide">
@@ -951,11 +1012,33 @@
         <figcaption>Desire lines in the product: an ad-hoc correction added by a user to a pipeline. A manually-entered IF statement to modify the Accident State for a specific policy number.</figcaption>
       </figure>
 
-      <h4>Validation sharing</h4>
+        </div>
+      </details>
+
+      <details class="problem-item">
+        <summary>
+          <span class="problem-item-icon" aria-hidden="true"></span>
+          <span class="problem-item-title">Results were siloed in Quantemplate</span>
+          <span class="problem-item-teaser">Clients wanted an easier way to share results with suppliers. <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span>
+        </summary>
+        <div class="problem-item-body">
       <p>When we spoke to clients at the management level, they wanted to play their validation reports back to their suppliers, to inform them of their data quality performance. Currently they did this by downloading failed rows and emailing them, which was a slow process. We spotted an opportunity for value-add here: show suppliers validation results and ask them for corrections.</p>
 
-      <h4>Workflow efficiency</h4>
+        </div>
+      </details>
+
+      <details class="problem-item">
+        <summary>
+          <span class="problem-item-icon" aria-hidden="true"></span>
+          <span class="problem-item-title">Workflow was inefficient at enterprise scale</span>
+          <span class="problem-item-teaser">Usage had outgrown original design intent. <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span>
+        </summary>
+        <div class="problem-item-body">
       <p>Validations were being used on a much larger scale than anticipated. Clients had hundreds of rules and users spent days in the report analysing the results. There were aspects of the navigation and interaction that were proving cumbersome. We set out to fix this.</p>
+
+        </div>
+      </details>
+      </div>
 
       <figure class="figure figure-wide wf-figure">
         <svg class="wf-diagram" viewBox="0 0 725 335" fill="none" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Validation workflow: original and improved">
@@ -1441,6 +1524,46 @@
           reveal();
         }, { threshold: 0.2 });
         io.observe(list);
+      });
+    })();
+  </script>
+  <script>
+    /* Problem items: animate each <details> body open and closed. The
+       body's height is tweened from where it is now, so a click mid-way
+       reverses smoothly; reduced motion falls back to the native toggle. */
+    (function () {
+      var items = document.querySelectorAll('.problem-item');
+      if (!items.length || !('animate' in Element.prototype)) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      Array.prototype.forEach.call(items, function (d) {
+        var summary = d.querySelector('summary'), body = d.querySelector('.problem-item-body');
+        var anim = null;
+        function run(from, to, done) {
+          if (anim) anim.cancel();
+          body.style.overflow = 'clip';
+          anim = body.animate(
+            [{ height: from + 'px', opacity: to ? 0.4 : 1 }, { height: to + 'px', opacity: to ? 1 : 0 }],
+            { duration: Math.min(520, 260 + Math.abs(to - from) * 0.25), easing: 'cubic-bezier(0.16, 1, 0.3, 1)' }
+          );
+          anim.onfinish = function () {
+            anim = null;
+            body.style.overflow = '';
+            if (done) done();
+          };
+        }
+        summary.addEventListener('click', function (e) {
+          e.preventDefault();
+          var now = body.getBoundingClientRect().height;
+          if (d.open && !d.classList.contains('is-closing')) {
+            d.classList.add('is-closing');
+            run(now, 0, function () { d.open = false; d.classList.remove('is-closing'); });
+          } else {
+            var from = d.open ? now : 0;
+            d.classList.remove('is-closing');
+            d.open = true;
+            run(from, body.scrollHeight);
+          }
+        });
       });
     })();
   </script>
