@@ -617,6 +617,9 @@
     font-weight: 600;
   }
   .framing-card .framing-quote { color: #fff; }
+  .framing-card .figure { margin: 0 0 16px; }
+  /* Before and after, side by side in one frame. */
+  .design-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; width: 100%; }
   .framing-head {
     display: flex;
     align-items: center;
@@ -1440,6 +1443,23 @@
             </summary>
             <div class="problem-item-body">
 <p>We show corrections beside the original submitted values. I chose this side-by-side layout to preserve the source data and make it clear that users are creating a mapping, rather than editing the original cell.</p>
+
+          <div class="evidence-card framing-card">
+            <div class="framing-head">
+              <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
+              <span class="framing-label">Design validation</span>
+            </div>
+            <figure class="figure">
+              <div class="figure-portrait-frame">
+                <div class="design-pair">
+                  <img src="media/corrections-before.png" width="1150" height="885" alt="First prototype of the corrections view: correction fields that don&rsquo;t read as editable, beside adjacent failed columns." loading="lazy">
+                  <img src="media/corrections-after.png" width="1150" height="885" alt="Revised corrections view: each row has a clearly defined entry field, linked to its original value, in a refined colour palette." loading="lazy">
+                </div>
+              </div>
+            </figure>
+            <p>The first prototype exposed two issues in testing: users didn&rsquo;t recognise the correction fields as editable, and adjacent failed columns made it difficult to tell which values belonged together.</p>
+            <p>I revised the design to give each row a clearly defined entry field, strengthen the link between original and corrected values, and refine the colour palette.</p>
+          </div>
             </div>
           </details>
 
