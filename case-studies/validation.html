@@ -602,6 +602,16 @@
 
   /* Problem framing cards: the evidence card, holding a client quote and
      the analysis of it (or the constraint it ran into). */
+  .reflections-list {
+    max-width: 46rem;
+    margin: 0;
+    padding-left: 24px;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 18px;
+    line-height: 1.6;
+  }
+  .reflections-list li + li { margin-top: 16px; }
+
   .framing-card + .framing-card { margin-top: 20px; }
   .framing-card p { margin: 0 0 16px; }
   .framing-card p:last-child { margin-bottom: 0; }
@@ -1456,6 +1466,19 @@
 
     <hr class="rule">
 
+    <section aria-labelledby="reflections-heading" class="case-body">
+      <h2 class="eyebrow" id="reflections-heading">Reflections</h2>
+      <p>The project made correcting data easier and gave clients greater confidence in their changes. It also highlighted a few lessons:</p>
+      <ul class="reflections-list">
+        <li><strong>Better tools change the scale of the work.</strong> We designed around existing workflows; easier validation encouraged clients to attempt more. I&rsquo;d explore that potential demand earlier.</li>
+        <li><strong>Auditability builds everyday trust.</strong> Showing change history beside a correction helped users trust the result, beyond meeting compliance needs.</li>
+        <li><strong>Sharing needs operator confidence.</strong> Management wanted supplier involvement, but operators were more cautious. The beta will help us understand what they need to feel confident using it.</li>
+        <li><strong>Measure time saved.</strong> A before-and-after comparison of task completion times would have quantified clients&rsquo; reported gains and strengthened the wider business&rsquo;s sales and renewal case.</li>
+      </ul>
+    </section>
+
+    <hr class="rule">
+
     <section aria-labelledby="resources-heading" class="case-body">
       <h2 class="eyebrow" id="resources-heading">Resources</h2>
       <ul class="resources-list">
@@ -1506,6 +1529,7 @@
     <a href="#sharing-heading">Sharing</a>
     <a href="#outcome-heading">Outcome</a>
     <a href="#nextsteps-heading">Next steps</a>
+    <a href="#reflections-heading">Reflections</a>
   </nav>
 
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged image" tabindex="-1">
