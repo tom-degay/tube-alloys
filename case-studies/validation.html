@@ -539,6 +539,7 @@
   }
   /* The pill and the last word wrap together, so the pill never ends up
      alone on a line of its own. */
+  .principle-number { opacity: 0.5; }
   .problem-item-tail { white-space: nowrap; }
   /* "More" cue: a small tag (keyword-tag colours) holding three dots,
      drawn rather than typed so they sit centred in the pill. */
@@ -1416,21 +1417,28 @@
 
       <div class="subsection" id="applying-corrections">
         <h3>Applying corrections</h3>
-        <p>The key challenges in designing the corrections workflow were to make it clear:</p>
-        <ul class="evidence-list">
-          <li>Where users should enter corrections, and what the original values were</li>
-          <li>How widely the changes apply</li>
-          <li>How to use calculated values and make row-level changes</li>
-          <li>Who changed what and when</li>
-          <li>That the pipeline needs to be run to apply the changes</li>
-        </ul>
+        <p>I designed the corrections workflow around five principles.</p>
 
-        <h4>Entering corrections</h4>
-        <p>We show corrections beside the original submitted values. I chose this side-by-side layout to preserve the source data and make it clear that users are creating a mapping, rather than editing the original cell.</p>
+        <div class="problem-items">
+          <details class="problem-item" id="kd-entering">
+            <summary>
+              <span class="problem-item-icon" aria-hidden="true"></span>
+              <span class="problem-item-title"><span class="principle-number">1</span>&nbsp;&nbsp;Show before and after</span>
+              <span class="problem-item-teaser">Keep the original value beside the <span class="problem-item-tail">correction <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+            </summary>
+            <div class="problem-item-body">
+<p>We show corrections beside the original submitted values. I chose this side-by-side layout to preserve the source data and make it clear that users are creating a mapping, rather than editing the original cell.</p>
+            </div>
+          </details>
 
-        <div class="correction-detail" id="kd-scope">
-          <h4>Make the scope of changes obvious</h4>
-          <p>Quantemplate applies corrections to bulk data rather than isolated cells, so we needed to make this clear. When a user selects a field, it opens a popup where they enter the correction. The UI makes it clear that corrections can apply to every matching value or use conditions, such as correcting Premium only for a specific Policy Number.</p>
+          <details class="problem-item" id="kd-scope">
+            <summary>
+              <span class="problem-item-icon" aria-hidden="true"></span>
+              <span class="problem-item-title"><span class="principle-number">2</span>&nbsp;&nbsp;Make the scope of changes obvious</span>
+              <span class="problem-item-teaser">Make clear which values a correction will <span class="problem-item-tail">affect <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+            </summary>
+            <div class="problem-item-body">
+<p>Quantemplate applies corrections to bulk data rather than isolated cells, so we needed to make this clear. When a user selects a field, it opens a popup where they enter the correction. The UI makes it clear that corrections can apply to every matching value or use conditions, such as correcting Premium only for a specific Policy Number.</p>
           <p>We added a formula bar, so users could derive a value from another column. For example, if a date is missing, take the date from another column and subtract one month. Based on what we&rsquo;d observed in production pipelines, this would be a necessary addition.</p>
 
           <figure class="figure figure-wide">
@@ -1439,11 +1447,17 @@
             </div>
             <figcaption>Entering a correction. The popup makes the scope explicit &mdash; every matching value, or only where a condition is met &mdash; with a formula bar for deriving the value from another column.</figcaption>
           </figure>
-        </div>
+            </div>
+          </details>
 
-        <div class="correction-detail" id="kd-evidence">
-          <h4>Preserve evidence</h4>
-          <p>Audit was important to our clients, who use Quantemplate as a system-of-record for financial reporting. To support this we displayed the original failed values alongside the corrected rows in the report. The full change history of each edit was displayed.</p>
+          <details class="problem-item" id="kd-evidence">
+            <summary>
+              <span class="problem-item-icon" aria-hidden="true"></span>
+              <span class="problem-item-title"><span class="principle-number">3</span>&nbsp;&nbsp;Preserve evidence</span>
+              <span class="problem-item-teaser">Keep a record of who changed what and <span class="problem-item-tail">when <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+            </summary>
+            <div class="problem-item-body">
+<p>Audit was important to our clients, who use Quantemplate as a system-of-record for financial reporting. To support this we displayed the original failed values alongside the corrected rows in the report. The full change history of each edit was displayed.</p>
 
           <figure class="figure">
             <div class="figure-portrait-frame">
@@ -1451,11 +1465,17 @@
             </div>
             <figcaption>Each edit to a failed value is recorded and displayed, building trust in the change and helping our clients meet their audit goals</figcaption>
           </figure>
-        </div>
+            </div>
+          </details>
 
-        <div class="correction-detail" id="kd-feedback">
-          <h4>Give immediate feedback</h4>
-          <p>Corrections are applied to the output on the next pipeline run, so we called this out with a notification bar. But as a user types in a correction, we check that their entered value will pass the rule, and warn if it&rsquo;s still a fail.</p>
+          <details class="problem-item" id="kd-feedback">
+            <summary>
+              <span class="problem-item-icon" aria-hidden="true"></span>
+              <span class="problem-item-title"><span class="principle-number">4</span>&nbsp;&nbsp;Give immediate feedback</span>
+              <span class="problem-item-teaser">Check the correction now, apply it on the next <span class="problem-item-tail">run <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+            </summary>
+            <div class="problem-item-body">
+<p>Corrections are applied to the output on the next pipeline run, so we called this out with a notification bar. But as a user types in a correction, we check that their entered value will pass the rule, and warn if it&rsquo;s still a fail.</p>
 
           <div class="figure-portrait-frame">
             <div class="ui-video" data-hover-controls>
@@ -1465,10 +1485,17 @@
             <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
             </div>
           </div>
-        </div>
-        <div class="correction-detail" id="impl-ordering">
-          <h4 id="implementation-heading">Ordering and audit</h4>
-          <p>One of the things we discovered in testing, as part of our internal QA process, was that the order in which corrections apply is important, since one correction could overwrite a prior one. We created an interface showing all corrections applied to any validation rule, allowing users to reorder or remove them.</p>
+            </div>
+          </details>
+
+          <details class="problem-item" id="impl-ordering">
+            <summary>
+              <span class="problem-item-icon" aria-hidden="true"></span>
+              <span class="problem-item-title" id="implementation-heading"><span class="principle-number">5</span>&nbsp;&nbsp;Ordering matters</span>
+              <span class="problem-item-teaser">Let users review and reorder overlapping <span class="problem-item-tail">corrections <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+            </summary>
+            <div class="problem-item-body">
+<p>One of the things we discovered in testing, as part of our internal QA process, was that the order in which corrections apply is important, since one correction could overwrite a prior one. We created an interface showing all corrections applied to any validation rule, allowing users to reorder or remove them.</p>
 
           <figure class="figure figure-wide">
             <div class="figure-portrait-frame">
@@ -1476,6 +1503,8 @@
             </div>
             <figcaption>Behind each validation is a log of all corrections applied, allowing reordering of correction rules. We uncovered the need for this in QA testing.</figcaption>
           </figure>
+            </div>
+          </details>
         </div>
       </div>
     </section>
