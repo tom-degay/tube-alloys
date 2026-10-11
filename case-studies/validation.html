@@ -640,6 +640,17 @@
 
   /* flow-root keeps the children's margins inside the body, so the height
      the script animates to (scrollHeight) is the height it settles at. */
+  /* A small "Design validation" tag on a summary, hinting that the item
+     holds process rationale (the icon and label match the card inside). */
+  .problem-item-badge {
+    grid-column: 2;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .problem-item-badge .framing-icon { width: 24px; height: 13px; }
+  .problem-item-badge .framing-label { font-size: 12px; }
   .problem-item-body { display: flow-root; box-sizing: border-box; padding-left: 28px; }  /* 14px icon + 14px gap */
   .problem-item-body > :first-child { margin-top: 20px; }
 
@@ -1089,6 +1100,7 @@
           <span class="problem-item-icon" aria-hidden="true"></span>
           <span class="problem-item-title">No easy way to fix errors in data</span>
           <span class="problem-item-teaser">We&rsquo;d made errors easy to spot but hard to <span class="problem-item-tail">fix <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+              <span class="problem-item-badge"><svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M12.1426 2.85254L2.82812 12.167L12.1426 21.4814V24.3096L0 12.167L12.1426 0.0244141V2.85254Z" fill="#00D8AA"/><path d="M45.832 12.167L33.665 24.334L22.916 13.585L12.168 24.333V21.5049L21.502 12.1709L21.498 12.167L21.502 12.1631L12.168 2.8291V0.000976562L22.916 10.749L33.665 0L45.832 12.167ZM24.3301 12.1631L24.334 12.167L24.3301 12.1709L33.665 21.5059L43.0039 12.167L33.665 2.82812L24.3301 12.1631Z" fill="#605F5F"/></svg><span class="framing-label">Evidence</span></span>
         </summary>
         <div class="problem-item-body">
       <p>Quantemplate&rsquo;s validation report helps users identify data problems at a row level. When we first released it, being able to see every row that had failed a validation was a breakthrough for our users, and the graphical presentation of the report helped win clients.</p>
@@ -1132,6 +1144,7 @@
           <span class="problem-item-icon" aria-hidden="true"></span>
           <span class="problem-item-title">Results were siloed in Quantemplate</span>
           <span class="problem-item-teaser">Clients wanted an easier way to share results with <span class="problem-item-tail">suppliers <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+              <span class="problem-item-badge"><svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M12.1426 2.85254L2.82812 12.167L12.1426 21.4814V24.3096L0 12.167L12.1426 0.0244141V2.85254Z" fill="#00D8AA"/><path d="M45.832 12.167L33.665 24.334L22.916 13.585L12.168 24.333V21.5049L21.502 12.1709L21.498 12.167L21.502 12.1631L12.168 2.8291V0.000976562L22.916 10.749L33.665 0L45.832 12.167ZM24.3301 12.1631L24.334 12.167L24.3301 12.1709L33.665 21.5059L43.0039 12.167L33.665 2.82812L24.3301 12.1631Z" fill="#605F5F"/></svg><span class="framing-label">Evidence</span></span>
         </summary>
         <div class="problem-item-body">
       <p>When we spoke to clients at the management level, they wanted to play their validation reports back to their suppliers, to inform them of their data quality performance. Currently they did this by downloading failed rows and emailing them, which was a slow process. We spotted an opportunity for value-add here: show suppliers validation results and ask them for corrections.</p>
@@ -1154,6 +1167,7 @@
           <span class="problem-item-icon" aria-hidden="true"></span>
           <span class="problem-item-title">Workflow was inefficient at enterprise scale</span>
           <span class="problem-item-teaser">Usage had outgrown original design <span class="problem-item-tail">intent <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+              <span class="problem-item-badge"><svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M12.1426 2.85254L2.82812 12.167L12.1426 21.4814V24.3096L0 12.167L12.1426 0.0244141V2.85254Z" fill="#00D8AA"/><path d="M45.832 12.167L33.665 24.334L22.916 13.585L12.168 24.333V21.5049L21.502 12.1709L21.498 12.167L21.502 12.1631L12.168 2.8291V0.000976562L22.916 10.749L33.665 0L45.832 12.167ZM24.3301 12.1631L24.334 12.167L24.3301 12.1709L33.665 21.5059L43.0039 12.167L33.665 2.82812L24.3301 12.1631Z" fill="#605F5F"/></svg><span class="framing-label">Evidence</span></span>
         </summary>
         <div class="problem-item-body">
       <p>We had made it easier to add validation rules and implementations had become ambitious: clients had hundreds of rules and users spent days in the report analysing the results. There were aspects of the navigation and interaction that were proving cumbersome. We set out to fix this.</p>
@@ -1348,6 +1362,7 @@
               <span class="problem-item-icon" aria-hidden="true"></span>
               <span class="problem-item-title">Show before and after</span>
               <span class="problem-item-teaser">Keep the original value beside the <span class="problem-item-tail">correction <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+              <span class="problem-item-badge"><svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg><span class="framing-label">Design validation</span></span>
             </summary>
             <div class="problem-item-body">
 <figure class="figure">
@@ -1653,6 +1668,7 @@
               <span class="problem-item-icon" aria-hidden="true"></span>
               <span class="problem-item-title">Choose what to share</span>
               <span class="problem-item-teaser">Select the results, organisations and <span class="problem-item-tail">people <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+              <span class="problem-item-badge"><svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M12.1426 2.85254L2.82812 12.167L12.1426 21.4814V24.3096L0 12.167L12.1426 0.0244141V2.85254Z" fill="#00D8AA"/><path d="M45.832 12.167L33.665 24.334L22.916 13.585L12.168 24.333V21.5049L21.502 12.1709L21.498 12.167L21.502 12.1631L12.168 2.8291V0.000976562L22.916 10.749L33.665 0L45.832 12.167ZM24.3301 12.1631L24.334 12.167L24.3301 12.1709L33.665 21.5059L43.0039 12.167L33.665 2.82812L24.3301 12.1631Z" fill="#605F5F"/></svg><span class="framing-label">Evidence</span></span>
             </summary>
             <div class="problem-item-body">
             <p>Clients select the validation results, organisations and people to include, then review the selection before sharing.</p>
@@ -1683,6 +1699,7 @@
               <span class="problem-item-icon" aria-hidden="true"></span>
               <span class="problem-item-title">Submit only when ready</span>
               <span class="problem-item-teaser">Prepare corrections privately, then <span class="problem-item-tail">submit <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+              <span class="problem-item-badge"><svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg><span class="framing-label">Design exploration</span></span>
             </summary>
             <div class="problem-item-body">
             <p>I separated preparing corrections from submitting them. A &lsquo;Corrections pending&rsquo; indicator makes the outstanding changes visible, with an explicit Submit action to pass them back when ready.</p>
@@ -1719,6 +1736,7 @@
               <span class="problem-item-icon" aria-hidden="true"></span>
               <span class="problem-item-title">Give both parties the same measure of progress</span>
               <span class="problem-item-teaser">Track only the validations that were <span class="problem-item-tail">shared <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+              <span class="problem-item-badge"><svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg><span class="framing-label">Design exploration</span></span>
             </summary>
             <div class="problem-item-body">
             <p>A supplier may only be asked to address some of a dataset’s validations. Measuring progress across the entire dataset could include validations they weren’t asked to correct. I chose to measure progress against the shared validations, so requester and supplier would see the same percentage and have a consistent understanding of what remained.</p>
