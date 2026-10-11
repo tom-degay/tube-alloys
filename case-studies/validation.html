@@ -1403,6 +1403,7 @@
               <span class="problem-item-icon" aria-hidden="true"></span>
               <span class="problem-item-title">Make the scope of changes obvious</span>
               <span class="problem-item-teaser">Make clear which values a correction will <span class="problem-item-tail">affect <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+              <span class="problem-item-badge"><svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg><span class="framing-label">Design validation</span></span>
             </summary>
             <div class="problem-item-body">
 <p>Quantemplate applies corrections to bulk data rather than isolated cells, so we needed to make this clear. When a user selects a field, it opens a popup where they enter the correction. The UI makes it clear that corrections can apply to every matching value or use conditions, such as correcting Premium only for a specific Policy Number.</p>
@@ -1414,6 +1415,14 @@
             </div>
             <figcaption>Entering a correction. The popup makes the scope explicit &mdash; every matching value, or only where a condition is met &mdash; with a formula bar for deriving the value from another column.</figcaption>
           </figure>
+
+          <div class="evidence-card framing-card">
+            <div class="framing-head">
+              <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
+              <span class="framing-label">Design validation</span>
+            </div>
+            <p>We had identified the need for multiple matching conditions, for example to apply one correction across several policy numbers. A walk-through of the design specification with a cohort of expert users confirmed it. Their feedback was that this would be much easier than wrangling Excel-style IF statements, opening corrections up to users with less technical skill.</p>
+          </div>
             </div>
           </details>
 
@@ -1460,6 +1469,7 @@
               <span class="problem-item-icon" aria-hidden="true"></span>
               <span class="problem-item-title" id="implementation-heading">Ordering matters</span>
               <span class="problem-item-teaser">Let users review and reorder overlapping <span class="problem-item-tail">corrections <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+              <span class="problem-item-badge"><svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg><span class="framing-label">Engineering constraint</span></span>
             </summary>
             <div class="problem-item-body">
 <p>One of the things we discovered in testing, as part of our internal QA process, was that the order in which corrections apply is important, since one correction could overwrite a prior one. We created an interface showing all corrections applied to any validation rule, allowing users to reorder or remove them.</p>
@@ -1470,6 +1480,14 @@
             </div>
             <figcaption>Behind each validation is a log of all corrections applied, allowing reordering of correction rules. We uncovered the need for this in QA testing.</figcaption>
           </figure>
+
+          <div class="evidence-card framing-card">
+            <div class="framing-head">
+              <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
+              <span class="framing-label">Engineering constraint</span>
+            </div>
+            <p>Corrections aren&rsquo;t edits to cells: they&rsquo;re rules, applied in sequence each time the pipeline runs. When two rules match the same value, the later one wins, so the system can&rsquo;t settle the conflict on its own. Order had to become something users could see and control.</p>
+          </div>
             </div>
           </details>
         </div>
@@ -1704,13 +1722,6 @@
             <div class="problem-item-body">
             <p>I separated preparing corrections from submitting them. A &lsquo;Corrections pending&rsquo; indicator makes the outstanding changes visible, with an explicit Submit action to pass them back when ready.</p>
 
-            <div class="evidence-card framing-card">
-              <div class="framing-head">
-                <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
-                <span class="framing-label">Design exploration</span>
-              </div>
-              <p>Exploring the handoff revealed a risk: sending every edit immediately could expose unfinished corrections to the receiver and trigger pipeline runs. I separated preparation from submission, giving suppliers time to check their changes before passing them back.</p>
-            </div>
             <figure class="figure" id="corrections-submit-mockup">
               <div class="figure-portrait-frame">
                 <svg class="submit-mockup-frame" viewBox="448.5 65 480 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Interaction mockup: a Corrections pending indicator and Submit action appear above the validation report.">
@@ -1729,6 +1740,13 @@
               </div>
               <figcaption>Interaction mockup: pending corrections stay with the supplier until explicitly submitted.</figcaption>
             </figure>
+            <div class="evidence-card framing-card">
+              <div class="framing-head">
+                <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
+                <span class="framing-label">Design exploration</span>
+              </div>
+              <p>Exploring the handoff revealed a risk: sending every edit immediately could expose unfinished corrections to the receiver and trigger pipeline runs. I separated preparation from submission, giving suppliers time to check their changes before passing them back.</p>
+            </div>
             </div>
           </details>
           <details class="problem-item" id="sh-progress">
