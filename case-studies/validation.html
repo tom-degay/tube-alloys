@@ -1094,15 +1094,7 @@
 
     <section aria-labelledby="problem-heading" class="case-body">
       <h2 class="eyebrow" id="problem-heading">Problem</h2>
-      <div class="problem-items">
-      <details class="problem-item">
-        <summary>
-          <span class="problem-item-icon" aria-hidden="true"></span>
-          <span class="problem-item-title">No easy way to fix errors in data</span>
-          <span class="problem-item-teaser">We&rsquo;d made errors easy to spot but hard to <span class="problem-item-tail">fix <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
-              <span class="problem-item-badge"><svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M12.1426 2.85254L2.82812 12.167L12.1426 21.4814V24.3096L0 12.167L12.1426 0.0244141V2.85254Z" fill="#00D8AA"/><path d="M45.832 12.167L33.665 24.334L22.916 13.585L12.168 24.333V21.5049L21.502 12.1709L21.498 12.167L21.502 12.1631L12.168 2.8291V0.000976562L22.916 10.749L33.665 0L45.832 12.167ZM24.3301 12.1631L24.334 12.167L24.3301 12.1709L33.665 21.5059L43.0039 12.167L33.665 2.82812L24.3301 12.1631Z" fill="#605F5F"/></svg><span class="framing-label">Evidence</span></span>
-        </summary>
-        <div class="problem-item-body">
+
       <p>Quantemplate&rsquo;s validation report helps users identify data problems at a row level. When we first released it, being able to see every row that had failed a validation was a breakthrough for our users, and the graphical presentation of the report helped win clients.</p>
 
       <figure class="figure figure-wide">
@@ -1117,13 +1109,24 @@
         <figcaption>Original validation report: the visual display of information was a success, but it left users wanting to fix the errors where they saw them.</figcaption>
       </figure>
 
-      <p>But there was a problem: our users could now find errors in their data, but fixing them was painful. To make a change, they had to go back to the pipeline and create a custom value mapping. This needed to be done via Excel-style syntax, which was a barrier for some users.</p>
+      <p>But finding an error in a supplier&rsquo;s data was only the start of the work. Analysts then had to write spreadsheet-style formulas to correct it, or download the affected rows and email the supplier. With hundreds of checks to review, correcting data and getting answers became a slow, fragmented process.</p>
+
+      <div class="problem-items">
+      <details class="problem-item">
+        <summary>
+          <span class="problem-item-icon" aria-hidden="true"></span>
+          <span class="problem-item-title">No easy way to fix errors in data</span>
+          <span class="problem-item-teaser">We&rsquo;d made errors easy to spot but hard to <span class="problem-item-tail">fix <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+              <span class="problem-item-badge"><svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M12.1426 2.85254L2.82812 12.167L12.1426 21.4814V24.3096L0 12.167L12.1426 0.0244141V2.85254Z" fill="#00D8AA"/><path d="M45.832 12.167L33.665 24.334L22.916 13.585L12.168 24.333V21.5049L21.502 12.1709L21.498 12.167L21.502 12.1631L12.168 2.8291V0.000976562L22.916 10.749L33.665 0L45.832 12.167ZM24.3301 12.1631L24.334 12.167L24.3301 12.1709L33.665 21.5059L43.0039 12.167L33.665 2.82812L24.3301 12.1631Z" fill="#605F5F"/></svg><span class="framing-label">Evidence</span></span>
+        </summary>
+        <div class="problem-item-body">
+      <p>Our users could now easily find errors in their data, but fixing them was still painful. Users needed to go back into a pipeline, navigate to a specific point where the correction should be applied and insert a value mapping or Excel-style IF statement to change the failed value to a correct one. This took time, concentration and required a certain level of skill.</p>
 
       <figure class="figure">
         <div class="figure-portrait-frame">
           <img src="media/ad-hoc-correction.png" width="1240" height="218" alt="A pipeline calculation step containing a hand-written IF statement that sets the Accident State to a fixed value when the policy number matches." loading="lazy">
         </div>
-        <figcaption>Desire lines in the product: an ad hoc correction added by a user to a pipeline. A manually-entered IF statement to modify the Accident State for a specific policy number.</figcaption>
+        <figcaption>Desire lines in the product: an ad hoc correction added by a user to a pipeline, modifying the Accident State for a specific policy number.</figcaption>
       </figure>
 
       <div class="evidence-card">

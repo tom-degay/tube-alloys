@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Column mapping</title>
-<meta name="description" content="How Tom de Gay designed Quantemplate's column mapping engine, cutting mapping work from weeks to minutes, with 73% fewer serious semantic mapping errors in testing after its 2026 upgrade.">
+<meta name="description" content="How Tom de Gay helped analysts align inconsistent incoming files into a common format and reuse those mappings each month, with automated column mapping for an average of 2,000 files per customer per month.">
 <meta name="theme-color" content="#131313">
 <link rel="canonical" href="https://tomdegay.com/case-studies/column-mapping">
 
@@ -1133,7 +1133,7 @@
       </svg>
       <span class="kicker head-fade">Case Study | <a href="https://help.quantemplate.com/map-columns" target="_blank" rel="noopener noreferrer">Quantemplate Column Mapping</a></span>
       <h1 class="display head-fade">Mapping inconsistent schemas at scale</h1>
-      <p class="subtitle head-fade">Turns a month of manual schema-matching into a job that runs in minutes. The 2026 upgrade produced 73% fewer serious semantic mapping errors in testing.</p>
+      <p class="subtitle head-fade">Helped analysts align inconsistent incoming files into a common format, then reuse those mappings each month. Automated column mapping for an average of 2,000 files per customer per month.</p>
       <p class="keywords"><span class="keyword">Interaction design</span><span class="keyword">Human-in-the-loop</span></p>
 
     </header>
@@ -1312,7 +1312,7 @@
       <p>For every unmapped field we used our matching engine to generate suggestions to map to the master schema. The next step was to automate this: allow top-ranking suggestions to be mapped at once.</p>
       <p>I designed this as a preview mode, so users could see mapping suggestions before committing. I also added a slider, so a minimum confidence threshold could be set: incorrect mappings could be costly, so quality was more important than coverage.</p>
 
-      <p>These safeguards helped users trust the automation.</p>
+      <p>These safeguards were designed to build confidence in the automation while keeping users in control of which suggestions were applied.</p>
 
       <figure class="figure figure-wide">
         <div class="figure-portrait-frame">
@@ -1323,14 +1323,15 @@
           <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
           </div>
         </div>
-        <figcaption>Automap previews bulk mappings above a user-set confidence threshold before they are applied. Shown in the 2026 upgraded interface.</figcaption>
+        <figcaption>Automap previews bulk mappings above a user-set confidence threshold before they are applied.</figcaption>
       </figure>
 
       <div class="subsection" id="refinement-heading">
         <h3>Making uncertainty visible</h3>
-        <p>The 2026 model produced useful suggestions at confidence thresholds as low as 30%, compared with around 80% for the previous model. Lower-confidence mappings needed closer review.</p>
+        <p>The upgraded model produced useful suggestions at confidence thresholds as low as 30%, compared with around 80% for the previous model. Lower-confidence mappings needed closer review.</p>
 
-        <p>I introduced a yellow highlight gradient to draw attention to these mappings. Users could inspect sample values and a data profile to judge whether a match was appropriate. Avatars and recency information identified prior mappings made by other users, giving people more context for their decision.</p>
+        <p>I introduced a yellow highlight gradient to draw attention to these mappings. Users could inspect sample values and a data profile to judge whether a match was appropriate.</p>
+        <p>I used avatars and recency information to show who had made a previous mapping and when. The aim was to build trust by making the human judgement behind a suggestion visible, giving users more context to decide whether to reuse it. This approach aligns with research on <a href="https://arxiv.org/html/2101.04719#S5.SS5" target="_blank" rel="noopener noreferrer">social transparency in AI-assisted decisions</a>.</p>
 
         <figure class="figure">
           <div class="figure-portrait-frame">
@@ -1338,7 +1339,7 @@
               <img src="media/mapping-detail.png" width="1348" height="746" alt="Enlarged mapping detail: Line of Business has a yellow 30.9% confidence rating; Expiry Date shows a prior user's avatar beside its 92.0% rating." loading="lazy">
             </div>
           </div>
-          <figcaption>Detail of the 2026 interface: yellow highlights flag lower-confidence suggestions; the avatar beside Expiry Date identifies a mapping made by another user. Select the image to see the full view.</figcaption>
+          <figcaption>Interface detail: yellow highlights flag lower-confidence suggestions; the avatar beside Expiry Date identifies a mapping made by another user. Select the image to see the full view.</figcaption>
         </figure>
 
         <div class="evidence-card framing-card">
