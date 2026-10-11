@@ -1680,7 +1680,15 @@ the body script adds .is-revealed per card with a per-row --reveal-delay. */
   }
 }
 
+@keyframes validation-rule-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 @media (prefers-reduced-motion: no-preference) {
+  .validation-card.is-flow-active .validation-rule {
+    animation: validation-rule-fade .55s ease-out var(--rule-delay) both;
+  }
   .validation-card.is-flow-active .validation-arc {
     animation: validation-ring 2.1s cubic-bezier(.4,0,.2,1) var(--ring-delay) both;
   }
