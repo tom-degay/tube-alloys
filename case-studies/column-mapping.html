@@ -482,6 +482,16 @@
     min-width: 0;
   }
 
+  /* Enlarge the first schema's confidence ratings and prior-mapping avatar. */
+  .mapping-confidence-detail {
+    position: relative; width: 100%; aspect-ratio: 632 / 234;
+    overflow: hidden; border-radius: 6px;
+  }
+  .figure .mapping-confidence-detail img {
+    position: absolute; width: 213.291139%; max-width: none; height: auto;
+    left: -2.21519%; top: -127.350427%; border-radius: 0; box-shadow: none;
+  }
+
   .figure-strip-imgs {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -561,6 +571,165 @@
       max-width: 100%;
     }
   }
+
+  /* -- Cards and accordions, shared with case-studies/validation.html (keep in sync).
+     Each accordion item is a collapsible <details>. The summary
+     reads like a key point -- a green plus that folds to a minus when
+     open -- and the body is indented to line up with the title. The
+     script below animates the body's height; without it, plain
+     <details> behaviour still works. -- */
+  .problem-items { max-width: 46rem; margin: 40px 0 8px; }  /* top clears the first row's hover shape off the label */
+  .problem-item + .problem-item { margin-top: 34px; }  /* = hover padding, top + bottom */
+  .problem-item summary {
+    list-style: none;
+    cursor: pointer;
+    /* Hover shape matches the nav dropdown cards (.nav-dropdown-card) and
+       spans the full content column; the padding is taken back with
+       negative margins so the text stays exactly where it was. */
+    margin: -18px -16px -16px;
+    padding: 18px 16px 16px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+    display: grid;
+    grid-template-columns: 14px 1fr;
+    column-gap: 14px;
+  }
+  .problem-item summary::-webkit-details-marker { display: none; }
+  .problem-item summary:hover,
+  .problem-item summary:focus-visible { background-color: rgba(255, 255, 255, 0.08); }
+  .problem-item-icon {
+    position: relative;
+    grid-row: 1;
+    height: 30px;  /* the title's line height, so the icon centres on it */
+  }
+  .problem-item-icon::before,
+  .problem-item-icon::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 14px;
+    height: 1.5px;
+    margin-top: -0.75px;
+    background: #00d8aa;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .problem-item-icon::after { transform: rotate(90deg); }
+  .problem-item[open]:not(.is-closing) .problem-item-icon::after { transform: rotate(0deg); }
+  .problem-item-title {
+    grid-column: 2;
+    color: #fff;
+    font-family: "Fakt Blond", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 30px;
+  }
+  .problem-item-teaser {
+    grid-column: 2;
+    margin-top: 6px;
+    color: rgba(255, 255, 255, 0.68);
+    line-height: 1.5;
+  }
+  /* The pill and the last word wrap together, so the pill never ends up
+     alone on a line of its own. */
+  .problem-item-tail { white-space: nowrap; }
+  /* "More" cue: a small tag (keyword-tag colours) holding three dots,
+     drawn rather than typed so they sit centred in the pill. */
+  .problem-item-more {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 18px;
+    padding: 0 7px;
+    margin-left: 4px;
+    vertical-align: 4px;
+    border-radius: 6px;
+    background: rgb(40, 40, 40);
+    color: rgba(255, 255, 255, 0.72);
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+  .problem-item-more svg { display: block; }
+  .problem-item summary:hover .problem-item-more,
+  .problem-item summary:focus-visible .problem-item-more { background: rgb(56, 56, 56); color: #fff; }
+  /* Evidence card at the foot of each problem: dark card, diamond and grey
+     mono label (shared with the framing cards), green-arrow list. */
+  .evidence-card {
+    max-width: 46rem;
+    box-sizing: border-box;
+    margin: 28px 0 24px;
+    padding: 20px 24px 22px;
+    background: rgb(33, 33, 33);
+    border-radius: 10px;
+  }
+  .evidence-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .evidence-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 18px;
+    line-height: 1.6;
+  }
+  .evidence-list li::before {
+    content: "\2192";
+    flex: 0 0 auto;
+    color: #00d8aa;
+  }
+
+  /* Problem framing cards: the evidence card, holding a client quote and
+     the analysis of it (or the constraint it ran into). */
+  .framing-card + .framing-card { margin-top: 20px; }
+  .framing-card p { margin: 0 0 16px; }
+  .framing-card p:last-child { margin-bottom: 0; }
+  .framing-card .framing-term {
+    margin: 0 0 4px;
+    color: #00d8aa;
+    font-size: 15px;
+    font-family: "Fakt Blond SemiBold", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 600;
+  }
+  .framing-card .framing-quote { color: #fff; }
+  .framing-card .figure { margin: 0 0 16px; }
+  .framing-head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 16px;
+  }
+  .framing-icon { display: block; flex: 0 0 auto; }
+  .framing-label {
+    font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    word-spacing: -3px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.45);
+  }
+  .framing-card .evidence-list { margin-top: -6px; }
+
+  /* flow-root keeps the children's margins inside the body, so the height
+     the script animates to (scrollHeight) is the height it settles at. */
+  /* A small "Design validation" tag on a summary, hinting that the item
+     holds process rationale (the icon and label match the card inside). */
+  .problem-item-badge {
+    grid-column: 2;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .problem-item-badge .framing-icon { width: 24px; height: 13px; }
+  .problem-item-badge .framing-label { font-size: 12px; }
+  .problem-item-body { display: flow-root; box-sizing: border-box; padding-left: 28px; }  /* 14px icon + 14px gap */
+  .problem-item-body > :first-child { margin-top: 20px; }
 
   .toc-heading { margin: 0 0 16px; }
 
@@ -1013,7 +1182,18 @@
       <h2 class="eyebrow" id="approach-heading">Approach</h2>
       <h3>Learning from the Excel workarounds</h3>
 
-      <p>Studying dozens of Excel processes where people had manually reconciled different schemas revealed consistent patterns. The most effective approaches arranged source and target schemas vertically, using alignment across rows to show mappings. Interviews with domain experts validated the approach, but exposed a recurring pain point: constantly rearranging cells whilst keeping track of what was mapped and what remained.</p>
+      <p>We studied how people were already reconciling different schemas by hand.</p>
+
+      <div class="evidence-card">
+        <div class="framing-head">
+          <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M12.1426 2.85254L2.82812 12.167L12.1426 21.4814V24.3096L0 12.167L12.1426 0.0244141V2.85254Z" fill="#00D8AA"/><path d="M45.832 12.167L33.665 24.334L22.916 13.585L12.168 24.333V21.5049L21.502 12.1709L21.498 12.167L21.502 12.1631L12.168 2.8291V0.000976562L22.916 10.749L33.665 0L45.832 12.167ZM24.3301 12.1631L24.334 12.167L24.3301 12.1709L33.665 21.5059L43.0039 12.167L33.665 2.82812L24.3301 12.1631Z" fill="#605F5F"/></svg>
+          <span class="framing-label">Evidence</span>
+        </div>
+        <ul class="evidence-list">
+          <li>Across dozens of manual Excel processes, the most effective approaches arranged source and target fields vertically, using row alignment to show mappings.</li>
+          <li>Interviews with domain experts exposed the recurring difficulty: rearranging cells while keeping track of what was mapped and what remained.</li>
+        </ul>
+      </div>
 
       <figure class="figure figure-strip">
         <div class="figure-portrait-frame">
@@ -1050,7 +1230,7 @@
 
       <figure class="figure">
         <img src="media/mch-wireframe-extended-animated.svg" width="1400" height="792" alt="Mapped and unmapped source lists merge into tabs, allowing three source schemas to fit alongside the master schema." loading="lazy">
-        <figcaption>Collapsing the mapped and unmapped items into tabs preserved the horizontal alignment of mapped items across schemas, and doubled the number of schemas which could fit in the view.</figcaption>
+        <figcaption>Collapsing the mapped and unmapped items into tabs doubled the number of schemas which could fit in the view.</figcaption>
       </figure>
 
       <figure class="figure mapping-tabs-detail" id="mapping-tabs-detail" aria-labelledby="mapping-tabs-title">
@@ -1088,6 +1268,15 @@
         <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
         </div>
       </div>
+
+      <div class="evidence-card framing-card">
+        <div class="framing-head">
+          <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
+          <span class="framing-label">Ship and learn</span>
+        </div>
+        <p>As the sole designer supporting 11 developers, I prioritised a working implementation: full interactive prototyping this data-heavy interaction would have taken comparable effort to building it. We tested internally, then refined it through customer use, adding search, populate cells and enforce schema functions. As our customer base shifted, we adapted the workflow from assembling a master schema field by field to using an existing dataset.</p>
+      </div>
+
     </section>
 
     <hr class="rule">
@@ -1103,14 +1292,39 @@
       <figure class="figure figure-wide">
         <div class="figure-portrait-frame">
           <div class="ui-video" data-hover-controls>
-            <video autoplay muted loop playsinline disablepictureinpicture poster="media/automap-preview.jpg">
-              <source src="media/automap-preview.mp4" type="video/mp4">
+            <video autoplay muted loop playsinline disablepictureinpicture poster="media/mch-automap-section.jpg">
+              <source src="media/mch-automap-section.mp4" type="video/mp4">
             </video>
           <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
           </div>
         </div>
-        <figcaption>Automap mode suggests bulk mappings above a user-set confidence threshold. Lower confidence ratings are highlighted yellow for user review. Mappings made before show the avatar of the user who made it, building trust in the suggestion.</figcaption>
+        <figcaption>Automap previews bulk mappings above a user-set confidence threshold before they are applied. Shown in the 2026 upgraded interface.</figcaption>
       </figure>
+
+      <div class="subsection" id="refinement-heading">
+        <h3>Making uncertainty visible</h3>
+        <p>The 2026 model produced useful suggestions at confidence thresholds as low as 30%, compared with around 80% for the previous model. Lower-confidence mappings needed closer review.</p>
+
+        <p>I introduced a yellow highlight gradient to draw attention to these mappings. Users could inspect sample values and a data profile to judge whether a match was appropriate. Avatars and recency information identified prior mappings made by other users, giving people more context for their decision.</p>
+
+        <figure class="figure">
+          <div class="figure-portrait-frame">
+            <div class="mapping-confidence-detail">
+              <img src="media/mapping-detail.png" width="1348" height="746" alt="Enlarged mapping detail: Line of Business has a yellow 30.9% confidence rating; Expiry Date shows a prior user's avatar beside its 92.0% rating." loading="lazy">
+            </div>
+          </div>
+          <figcaption>Detail of the 2026 interface: yellow highlights flag lower-confidence suggestions; the avatar beside Expiry Date identifies a mapping made by another user. Select the image to see the full view.</figcaption>
+        </figure>
+
+        <div class="evidence-card framing-card">
+          <div class="framing-head">
+            <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
+            <span class="framing-label">Design validation</span>
+          </div>
+          <p>The yellow gradient performed best among the colour options we tested, including in colour-blindness simulations and testing with a user with colour vision deficiency.</p>
+        </div>
+      </div>
+
     </section>
 
     <hr class="rule">
@@ -1120,14 +1334,21 @@
 
       <div class="subsection" id="semantics-heading">
         <h3>From column names to column contents</h3>
-        <p>Whilst the interface had served our clients well, we knew the mapping algorithm itself could be improved. It just looked at the similarity of column names, and whether a pair had been mapped before. A more intelligent system would learn the contents of each column to more accurately match them to the master schema.</p>
+        <p>Whilst the original 2016 interface had served our clients well, we knew the mapping algorithm itself could be improved. It just looked at the similarity of column names, and whether a pair had been mapped before. A more intelligent system would learn the contents of each column to more accurately match them to the master schema.</p>
         <blockquote>In 2026 we initiated a project to identify the type of data in each column, then profile the data inside it, creating a unique data fingerprint for each field.</blockquote>
 
         <p class="see-also"><a href="https://help.quantemplate.com/data-semantics" target="_blank" rel="noopener noreferrer">Data semantics on the Quantemplate Help Centre &rarr;</a></p>
 
-        <p>I did a full audit of the current mapping behaviour, identified shortcomings in our approach and evaluated different paths for improvement. Together with a domain expert, I modelled different methodologies for weighting data fingerprints and prior usage.</p>
+        <div class="evidence-card framing-card">
+          <div class="framing-head">
+            <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
+            <span class="framing-label">Design exploration</span>
+          </div>
+          <p>I did a full audit of the current mapping behaviour, identified shortcomings in our approach and evaluated different paths for improvement. Together with a domain expert, I modelled different methodologies for weighting data fingerprints and prior usage.</p>
+          <p>My initial proposal prompted a different approach from a colleague. I tested both across a range of scenarios and found the other model's behaviour more logical, predictable and tunable, so we chose it over my original method.</p>
+        </div>
 
-        <p>When it came to the UI, we displayed the data types, allowing users to drill down and see detailed stats for each column. Prior mappings from other users now had avatars and recency information to build trust.</p>
+        <p>When it came to the UI, we displayed the data types, allowing users to click in and see a data profile for each column: sample values, uniques, distribution, statistics and lineage.</p>
 
         <figure class="figure figure-wide">
           <div class="figure-portrait-frame">
@@ -1142,44 +1363,9 @@
         </figure>
       </div>
 
-      <div class="subsection" id="refinement-heading">
-        <h3>Making uncertainty visible</h3>
-        <p>Improved automapping produced useful suggestions at confidence thresholds as low as 30%, compared with around 80% for the previous model. But lower-confidence mappings needed closer review.</p>
-
-        <p>I introduced a yellow highlight gradient to draw attention to these mappings, helping users focus their review where it mattered most. They could then inspect sample values and a data profile to judge whether a match was appropriate. Better automation needed an equally clear way to question its results.</p>
-
-        <p>The yellow gradient performed best among the colour options we tested, including in colour-blindness simulations and testing with a user with colour vision deficiency.</p>
-
-        <figure class="figure">
-          <div class="figure-portrait-frame">
-            <img src="media/mapping-detail.png" width="1348" height="746" alt="Two mapped schemas side by side, each 53 mapped and 1 unmapped: several match confidences highlighted yellow for review, such as 30.9% for Line of Business and 20.0% for Extra Field 1, alongside high-confidence green matches like 97.1% for Policy No." loading="lazy">
-          </div>
-          <figcaption>The yellow highlight alerts the user to mapping suggestions that are more likely to need review.</figcaption>
-        </figure>
-      </div>
-    </section>
-
-    <hr class="rule">
-
-    <section aria-labelledby="outcome-heading" class="case-body">
-      <h2 class="eyebrow" id="outcome-heading">Outcomes</h2>
-
-      <div class="subsection" id="adoption-heading">
-        <h3>Cut mapping work from weeks to minutes for 2,000 files per month</h3>
-        <p>Column mapping achieved 100% adoption and became a tentpole feature of Quantemplate, helping drive the growth of the business.</p>
-        <p>We continued to improve usability and performance in response to user feedback. Search bars made it easier to locate unmapped items, while more informative waiting states helped users understand what was happening during processing.</p>
-        <p>Our original research cohort wanted to assemble master schemas from columns in their source datasets. As the business focus shifted towards delegated authority underwriting, we prioritised setting an existing dataset as the master schema, adapting the workflow to the new cohort&rsquo;s needs.</p>
-
-        <blockquote class="outcome-quote">
-          I cannot adequately express how receptive Tom was to our suggestions for improvement. He would listen, ask questions and make our wishlist items reality; even enhancing our&nbsp;suggestions.
-          <cite><a href="https://www.linkedin.com/in/tom-dg/details/recommendations/?detailScreenTabIndex=0" target="_blank" rel="noopener noreferrer">Lee Ann Dewell Lang</a>, Quantemplate user-client, James River Insurance</cite>
-        </blockquote>
-      </div>
-
       <div class="subsection" id="evaluation-heading">
-        <h3>Evaluating the upgraded model</h3>
-        <p>To evaluate the new mapping behaviour, I created four synthetic schemas based on the 250-column Lloyd&rsquo;s London Market schema, which is widely used in the industry. These contained realistic data, with extensive discrepancies and lexical variation in column names, making the test more demanding than typical product usage.</p>
-        <p>In my LLM-assisted assessment across four demanding synthetic schemas, the new model achieved approximately 12% higher overall match quality and around 73% fewer serious semantic mapping errors.</p>
+        <h3>Evaluating the new mapping model</h3>
+        <p>In my LLM-assisted assessment across four demanding schema variations mapped to Lloyd&rsquo;s v5.2, the new model achieved approximately 12% higher overall match quality and around 73% fewer serious semantic mapping errors.</p>
         <figure class="model-chart" aria-labelledby="model-chart-title" aria-describedby="model-chart-caption">
           <h3 class="model-chart-title" id="model-chart-title">73% fewer serious semantic mapping errors</h3>
           <p class="model-chart-subtitle">Serious semantic mapping errors across 207 columns · lower is better</p>
@@ -1198,10 +1384,54 @@
             </div></div>
           </div>
           <figcaption id="model-chart-caption">
-            <span>Estimated counts from an LLM-assisted review of screenshots across four synthetic schemas (26–27 August 2026).</span>
+            <span>Estimated counts from an LLM-assisted review of screenshots across four schema variations mapped to Lloyd&rsquo;s v5.2 (26–27 August 2026).</span>
           </figcaption>
         </figure>
-        <p>Across the four schemas, only three mappings from the new model were assessed as incorrect, even with the Automap confidence threshold set to 0%. It also handled repeated and numbered fields more consistently, reducing incorrect matches between similar-looking fields with distinct meanings.</p>
+        <div class="problem-items">
+          <details class="problem-item" id="model-evaluation">
+            <summary>
+              <span class="problem-item-icon" aria-hidden="true"></span>
+              <span class="problem-item-title">How the model was evaluated</span>
+              <span class="problem-item-teaser">Schema variations, reviewed with LLM <span class="problem-item-tail">assistance <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+              <span class="problem-item-badge"><svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><rect x="22.9123" y="12.1673" width="15.2071" height="15.2071" transform="rotate(-45 22.9123 12.1673)" stroke="#00D8AA" stroke-width="2"/>
+<rect x="1.41421" y="12.1673" width="15.2071" height="15.2071" transform="rotate(-45 1.41421 12.1673)" stroke="#00D8AA" stroke-width="2"/></svg><span class="framing-label">Model evaluation</span></span>
+            </summary>
+            <div class="problem-item-body">
+              <div class="evidence-card framing-card">
+                <div class="framing-head">
+                  <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><rect x="22.9123" y="12.1673" width="15.2071" height="15.2071" transform="rotate(-45 22.9123 12.1673)" stroke="#00D8AA" stroke-width="2"/>
+<rect x="1.41421" y="12.1673" width="15.2071" height="15.2071" transform="rotate(-45 1.41421 12.1673)" stroke="#00D8AA" stroke-width="2"/></svg>
+                  <span class="framing-label">Model evaluation</span>
+                </div>
+                <p class="framing-term">What was assessed</p>
+                <p>This evaluated the matching model&rsquo;s output, not the usability of the interface.</p>
+                <p class="framing-term">Test data</p>
+                <p>I created four schema variations to map to Lloyd&rsquo;s v5.2, with discrepancies and lexical variation in column names. The accompanying data was synthetic, used only to allow Quantemplate to detect the correct data types.</p>
+                <p class="framing-term">Method</p>
+                <p>An LLM-assisted assessment of the mappings both models produced, carried out on 26&ndash;27 August 2026. The error counts are estimates from an LLM-assisted review of screenshots across the four schemas.</p>
+                <p class="framing-term">Findings</p>
+                <p>Across the four schemas, only three mappings from the new model were assessed as incorrect, even with the Automap confidence threshold set to 0%. It also handled repeated and numbered fields more consistently, reducing incorrect matches between similar-looking fields with distinct meanings.</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <hr class="rule">
+
+    <section aria-labelledby="outcome-heading" class="case-body">
+      <h2 class="eyebrow" id="outcome-heading">Outcomes</h2>
+
+      <div class="subsection" id="adoption-heading">
+        <h3>Cut mapping work from weeks to minutes for 2,000 files per month</h3>
+        <p>Column mapping achieved 100% adoption and became a tentpole feature of Quantemplate, helping drive the growth of the business.</p>
+        <p>The 2026 model upgrade produced around 73% fewer serious semantic mapping errors in <a href="#evaluation-heading">pre-release testing on schema variations mapped to Lloyd&rsquo;s v5.2</a>.</p>
+
+        <blockquote class="outcome-quote">
+          I cannot adequately express how receptive Tom was to our suggestions for improvement. He would listen, ask questions and make our wishlist items reality; even enhancing our&nbsp;suggestions.
+          <cite><a href="https://www.linkedin.com/in/tom-dg/details/recommendations/?detailScreenTabIndex=0" target="_blank" rel="noopener noreferrer">Lee Ann Dewell Lang</a>, Quantemplate user-client, James River Insurance</cite>
+        </blockquote>
       </div>
     </section>
 
@@ -1227,7 +1457,7 @@
         <span class="case-block-text">
           <span class="case-block-kicker"><img class="case-block-kicker-icon" src="/media/icons/validation.svg" alt="" width="16" height="16" loading="lazy">Validation</span>
           <span class="case-block-title">Closing the loop on data quality</span>
-          <span class="case-block-subtitle">Lets users fix data errors in place with a full audit trail. 23k rows corrected and step change in speed of work.</span>
+          <span class="case-block-subtitle">Lets users fix data errors in place with a full audit trail. 23k cells corrected and step change in speed of work.</span>
           <span class="case-block-keywords"><span class="case-block-keyword">Workflow</span><span class="case-block-keyword">Information design</span><span class="case-block-keyword">Auditability</span></span>
         </span>
       </a>
@@ -1497,6 +1727,46 @@
       }
       reducedMotion.addEventListener('change', configure);
       configure();
+      });
+    })();
+  </script>
+  <script>
+    /* Accordion items: animate each <details> body open and closed. The
+       body's height is tweened from where it is now, so a click mid-way
+       reverses smoothly; reduced motion falls back to the native toggle. */
+    (function () {
+      var items = document.querySelectorAll('.problem-item');
+      if (!items.length || !('animate' in Element.prototype)) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      Array.prototype.forEach.call(items, function (d) {
+        var summary = d.querySelector('summary'), body = d.querySelector('.problem-item-body');
+        var anim = null;
+        function run(from, to, done) {
+          if (anim) anim.cancel();
+          body.style.overflow = 'clip';
+          anim = body.animate(
+            [{ height: from + 'px', opacity: to ? 0.4 : 1 }, { height: to + 'px', opacity: to ? 1 : 0 }],
+            { duration: Math.min(520, 260 + Math.abs(to - from) * 0.25), easing: 'cubic-bezier(0.16, 1, 0.3, 1)' }
+          );
+          anim.onfinish = function () {
+            anim = null;
+            body.style.overflow = '';
+            if (done) done();
+          };
+        }
+        summary.addEventListener('click', function (e) {
+          e.preventDefault();
+          var now = body.getBoundingClientRect().height;
+          if (d.open && !d.classList.contains('is-closing')) {
+            d.classList.add('is-closing');
+            run(now, 0, function () { d.open = false; d.classList.remove('is-closing'); });
+          } else {
+            var from = d.open ? now : 0;
+            d.classList.remove('is-closing');
+            d.open = true;
+            run(from, body.scrollHeight);
+          }
+        });
       });
     })();
   </script>
