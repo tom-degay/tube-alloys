@@ -683,6 +683,31 @@
     color: #00d8aa;
   }
 
+  [aria-labelledby="reflections-heading"] .subsection + .subsection {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .outcomes-list {
+    list-style: none;
+    margin: 0 0 24px;
+    padding: 0;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 18px;
+    line-height: 1.6;
+  }
+  .outcomes-list li {
+    position: relative;
+    padding-left: 28px;
+  }
+  .outcomes-list li + li { margin-top: 12px; }
+  .outcomes-list li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: #00d8aa;
+  }
+
   /* Problem framing cards: the evidence card, holding a client quote and
      the analysis of it (or the constraint it ran into). */
   .framing-card + .framing-card { margin-top: 20px; }
@@ -1121,7 +1146,7 @@
         <ul class="key-points">
           <li>Created a new mapping interaction model from users’ spreadsheet workarounds</li>
           <li>Achieved 100% adoption in business-critical workflows</li>
-          <li>Cut mapping work from weeks to minutes for 2,000 files per month</li>
+          <li>Automated column mapping for 2,000 files per month</li>
           <li>2026 upgrade delivered 73% fewer serious semantic mapping errors in testing</li>
         </ul>
       </div>
@@ -1287,7 +1312,7 @@
       <p>For every unmapped field we used our matching engine to generate suggestions to map to the master schema. The next step was to automate this: allow top-ranking suggestions to be mapped at once.</p>
       <p>I designed this as a preview mode, so users could see mapping suggestions before committing. I also added a slider, so a minimum confidence threshold could be set: incorrect mappings could be costly, so quality was more important than coverage.</p>
 
-      <blockquote>These safeguards helped users trust the automation.</blockquote>
+      <p>These safeguards helped users trust the automation.</p>
 
       <figure class="figure figure-wide">
         <div class="figure-portrait-frame">
@@ -1424,14 +1449,35 @@
       <h2 class="eyebrow" id="outcome-heading">Outcomes</h2>
 
       <div class="subsection" id="adoption-heading">
-        <h3>Cut mapping work from weeks to minutes for 2,000 files per month</h3>
-        <p>Column mapping achieved 100% adoption and became a tentpole feature of Quantemplate, helping drive the growth of the business.</p>
-        <p>The 2026 model upgrade produced around 73% fewer serious semantic mapping errors in <a href="#evaluation-heading">pre-release testing on schema variations mapped to Lloyd&rsquo;s v5.2</a>.</p>
+        <h3>Less manual work. Better mappings.</h3>
+        <p>Column mapping became a core part of clients&rsquo; workflows, with the recent model upgrade improving mapping quality.</p>
+        <ul class="outcomes-list">
+          <li><strong>Consistently cited as a reason for choosing Quantemplate</strong> in sales win analysis.</li>
+          <li><strong>Automated column mapping for an average of 2,000 files per customer each month.</strong> After initial setup, mappings only need attention when incoming schemas change.</li>
+          <li><strong>73% fewer mapping errors</strong> in <a href="#evaluation-heading">evaluation of the upgraded model</a>.</li>
+        </ul>
 
         <blockquote class="outcome-quote">
           I cannot adequately express how receptive Tom was to our suggestions for improvement. He would listen, ask questions and make our wishlist items reality; even enhancing our&nbsp;suggestions.
           <cite><a href="https://www.linkedin.com/in/tom-dg/details/recommendations/?detailScreenTabIndex=0" target="_blank" rel="noopener noreferrer">Lee Ann Dewell Lang</a>, Quantemplate user-client, James River Insurance</cite>
         </blockquote>
+      </div>
+    </section>
+
+    <hr class="rule">
+
+    <section aria-labelledby="reflections-heading" class="case-body">
+      <h2 class="eyebrow" id="reflections-heading">Reflections</h2>
+
+      <div class="subsection">
+        <h3>Research beyond the current client base</h3>
+        <p>We initially shaped parts of the workflow around clients who wanted to build a master schema from their source files. Later clients, who became the larger cohort, wanted to map to an existing standard schema. Broader market research could have surfaced this need earlier and helped us design for both workflows from the outset.</p>
+      </div>
+
+      <div class="subsection">
+        <h3>Balance stability with change</h3>
+        <p>Applying a schema from a reference Data Dictionary creates an independent copy. This protects downstream operations from unexpected changes, but makes migration harder when the reference schema evolves.</p>
+        <p>I&rsquo;d explore keeping a reference to the source schema while giving users control over when to adopt updates. Stable column IDs, rather than names, could help preserve downstream operations through renaming, though this would need further engineering investigation.</p>
       </div>
     </section>
 
@@ -1477,6 +1523,7 @@
     <a href="#automation-heading">Automation</a>
     <a href="#evolution-heading">Evolution</a>
     <a href="#outcome-heading">Outcomes</a>
+    <a href="#reflections-heading">Reflections</a>
   </nav>
 
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged image" tabindex="-1">
