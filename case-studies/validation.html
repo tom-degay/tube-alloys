@@ -132,16 +132,13 @@
   .corrections-snapshot h4 { margin: 0 0 16px; font-size: 15px; }
   .corrections-snapshot dl {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 20px 12px;
     margin: 0;
   }
   .corrections-snapshot dl div { display: flex; flex-direction: column; gap: 6px; }
   .corrections-snapshot dt { font-size: 13px; color: rgba(255, 255, 255, 0.68); }
   .corrections-snapshot dd { order: -1; margin: 0; color: #fff; font: 20px "IBM Plex Mono", monospace; }
-  @media (max-width: 560px) {
-    .corrections-snapshot dl { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
   @keyframes corrections-area-reveal { from { opacity: 0; } to { opacity: 1; } }
   @keyframes corrections-line-draw { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
   @media (prefers-reduced-motion: no-preference) {
@@ -1759,6 +1756,11 @@
     <section aria-labelledby="outcome-heading" class="case-body">
       <h2 class="eyebrow" id="outcome-heading">Outcome</h2>
       <h3>Closing the loop</h3>
+      <p>Clients using the in-product correction and report improvements reported a significant boost to their workflow, with the changes addressing their productivity bottlenecks.</p>
+      <p>Being able to see who had made corrections was especially valuable to them for supporting their audit processes.</p>
+      <blockquote class="outcome-quote">The speed at which we can work now is a real step change. Everything feels much more fluid. I don&rsquo;t even need to click all the way into the validation to see what I need. The changes have helped tremendously: I know what I need to focus on.
+        <cite>Quantemplate user-client at major US insurance carrier</cite>
+      </blockquote>
       <p>In-product Validation Corrections launched on 8 July 2026. By 8 October, corrections had been applied to 23,429 cells across 27 pipeline runs.</p>
       <figure class="corrections-chart" aria-labelledby="corrections-chart-title">
         <h3 id="corrections-chart-title">23,429 cells corrected</h3>
@@ -1797,12 +1799,8 @@
           </dl>
         </div>
       </figure>
-      <p>Clients using the in-product correction and report improvements reported a significant boost to their workflow, with the changes addressing their productivity bottlenecks.</p>
-      <p>Being able to see who had made corrections was especially valuable to them for supporting their audit processes.</p>
       <p>Supplier sharing is now in limited beta; we don&rsquo;t yet have usage results or client feedback.</p>
-      <blockquote class="outcome-quote">The speed at which we can work now is a real step change. Everything feels much more fluid. I don&rsquo;t even need to click all the way into the validation to see what I need. The changes have helped tremendously: I know what I need to focus on and what I need to download.
-        <cite>Quantemplate user-client at major US insurance carrier</cite>
-      </blockquote>
+
     </section>
 
     <hr class="rule">
@@ -1810,10 +1808,10 @@
     <section aria-labelledby="reflections-heading" class="case-body" id="nextsteps-heading">
       <h2 class="eyebrow" id="reflections-heading">Reflections</h2>
       <h3>Adoption rates</h3>
-      <p>Adoption has been uneven despite support in research. Some clients started immediately; others were reluctant to change a documented system-of-record workflow. This showed that interest in a feature doesn&rsquo;t necessarily indicate readiness to adopt it. In future, I&rsquo;d try and dig into that in research, to set realistic rollout expectations.</p>
+      <p>Adoption has been uneven despite support in research. Some clients started immediately; others were reluctant to change a documented system-of-record workflow. This showed that interest in a feature doesn&rsquo;t necessarily indicate readiness to adopt it.</p>
 
       <h3>Agentic suggestions</h3>
-      <p>We designed around existing workflows, but easier validation encouraged clients to attempt more. Better tools changed the scale of the work and exposed the next bottleneck: entering corrections could itself become repetitive.</p>
+      <p>Better tools have again changed the scale of the work and exposed the next bottleneck: entering corrections could itself become repetitive.</p>
       <p>This creates an opportunity for an agent to suggest corrections for people to review. The workflow already makes changes explicit, previewable and traceable, providing a foundation for assistance as the volume grows.</p>
 
         <figure class="figure figure-wide" id="outcome-agentic">
