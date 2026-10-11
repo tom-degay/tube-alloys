@@ -102,6 +102,8 @@ html.identity-menu-open { overflow: hidden; }
 [data-navigation="identity"] .identity-dialog .menu-subsections--approach a { display: block; width: fit-content; max-width: 100%; margin: 0 auto; }
 @media (min-width: 641px) {
   .menu-subsections--case-studies { width: calc(100% - 40px); transform: translateX(20px); }
+  .menu-subsections--case-studies .menu-subsection-item:has(> a[href="/case-studies/pipelines"]) { grid-column: 2; grid-row: 2; }
+  .menu-subsections--case-studies .menu-subsection-item:has(> a[href="/case-studies/validation"]) { grid-column: 1; grid-row: 3; }
 }
 /* The Agent hover surface: a soft fill settles around stationary text. */
 [data-navigation="identity"] .identity-dialog .menu-subsections a { position: relative; isolation: isolate; --surface-start-x: .975; --surface-start-y: .94; --surface-peak-x: 1.012; --surface-peak-y: .988; --surface-settle-x: .997; --surface-settle-y: 1.006; }
