@@ -75,6 +75,14 @@
         img.src = video.poster; img.alt = '';
         img.className = 'video-poster'; video.replaceWith(img);
       });
+      clone.querySelectorAll('object[data-overview-src]').forEach(object => {
+        const img = document.createElement('img');
+        img.src = object.dataset.overviewSrc;
+        img.alt = '';
+        img.className = object.className;
+        if (object.hasAttribute('style')) img.setAttribute('style', object.getAttribute('style'));
+        object.replaceWith(img);
+      });
       canvas.append(clone); preview.append(canvas); thumb.append(preview);
       const label = document.createElement('span');
       label.className = 'slide-grid-number';

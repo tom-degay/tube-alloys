@@ -31,6 +31,8 @@
 <link rel="stylesheet" href="/styles.css">
 <link rel="stylesheet" href="/nav.css?v=20261011">
 <style>
+  .content > header { position: relative; }
+  .slide-mode-link { position: absolute; top: 0; left: 0; width: 100%; max-width: 46rem; margin: 0; text-align: right; }
   html { scroll-padding-top: 100px; }
 
   .case-body blockquote.outcome-quote {
@@ -1125,7 +1127,8 @@
   </div>
   <main>
   <div class="content">
-    <header>
+    <header id="case-intro">
+      <p class="links slide-mode-link"><a href="../slides/column-mapping.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>View slides</span></a></p>
       <svg class="case-icon" viewBox="0 0 16 16" fill="none" stroke="#00d8aa" stroke-width="0.762" aria-hidden="true" focusable="false">
         <g transform="translate(-442, -474)">
           <path d="M442.5,474.5 L450.5,474.5 L450.5,480.5 L453,480.5 C454.242641,480.5 455.367641,481.00368 456.181981,481.818019 C456.99632,482.632359 457.5,483.757359 457.5,485 C457.5,486.242641 456.99632,487.367641 456.181981,488.181981 C455.367641,488.99632 454.242641,489.5 453,489.5 C451.757359,489.5 450.632359,488.99632 449.818019,488.181981 C449.00368,487.367641 448.5,486.242641 448.5,485 L448.5,482.5 L442.5,482.5 L442.5,474.5 Z" pathLength="100" class="case-icon-trace" style="animation-delay:0.12s"/>
@@ -1134,7 +1137,6 @@
       <span class="kicker head-fade">Case Study | <a href="https://help.quantemplate.com/map-columns" target="_blank" rel="noopener noreferrer">Quantemplate Column Mapping</a></span>
       <h1 class="display head-fade">Mapping inconsistent schemas at scale</h1>
       <p class="subtitle head-fade">Helped analysts align inconsistent incoming files into a common format, then reuse those mappings each month. Automated column mapping for an average of 2,000 files per customer per month.</p>
-      <p class="keywords"><span class="keyword">Interaction design</span><span class="keyword">Human-in-the-loop</span></p>
 
     </header>
 
@@ -1505,7 +1507,6 @@
           <span class="case-block-kicker"><img class="case-block-kicker-icon" src="/media/icons/validation.svg" alt="" width="16" height="16" loading="lazy">Validation</span>
           <span class="case-block-title">Closing the loop on data quality</span>
           <span class="case-block-subtitle">Lets users fix data errors in place with a full audit trail. 23k cells corrected and step change in speed of work.</span>
-          <span class="case-block-keywords"><span class="case-block-keyword">Workflow</span><span class="case-block-keyword">Information design</span><span class="case-block-keyword">Auditability</span></span>
         </span>
       </a>
     </section>

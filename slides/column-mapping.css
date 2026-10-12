@@ -1,0 +1,93 @@
+@keyframes mapping-row-in {
+    from {opacity:0;} to {opacity:1;}
+  }
+@keyframes mapping-fill-left {
+    0%,12% {transform:scaleX(.6);} 22%,61% {transform:scaleX(.8);}
+    75%,100% {transform:scaleX(1);}
+  }
+@keyframes mapping-fill-right {
+    0%,4% {transform:scaleX(0);} 13%,19% {transform:scaleX(.125);}
+    28% {transform:scaleX(.25);} 35% {transform:scaleX(.375);}
+    43% {transform:scaleX(.5);} 50% {transform:scaleX(.625);}
+    58%,70% {transform:scaleX(.75);} 79% {transform:scaleX(.875);}
+    88%,100% {transform:scaleX(1);}
+  }
+/* Column mapping only: source-specific visuals on the shared slide templates. */
+.mapping-deck .mapping-vector{width:100%;height:auto;border-radius:16px;overflow:hidden}
+.mapping-deck .mapping-progress{transform-box:fill-box;transform-origin:left center}
+@media(prefers-reduced-motion:no-preference){
+ main.reveal .splash.present.splash-animating .mapping-row{animation:mapping-row-in .3s ease var(--mapping-delay) both}
+ main.reveal .splash.present.splash-animating .mapping-progress-left{animation:mapping-fill-left 3.4s ease both}
+ main.reveal .splash.present.splash-animating .mapping-progress-right{animation:mapping-fill-right 3.4s ease both}
+}
+.mapping-deck .mapping-contents .contents-list{grid-template-rows:repeat(4,auto);row-gap:12px}
+.mapping-deck .mapping-contents .contents-list a{font-size:36px;min-height:75px;padding-bottom:16px}
+.mapping-deck .key-points li{font-size:36px}
+.mapping-deck .meta-item p{font-size:27px}
+.mapping-deck .mapping-problem blockquote,.mapping-deck .mapping-semantics blockquote{font-size:41px;line-height:1.28}
+.mapping-deck .quote-slide .slide-layout{padding-top:104px;gap:30px}
+.mapping-deck .schema-flow{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+.mapping-deck .schema-flow>svg{width:auto;max-width:100%;height:100%;border-radius:16px;overflow:hidden}
+.mapping-deck .excel-slide h2{font-size:50px}
+.mapping-deck .excel-slide .strap{font-size:25px;margin-top:12px}
+.mapping-deck .excel-slide .validation-trigger{margin-top:12px}
+.mapping-deck .excel-slide .slide-layout{gap:14px}
+.mapping-deck .mapping-design-contents .slide-layout{grid-template-columns:460px minmax(0,1fr)}
+.mapping-deck .mapping-design-contents h2{font-size:50px}
+.mapping-deck .mapping-artwork .animated-artwork{display:block;max-width:100%;max-height:100%;border:0;border-radius:16px;overflow:hidden}
+.mapping-deck .mapping-interactive .slide-layout{grid-template-columns:430px minmax(0,1fr)}
+.mapping-deck .mapping-tabs-detail{margin:0;background:linear-gradient(#1a1a1a,#2c2c2c);border-radius:16px;padding:28px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:0;height:100%}
+.mapping-deck .mapping-demo-canvas{position:relative;width:402px;max-width:100%;margin-top:24px}
+.mapping-deck .mapping-demo-canvas object,.mapping-deck .mapping-demo-canvas>img{display:block;width:100%;height:475px;border-radius:16px;border:0;background:#000}
+.mapping-deck .try-leader{display:none}
+.mapping-deck .try-hint{position:absolute;right:0;top:-28px;background:none;border:0;padding:0;color:var(--green);font:400 20px/1 Fakt,sans-serif}
+.mapping-deck .is-interacted .try-hint{visibility:hidden}
+.mapping-deck .demo-controls{display:flex;justify-content:center;gap:14px;margin-top:18px}
+.mapping-deck .control-button{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid #555;border-radius:8px;background:transparent;color:#bbb;font:400 20px/1 Fakt,sans-serif}
+.mapping-deck .control-button:hover{background:#333;color:#fff}
+.mapping-deck .control-button svg{width:16px;height:16px}
+.mapping-deck .stop-icon,.mapping-deck .demo-button[aria-pressed=true] .play-icon{display:none}
+.mapping-deck .demo-button[aria-pressed=true] .stop-icon{display:block}
+.visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.mapping-deck .confidence-crop{width:min(100%,760px);height:auto;aspect-ratio:632/234;display:block;border-radius:16px;overflow:hidden}
+.mapping-deck .mapping-chart-slide .slide-layout{gap:20px}
+.mapping-deck .mapping-chart-slide .validation-trigger{margin-top:14px}
+.mapping-deck .model-chart{margin:0;padding:28px 34px;background:#212121;border-radius:16px}
+.mapping-deck .model-chart h3{font:600 40px/1.12 Fakt,sans-serif;margin:0 0 10px}
+.mapping-deck .model-chart-subtitle{font-size:24px;color:#aaa;margin-bottom:24px}
+.mapping-deck .model-chart-row+.model-chart-row{margin-top:22px}
+.mapping-deck .model-chart-label{display:block;font-size:23px;margin-bottom:12px}
+.mapping-deck .model-chart-plot{padding-right:50px}
+.mapping-deck .model-chart-bar{position:relative;height:18px;width:100%}
+.mapping-deck .model-chart-row--better .model-chart-bar{width:calc(100% * 3 / 11)}
+.mapping-deck .model-chart-fill{display:block;width:100%;height:100%;background:#777;border-radius:999px;transform-origin:left}
+.mapping-deck .model-chart-row--better .model-chart-fill{background:var(--green)}
+.mapping-deck .model-chart-value{position:absolute;left:calc(100% + 12px);top:50%;transform:translateY(-50%);font:24px monospace}
+.mapping-deck .model-chart figcaption{font-size:20px;line-height:1.35;color:#aaa;margin-top:26px;padding-top:18px;border-top:1px solid #444;text-wrap:pretty}
+@keyframes mapping-model-bar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@media(prefers-reduced-motion:no-preference){main.reveal .present .model-chart-fill{animation:mapping-model-bar 1s ease both}main.reveal .present .model-chart-row--better .model-chart-fill{animation-delay:.15s}}
+.mapping-deck .mapping-outcomes .outcomes-list{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:24px}
+.mapping-deck .mapping-outcomes li{position:relative;padding-left:38px;font-size:31px;line-height:1.3}
+.mapping-deck .mapping-outcomes li::before{content:'→';position:absolute;left:0;color:var(--green)}
+.mapping-deck .mapping-outcomes a,.mapping-deck .outcome-quote a{border-bottom:1px solid #666}
+.mapping-deck .mapping-reflection h2{font-size:57px}
+.mapping-deck .mapping-reflection .reflection-copy p{font-size:34px;line-height:1.3}
+.mapping-deck .mapping-reflection .reflection-copy p+p{margin-top:22px}
+.mapping-deck .validation-dialog .evidence-card p.framing-term{font-size:20px;font-weight:600;color:var(--green);margin-top:24px}
+.mapping-deck .validation-dialog .evidence-card p.framing-term+p{margin-top:8px}
+.mapping-deck .mapping-interactive h2{font-size:46px}
+
+/* Preserve the source diagram's Fakt Semibold typography. */
+.mapping-deck .schema-flow text{font-family:Fakt,sans-serif;font-weight:600;letter-spacing:normal}
+.excel-thumbnails{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;align-items:center;flex:1;min-height:0}
+.excel-thumbnail{border:0;padding:0;background:none;border-radius:16px;overflow:hidden;cursor:zoom-in}
+.excel-thumbnail img{width:100%;height:auto;border-radius:16px}
+.excel-lightbox{width:min(1400px,calc(100vw - 48px));max-width:none;height:calc(100dvh - 48px);max-height:none;padding:48px 24px 60px;border:1px solid #444;border-radius:16px;background:#131313;color:#eee;overflow:hidden}
+.excel-lightbox[open]{display:flex;align-items:center;justify-content:center;animation:excel-lightbox-in .3s ease}
+.excel-lightbox::backdrop{background:#000b;backdrop-filter:blur(8px)}
+.lightbox-image{max-width:100%;max-height:100%;object-fit:contain;border-radius:16px;outline:none}
+.excel-lightbox button{background:none;border:0;color:#aaa;font-size:30px;padding:8px 16px;border-radius:8px}
+.lightbox-close{position:absolute;right:12px;top:4px}
+.lightbox-controls{position:absolute;bottom:8px;left:0;width:100%;display:flex;align-items:center;justify-content:center;gap:28px}
+@keyframes excel-lightbox-in{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){.excel-lightbox[open]{animation:none}}
