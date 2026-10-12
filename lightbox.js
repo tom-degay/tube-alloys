@@ -7,7 +7,8 @@
      .ui-video-expand  opens that video in the same modal (no prev/next)
 
    A .ui-video carrying data-hover-controls reveals the native player controls
-   on hover, inline and in the lightbox, on pointer devices only. That replaces
+   on hover, inline and in the lightbox, on pointer devices only. A case-study
+   hero (.case-hero-video-frame) marked the same way gets the inline behaviour. That replaces
    an earlier hard-coded filename check -- mark the markup, not the script. */
 (function () {
   var lightbox = document.getElementById("lightbox");
@@ -250,7 +251,7 @@
   });
 
   /* Inline videos: our own expand button, and optional hover controls */
-  Array.prototype.slice.call(document.querySelectorAll(".ui-video")).forEach(function (wrap) {
+  Array.prototype.slice.call(document.querySelectorAll(".ui-video, .case-hero-video-frame[data-hover-controls]")).forEach(function (wrap) {
     var video = wrap.querySelector("video");
     var wantControls = wrap.hasAttribute("data-hover-controls");
 
