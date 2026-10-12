@@ -31,9 +31,8 @@
 <link rel="stylesheet" href="/styles.css">
 <link rel="stylesheet" href="/nav.css?v=20261011">
 <style>
-  .slide-mode-link { margin: 24px 0 0; }
-  .slide-mode-link a { display: inline-flex; align-items: center; gap: 12px; padding: 10px 15px; background: #212121; border: 1px solid #212121; border-radius: 8px; font-family: "Fakt Blond SemiBold", sans-serif; font-size: 16px; }
-  .slide-mode-link a:hover, .slide-mode-link a:focus-visible { background: #303030; border-color: #303030; }
+  .content > header { position: relative; }
+  .slide-mode-link { position: absolute; top: 0; left: 0; width: 100%; max-width: 46rem; margin: 0; text-align: right; }
 
   html { scroll-padding-top: 100px; }
 
@@ -1033,7 +1032,8 @@
   </div>
   <main>
   <div class="content">
-    <header>
+    <header id="case-intro">
+      <p class="links slide-mode-link"><a href="../slides/validation.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>View slides</span></a></p>
       <svg class="case-icon" viewBox="0 0 16 16" fill="none" stroke="#00d8aa" stroke-width="0.762" aria-hidden="true" focusable="false">
         <g transform="translate(-461, -474)">
           <g transform="translate(461.5264, 474.5072)">
@@ -1046,8 +1046,6 @@
       <span class="kicker head-fade">Case Study | <a href="https://help.quantemplate.com/validation-corrections" target="_blank" rel="noopener noreferrer">Quantemplate Validations</a></span>
       <h1 class="display head-fade">Closing the loop on data quality</h1>
       <p class="subtitle head-fade">Enabled users to fix data errors where they find them, with the control of rules-based corrections and a full audit trail. Over 23,000 cells corrected in the first three months.</p>
-      <p class="keywords"><span class="keyword">Workflow</span><span class="keyword">Information design</span><span class="keyword">Auditability</span></p>
-      <p class="slide-mode-link"><a href="../slides/validation.html">View slides <span aria-hidden="true">↗</span></a></p>
 
     </header>
 
@@ -1908,7 +1906,6 @@
           <span class="case-block-kicker"><img class="case-block-kicker-icon" src="/media/icons/pipelines.svg" alt="" width="17" height="13">Pipelines</span>
           <span class="case-block-title">Bringing clarity to complex data flows</span>
           <span class="case-block-subtitle">The visual workflow engine responsible for 100% of new sales, processing 3.4bn rows a year.</span>
-          <span class="case-block-keywords"><span class="case-block-keyword">Zero-to-one</span><span class="case-block-keyword">Visual programming</span><span class="case-block-keyword">Evolution</span></span>
         </span>
       </a>
     </section>
