@@ -523,6 +523,33 @@
       transition: none !important;
     }
   }
+
+  /* -- hero video -- */
+  .case-hero-video {
+    padding: clamp(24px, 2.5vw, 28px) clamp(24px, 2.5vw, 28px) 0;
+    background: linear-gradient(180deg, #131313 0%, #222121 100%);
+  }
+
+  .case-hero-video-frame {
+    max-width: 1024px;
+    margin: 0 auto;
+    overflow: hidden;
+    border: 1px solid #282828;
+    border-bottom: none;
+    border-radius: 10px 10px 0 0;
+  }
+
+  .case-hero-video-frame video {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @media (max-width: 799.98px) {
+    .case-hero-video-frame {
+      border-radius: 6px 6px 0 0;
+    }
+  }
 </style>
 <script>
   (function () {
@@ -606,6 +633,13 @@
       </div>
     </div>
   </nav>
+  <div class="case-hero-video">
+    <div class="case-hero-video-frame" data-hover-controls>
+      <video width="1600" height="900" autoplay muted loop playsinline disablepictureinpicture poster="media/image-insight-hero-poster.jpg">
+        <source src="media/image-insight-hero.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
   <main>
   <div class="content">
     <header>
