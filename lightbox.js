@@ -8,9 +8,9 @@
 
    A .ui-video carrying data-hover-controls reveals the native player controls
    on hover, inline and in the lightbox, on pointer devices only. A case-study
-   hero (.case-hero-video-frame) marked the same way gets the inline behaviour,
-   and on touch screens a tap reveals its controls -- full screen included, so
-   the demo can be watched full screen on a phone. That replaces
+   hero (.case-hero-video-frame) marked the same way gets the inline behaviour.
+   On touch screens a tap reveals the controls of any of these videos -- full
+   screen included, so they can be watched full screen on a phone. That replaces
    an earlier hard-coded filename check -- mark the markup, not the script. */
 (function () {
   var lightbox = document.getElementById("lightbox");
@@ -268,10 +268,12 @@
       });
     }
 
-    // Touch: the first tap on a hero shows the native controls (which fade
-    // on their own while playing) and keeps them, full screen allowed.
-    if (video && wantControls && !finePointer && wrap.classList.contains("case-hero-video-frame")) {
-      wrap.addEventListener("click", function () {
+    // Touch: the first tap on the video shows the native controls (which
+    // fade on their own while playing) and keeps them, full screen allowed.
+    // A tap on our own expand button is left to open the lightbox.
+    if (video && wantControls && !finePointer) {
+      wrap.addEventListener("click", function (e) {
+        if (e.target.closest(".ui-video-expand")) return;
         if (video.hasAttribute("controls")) return;
         video.setAttribute("controls", "");
         video.setAttribute("controlslist", "nodownload");

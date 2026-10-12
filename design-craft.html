@@ -381,15 +381,15 @@
     :root {
       --band: 1500px;
       --gutter: clamp(32px, 4vw, 72px);
-      --g: clamp(16px, 1.7vw, 30px);
-      --gv: clamp(48px, 5vw, 80px);
+      --g: clamp(64px, 6.8vw, 120px);   /* 4x the original gutter */
+      --gv: clamp(96px, 10vw, 160px);   /* 2x the original row gap */
       --mod: calc((min(100vw, var(--band)) - 2 * var(--gutter) - 11 * var(--g)) / 12);
     }
 
     /* Tablet and small-laptop widths: captions wrap to three lines there, so
        the gap under each picture (where its caption hangs) is a little deeper. */
     @media (max-width: 1439px) {
-      :root { --gv: 96px; }
+      :root { --gv: 192px; }  /* 2x the original 96px */
     }
 
     main {
@@ -2804,7 +2804,7 @@
     <div class="poster poster-5">
       <div class="p-item p-card p-section" style="--c:1 / 7;--r:1"><h2 class="principle-title display" id="teaching-heading">University teaching</h2><p>I spent 11 years as a Visiting Lecturer at Leeds Beckett University where I taught and mentored around 300 design students over my tenure. I helped them to edit, design and print their year-end publications, from shaping the structure to obsessing over paper stocks and print finishes. It was energising to work with such talented students and, I hope, to help raise the bar for what they thought was possible.</p></div>
 
-      <figure class="p-item figure p-fig p-nocrop" style="--c:1 / 13;--r:2"><video autoplay muted loop playsinline preload="metadata" width="1600" height="900" poster="media/leeds-publication-poster.jpg"><source src="media/leeds-publication.mp4" type="video/mp4"></video><figcaption>End of year publication produced in collaboration with graduating Fine Art and Contemporary Art Practices students and Leeds Beckett University 2013.</figcaption></figure>
+      <figure class="p-item figure p-fig p-nocrop" style="--c:1 / 13;--r:2"><video autoplay muted loop playsinline disablepictureinpicture preload="metadata" width="1600" height="900" poster="media/leeds-publication-poster.jpg" data-hover-controls><source src="media/leeds-publication.mp4" type="video/mp4"></video><figcaption>End of year publication produced in collaboration with graduating Fine Art and Contemporary Art Practices students and Leeds Beckett University 2013.</figcaption></figure>
     </div>
 
     <hr class="rule">
@@ -2829,6 +2829,33 @@
       });
       requestAnimationFrame(function () {
         requestAnimationFrame(function () { root.classList.add('head-play'); });
+      });
+    })();
+  </script>
+  <script>
+    /* Player controls for videos marked data-hover-controls (this page has no
+       lightbox.js, which handles this elsewhere): shown on hover with a fine
+       pointer; on touch screens the first tap reveals them, full screen
+       included. */
+    (function () {
+      var fine = window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+      Array.prototype.forEach.call(document.querySelectorAll("video[data-hover-controls]"), function (video) {
+        if (fine) {
+          video.addEventListener("mouseenter", function () {
+            video.setAttribute("controls", "");
+            video.setAttribute("controlslist", "nofullscreen nodownload");
+          });
+          video.addEventListener("mouseleave", function () {
+            video.removeAttribute("controls");
+            video.removeAttribute("controlslist");
+          });
+        } else {
+          video.addEventListener("click", function () {
+            if (video.hasAttribute("controls")) return;
+            video.setAttribute("controls", "");
+            video.setAttribute("controlslist", "nodownload");
+          });
+        }
       });
     })();
   </script>
