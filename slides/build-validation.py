@@ -165,6 +165,27 @@ slides.append('<section id="applying-corrections" class="full-video" data-title=
 sharing=pick(src,r'<section aria-labelledby="sharing-heading"','section')
 outline('sharing','04 / Sharing',clean(pick(sharing,r'<h3>','h3')),
         [(id,detail_heading(id)[0]) for id in ['sh-choose','sh-submit','sh-progress']], 'portrait-media contents-side')
+# Keep the architecture diagram immediately after the Sharing contents slide.
+architecture=(ROOT/'case-studies/media/correction-requests.svg').read_text()
+architecture=architecture.replace('<svg ', '<svg class="correction-requests-diagram" style="display:block;width:100%;height:auto;max-height:100%" ', 1)
+# Slide-only playback: keep the article's timing, but finish with everything visible.
+architecture=architecture.replace(' infinite;', ' 1 forwards;')
+architecture=re.sub(r'/\* Preserve the movement speed,.*?\*/',
+                    '/* Play once on slide entry and hold the completed diagram. */', architecture, count=1, flags=re.S)
+architecture=re.sub(r'@keyframes cr-reset \{[^\n]+\}',
+                    '@keyframes cr-reset { from, to { opacity: 1; } }', architecture, count=1)
+for label in ['in','out']:
+    pattern=rf'@keyframes cr-label-{label} \{{\s*0%, ([\d.]+)%, [\d.]+%, 100% \{{ opacity: 0; \}}\s*([\d.]+)%, [\d.]+% \{{ opacity: 1; \}}\s*\}}'
+    timing=re.search(pattern,architecture)
+    assert timing, f'Missing correction-request label timing: {label}'
+    architecture=re.sub(pattern, f'@keyframes cr-label-{label} {{\n  0%, {timing[1]}% {{ opacity: 0; }}\n  {timing[2]}%, 100% {{ opacity: 1; }}\n}}', architecture, count=1)
+# Replay on re-entry, and leave a complete static diagram in the overview.
+architecture=architecture.replace('</style>', '''
+.slides section:not(.present) .correction-requests-diagram *,
+main.reveal[inert] .correction-requests-diagram *,
+.grid-preview .correction-requests-diagram * { animation: none !important; }
+</style>''', 1)
+slides.append(f'<section id="correction-requests-architecture" class="full-graphic" data-title="Correction requests architecture"><div class="media-stage">{architecture}</div></section>')
 for id in ['sh-choose','sh-submit','sh-progress']:
     extend_detail(id,'04 / Sharing')
 full_video('sharing-setup','Bringing suppliers into the correction workflow',pick(sharing,r'<video\b','video'))
