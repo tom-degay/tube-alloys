@@ -153,7 +153,6 @@ confidence=popup('confidence-validation',card(refinement),heading(refinement))
 # Match the article's enlarged detail and its crop of the green top border.
 crop='<svg class="confidence-crop" viewBox="14 298 632 234" role="img" aria-label="'+escape(unescape(re.search(r'alt="([^"]+)"',refinement).group(1)),quote=True)+'"><image href="../case-studies/media/mapping-detail.png" width="1348" height="746"/></svg>'
 image_slide('uncertainty',groups['automation'],heading(refinement),crop,'',confidence)
-video('mapping-demo',src[src.index('<div class="case-hero-video">'):],title)
 
 evolution=section('evolution')
 semantics=pick(evolution,r'<div class="subsection" id="semantics-heading"','div')
