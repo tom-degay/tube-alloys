@@ -45,10 +45,6 @@
     padding: clamp(24px, 6vw, 72px) clamp(24px, 5vw, 56px);
   }
 
-  @media (min-width: 1100px) {
-    main { max-width: 1320px; }
-  }
-
   hr.rule {
     border: none;
     border-top: 1px solid rgba(255, 255, 255, 0.2);
@@ -218,23 +214,9 @@
     margin: 0;
   }
 
-  @media (min-width: 1100px) {
-    main {
-      display: grid;
-      grid-template-columns: 230px minmax(0, 1fr);
-      column-gap: 96px;
-      align-items: start;
-    }
-
-    .toc {
-      display: flex;
-      flex-direction: column;
-      grid-column: 1;
-      grid-row: 1;
-      position: sticky;
-      top: 100px;
-    }
-  }
+  /* No section rail: one reading column, centred on the page. */
+  main { max-width: none; }
+  .content { max-width: 46rem; margin-inline: auto; }
 
   /* -- .figure-wide: an opt-in modifier for large videos/images. 140%
      of the 46rem text column, centred on it (expanding out of both
@@ -248,15 +230,10 @@
      left/right overhang is 9.2rem each -- margin-left takes that back
      off the element's normal (flush-left) position to centre it.
 
-     Only turned on at 1500px+: below that, the 96px rail-gap between
-     .toc and the content column isn't wide enough for a 9.2rem
-     (147px) left bleed to clear the toc without overlapping it -- see
-     the column-gap override below, which exists only to make room for
-     this. Below 1500px .figure-wide is inert; each instance just keeps
-     whatever width its base class already gives it. */
+     Only turned on at 1500px+, a limit inherited from the section rail
+     this page no longer has. Below that .figure-wide is inert; each
+     instance just keeps whatever width its base class already gives it. */
   @media (min-width: 1500px) {
-    main { column-gap: 200px; }
-
     .figure-wide {
       width: 64.4rem;
       max-width: none;
@@ -280,8 +257,6 @@
       max-width: 100%;
     }
   }
-
-  .toc-heading { margin: 0 0 16px; }
 
   /* This study has no case-icon svg above the kicker (that's a Quantemplate-
      only vector), so the kicker itself needs to sit flush at the top to
@@ -566,31 +541,54 @@
     88%,100% {transform:scaleX(1);}
   }
 
-  /* -- hero video -- */
-  .case-hero-video {
-    padding: clamp(24px, 2.5vw, 28px) clamp(24px, 2.5vw, 28px) 0;
+  /* -- hero: the app screenshot runs in from the left edge of the window
+     (rounded on the right only), title and strapline beside it. Columns
+     follow the mockup: picture 53.4vw, a 6.4vw gap, text to 9vw short of
+     the right edge. Below 800px it stacks, picture first. -- */
+  .zf-hero {
+    display: grid;
+    grid-template-columns: 53.4vw minmax(0, 1fr);
+    align-items: center;
+    column-gap: 6.4vw;
+    padding: clamp(40px, 9vw, 180px) 9vw clamp(56px, 10vw, 200px) 0;
     background: linear-gradient(180deg, #131313 0%, #222121 100%);
   }
 
-  .case-hero-video-frame {
-    max-width: 1024px;
-    margin: 0 auto;
-    overflow: hidden;
-    border: 1px solid #282828;
-    border-bottom: none;
-    border-radius: 10px 10px 0 0;
-  }
-
-  .case-hero-video-frame video {
+  .zf-hero-media img {
     display: block;
     width: 100%;
     height: auto;
+    border-radius: 0 clamp(12px, 1.4vw, 28px) clamp(12px, 1.4vw, 28px) 0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08), 0 18px 48px rgba(0, 0, 0, 0.14);
+  }
+
+  .zf-hero h1 {
+    font-size: clamp(32px, 3.75vw, 76px);
+    line-height: 1.04;
+    letter-spacing: -0.01em;
+    max-width: none;
+  }
+
+  /* keeps "long-term" whole rather than breaking at its hyphen */
+  .zf-hero .nowrap { white-space: nowrap; }
+
+  .zf-hero p.subtitle {
+    margin-top: clamp(16px, 1.8vw, 36px);
+    font-size: clamp(18px, 1.7vw, 32px);
+    line-height: 1.35;
+    max-width: 24em;
   }
 
   @media (max-width: 799.98px) {
-    .case-hero-video-frame {
-      border-radius: 6px 6px 0 0;
+    .zf-hero {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: 32px;
+      padding: 24px 0 40px;
     }
+
+    .zf-hero-media { margin-right: clamp(24px, 6vw, 56px); }
+
+    .zf-hero-text { padding: 0 clamp(24px, 5vw, 56px); }
   }
 
   /* ================================================================
@@ -621,7 +619,7 @@
   .theme-light .case-body blockquote { color: rgb(var(--ink)); border-left-color: var(--accent-mark); }
 
   /* labels and accents */
-  .theme-light .eyebrow, .theme-light .kicker, .theme-light .toc a.is-active { color: var(--accent); }
+  .theme-light .eyebrow, .theme-light .kicker { color: var(--accent); }
   .theme-light .key-points li { color: rgb(var(--ink)); }
   .theme-light .key-points li::before { color: var(--accent-mark); }
   .theme-light .kicker a:hover, .theme-light .kicker a:focus-visible { border-color: var(--accent); }
@@ -668,16 +666,11 @@
   .theme-light .figure-portrait-frame > .figure-strip-imgs { box-shadow: 0 8px 24px rgba(var(--ink), 0.12); }
 
   /* hero band: the page colour at the top, easing to a paler grey */
-  .theme-light .case-hero-video { background: linear-gradient(180deg, #eeeeee 0%, #f7f7f7 100%); }
+  .theme-light .zf-hero { background: linear-gradient(180deg, #eeeeee 0%, #f7f7f7 100%); }
+  .theme-light .zf-hero h1 { color: rgba(var(--ink), 0.82); }
+  .theme-light .zf-hero-media img { box-shadow: 0 2px 6px rgba(var(--ink), 0.06), 0 18px 48px rgba(var(--ink), 0.12); }
   /* the hero's top colour runs up behind the nav to the top of the page */
   .theme-light nav.identity-nav { background: #eeeeee; }
-  .theme-light .case-hero-video-frame { border-color: rgba(var(--ink), 0.1); }
-
-  /* side menu (on this page) */
-  .theme-light .toc a { color: rgba(var(--ink), 0.66); border-left-color: rgba(var(--ink), 0.14); }
-  .theme-light .toc a:hover, .theme-light .toc a:focus-visible { color: rgb(var(--ink)); border-left-color: rgba(var(--ink), 0.5); }
-  .theme-light .toc a.is-active { color: var(--accent); }
-  .theme-light .toc-indicator { background: var(--accent-mark); }
 
   /* footer and back to top */
   .theme-light .site-footer-copy { color: rgba(var(--ink), 0.66); }
@@ -836,22 +829,19 @@
       </div>
     </div>
   </nav>
-  <div class="case-hero-video">
-    <div class="case-hero-video-frame" data-hover-controls>
-      <video width="1600" height="900" autoplay muted loop playsinline disablepictureinpicture poster="media/zonefully-hero-poster.jpg">
-        <source src="media/zonefully-hero.mp4" type="video/mp4">
-      </video>
+  <div class="zf-hero">
+    <div class="zf-hero-media">
+      <img src="media/zonefully-hero-programs.jpg" width="1380" height="784" alt="Zonefully&rsquo;s Programs screen: a list of programmes, a new &lsquo;Untitled Program&rsquo; selected, and its detail panel opening beside it.">
+    </div>
+    <div class="zf-hero-text">
+      <h1 class="display head-fade">Connecting <span class="nowrap">long-term</span> goals to everyday routines</h1>
+      <p class="subtitle head-fade">A planning app that connects personal goals with recurring routines and a calendar to put them into practice.</p>
     </div>
   </div>
   <main>
   <div class="content">
     <header>
-      <span class="kicker head-fade">Case Study | Zonefully</span>
-      <h1 class="display head-fade">Connecting long-term goals to everyday routines</h1>
-      <p class="subtitle head-fade">A planning app that connects personal goals with recurring routines and a calendar to put them into practice.</p>
       <p class="keywords"><span class="keyword">Interaction design</span><span class="keyword">Visual design</span></p>
-
-      <hr class="rule">
 
       <div class="meta-row">
         <div class="meta-item">
@@ -993,17 +983,6 @@
 
   </div>
 
-  <nav class="toc" aria-label="Section navigation">
-    <span class="toc-indicator" aria-hidden="true"></span>
-    <span class="eyebrow toc-heading">On this page</span>
-    <a href="#keypoints-heading">Key points</a>
-    <a href="#problem-heading">Problem</a>
-    <a href="#approach-heading">Approach</a>
-    <a href="#keydecisions-heading">Key decisions</a>
-    <a href="#implementation-heading">Implementation</a>
-    <a href="#outcome-heading">Outcome</a>
-  </nav>
-
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged image" tabindex="-1">
     <div class="lightbox-media">
       <img alt="">
@@ -1037,58 +1016,6 @@
       });
     })();
 
-    (function () {
-      var links = document.querySelectorAll(".toc a");
-      if (!links.length || !("IntersectionObserver" in window)) return;
-
-      var indicator = document.querySelector(".toc-indicator");
-      function moveIndicator(link) {
-        if (!indicator || !link) return;
-        indicator.style.height = link.offsetHeight + "px";
-        indicator.style.transform = "translateY(" + link.offsetTop + "px)";
-        indicator.classList.add("is-visible");
-      }
-      window.addEventListener("resize", function () {
-        var active = document.querySelector(".toc a.is-active");
-        if (active) moveIndicator(active);
-      });
-
-      // Observe the whole section (not just its heading) so a link stays
-      // highlighted for the entire time its section is in view, even when
-      // the section is tall and its heading has long scrolled past.
-      var sections = [];
-      links.forEach(function (link) {
-        var id = link.getAttribute("href").slice(1);
-        var el = document.getElementById(id);
-        var section = el ? el.closest("section") || el : null;
-        if (section) sections.push({ section: section, link: link });
-      });
-
-      var observer = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (entry) {
-            var match = null;
-            for (var i = 0; i < sections.length; i++) {
-              if (sections[i].section === entry.target) {
-                match = sections[i];
-                break;
-              }
-            }
-            if (!match) return;
-            if (entry.isIntersecting) {
-              links.forEach(function (l) { l.classList.remove("is-active"); });
-              match.link.classList.add("is-active");
-              moveIndicator(match.link);
-            }
-          });
-        },
-        { rootMargin: "-20% 0px -70% 0px", threshold: 0 }
-      );
-
-      sections.forEach(function (s) {
-        observer.observe(s.section);
-      });
-    })();
 
   </script>
   <script>
