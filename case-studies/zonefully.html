@@ -235,10 +235,12 @@
      left/right overhang is 9.2rem each -- margin-left takes that back
      off the element's normal (flush-left) position to centre it.
 
-     Only turned on at 1500px+, a limit inherited from the section rail
-     this page no longer has. Below that .figure-wide is inert; each
-     instance just keeps whatever width its base class already gives it. */
-  @media (min-width: 1500px) {
+     Turned on at 1200px+, the narrowest window that fits 64.4rem plus
+     main's side padding (the 1500px limit it used to have only existed to
+     clear the section rail this page no longer has). Below that
+     .figure-wide is inert; each instance just keeps whatever width its
+     base class already gives it. */
+  @media (min-width: 1200px) {
     .figure-wide {
       width: 64.4rem;
       max-width: none;
@@ -257,7 +259,8 @@
     /* The image/video bleeds, but a wide caption is hard to read --
        keep it at the normal measure, left-aligned with the image's new
        (further-left) edge rather than the page's normal text column. */
-    .figure-wide figcaption {
+    .figure-wide figcaption,
+    .figure-wide .gallery-caption {
       width: 38rem;
       max-width: 100%;
     }
@@ -689,6 +692,24 @@
   .theme-light .figure-portrait-frame > .ui-video,
   .theme-light .figure-portrait-frame > .figure-strip-imgs { box-shadow: 0 8px 24px rgba(var(--ink), 0.12); }
 
+  /* five thumbs on one row on phones, rather than four and a straggler */
+  @media (max-width: 560px) {
+    .gallery-thumb { width: calc((100% - 4 * 8px) / 5); height: auto; aspect-ratio: 3 / 2; }
+  }
+
+  /* image viewer: the gallery's dark-page colours, flipped. The main
+     image and the video get the same hairline and soft shadow as the
+     screenshots used to; the active thumb takes the accent */
+  .theme-light .gallery-main,
+  .theme-light .ui-video {
+    background: #fff;
+    box-shadow: 0 0 0 1px rgba(var(--ink), 0.1), 0 8px 24px rgba(var(--ink), 0.1);
+  }
+  .theme-light .gallery .gallery-count { color: rgba(var(--ink), 0.85); }
+  .theme-light .gallery .gallery-caption { color: rgba(var(--ink), 0.68); }
+  .theme-light .gallery-thumb { border-color: rgba(var(--ink), 0.14); }
+  .theme-light .gallery-thumb.is-active { border-color: var(--accent-mark); }
+
   /* hero band: the page colour at the top, easing to a paler grey */
   .theme-light .zf-hero { background: linear-gradient(180deg, #eeeeee 0%, #f7f7f7 100%); }
   .theme-light .zf-hero h1 { color: rgba(var(--ink), 0.82); }
@@ -915,13 +936,6 @@
       <p>Zonefully&rsquo;s founder had developed a conceptual model for connecting long-term goals with recurring activities. He brought me in to turn that model into a usable interface.</p>
       <p>Activities represented the things people wanted to plan and track. Programmes grouped Routines into sequences, which could then be applied to a calendar.</p>
       <p>For a cycling goal, that could mean training and recovery programmes containing individual rides and rest days. The design challenge was to make that hierarchy usable: people needed to work on an individual routine, understand how it fitted into a programme, and see where it belonged in their calendar.</p>
-
-      <figure class="figure figure-wide">
-        <div class="figure-portrait-frame">
-          <img src="media/zonefully-planner.jpg" width="2000" height="1339" alt="Zonefully's Planner: a programme's routines laid across a week, with a side panel naming the Activity, Programme and Routine for the selected slot." loading="lazy">
-        </div>
-        <figcaption>A programme&rsquo;s routines placed on the calendar, with the chain from activity to programme to routine kept in view.</figcaption>
-      </figure>
     </section>
 
     <hr class="rule">
@@ -932,46 +946,53 @@
       <p>I worked within the founder&rsquo;s conceptual model, focusing on how people would navigate between its different levels. Programme lists, routine lists and detail views followed a consistent visual structure.</p>
       <p>A spacious layout separated the main areas of the interface. Activity colours, selection highlights and breadcrumb labels reinforced the connections between goals, programmes and routines.</p>
 
-      <figure class="figure figure-wide">
-        <div class="figure-portrait-frame">
-          <img src="media/zonefully-new-program.jpg" width="2000" height="1339" alt="A newly created &lsquo;Untitled Program&rsquo; selected in the list and open in the detail panel, with an empty description, an &lsquo;Assign to an Activity&rsquo; button and a first untitled routine ready to edit." loading="lazy">
+      <!-- The screens in the order you meet them in the app: the programme
+           list, a programme's controls, a new programme, one of its routines,
+           then the calendar. -->
+      <div class="gallery figure-wide">
+        <div class="gallery-frame">
+          <img class="gallery-main" src="media/zonefully-programs.jpg" alt="Zonefully&rsquo;s Programs screen: a searchable list of programmes on the left, and the selected programme&rsquo;s detail &mdash; cover image, activity and ordered routines &mdash; on the right." loading="lazy">
+          <img class="gallery-fade" alt="" aria-hidden="true">
+          <button class="gallery-nav gallery-nav-prev" type="button" aria-label="Previous image"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <button class="gallery-nav gallery-nav-next" type="button" aria-label="Next image"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
         </div>
-        <figcaption>A new programme starts with the next steps spelled out: assign it to an activity, then add some routines.</figcaption>
-      </figure>
+        <p class="gallery-count" aria-hidden="true">01 / 05</p>
+        <p class="gallery-caption">Programme list and detail share one spacious structure; the activity colour and selection highlight tie a programme to its routines.</p>
+        <div class="gallery-thumbs">
+          <button class="gallery-thumb is-active" type="button" aria-label="Show image 1 of 5">
+            <img src="media/zonefully-programs-thumb.jpg" width="280" height="187" data-full="media/zonefully-programs.jpg" alt="" loading="lazy" data-alt="Zonefully&rsquo;s Programs screen: a searchable list of programmes on the left, and the selected programme&rsquo;s detail &mdash; cover image, activity and ordered routines &mdash; on the right." data-caption="Programme list and detail share one spacious structure; the activity colour and selection highlight tie a programme to its routines.">
+          </button>
+          <button class="gallery-thumb" type="button" aria-label="Show image 2 of 5">
+            <img src="media/zonefully-actions-thumb.jpg" width="280" height="187" data-full="media/zonefully-actions.jpg" alt="" loading="lazy" data-alt="A variant of the programme detail without a cover image, with the contextual action controls placed in a row at the top of the panel." data-caption="One of the explorations of where the programme&rsquo;s controls sit, keeping them reachable without crowding the layout.">
+          </button>
+          <button class="gallery-thumb" type="button" aria-label="Show image 3 of 5">
+            <img src="media/zonefully-new-program-thumb.jpg" width="280" height="187" data-full="media/zonefully-new-program.jpg" alt="" loading="lazy" data-alt="A newly created &lsquo;Untitled Program&rsquo; selected in the list and open in the detail panel, with an empty description, an &lsquo;Assign to an Activity&rsquo; button and a first untitled routine ready to edit." data-caption="A new programme starts with the next steps spelled out: assign it to an activity, then add some routines.">
+          </button>
+          <button class="gallery-thumb" type="button" aria-label="Show image 4 of 5">
+            <img src="media/zonefully-routine-context-thumb.jpg" width="280" height="187" data-full="media/zonefully-routine-context.jpg" alt="" loading="lazy" data-alt="A routine opened for editing alongside the programme it sits in, with a breadcrumb reading Activities &rsaquo; Ride the Tourmalet &rsaquo; Programs." data-caption="Opening a routine brings its detail into focus without losing the programme it belongs to; the breadcrumb holds the path back.">
+          </button>
+          <button class="gallery-thumb" type="button" aria-label="Show image 5 of 5">
+            <img src="media/zonefully-planner-thumb.jpg" width="280" height="187" data-full="media/zonefully-planner.jpg" alt="" loading="lazy" data-alt="Zonefully&rsquo;s Planner: a programme&rsquo;s routines laid across a week, with a side panel naming the Activity, Programme and Routine for the selected slot." data-caption="A programme&rsquo;s routines placed on the calendar, with the chain from activity to programme to routine kept in view.">
+          </button>
+        </div>
+      </div>
     </section>
 
     <hr class="rule">
 
-    <section aria-labelledby="keydecisions-heading" class="case-body">
-      <h2 class="eyebrow" id="keydecisions-heading">Key decisions</h2>
-      <h3>Keeping context alongside the detail</h3>
+    <section aria-labelledby="context-heading" class="case-body">
+      <h3 id="context-heading">Keeping context alongside the detail</h3>
       <p>I used connected, expanding cards to keep programmes and routines visible together. Selecting a programme revealed its routines; opening a routine showed its details alongside the programme it belonged to.</p>
       <p>This prioritised context: each step into the detail retained a visible connection to the wider plan. Activity colours, selection highlights and breadcrumbs reinforced that relationship.</p>
-
-      <figure class="figure figure-wide">
-        <div class="figure-portrait-frame">
-          <img src="media/zonefully-routine-context.jpg" width="1440" height="964" alt="A routine opened for editing alongside the programme it sits in, with a breadcrumb reading Activities › Ride the Tourmalet › Programs." loading="lazy">
-        </div>
-        <figcaption>Opening a routine brings its detail into focus without losing the programme it belongs to; the breadcrumb holds the path back.</figcaption>
-      </figure>
       <p>Creation states made the next steps explicit. Prompts such as &ldquo;Assign to an Activity&rdquo; and &ldquo;Add some Routines&rdquo; guided the setup of a new programme. Contextual controls grouped actions such as setting a cover image, duplicating and deleting.</p>
     </section>
 
     <hr class="rule">
 
-    <section aria-labelledby="implementation-heading" class="case-body">
-      <h2 class="eyebrow" id="implementation-heading">Implementation</h2>
-
+    <section aria-labelledby="developing-heading" class="case-body">
       <div class="subsection" id="impl-developing">
-        <h3>Developing the interface</h3>
+        <h3 id="developing-heading">Developing the interface</h3>
         <p>I developed designs for programme browsing, routine details and new-programme creation, including selection and hover states. I also explored variations in cover imagery and action placement to balance functionality with a spacious layout.</p>
-
-        <figure class="figure figure-wide">
-          <div class="figure-portrait-frame">
-            <img src="media/zonefully-actions.jpg" width="1440" height="964" alt="A variant of the programme detail without a cover image, with the contextual action controls placed in a row at the top of the panel." loading="lazy">
-          </div>
-          <figcaption>One of the explorations of where the programme&rsquo;s controls sit, keeping them reachable without crowding the layout.</figcaption>
-        </figure>
       </div>
     </section>
 
@@ -982,6 +1003,16 @@
       <h3>From a conceptual model to a working interface</h3>
       <p>Across roughly ten days of design work, I translated the founder&rsquo;s model into the navigation, editing states and visual language for a functioning first version. The result connected programme planning, routine editing and calendar scheduling through a consistent interface.</p>
       <p>The central design contribution was making the relationships between those levels visible. A routine could be edited alongside its programme, while the planner kept its activity and programme in view. These connections addressed the original challenge: working on the next action without losing the larger plan.</p>
+
+      <figure class="figure figure-wide">
+        <div class="ui-video">
+          <video controls playsinline preload="metadata" disablepictureinpicture controlslist="nofullscreen nodownload" width="1600" height="900" poster="media/zonefully-demo-poster.jpg">
+            <source src="media/zonefully-hero.mp4" type="video/mp4">
+          </video>
+          <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+        </div>
+        <figcaption>The working first version: setting up an activity and a programme, then scheduling its routines on the calendar.</figcaption>
+      </figure>
     </section>
 
     <hr class="rule">
