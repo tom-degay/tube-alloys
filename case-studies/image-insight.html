@@ -705,6 +705,61 @@
   }
   body.theme-teal .menu-icon > span { background: #fff; }
   body.theme-teal[data-navigation="identity"] .identity-dialog { background: rgba(10, 106, 136, 0.92); }
+
+  /* ================================================================
+     OPTION C: intense cyan, the app's own sidebar colour #4dc5e5.
+     <body class="theme-light theme-intense">. White text is only 2:1
+     on it, so the ink stays dark (#042632, 7.5:1) and the secondary
+     steps are pulled up to keep captions above 4.5:1. Labels are a
+     deep blue rather than a tint; white is kept for non-text marks.
+     ================================================================ */
+  body.theme-light.theme-intense {
+    --ink: 4, 38, 50;
+    --accent: #00465e;
+    --page: #4dc5e5;
+    --shade: 0, 60, 80;
+  }
+  html:has(body.theme-intense), body.theme-intense { background: var(--page); }
+
+  .theme-intense .case-body p, .theme-intense p, .theme-intense li { color: rgba(var(--ink), 0.92); }
+  .theme-intense .subtitle, .theme-intense figcaption, .theme-intense cite,
+  .theme-intense .case-body blockquote cite, .theme-intense .meta-item p { color: rgba(var(--ink), 0.84); }
+  .theme-intense .toc a { color: rgba(var(--ink), 0.8); border-left-color: rgba(var(--ink), 0.2); }
+  .theme-intense .site-footer-copy, .theme-intense .back-to-top { color: rgba(var(--ink), 0.82); }
+  .theme-intense .kicker a { border-bottom-color: rgba(0, 70, 94, 0.45); }
+  .theme-intense hr.rule { border-top-color: rgba(var(--ink), 0.22); }
+
+  /* non-text marks in white */
+  .theme-intense .case-body blockquote { border-left-color: #fff; }
+  .theme-intense .toc-indicator { background: #fff; }
+  .theme-intense .timeframe-donut-track { stroke: rgba(255, 255, 255, 0.4); }
+  .theme-intense .timeframe-donut-value { stroke: var(--accent); }
+
+  .theme-intense .keyword { background: rgba(255, 255, 255, 0.4); color: rgb(var(--ink)); box-shadow: none; }
+
+  .theme-intense .figure-portrait-frame {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.12) 100%);
+    box-shadow: 0 8px 24px rgba(var(--shade), 0.18);
+  }
+  .theme-intense .figure-portrait-frame img,
+  .theme-intense .figure-portrait-frame > .ui-video,
+  .theme-intense .figure-portrait-frame > .figure-strip-imgs { box-shadow: 0 10px 30px rgba(var(--shade), 0.3); }
+  .theme-intense .figure-portrait-frame:not(:has(img[src$="image-insight-pdf-report.jpg"])) { background: none; box-shadow: none; }
+
+  /* hero: a deeper cyan at the top, easing into the page colour */
+  .theme-intense .case-hero-video { background: linear-gradient(180deg, #2fa9cf 0%, var(--page) 100%); }
+  .theme-intense nav.identity-nav { background: #2fa9cf; }
+  .theme-intense .case-hero-video-frame { border-color: rgba(var(--ink), 0.14); }
+
+  body.theme-intense[data-navigation="identity"] .identity-bar::before { background: rgba(255, 255, 255, 0.32); }
+  @media (hover: hover) and (pointer: fine) {
+    body.theme-intense[data-navigation="identity"] .identity-bar:hover::before { background-color: rgba(255, 255, 255, 0.45); }
+  }
+  body.theme-intense[data-navigation="identity"] .identity-role { color: rgba(var(--ink), 0.75); }
+  body.theme-intense .identity-nav a, body.theme-intense .identity-nav button { color: rgba(var(--ink), 0.85); }
+  body.theme-intense .menu-icon > span { background: rgb(var(--ink)); }
+  body.theme-intense[data-navigation="identity"] .identity-dialog { background: rgba(77, 197, 229, 0.94); }
+  body.theme-intense .menu-subsection-group { color: rgba(var(--ink), 0.75); }
 </style>
 <script>
   (function () {
@@ -725,7 +780,7 @@
   <script src="/nav.js?v=20261007" defer></script>
   <script src="/footer.js" defer></script>
 </head>
-<body class="theme-light theme-teal">
+<body class="theme-light theme-intense">
   <nav class="site-nav">
     <div class="site-nav-inner">
       <a class="site-nav-brand display" href="/">Tom de Gay</a>
