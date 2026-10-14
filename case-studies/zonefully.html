@@ -544,7 +544,7 @@
   /* -- hero: the app screenshot runs in from the left edge of the window
      (rounded on the right only), title and strapline beside it. Columns
      follow the mockup: picture 53.4vw, a 6.4vw gap, text to 9vw short of
-     the right edge. Below 800px it stacks, picture first. -- */
+     the right edge. -- */
   .zf-hero {
     display: grid;
     grid-template-columns: 53.4vw minmax(0, 1fr);
@@ -579,16 +579,35 @@
     max-width: 24em;
   }
 
-  @media (max-width: 799.98px) {
+  /* Below 1024px the hero stacks, title first: the text and the picture
+     both line up with the content edges of the nav bar above them (the
+     bar is min(820px, 100% - 48px) wide with 22px padding; at 640px and
+     under, 100% - 28px with 16px), and the picture is rounded all round
+     instead of running off the edge. */
+  @media (max-width: 1023.98px) {
     .zf-hero {
+      --hero-inset: calc(max(24px, (100% - 820px) / 2) + 22px);
       grid-template-columns: minmax(0, 1fr);
-      row-gap: 32px;
-      padding: 24px 0 40px;
+      row-gap: clamp(40px, 11vw, 110px);
+      padding: clamp(32px, 8.8vw, 88px) var(--hero-inset) clamp(48px, 10vw, 100px);
     }
 
-    .zf-hero-media { margin-right: clamp(24px, 6vw, 56px); }
+    .zf-hero-text { grid-row: 1; }
 
-    .zf-hero-text { padding: 0 clamp(24px, 5vw, 56px); }
+    .zf-hero-media img { border-radius: clamp(12px, 2.6vw, 26px); }
+
+    .zf-hero h1 { font-size: clamp(32px, 5vw, 56px); line-height: 1.1; max-width: 13.5em; }
+
+    .zf-hero p.subtitle {
+      margin-top: clamp(14px, 2vw, 22px);
+      font-size: clamp(18px, 2.25vw, 24px);
+      line-height: 1.42;
+      max-width: 27.5em;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .zf-hero { --hero-inset: 30px; }
   }
 
   /* ================================================================
