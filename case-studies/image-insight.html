@@ -554,7 +554,7 @@
   /* ================================================================
      EXPERIMENT: light theme for this page only, switched on by
      <body class="theme-light">. Remove the class to return to dark.
-     Ink #10282e on #f2feff, with the dark theme's opacity steps;
+     Ink #10282e on #e0fdff, with the dark theme's opacity steps;
      accent #087894 (deep cyan, 4.95:1) because the site green is too
      pale for text on a light ground (1.79:1). The lightbox stays dark.
      ================================================================ */
@@ -563,7 +563,7 @@
     --accent: #087894;
     color-scheme: light;
   }
-  html:has(body.theme-light), body.theme-light { background: #f2feff; color: rgb(var(--ink)); }
+  html:has(body.theme-light), body.theme-light { background: #e0fdff; color: rgb(var(--ink)); }
 
   /* text */
   .theme-light h1, .theme-light h2, .theme-light h3, .theme-light h4,
@@ -648,7 +648,7 @@
   body.theme-light .menu-icon > span { background: var(--accent); }
 
   /* nav menu overlay */
-  body.theme-light[data-navigation="identity"] .identity-dialog { color: rgb(var(--ink)); background: rgba(242, 254, 255, 0.9); }
+  body.theme-light[data-navigation="identity"] .identity-dialog { color: rgb(var(--ink)); background: rgba(224, 253, 255, 0.9); }
   body.theme-light[data-navigation="identity"] .identity-dialog .identity-links .menu-primary { color: rgba(var(--ink), 0.8); }
   body.theme-light[data-navigation="identity"] .identity-dialog .identity-links .menu-primary:is(:hover, :focus-visible),
   body.theme-light[data-navigation="identity"] .identity-dialog .menu-subsections a[aria-current] { color: rgb(var(--ink)); }
