@@ -259,8 +259,7 @@
     /* The image/video bleeds, but a wide caption is hard to read --
        keep it at the normal measure, left-aligned with the image's new
        (further-left) edge rather than the page's normal text column. */
-    .figure-wide figcaption,
-    .figure-wide .gallery-caption {
+    .figure-wide figcaption {
       width: 38rem;
       max-width: 100%;
     }
@@ -618,6 +617,92 @@
     .zf-hero { --hero-inset: 30px; }
   }
 
+  /* -- carousel: the screens run in a horizontal strip from the text
+     column's left edge out past the window's right edge, so the next one
+     peeks in. Native scrolling with snap points, so touch swipe and
+     trackpads work as they do anywhere; a mouse can drag, and the dots
+     jump. The strip is full window width (it breaks out of the 46rem
+     column), which is why html and body clip horizontal overflow. -- */
+  html, body { overflow-x: clip; }
+
+  .zf-reel {
+    --reel-start: max(clamp(24px, 5vw, 56px), (100vw - 46rem) / 2);
+    --reel-peek: clamp(56px, 12vw, 240px);
+    --reel-gap: clamp(12px, 2vw, 28px);
+    width: 100vw;
+    margin: clamp(28px, 4vw, 44px) 0 0 calc(50% - 50vw);
+  }
+
+  .zf-reel-track {
+    position: relative;
+    display: flex;
+    gap: var(--reel-gap);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--reel-start);
+    padding: 4px var(--reel-start) 28px;
+    scrollbar-width: none;
+    outline: none;
+  }
+
+  .zf-reel-track::-webkit-scrollbar { display: none; }
+
+  .zf-reel-track.is-dragging {
+    scroll-snap-type: none;
+    cursor: grabbing;
+    user-select: none;
+  }
+
+  .zf-reel .zf-reel-slide {
+    flex: 0 0 min(64.4rem, 100vw - var(--reel-start) - var(--reel-peek));
+    margin: 0;
+    max-width: none;
+    scroll-snap-align: start;
+  }
+
+  .zf-reel-slide img { -webkit-user-drag: none; }
+
+  .zf-reel-slide figcaption { max-width: 38rem; }
+
+  /* iOS-style page dots, on a faint capsule */
+  .zf-reel-dots {
+    display: flex;
+    width: max-content;
+    margin: 4px auto 0;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .zf-reel-dot {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+
+  .zf-reel-dot::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transition: background-color 0.2s ease;
+  }
+
+  .zf-reel-dot[aria-current="true"]::before { background: #fff; }
+
+  .zf-reel-dot:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.6);
+    outline-offset: -2px;
+    border-radius: 50%;
+  }
+
   /* ================================================================
      EXPERIMENT: light theme for this page only, switched on by
      <body class="theme-light">. Remove the class to return to dark.
@@ -692,23 +777,17 @@
   .theme-light .figure-portrait-frame > .ui-video,
   .theme-light .figure-portrait-frame > .figure-strip-imgs { box-shadow: 0 8px 24px rgba(var(--ink), 0.12); }
 
-  /* five thumbs on one row on phones, rather than four and a straggler */
-  @media (max-width: 560px) {
-    .gallery-thumb { width: calc((100% - 4 * 8px) / 5); height: auto; aspect-ratio: 3 / 2; }
-  }
-
-  /* image viewer: the gallery's dark-page colours, flipped. The main
-     image and the video get the same hairline and soft shadow as the
-     screenshots used to; the active thumb takes the accent */
-  .theme-light .gallery-main,
+  /* carousel: hairline and soft shadow on each screen, as on the video;
+     dots in ink */
+  .theme-light .zf-reel-slide img,
   .theme-light .ui-video {
     background: #fff;
     box-shadow: 0 0 0 1px rgba(var(--ink), 0.1), 0 8px 24px rgba(var(--ink), 0.1);
   }
-  .theme-light .gallery .gallery-count { color: rgba(var(--ink), 0.85); }
-  .theme-light .gallery .gallery-caption { color: rgba(var(--ink), 0.68); }
-  .theme-light .gallery-thumb { border-color: rgba(var(--ink), 0.14); }
-  .theme-light .gallery-thumb.is-active { border-color: var(--accent-mark); }
+  .theme-light .zf-reel-dots { background: rgba(var(--ink), 0.06); }
+  .theme-light .zf-reel-dot::before { background: rgba(var(--ink), 0.25); }
+  .theme-light .zf-reel-dot[aria-current="true"]::before { background: rgba(var(--ink), 0.85); }
+  .theme-light .zf-reel-dot:focus-visible { outline-color: rgba(var(--ink), 0.72); }
 
   /* hero band: the page colour at the top, easing to a paler grey */
   .theme-light .zf-hero { background: linear-gradient(180deg, #eeeeee 0%, #f7f7f7 100%); }
@@ -949,31 +1028,35 @@
       <!-- The screens in the order you meet them in the app: the programme
            list, a programme's controls, a new programme, one of its routines,
            then the calendar. -->
-      <div class="gallery figure-wide">
-        <div class="gallery-frame">
-          <img class="gallery-main" src="media/zonefully-programs.jpg" alt="Zonefully&rsquo;s Programs screen: a searchable list of programmes on the left, and the selected programme&rsquo;s detail &mdash; cover image, activity and ordered routines &mdash; on the right." loading="lazy">
-          <img class="gallery-fade" alt="" aria-hidden="true">
-          <button class="gallery-nav gallery-nav-prev" type="button" aria-label="Previous image"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
-          <button class="gallery-nav gallery-nav-next" type="button" aria-label="Next image"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+      <div class="zf-reel">
+        <div class="zf-reel-track" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Zonefully screens">
+          <figure class="figure zf-reel-slide" role="group" aria-roledescription="slide" aria-label="1 of 5">
+            <img src="media/zonefully-programs.jpg" width="1440" height="964" alt="Zonefully&rsquo;s Programs screen: a searchable list of programmes on the left, and the selected programme&rsquo;s detail &mdash; cover image, activity and ordered routines &mdash; on the right." loading="lazy" draggable="false">
+            <figcaption>Programme list and detail share one spacious structure; the activity colour and selection highlight tie a programme to its routines.</figcaption>
+          </figure>
+          <figure class="figure zf-reel-slide" role="group" aria-roledescription="slide" aria-label="2 of 5">
+            <img src="media/zonefully-actions.jpg" width="1440" height="964" alt="A variant of the programme detail without a cover image, with the contextual action controls placed in a row at the top of the panel." loading="lazy" draggable="false">
+            <figcaption>One of the explorations of where the programme&rsquo;s controls sit, keeping them reachable without crowding the layout.</figcaption>
+          </figure>
+          <figure class="figure zf-reel-slide" role="group" aria-roledescription="slide" aria-label="3 of 5">
+            <img src="media/zonefully-new-program.jpg" width="2000" height="1339" alt="A newly created &lsquo;Untitled Program&rsquo; selected in the list and open in the detail panel, with an empty description, an &lsquo;Assign to an Activity&rsquo; button and a first untitled routine ready to edit." loading="lazy" draggable="false">
+            <figcaption>A new programme starts with the next steps spelled out: assign it to an activity, then add some routines.</figcaption>
+          </figure>
+          <figure class="figure zf-reel-slide" role="group" aria-roledescription="slide" aria-label="4 of 5">
+            <img src="media/zonefully-routine-context.jpg" width="1440" height="964" alt="A routine opened for editing alongside the programme it sits in, with a breadcrumb reading Activities &rsaquo; Ride the Tourmalet &rsaquo; Programs." loading="lazy" draggable="false">
+            <figcaption>Opening a routine brings its detail into focus without losing the programme it belongs to; the breadcrumb holds the path back.</figcaption>
+          </figure>
+          <figure class="figure zf-reel-slide" role="group" aria-roledescription="slide" aria-label="5 of 5">
+            <img src="media/zonefully-planner.jpg" width="2000" height="1339" alt="Zonefully&rsquo;s Planner: a programme&rsquo;s routines laid across a week, with a side panel naming the Activity, Programme and Routine for the selected slot." loading="lazy" draggable="false">
+            <figcaption>A programme&rsquo;s routines placed on the calendar, with the chain from activity to programme to routine kept in view.</figcaption>
+          </figure>
         </div>
-        <p class="gallery-count" aria-hidden="true">01 / 05</p>
-        <p class="gallery-caption">Programme list and detail share one spacious structure; the activity colour and selection highlight tie a programme to its routines.</p>
-        <div class="gallery-thumbs">
-          <button class="gallery-thumb is-active" type="button" aria-label="Show image 1 of 5">
-            <img src="media/zonefully-programs-thumb.jpg" width="280" height="187" data-full="media/zonefully-programs.jpg" alt="" loading="lazy" data-alt="Zonefully&rsquo;s Programs screen: a searchable list of programmes on the left, and the selected programme&rsquo;s detail &mdash; cover image, activity and ordered routines &mdash; on the right." data-caption="Programme list and detail share one spacious structure; the activity colour and selection highlight tie a programme to its routines.">
-          </button>
-          <button class="gallery-thumb" type="button" aria-label="Show image 2 of 5">
-            <img src="media/zonefully-actions-thumb.jpg" width="280" height="187" data-full="media/zonefully-actions.jpg" alt="" loading="lazy" data-alt="A variant of the programme detail without a cover image, with the contextual action controls placed in a row at the top of the panel." data-caption="One of the explorations of where the programme&rsquo;s controls sit, keeping them reachable without crowding the layout.">
-          </button>
-          <button class="gallery-thumb" type="button" aria-label="Show image 3 of 5">
-            <img src="media/zonefully-new-program-thumb.jpg" width="280" height="187" data-full="media/zonefully-new-program.jpg" alt="" loading="lazy" data-alt="A newly created &lsquo;Untitled Program&rsquo; selected in the list and open in the detail panel, with an empty description, an &lsquo;Assign to an Activity&rsquo; button and a first untitled routine ready to edit." data-caption="A new programme starts with the next steps spelled out: assign it to an activity, then add some routines.">
-          </button>
-          <button class="gallery-thumb" type="button" aria-label="Show image 4 of 5">
-            <img src="media/zonefully-routine-context-thumb.jpg" width="280" height="187" data-full="media/zonefully-routine-context.jpg" alt="" loading="lazy" data-alt="A routine opened for editing alongside the programme it sits in, with a breadcrumb reading Activities &rsaquo; Ride the Tourmalet &rsaquo; Programs." data-caption="Opening a routine brings its detail into focus without losing the programme it belongs to; the breadcrumb holds the path back.">
-          </button>
-          <button class="gallery-thumb" type="button" aria-label="Show image 5 of 5">
-            <img src="media/zonefully-planner-thumb.jpg" width="280" height="187" data-full="media/zonefully-planner.jpg" alt="" loading="lazy" data-alt="Zonefully&rsquo;s Planner: a programme&rsquo;s routines laid across a week, with a side panel naming the Activity, Programme and Routine for the selected slot." data-caption="A programme&rsquo;s routines placed on the calendar, with the chain from activity to programme to routine kept in view.">
-          </button>
+        <div class="zf-reel-dots">
+          <button class="zf-reel-dot" type="button" aria-label="Show screen 1 of 5" aria-current="true"></button>
+          <button class="zf-reel-dot" type="button" aria-label="Show screen 2 of 5"></button>
+          <button class="zf-reel-dot" type="button" aria-label="Show screen 3 of 5"></button>
+          <button class="zf-reel-dot" type="button" aria-label="Show screen 4 of 5"></button>
+          <button class="zf-reel-dot" type="button" aria-label="Show screen 5 of 5"></button>
         </div>
       </div>
     </section>
@@ -1056,6 +1139,87 @@
           v.removeAttribute("autoplay");
         });
       }
+    })();
+
+    /* Carousel: dots follow the scroll position and jump on click; a mouse
+       can drag the strip; clicking a screen that is not the current one
+       brings it in rather than opening it full size. */
+    (function () {
+      var reel = document.querySelector(".zf-reel");
+      if (!reel) return;
+      var track = reel.querySelector(".zf-reel-track");
+      var slides = Array.prototype.slice.call(track.querySelectorAll(".zf-reel-slide"));
+      var dots = Array.prototype.slice.call(reel.querySelectorAll(".zf-reel-dot"));
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      function startLine() { return parseFloat(getComputedStyle(track).scrollPaddingLeft) || 0; }
+
+      function current() {
+        if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 2) return slides.length - 1;
+        var x = track.scrollLeft + startLine(), best = 0, dist = Infinity;
+        slides.forEach(function (s, i) {
+          var d = Math.abs(s.offsetLeft - x);
+          if (d < dist) { dist = d; best = i; }
+        });
+        return best;
+      }
+
+      function go(i) {
+        i = Math.max(0, Math.min(slides.length - 1, i));
+        track.scrollTo({ left: slides[i].offsetLeft - startLine(), behavior: reduce ? "auto" : "smooth" });
+      }
+
+      var ticking = false;
+      function paint() {
+        ticking = false;
+        var i = current();
+        dots.forEach(function (d, di) {
+          if (di === i) d.setAttribute("aria-current", "true");
+          else d.removeAttribute("aria-current");
+        });
+      }
+      track.addEventListener("scroll", function () {
+        if (!ticking) { ticking = true; requestAnimationFrame(paint); }
+      }, { passive: true });
+
+      dots.forEach(function (d, i) { d.addEventListener("click", function () { go(i); }); });
+
+      var drag = null, moved = false;
+      track.addEventListener("pointerdown", function (e) {
+        if (e.pointerType !== "mouse" || e.button !== 0) return;
+        drag = { x: e.clientX, left: track.scrollLeft, from: current() };
+        moved = false;
+      });
+      window.addEventListener("pointermove", function (e) {
+        if (!drag) return;
+        var dx = e.clientX - drag.x;
+        if (!moved && Math.abs(dx) < 6) return;
+        if (!moved) { moved = true; track.classList.add("is-dragging"); }
+        track.scrollLeft = drag.left - dx;
+      });
+      window.addEventListener("pointerup", function (e) {
+        if (!drag) return;
+        var dx = e.clientX - drag.x, from = drag.from;
+        drag = null;
+        if (!moved) return;
+        // the click that follows a drag is swallowed below; clear the flag
+        // afterwards in case the drag ended off the strip and none comes
+        setTimeout(function () { moved = false; }, 0);
+        track.classList.remove("is-dragging");
+        // a deliberate flick moves one screen even if it fell short of halfway
+        var to = current();
+        if (to === from && Math.abs(dx) > 60) to = from + (dx < 0 ? 1 : -1);
+        go(to);
+      });
+
+      // capture phase, so it runs before the lightbox's own click handler
+      track.addEventListener("click", function (e) {
+        if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; return; }
+        var slide = e.target.closest(".zf-reel-slide");
+        if (!slide) return;
+        var i = slides.indexOf(slide);
+        if (i !== current()) { e.preventDefault(); e.stopPropagation(); go(i); }
+      }, true);
     })();
 
     (function () {
