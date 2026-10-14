@@ -666,6 +666,9 @@
 
   .zf-reel-slide img { -webkit-user-drag: none; }
 
+  /* a neighbour comes in on click rather than opening full size */
+  .zf-reel-slide:not(.is-current) img { cursor: pointer; }
+
   /* only the current screen's caption shows; the neighbours' would peek
      in as clipped fragments of text */
   .zf-reel-slide figcaption {
