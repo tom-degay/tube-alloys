@@ -617,18 +617,19 @@
     .zf-hero { --hero-inset: 30px; }
   }
 
-  /* -- carousel: the screens run in a horizontal strip from the text
-     column's left edge out past the window's right edge, so the next one
-     peeks in. Native scrolling with snap points, so touch swipe and
-     trackpads work as they do anywhere; a mouse can drag, and the dots
-     jump. The strip is full window width (it breaks out of the 46rem
-     column), which is why html and body clip horizontal overflow. -- */
+  /* -- carousel: the screens run in a full-width horizontal strip, the
+     current one centred on the text column (which is centred on the
+     page) with its neighbours peeking in either side. Native scrolling
+     with snap points, so touch swipe and trackpads work as they do
+     anywhere; a mouse can drag, and the dots jump. The strip breaks out
+     of the 46rem column, which is why html and body clip horizontal
+     overflow. -- */
   html, body { overflow-x: clip; }
 
   .zf-reel {
-    --reel-start: max(clamp(24px, 5vw, 56px), (100vw - 46rem) / 2);
-    --reel-peek: clamp(56px, 12vw, 240px);
+    --reel-peek: clamp(36px, 12vw, 240px);
     --reel-gap: clamp(12px, 2vw, 28px);
+    --reel-slide: min(64.4rem, 100vw - 2 * (var(--reel-peek) + var(--reel-gap)));
     width: 100vw;
     margin: clamp(28px, 4vw, 44px) 0 0 calc(50% - 50vw);
   }
@@ -640,30 +641,39 @@
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
-    scroll-padding-inline: var(--reel-start);
-    padding: 4px var(--reel-start) 28px;
+    padding: 4px calc((100vw - var(--reel-slide)) / 2) 28px;
     scrollbar-width: none;
     outline: none;
   }
 
   .zf-reel-track::-webkit-scrollbar { display: none; }
 
+  /* snapping is off while a drag or the dots' own animation moves it */
+  .zf-reel-track.is-dragging,
+  .zf-reel-track.is-gliding { scroll-snap-type: none; }
+
   .zf-reel-track.is-dragging {
-    scroll-snap-type: none;
     cursor: grabbing;
     user-select: none;
   }
 
   .zf-reel .zf-reel-slide {
-    flex: 0 0 min(64.4rem, 100vw - var(--reel-start) - var(--reel-peek));
+    flex: 0 0 var(--reel-slide);
     margin: 0;
     max-width: none;
-    scroll-snap-align: start;
+    scroll-snap-align: center;
   }
 
   .zf-reel-slide img { -webkit-user-drag: none; }
 
-  .zf-reel-slide figcaption { max-width: 38rem; }
+  /* only the current screen's caption shows; the neighbours' would peek
+     in as clipped fragments of text */
+  .zf-reel-slide figcaption {
+    max-width: 38rem;
+    transition: opacity 0.3s ease;
+  }
+
+  .zf-reel-slide:not(.is-current) figcaption { opacity: 0; }
 
   /* iOS-style page dots, on a faint capsule */
   .zf-reel-dots {
@@ -1030,7 +1040,7 @@
            then the calendar. -->
       <div class="zf-reel">
         <div class="zf-reel-track" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Zonefully screens">
-          <figure class="figure zf-reel-slide" role="group" aria-roledescription="slide" aria-label="1 of 5">
+          <figure class="figure zf-reel-slide is-current" role="group" aria-roledescription="slide" aria-label="1 of 5">
             <img src="media/zonefully-programs.jpg" width="1440" height="964" alt="Zonefully&rsquo;s Programs screen: a searchable list of programmes on the left, and the selected programme&rsquo;s detail &mdash; cover image, activity and ordered routines &mdash; on the right." loading="lazy" draggable="false">
             <figcaption>Programme list and detail share one spacious structure; the activity colour and selection highlight tie a programme to its routines.</figcaption>
           </figure>
@@ -1143,7 +1153,9 @@
 
     /* Carousel: dots follow the scroll position and jump on click; a mouse
        can drag the strip; clicking a screen that is not the current one
-       brings it in rather than opening it full size. */
+       brings it in rather than opening it full size. Moves made here glide
+       on a gentle ease-in-out rather than the browser's brisk smooth
+       scroll, with snapping paused until they land. */
     (function () {
       var reel = document.querySelector(".zf-reel");
       if (!reel) return;
@@ -1152,27 +1164,55 @@
       var dots = Array.prototype.slice.call(reel.querySelectorAll(".zf-reel-dot"));
       var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      function startLine() { return parseFloat(getComputedStyle(track).scrollPaddingLeft) || 0; }
+      function centreOf(i) {
+        return slides[i].offsetLeft + slides[i].offsetWidth / 2 - track.clientWidth / 2;
+      }
 
       function current() {
-        if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 2) return slides.length - 1;
-        var x = track.scrollLeft + startLine(), best = 0, dist = Infinity;
+        var best = 0, dist = Infinity;
         slides.forEach(function (s, i) {
-          var d = Math.abs(s.offsetLeft - x);
+          var d = Math.abs(centreOf(i) - track.scrollLeft);
           if (d < dist) { dist = d; best = i; }
         });
         return best;
       }
 
+      var glide = null;
+      function stopGlide() {
+        if (!glide) return;
+        cancelAnimationFrame(glide);
+        glide = null;
+        track.classList.remove("is-gliding");
+      }
+      function ease(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+
       function go(i) {
         i = Math.max(0, Math.min(slides.length - 1, i));
-        track.scrollTo({ left: slides[i].offsetLeft - startLine(), behavior: reduce ? "auto" : "smooth" });
+        stopGlide();
+        var from = track.scrollLeft, to = centreOf(i), dist = to - from;
+        if (reduce || Math.abs(dist) < 1) { track.scrollLeft = to; return; }
+        var dur = Math.min(1100, Math.max(650, 450 + Math.abs(dist) * 0.25)), t0 = null;
+        track.classList.add("is-gliding");
+        function step(now) {
+          if (t0 === null) t0 = now;
+          var t = Math.min(1, (now - t0) / dur);
+          track.scrollLeft = from + dist * ease(t);
+          if (t < 1) glide = requestAnimationFrame(step);
+          else { glide = null; track.classList.remove("is-gliding"); }
+        }
+        glide = requestAnimationFrame(step);
       }
+
+      // a hand on the strip takes over from a glide in progress
+      ["wheel", "touchstart"].forEach(function (type) {
+        track.addEventListener(type, stopGlide, { passive: true });
+      });
 
       var ticking = false;
       function paint() {
         ticking = false;
         var i = current();
+        slides.forEach(function (s, si) { s.classList.toggle("is-current", si === i); });
         dots.forEach(function (d, di) {
           if (di === i) d.setAttribute("aria-current", "true");
           else d.removeAttribute("aria-current");
@@ -1187,6 +1227,7 @@
       var drag = null, moved = false;
       track.addEventListener("pointerdown", function (e) {
         if (e.pointerType !== "mouse" || e.button !== 0) return;
+        stopGlide();
         drag = { x: e.clientX, left: track.scrollLeft, from: current() };
         moved = false;
       });
@@ -1205,11 +1246,11 @@
         // the click that follows a drag is swallowed below; clear the flag
         // afterwards in case the drag ended off the strip and none comes
         setTimeout(function () { moved = false; }, 0);
-        track.classList.remove("is-dragging");
         // a deliberate flick moves one screen even if it fell short of halfway
         var to = current();
         if (to === from && Math.abs(dx) > 60) to = from + (dx < 0 ? 1 : -1);
         go(to);
+        track.classList.remove("is-dragging");
       });
 
       // capture phase, so it runs before the lightbox's own click handler
