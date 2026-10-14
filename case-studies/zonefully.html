@@ -216,6 +216,11 @@
 
   /* No section rail: one reading column, centred on the page. */
   main { max-width: none; }
+
+  /* Half the old space between the hero and the project stats, which was
+     main's top padding plus the meta row's own 40px margin. */
+  main { padding-top: calc((clamp(24px, 6vw, 72px) + 40px) / 2); }
+  .content > header .meta-row { margin-top: 0; }
   .content { max-width: 46rem; margin-inline: auto; }
 
   /* -- .figure-wide: an opt-in modifier for large videos/images. 140%
@@ -901,26 +906,6 @@
         </div>
       </div>
     </header>
-
-    <hr class="rule">
-
-    <section aria-labelledby="keypoints-heading">
-      <h2 class="eyebrow" id="keypoints-heading">Key points</h2>
-      <div class="key-points-grid">
-        <ul class="key-points">
-          <li>Translated the founder&rsquo;s conceptual model into a coherent interface</li>
-          <li>Used connected cards to keep context visible between programmes and routines</li>
-          <li>Worked with the founder from concept through to a functioning v1</li>
-        </ul>
-      </div>
-
-      <figure class="figure figure-wide">
-        <div class="figure-portrait-frame">
-          <img src="media/zonefully-programs.jpg" width="1440" height="964" alt="Zonefully's Programs screen: a searchable list of programmes on the left, and the selected programme's detail — cover image, activity and ordered routines — on the right.">
-        </div>
-        <figcaption>Programme list and detail share one spacious structure; the activity colour and selection highlight tie a programme to its routines.</figcaption>
-      </figure>
-    </section>
 
     <hr class="rule">
 
