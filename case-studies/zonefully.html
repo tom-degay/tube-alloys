@@ -597,19 +597,19 @@
      EXPERIMENT: light theme for this page only, switched on by
      <body class="theme-light">. Remove the class to return to dark.
      Same structure as the Image Insight light theme, in Zonefully's own
-     colours: the app's #f7f7f7 ground and #ed496e pink. Ink is a near-
-     neutral #1c1c1e with the dark theme's opacity steps. The pink is
-     3.4:1 on #f7f7f7 -- enough for marks (3:1), not for small text
-     (4.5:1) -- so text labels use a deeper #cc3359 (4.7:1). Greys stay
-     at 0.66 ink or above (5.4:1). The lightbox stays dark.
+     colours: a light grey #eeeeee ground and the app's #ed496e pink. Ink
+     is a near-neutral #1c1c1e with the dark theme's opacity steps. The
+     pink is 3.1:1 on #eeeeee -- enough for marks (3:1), not for small
+     text (4.5:1) -- so text labels use a deeper #c42f55 (4.7:1). Greys
+     stay at 0.66 ink or above (5.2:1). The lightbox stays dark.
      ================================================================ */
   body.theme-light {
     --ink: 28, 28, 30;
-    --accent: #cc3359;       /* text: 4.68:1 */
-    --accent-mark: #ed496e;  /* lines and marks: 3.39:1 */
+    --accent: #c42f55;       /* text: 4.66:1 */
+    --accent-mark: #ed496e;  /* lines and marks: 3.13:1 */
     color-scheme: light;
   }
-  html:has(body.theme-light), body.theme-light { background: #f7f7f7; color: rgb(var(--ink)); }
+  html:has(body.theme-light), body.theme-light { background: #eeeeee; color: rgb(var(--ink)); }
 
   /* text */
   .theme-light h1, .theme-light h2, .theme-light h3, .theme-light h4,
@@ -629,17 +629,17 @@
   /* links */
   .theme-light a { color: rgb(var(--ink)); border-bottom-color: rgba(var(--ink), 0.25); }
   .theme-light a:hover, .theme-light a:focus-visible { border-color: rgba(var(--ink), 0.9); }
-  .theme-light .kicker a { color: var(--accent); border-bottom-color: rgba(204, 51, 89, 0.45); }
+  .theme-light .kicker a { color: var(--accent); border-bottom-color: rgba(196, 47, 85, 0.45); }
 
   /* keyboard focus: the site's ring is 60% white and the nav's underline
-     50% white, both invisible on a light ground; ink instead (6.5:1 and 3.3:1) */
+     50% white, both invisible on a light ground; ink instead (6.2:1 and 3.2:1) */
   .theme-light a:focus-visible { outline-color: rgba(var(--ink), 0.72); }
   body.theme-light .identity-nav:not(.pointer-navigation) .identity-name:focus-visible,
   body.theme-light .identity-nav:not(.pointer-navigation) button:focus-visible .menu-label { text-decoration-color: rgba(var(--ink), 0.5); }
 
   /* text selection: the pink as a tint, with the ink kept as the text colour
      (the site default is green behind white text, which vanishes here) */
-  body.theme-light ::selection { background: rgba(237, 73, 110, 0.24); color: rgb(var(--ink)); }
+  body.theme-light ::selection { background: rgba(237, 73, 110, 0.3); color: rgb(var(--ink)); }
 
   /* dividers */
   .theme-light hr.rule { border-top-color: rgba(var(--ink), 0.16); }
@@ -653,9 +653,8 @@
   .theme-light .timeframe-donut-track { stroke: rgba(var(--ink), 0.12); }
   .theme-light .timeframe-donut-value { stroke: var(--accent-mark); }
 
-  /* no frames: the screenshots sit straight on the page. The app's own
-     ground is this same #f7f7f7, so each keeps a hairline and a soft
-     shadow to hold its edge */
+  /* no frames: the screenshots sit straight on the page, each with a
+     hairline and a soft shadow to hold its edge */
   .theme-light .figure-portrait-frame {
     padding: 0;
     background: none;
@@ -668,10 +667,10 @@
   .theme-light .figure-portrait-frame > .ui-video,
   .theme-light .figure-portrait-frame > .figure-strip-imgs { box-shadow: 0 8px 24px rgba(var(--ink), 0.12); }
 
-  /* hero band: a step darker than the page at the top, easing into it */
-  .theme-light .case-hero-video { background: linear-gradient(180deg, #ececec 0%, #f7f7f7 100%); }
+  /* hero band: the page colour at the top, easing to a paler grey */
+  .theme-light .case-hero-video { background: linear-gradient(180deg, #eeeeee 0%, #f7f7f7 100%); }
   /* the hero's top colour runs up behind the nav to the top of the page */
-  .theme-light nav.identity-nav { background: #ececec; }
+  .theme-light nav.identity-nav { background: #eeeeee; }
   .theme-light .case-hero-video-frame { border-color: rgba(var(--ink), 0.1); }
 
   /* side menu (on this page) */
@@ -687,8 +686,35 @@
   .theme-light .site-footer-links a:focus-visible { color: rgb(var(--ink)); text-decoration-color: rgba(var(--ink), 0.9); }
   .theme-light .back-to-top { color: rgba(var(--ink), 0.68); }
 
-  /* next case study card: stays dark, with a hairline to hold its edge */
-  .theme-light .case-block { box-shadow: 0 0 0 1px rgba(var(--ink), 0.1); }
+  /* next case study card: white, after the shared .case-block.is-light,
+     with a deeper shadow on hover rather than a grey fill (grey would
+     sink into the grey page). The kicker takes the page's own pink,
+     as in the nav menu: text in --accent (5.2:1 on white), the icon in
+     --accent-mark, repainted as a mask of itself */
+  .theme-light .case-footer .case-block {
+    background-color: #fff;
+    border-color: #fff;
+    box-shadow: 0 1px 2px rgba(var(--ink), 0.06), 0 8px 24px rgba(var(--ink), 0.08);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .theme-light .case-footer .case-block:hover,
+  .theme-light .case-footer .case-block:focus-visible {
+    background-color: #fff;
+    border-color: #fff;
+    box-shadow: 0 2px 4px rgba(var(--ink), 0.08), 0 14px 32px rgba(var(--ink), 0.14);
+  }
+  .theme-light .case-footer .case-block-title { color: rgb(var(--ink)); }
+  .theme-light .case-footer .case-block-subtitle { color: rgba(var(--ink), 0.68); }
+  .theme-light .case-footer .case-block-kicker { color: var(--accent); }
+  .theme-light .case-footer .case-block-kicker-icon[src$="/mapping.svg"] {
+    object-position: -999px 0;
+    background-color: var(--accent-mark);
+    -webkit-mask: url("/media/icons/mapping.svg") center / contain no-repeat;
+    mask: url("/media/icons/mapping.svg") center / contain no-repeat;
+  }
+  .theme-light .case-footer .case-block-keyword { background: rgba(var(--ink), 0.07); color: rgba(var(--ink), 0.72); }
+  .theme-light .case-footer .case-block:is(:hover, :focus-visible) .case-block-keyword { background: rgba(var(--ink), 0.12); }
+
 
   /* nav bar: frosted white instead of smoked grey */
   body.theme-light[data-navigation="identity"] .identity-bar::before {
@@ -708,7 +734,7 @@
   body.theme-light .menu-icon > span { background: var(--accent-mark); }
 
   /* nav menu overlay */
-  body.theme-light[data-navigation="identity"] .identity-dialog { color: rgb(var(--ink)); background: rgba(247, 247, 247, 0.92); }
+  body.theme-light[data-navigation="identity"] .identity-dialog { color: rgb(var(--ink)); background: rgba(238, 238, 238, 0.92); }
   body.theme-light[data-navigation="identity"] .identity-dialog .identity-links .menu-primary { color: rgba(var(--ink), 0.8); }
   body.theme-light[data-navigation="identity"] .identity-dialog .identity-links .menu-primary:is(:hover, :focus-visible),
   body.theme-light[data-navigation="identity"] .identity-dialog .menu-subsections a[aria-current] { color: rgb(var(--ink)); }
