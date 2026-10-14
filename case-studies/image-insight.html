@@ -604,6 +604,12 @@
   .theme-light .figure-portrait-frame img,
   .theme-light .figure-portrait-frame > .ui-video,
   .theme-light .figure-portrait-frame > .figure-strip-imgs { box-shadow: 0 6px 20px rgba(var(--ink), 0.14); }
+  /* only the PDF report keeps its frame; everything else sits on the page */
+  .theme-light .figure-portrait-frame:not(:has(img[src$="image-insight-pdf-report.jpg"])) {
+    padding: 0;
+    background: none;
+    box-shadow: none;
+  }
 
   /* hero band */
   .theme-light .case-hero-video { background: linear-gradient(180deg, #e3f6f9 0%, #ffffff 100%); }
