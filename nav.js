@@ -5,7 +5,7 @@
    knows its own theme and the destination; pagereveal on the new page
    would need a blocking script in every <head>. */
 (() => {
-const LIGHT_PAGES = ['/case-studies/image-insight'];
+const LIGHT_PAGES = ['/case-studies/image-insight', '/case-studies/zonefully'];
 window.addEventListener('pageswap', e => {
   if (!e.viewTransition) return;
   const isLight = path => LIGHT_PAGES.includes(path.replace(/\.html$/, '').replace(/\/$/, ''));

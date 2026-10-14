@@ -587,6 +587,12 @@
   .theme-light a:hover, .theme-light a:focus-visible { border-color: rgba(var(--ink), 0.9); }
   .theme-light .kicker a { color: var(--accent); border-bottom-color: rgba(14, 118, 170, 0.45); }
 
+  /* keyboard focus: the site's ring is 60% white and the nav's underline
+     50% white, both invisible on a light ground; ink instead (6.5:1 and 3.3:1) */
+  .theme-light a:focus-visible { outline-color: rgba(var(--ink), 0.72); }
+  body.theme-light .identity-nav:not(.pointer-navigation) .identity-name:focus-visible,
+  body.theme-light .identity-nav:not(.pointer-navigation) button:focus-visible .menu-label { text-decoration-color: rgba(var(--ink), 0.5); }
+
   /* text selection: the accent as a tint, with the ink kept as the text colour
      (the site default is green behind white text, which vanishes here) */
   body.theme-light:not(.theme-teal):not(.theme-intense) ::selection { background: rgba(15, 156, 184, 0.3); color: rgb(var(--ink)); }
