@@ -669,6 +669,19 @@
   /* a neighbour comes in on click rather than opening full size */
   .zf-reel-slide:not(.is-current) img { cursor: pointer; }
 
+  /* the demo video in Outcome: as wide as the window allows, up to 90rem,
+     keeping the page's side margins, centred on the text column */
+  .zf-video-big {
+    --video-w: min(90rem, 100vw - 2 * clamp(24px, 5vw, 56px));
+    width: var(--video-w);
+    max-width: none;
+    margin-left: calc((100% - var(--video-w)) / 2);
+  }
+
+  .zf-video-big .ui-video { max-width: none; }
+
+  .zf-video-big figcaption { max-width: 38rem; }
+
   /* only the current screen's caption shows; the neighbours' would peek
      in as clipped fragments of text */
   .zf-reel-slide figcaption {
@@ -1100,7 +1113,7 @@
       <p>Across roughly ten days of design work, I translated the founder&rsquo;s model into the navigation, editing states and visual language for a functioning first version. The result connected programme planning, routine editing and calendar scheduling through a consistent interface.</p>
       <p>The central design contribution was making the relationships between those levels visible. A routine could be edited alongside its programme, while the planner kept its activity and programme in view. These connections addressed the original challenge: working on the next action without losing the larger plan.</p>
 
-      <figure class="figure figure-wide">
+      <figure class="figure zf-video-big">
         <div class="ui-video">
           <video controls playsinline preload="metadata" disablepictureinpicture controlslist="nofullscreen nodownload" width="1600" height="900" poster="media/zonefully-demo-poster.jpg">
             <source src="media/zonefully-hero.mp4" type="video/mp4">
