@@ -629,7 +629,10 @@
   .zf-reel {
     --reel-peek: clamp(36px, 12vw, 240px);
     --reel-gap: clamp(12px, 2vw, 28px);
-    --reel-slide: min(64.4rem, 100vw - 2 * (var(--reel-peek) + var(--reel-gap)));
+    /* never narrower than the text column, so on small screens a screen
+       spans it edge to edge and the neighbours just show in the margins */
+    --reel-slide: max(min(46rem, 100vw - 2 * clamp(24px, 5vw, 56px)),
+                      min(64.4rem, 100vw - 2 * (var(--reel-peek) + var(--reel-gap))));
     width: 100vw;
     margin: clamp(28px, 4vw, 44px) 0 0 calc(50% - 50vw);
   }
