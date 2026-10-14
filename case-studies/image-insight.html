@@ -555,12 +555,12 @@
      EXPERIMENT: light theme for this page only, switched on by
      <body class="theme-light">. Remove the class to return to dark.
      Ink #10282e on #e0fdff, with the dark theme's opacity steps;
-     accent #087894 (deep cyan, 4.95:1) because the site green is too
-     pale for text on a light ground (1.79:1). The lightbox stays dark.
+     accent #07a1ba (was #087894). The site green is too pale for text
+     on a light ground (1.79:1). The lightbox stays dark.
      ================================================================ */
   body.theme-light {
     --ink: 16, 40, 46;
-    --accent: #087894;
+    --accent: #07a1ba;
     color-scheme: light;
   }
   html:has(body.theme-light), body.theme-light { background: #e0fdff; color: rgb(var(--ink)); }
@@ -583,14 +583,18 @@
   /* links */
   .theme-light a { color: rgb(var(--ink)); border-bottom-color: rgba(var(--ink), 0.25); }
   .theme-light a:hover, .theme-light a:focus-visible { border-color: rgba(var(--ink), 0.9); }
-  .theme-light .kicker a { color: var(--accent); border-bottom-color: rgba(8, 120, 148, 0.45); }
+  .theme-light .kicker a { color: var(--accent); border-bottom-color: rgba(7, 161, 186, 0.45); }
+
+  /* text selection: the accent as a tint, with the ink kept as the text colour
+     (the site default is green behind white text, which vanishes here) */
+  body.theme-light:not(.theme-teal):not(.theme-intense) ::selection { background: rgba(7, 161, 186, 0.28); color: rgb(var(--ink)); }
 
   /* dividers */
   .theme-light hr.rule { border-top-color: rgba(var(--ink), 0.16); }
   .theme-light .subsection + .subsection { border-top-color: rgba(var(--ink), 0.12); }
 
   /* keyword tags */
-  .theme-light .keyword { background: #fff; color: rgba(var(--ink), 0.72); box-shadow: inset 0 0 0 1px rgba(var(--ink), 0.1); }
+  .theme-light .keyword { background: rgba(255, 255, 255, 0.45); color: rgba(var(--ink), 0.62); box-shadow: inset 0 0 0 1px rgba(var(--ink), 0.05); }
 
   /* timeframe donut */
   .theme-light .timeframe-donut-track { stroke: rgba(var(--ink), 0.12); }
