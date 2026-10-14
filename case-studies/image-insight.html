@@ -550,6 +550,106 @@
       border-radius: 6px 6px 0 0;
     }
   }
+
+  /* ================================================================
+     EXPERIMENT: light theme for this page only, switched on by
+     <body class="theme-light">. Remove the class to return to dark.
+     Ink #10282e on #f2feff, with the dark theme's opacity steps;
+     accent #087894 (deep cyan, 4.95:1) because the site green is too
+     pale for text on a light ground (1.79:1). The lightbox stays dark.
+     ================================================================ */
+  body.theme-light {
+    --ink: 16, 40, 46;
+    --accent: #087894;
+    color-scheme: light;
+  }
+  html:has(body.theme-light), body.theme-light { background: #f2feff; color: rgb(var(--ink)); }
+
+  /* text */
+  .theme-light h1, .theme-light h2, .theme-light h3, .theme-light h4,
+  .theme-light .display { color: rgb(var(--ink)); }
+  .theme-light .case-body p, .theme-light p, .theme-light li { color: rgba(var(--ink), 0.85); }
+  .theme-light .subtitle { color: rgba(var(--ink), 0.68); }
+  .theme-light figcaption, .theme-light .case-body blockquote cite, .theme-light cite,
+  .theme-light .meta-item p { color: rgba(var(--ink), 0.68); }
+  .theme-light .case-body blockquote { color: rgb(var(--ink)); border-left-color: var(--accent); }
+
+  /* labels and accents */
+  .theme-light .eyebrow, .theme-light .kicker, .theme-light .toc a.is-active { color: var(--accent); }
+  .theme-light .key-points li { color: rgb(var(--ink)); }
+  .theme-light .key-points li::before { color: var(--accent); }
+  .theme-light .kicker a:hover, .theme-light .kicker a:focus-visible { border-color: var(--accent); }
+
+  /* links */
+  .theme-light a { color: rgb(var(--ink)); border-bottom-color: rgba(var(--ink), 0.25); }
+  .theme-light a:hover, .theme-light a:focus-visible { border-color: rgba(var(--ink), 0.9); }
+  .theme-light .kicker a { color: var(--accent); border-bottom-color: rgba(8, 120, 148, 0.45); }
+
+  /* dividers */
+  .theme-light hr.rule { border-top-color: rgba(var(--ink), 0.16); }
+  .theme-light .subsection + .subsection { border-top-color: rgba(var(--ink), 0.12); }
+
+  /* keyword tags */
+  .theme-light .keyword { background: #fff; color: rgba(var(--ink), 0.72); box-shadow: inset 0 0 0 1px rgba(var(--ink), 0.1); }
+
+  /* timeframe donut */
+  .theme-light .timeframe-donut-track { stroke: rgba(var(--ink), 0.12); }
+  .theme-light .timeframe-donut-value { stroke: var(--accent); }
+
+  /* image frames: white cards with a soft shadow */
+  .theme-light .figure-portrait-frame {
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(var(--ink), 0.06), 0 8px 24px rgba(var(--ink), 0.08);
+  }
+  .theme-light .figure-portrait-frame img,
+  .theme-light .figure-portrait-frame > .ui-video,
+  .theme-light .figure-portrait-frame > .figure-strip-imgs { box-shadow: 0 6px 20px rgba(var(--ink), 0.14); }
+
+  /* hero band */
+  .theme-light .case-hero-video { background: linear-gradient(180deg, #ffffff 0%, #e3f6f9 100%); }
+  .theme-light .case-hero-video-frame { border-color: rgba(var(--ink), 0.1); }
+
+  /* side menu (on this page) */
+  .theme-light .toc a { color: rgba(var(--ink), 0.62); border-left-color: rgba(var(--ink), 0.14); }
+  .theme-light .toc a:hover, .theme-light .toc a:focus-visible { color: rgb(var(--ink)); border-left-color: rgba(var(--ink), 0.5); }
+  .theme-light .toc a.is-active { color: var(--accent); }
+  .theme-light .toc-indicator { background: var(--accent); }
+
+  /* footer and back to top */
+  .theme-light .site-footer-copy { color: rgba(var(--ink), 0.6); }
+  .theme-light .back-to-top { color: rgba(var(--ink), 0.68); }
+
+  /* next case study card */
+  .theme-light .case-block { box-shadow: 0 0 0 1px rgba(var(--ink), 0.1); }
+
+  /* nav bar: frosted white instead of smoked grey */
+  body.theme-light[data-navigation="identity"] .identity-bar::before {
+    background: rgba(255, 255, 255, 0.62);
+    border-color: rgba(var(--ink), 0.08);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    body.theme-light[data-navigation="identity"] .identity-bar:hover::before { background-color: rgba(255, 255, 255, 0.82); }
+  }
+  body.theme-light .identity-nav { color: rgb(var(--ink)); }
+  body.theme-light[data-navigation="identity"] .identity-brand,
+  body.theme-light .identity-nav .identity-name { color: rgb(var(--ink)); }
+  body.theme-light[data-navigation="identity"] .identity-role { color: rgba(var(--ink), 0.6); }
+  body.theme-light[data-navigation="identity"] .identity-role > span[aria-hidden] { color: rgba(var(--ink), 0.3); }
+  body.theme-light .identity-nav a, body.theme-light .identity-nav button { color: rgba(var(--ink), 0.72); }
+  body.theme-light .identity-nav a:hover, body.theme-light .identity-nav button:hover { color: rgb(var(--ink)); }
+  body.theme-light .menu-icon > span { background: var(--accent); }
+
+  /* nav menu overlay */
+  body.theme-light[data-navigation="identity"] .identity-dialog { color: rgb(var(--ink)); background: rgba(242, 254, 255, 0.9); }
+  body.theme-light[data-navigation="identity"] .identity-dialog .identity-links .menu-primary { color: rgba(var(--ink), 0.8); }
+  body.theme-light[data-navigation="identity"] .identity-dialog .identity-links .menu-primary:is(:hover, :focus-visible),
+  body.theme-light[data-navigation="identity"] .identity-dialog .menu-subsections a[aria-current] { color: rgb(var(--ink)); }
+  body.theme-light[data-navigation="identity"] .identity-dialog .menu-subsections a { color: rgba(var(--ink), 0.8); }
+  body.theme-light[data-navigation="identity"] .identity-dialog .menu-subsections a::before { background: rgba(var(--ink), 0.05); }
+  body.theme-light .menu-subsection-kicker { color: var(--accent); }
+  body.theme-light .menu-subsection-group { color: rgba(var(--ink), 0.55); }
+  body.theme-light .menu-subsection-divider { border-top-color: rgba(var(--ink), 0.14); }
+  body.theme-light .menu-subsection-title, body.theme-light .menu-subsection-copy { color: inherit; }
 </style>
 <script>
   (function () {
@@ -570,7 +670,7 @@
   <script src="/nav.js?v=20261007" defer></script>
   <script src="/footer.js" defer></script>
 </head>
-<body>
+<body class="theme-light">
   <nav class="site-nav">
     <div class="site-nav-inner">
       <a class="site-nav-brand display" href="/">Tom de Gay</a>
