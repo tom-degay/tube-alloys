@@ -663,6 +663,15 @@
   body.theme-light[data-navigation="identity"] .identity-dialog .menu-subsections a { color: rgba(var(--ink), 0.8); }
   body.theme-light[data-navigation="identity"] .identity-dialog .menu-subsections a::before { background: rgba(var(--ink), 0.05); }
   body.theme-light .menu-subsection-kicker { color: var(--accent); }
+  /* +/- and the study icons in the accent instead of site green; the icon
+     <img> is repainted as a mask of itself (nav.js sets --icon) */
+  body.theme-light .menu-section-toggle::after { color: var(--accent-mark); }
+  body.theme-light .menu-subsection-icon {
+    object-position: -999px 0;
+    background-color: var(--accent-mark);
+    -webkit-mask: var(--icon) center / contain no-repeat;
+    mask: var(--icon) center / contain no-repeat;
+  }
   body.theme-light .menu-subsection-group { color: rgba(var(--ink), 0.66); }
   body.theme-light .menu-subsection-divider { border-top-color: rgba(var(--ink), 0.14); }
   body.theme-light .menu-subsection-title, body.theme-light .menu-subsection-copy { color: inherit; }

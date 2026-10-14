@@ -1,5 +1,20 @@
 /* Shared collapsing identity navigation for tomdegay.com.
    The original HTML menu supplies the links and remains a fallback. */
+/* Cross-page fade (see @view-transition in styles.css): only when leaving
+   or arriving at a light-themed page. Decided on the outgoing page, which
+   knows its own theme and the destination; pagereveal on the new page
+   would need a blocking script in every <head>. */
+(() => {
+const LIGHT_PAGES = ['/case-studies/image-insight'];
+window.addEventListener('pageswap', e => {
+  if (!e.viewTransition) return;
+  const isLight = path => LIGHT_PAGES.includes(path.replace(/\.html$/, '').replace(/\/$/, ''));
+  const to = e.activation && e.activation.entry && e.activation.entry.url;
+  const toLight = to ? isLight(new URL(to).pathname) : true;
+  if (!document.body.classList.contains('theme-light') && !toLight) e.viewTransition.skipTransition();
+});
+})();
+
 (() => {
   const doc = document;
   const win = window;
@@ -59,6 +74,8 @@
         const icon = doc.createElement('img'); icon.className = 'menu-subsection-icon';
         icon.src = iconSrc + (iconSrc.endsWith('/feeds.svg') ? '?v=2' : '');
         icon.alt = ''; icon.width = 16; icon.height = 16; link.append(icon);
+        // lets a themed page repaint the icon in its own colour, via mask-image
+        icon.style.setProperty('--icon', 'url("' + icon.src + '")');
       }
       const copy = doc.createElement('span'); copy.className = 'menu-subsection-copy';
       const kicker = card.querySelector('.nav-dropdown-card-kicker');

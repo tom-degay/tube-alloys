@@ -46,6 +46,16 @@ img { height: auto; }
   color: #fff;
 }
 
+/* Cross-page fade. Every page opts in here, which browsers require of
+   both ends of a navigation; nav.js then skips it unless one end is a
+   light-themed page, where the jump from black would be jarring.
+   Browsers without cross-document view transitions just navigate. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root),
+  ::view-transition-new(root) { animation-duration: 450ms; animation-timing-function: ease; }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   html { scroll-behavior: smooth; }
 }
