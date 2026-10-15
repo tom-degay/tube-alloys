@@ -672,7 +672,7 @@
   /* a neighbour comes in on click rather than opening full size */
   .zf-reel-slide:not(.is-current) img { cursor: pointer; }
 
-  /* big figures (the Planner, the demo video): as wide as the window
+  /* the demo video: as wide as the window
      allows, up to 90rem, keeping the page's side margins, centred on the
      text column */
   .zf-big {
@@ -686,28 +686,32 @@
 
   .zf-big figcaption { max-width: 38rem; }
 
-  /* two figures side by side at the carousel's width, sized in proportion
-     to their aspect ratios (--ar, width / height) so they share one height; stacked on
-     phones */
-  .zf-pair {
-    --pair-w: min(64.4rem, 100vw - 2 * clamp(24px, 5vw, 56px));
+  /* a grid of figures at the carousel's width: a full-width one on top,
+     the rest sharing a row, each sized by its aspect ratio (--ar, width /
+     height) so the row has one height; stacked on phones */
+  .zf-grid {
+    --grid-w: min(64.4rem, 100vw - 2 * clamp(24px, 5vw, 56px));
     display: flex;
+    flex-wrap: wrap;
     align-items: flex-start;
-    gap: clamp(16px, 2vw, 28px);
-    width: var(--pair-w);
-    margin: clamp(20px, 3vw, 32px) 0 0 calc((100% - var(--pair-w)) / 2);
+    gap: clamp(24px, 3vw, 40px) clamp(16px, 2vw, 28px);
+    width: var(--grid-w);
+    margin: clamp(20px, 3vw, 32px) 0 0 calc((100% - var(--grid-w)) / 2);
   }
 
-  .zf-pair .figure {
+  .zf-grid .figure {
     flex: var(--ar) 1 0;
     min-width: 0;
     margin: 0;
     max-width: none;
   }
 
+  .zf-grid .zf-grid-full { flex: 0 0 100%; }
+
+  .zf-grid figcaption { max-width: 38rem; }
+
   @media (max-width: 640px) {
-    .zf-pair { flex-direction: column; }
-    .zf-pair .figure { flex: none; width: 100%; }
+    .zf-grid .figure { flex: 0 0 100%; }
   }
 
   /* only the current screen's caption shows; the neighbours' would peek
@@ -835,7 +839,7 @@
      dots in ink */
   .theme-light .zf-reel-slide img,
   .theme-light .zf-big img,
-  .theme-light .zf-pair img,
+  .theme-light .zf-grid img,
   .theme-light .ui-video {
     background: #fff;
     box-shadow: 0 0 0 1px rgba(var(--ink), 0.1), 0 8px 24px rgba(var(--ink), 0.1);
@@ -1133,16 +1137,18 @@
         <h3 id="developing-heading">Developing the interface</h3>
         <p>I developed designs for programme browsing, routine details and new-programme creation, including selection and hover states. I also explored variations in cover imagery and action placement to balance functionality with a spacious layout.</p>
 
-        <figure class="figure zf-big">
-          <img src="media/zonefully-planner-week.jpg" width="2000" height="1001" alt="The Planner&rsquo;s week view: rides from the Ride the Tourmalet Recovery programme and weekend breakfasts placed across the days, with the week picker and an activity filter above." loading="lazy">
-        </figure>
-
-        <div class="zf-pair">
+        <div class="zf-grid">
+          <figure class="figure zf-grid-full">
+            <img src="media/zonefully-planner-week.jpg" width="2000" height="1001" alt="The Planner&rsquo;s week view: rides from the Ride the Tourmalet Recovery programme and weekend breakfasts placed across the days, with the week picker and an activity filter above." loading="lazy">
+            <figcaption>The Planner&rsquo;s week view. Each routine carries its activity&rsquo;s colour, so rides and breakfasts read apart at a glance.</figcaption>
+          </figure>
           <figure class="figure" style="--ar: 0.7614">
             <img src="media/zonefully-program-selector.png" width="1308" height="1718" alt="The programme selector. Clicking the programme previews it; the arrow beside it opens a searchable list of programmes, where hovering one offers Activate." loading="lazy">
+            <figcaption>The programme selector: click to preview, or open the list to switch, with Activate on hover.</figcaption>
           </figure>
           <figure class="figure" style="--ar: 1.5163">
             <img src="media/zonefully-routines-order.jpg" width="2000" height="1319" alt="A programme&rsquo;s routines in order &mdash; a 10 mile ride, two rest days and a 20 mile ride &mdash; with drag handles and the note &lsquo;Routines follow this order. Drag to reorder.&rsquo;" loading="lazy">
+            <figcaption>Routines run in the order shown, and drag handles make reordering direct.</figcaption>
           </figure>
         </div>
       </div>
