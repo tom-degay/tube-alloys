@@ -672,18 +672,43 @@
   /* a neighbour comes in on click rather than opening full size */
   .zf-reel-slide:not(.is-current) img { cursor: pointer; }
 
-  /* the demo video in Outcome: as wide as the window allows, up to 90rem,
-     keeping the page's side margins, centred on the text column */
-  .zf-video-big {
+  /* big figures (the Planner, the demo video): as wide as the window
+     allows, up to 90rem, keeping the page's side margins, centred on the
+     text column */
+  .zf-big {
     --video-w: min(90rem, 100vw - 2 * clamp(24px, 5vw, 56px));
     width: var(--video-w);
     max-width: none;
     margin-left: calc((100% - var(--video-w)) / 2);
   }
 
-  .zf-video-big .ui-video { max-width: none; }
+  .zf-big .ui-video { max-width: none; }
 
-  .zf-video-big figcaption { max-width: 38rem; }
+  .zf-big figcaption { max-width: 38rem; }
+
+  /* two figures side by side at the carousel's width, sized in proportion
+     to their aspect ratios (--ar, width / height) so they share one height; stacked on
+     phones */
+  .zf-pair {
+    --pair-w: min(64.4rem, 100vw - 2 * clamp(24px, 5vw, 56px));
+    display: flex;
+    align-items: flex-start;
+    gap: clamp(16px, 2vw, 28px);
+    width: var(--pair-w);
+    margin: clamp(20px, 3vw, 32px) 0 0 calc((100% - var(--pair-w)) / 2);
+  }
+
+  .zf-pair .figure {
+    flex: var(--ar) 1 0;
+    min-width: 0;
+    margin: 0;
+    max-width: none;
+  }
+
+  @media (max-width: 640px) {
+    .zf-pair { flex-direction: column; }
+    .zf-pair .figure { flex: none; width: 100%; }
+  }
 
   /* only the current screen's caption shows; the neighbours' would peek
      in as clipped fragments of text */
@@ -809,6 +834,8 @@
   /* carousel: hairline and soft shadow on each screen, as on the video;
      dots in ink */
   .theme-light .zf-reel-slide img,
+  .theme-light .zf-big img,
+  .theme-light .zf-pair img,
   .theme-light .ui-video {
     background: #fff;
     box-shadow: 0 0 0 1px rgba(var(--ink), 0.1), 0 8px 24px rgba(var(--ink), 0.1);
@@ -1105,6 +1132,19 @@
       <div class="subsection" id="impl-developing">
         <h3 id="developing-heading">Developing the interface</h3>
         <p>I developed designs for programme browsing, routine details and new-programme creation, including selection and hover states. I also explored variations in cover imagery and action placement to balance functionality with a spacious layout.</p>
+
+        <figure class="figure zf-big">
+          <img src="media/zonefully-planner-week.jpg" width="2000" height="1001" alt="The Planner&rsquo;s week view: rides from the Ride the Tourmalet Recovery programme and weekend breakfasts placed across the days, with the week picker and an activity filter above." loading="lazy">
+        </figure>
+
+        <div class="zf-pair">
+          <figure class="figure" style="--ar: 0.7614">
+            <img src="media/zonefully-program-selector.png" width="1308" height="1718" alt="The programme selector. Clicking the programme previews it; the arrow beside it opens a searchable list of programmes, where hovering one offers Activate." loading="lazy">
+          </figure>
+          <figure class="figure" style="--ar: 1.5163">
+            <img src="media/zonefully-routines-order.jpg" width="2000" height="1319" alt="A programme&rsquo;s routines in order &mdash; a 10 mile ride, two rest days and a 20 mile ride &mdash; with drag handles and the note &lsquo;Routines follow this order. Drag to reorder.&rsquo;" loading="lazy">
+          </figure>
+        </div>
       </div>
     </section>
 
@@ -1116,7 +1156,7 @@
       <p>Across roughly ten days of design work, I translated the founder&rsquo;s model into the navigation, editing states and visual language for a functioning first version. The result connected programme planning, routine editing and calendar scheduling through a consistent interface.</p>
       <p>The central design contribution was making the relationships between those levels visible. A routine could be edited alongside its programme, while the planner kept its activity and programme in view. These connections addressed the original challenge: working on the next action without losing the larger plan.</p>
 
-      <figure class="figure zf-video-big">
+      <figure class="figure zf-big">
         <div class="ui-video">
           <video controls playsinline preload="metadata" disablepictureinpicture controlslist="nofullscreen nodownload" width="1600" height="900" poster="media/zonefully-demo-poster.jpg">
             <source src="media/zonefully-hero.mp4" type="video/mp4">
