@@ -575,7 +575,57 @@
 
   @media (min-width: 1024px) {
     .zf-hero-text { grid-column: 1; grid-row: 1; }
-    .zf-hero-media { grid-column: 2; grid-row: 1; }
+    /* the iPad runs 5vw past the window's right edge */
+    .zf-hero-media { grid-column: 2; grid-row: 1; margin-right: -5vw; }
+  }
+
+  /* -- the screenshot on a white iPad. The Planner capture is 2662x1854,
+     the shape of an 11-inch iPad's screen in landscape (2388x1668), so it
+     fills the screen without cropping. Bezel, corner radii and camera are
+     sized in container units off the device's width, so it scales as one
+     piece: a white bezel on a pale aluminium edge, a soft highlight, the
+     front camera centred in the top bezel, and a long soft shadow. -- */
+  .zf-hero-media { container-type: inline-size; }
+
+  .zf-ipad {
+    position: relative;
+    padding: 3.4cqw;
+    border-radius: 5cqw;
+    background: linear-gradient(150deg, #ffffff 0%, #f7f7f8 45%, #eeeef0 100%);
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.9),
+      inset 0 -1px 2px rgba(0, 0, 0, 0.04),
+      0 0 0 1px #d9dadd,
+      0 0 0 0.3cqw #eceef1,
+      0 0 0 calc(0.3cqw + 1px) #c9cbcf,
+      0 2px 4px rgba(0, 0, 0, 0.06),
+      0 3cqw 6cqw -1cqw rgba(0, 0, 0, 0.22);
+  }
+
+  /* front camera, centred in the top bezel */
+  .zf-ipad::before {
+    content: "";
+    position: absolute;
+    top: 1.39cqw;
+    left: 50%;
+    width: 0.62cqw;
+    height: 0.62cqw;
+    margin-left: -0.31cqw;
+    border-radius: 50%;
+    background: radial-gradient(circle at 38% 35%, #5b6475 0%, #262a33 55%, #121419 100%);
+    box-shadow: 0 0 0 0.12cqw #e3e4e7;
+  }
+
+  /* the screen: its own tighter radius and a hairline where the glass
+     meets the bezel; beats the hero picture's plain rules at every width */
+  .zf-hero .zf-ipad img,
+  .theme-light .zf-hero .zf-ipad img {
+    display: block;
+    width: 100%;
+    max-width: none;
+    height: auto;
+    border-radius: 1.8cqw;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
   }
 
   .zf-hero h1 {
@@ -1049,8 +1099,9 @@
      the bottom of the hero, with no radius or shadow. Last in the block
      so it beats the light theme's shadow on the same selector. */
   @media (max-width: 640px) {
-    .zf-hero { padding-bottom: 0; }
-    .zf-hero-media { margin-inline: calc(-1 * var(--hero-inset)); overflow: hidden; }
+    .zf-hero { padding-bottom: 48px; }
+    /* the iPad sits inside the page margins, whole */
+    .zf-hero-media { margin-inline: 0; overflow: visible; }
     .zf-hero-media img,
     .theme-light .zf-hero-media img {
       border-radius: 0;
@@ -1142,7 +1193,7 @@
   </nav>
   <div class="zf-hero">
     <div class="zf-hero-media">
-      <img src="media/planner-with-thin-sidebar.png" width="2662" height="1854" alt="Zonefully&rsquo;s Planner: a week of cycling rides and weekend breakfasts laid out on the calendar, with a side panel naming the activity, programme and routine for the selected ride.">
+      <div class="zf-ipad"><img src="media/planner-with-thin-sidebar.png" width="2662" height="1854" alt="Zonefully&rsquo;s Planner: a week of cycling rides and weekend breakfasts laid out on the calendar, with a side panel naming the activity, programme and routine for the selected ride."></div>
     </div>
     <div class="zf-hero-text">
       <img class="zf-hero-logo" src="media/zonefully-logo.svg" width="133" height="228" alt="Zonefully">
