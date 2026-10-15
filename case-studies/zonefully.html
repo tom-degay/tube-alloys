@@ -1045,17 +1045,19 @@
   body.theme-light .menu-subsection-divider { border-top-color: rgba(var(--ink), 0.14); }
   body.theme-light .menu-subsection-title, body.theme-light .menu-subsection-copy { color: inherit; }
 
-  /* On phones the hero picture is full bleed: edge to edge and down to
-     the bottom of the hero, with no radius or shadow. Last in the block
-     so it beats the light theme's shadow on the same selector. */
+  /* On phones the picture is magnified and cropped: it starts at the
+     page's left margin, rounded on the left, and runs off the right edge,
+     which cuts it just past the cycling filter in the app's toolbar. That
+     filter ends near x=1415 of the screenshot's 2662px (0.5316 of its
+     width), so the picture is (window - left inset) / 0.5316 wide. Last
+     in the block so it beats the stacked layout's all-round radius. */
   @media (max-width: 640px) {
-    .zf-hero { padding-bottom: 0; }
-    .zf-hero-media { margin-inline: calc(-1 * var(--hero-inset)); overflow: hidden; }
-    .zf-hero-media img,
-    .theme-light .zf-hero-media img {
-      border-radius: 0;
-      box-shadow: none;
+    .zf-hero { padding-bottom: 48px; }
+    .zf-hero-media {
+      width: calc((100vw - var(--hero-inset)) / 0.5316);
+      max-width: none;
     }
+    .zf-hero-media img { border-radius: 6px 0 0 6px; }
   }
 </style>
 <script>
