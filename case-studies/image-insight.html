@@ -626,9 +626,15 @@
       justify-content: center;
       min-height: calc(100vh - 86px);
       min-height: calc(100svh - 86px);
-      padding-bottom: 24px;
+      /* weighted a little above centre */
+      padding-bottom: 12svh;
       box-sizing: border-box;
     }
+
+    /* bigger type to fill more of the width */
+    .ii-hero-logo { width: 64px; }
+    .ii-hero h1 { font-size: clamp(34px, 10vw, 46px); line-height: 1.06; }
+    .ii-hero p.subtitle { font-size: clamp(19px, 5.4vw, 23px); line-height: 1.4; }
   }
 
   /* -- carousel: the screens run in a full-width horizontal strip, the
