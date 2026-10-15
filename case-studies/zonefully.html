@@ -1180,24 +1180,15 @@
     .zf-hero { padding-bottom: 48px; }
     /* the iPad sits inside the page margins, whole */
     .zf-hero-media { margin-inline: 0; overflow: visible; }
-    /* a portrait iPad: the screen cropped just right of the cycling filter
-       in the app's toolbar (x=1385 of 2662), a tall 1385x1854. The long
-       side is now the height, so the device's unit grows to match */
-    .zf-hero-media { --u: calc(1cqw * 1854 / 1385); }
-    .zf-screen { aspect-ratio: auto; }
-    .zf-hero .zf-ipad img,
-    .theme-light .zf-hero .zf-ipad img {
-      flex: none;
-      aspect-ratio: 1385 / 1854;
-      object-position: left top;
-    }
-    /* turned upright, the front camera is on the left-hand bezel */
-    .zf-ipad::before {
-      top: 50%;
-      left: calc(1.39 * var(--u));
-      margin: calc(-0.31 * var(--u)) 0 0;
-    }
-    .zf-hero-media img,
+    /* the iPad stays in landscape, larger than the phone, and runs off the
+       right edge so the window cuts it just right of the cycling filter
+       in the app's toolbar, which ends near x=1415 of the screenshot's
+       2662px; with the 3.4% bezel that is 0.535 of the device's width
+       from its left edge: so the device is (window - left inset) / 0.535 */
+    .zf-hero-media {
+      width: calc((100vw - var(--hero-inset)) / 0.535);
+      max-width: none;
+    }    .zf-hero-media img,
     .theme-light .zf-hero-media img {
       border-radius: 0;
       box-shadow: none;
