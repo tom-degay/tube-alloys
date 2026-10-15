@@ -27,9 +27,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/styles.css?v=20261015-counters">
 <link rel="stylesheet" href="/dial.css">
 <script src="/dial.js"></script>
+<script src="/stat-dials.js" defer></script>
 <link rel="stylesheet" href="/nav.css?v=20261015b">
 <style>
   html { scroll-padding-top: 100px; }
@@ -1884,54 +1885,6 @@
       window.addEventListener('resize', sync);
       if (wide.addEventListener) { wide.addEventListener('change', sync); still.addEventListener('change', sync); }
       sync();
-    })();
-
-    (function () {
-      var stats = document.querySelector('.stats');
-      if (!stats) return;
-      var values = Array.prototype.slice.call(stats.querySelectorAll('.stat-value'));
-      if (!values.length) return;
-      if (!('IntersectionObserver' in window) ||
-          (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
-        return; // leave the authored final values in place
-      }
-
-      var items = values.map(function (el) {
-        var raw = el.textContent.trim();
-        var m = raw.match(/^(\D*)([\d.]+)(.*)$/);
-        if (!m) return null;
-        var numStr = m[2];
-        return {
-          el: el, raw: raw, num: parseFloat(numStr),
-          decimals: (numStr.split('.')[1] || '').length,
-          prefix: m[1] || '', suffix: m[3] || ''
-        };
-      }).filter(Boolean);
-      if (!items.length) return;
-
-      function fmt(it, v) {
-        return it.prefix + (it.decimals ? v.toFixed(it.decimals) : String(Math.round(v))) + it.suffix;
-      }
-      function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
-      var DURATION = 1600;
-
-      var io = new IntersectionObserver(function (entries) {
-        if (!entries.some(function (e) { return e.isIntersecting; })) return;
-        io.disconnect();
-        items.forEach(function (it) { it.el.textContent = fmt(it, 0); });
-        var start = null;
-        function frame(ts) {
-          if (start === null) start = ts;
-          var t = Math.min((ts - start) / DURATION, 1);
-          var e = easeOut(t);
-          items.forEach(function (it) { it.el.textContent = fmt(it, it.num * e); });
-          if (t < 1) requestAnimationFrame(frame);
-          else items.forEach(function (it) { it.el.textContent = it.raw; });
-        }
-        requestAnimationFrame(frame);
-      }, { threshold: 0.6 });
-
-      io.observe(stats);
     })();
   </script>
   <script>

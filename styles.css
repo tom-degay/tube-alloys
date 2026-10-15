@@ -598,6 +598,27 @@ p.keywords {
   font-variant-numeric: tabular-nums;
 }
 
+/* Shared rolling-number treatment; edge shading fades after settling. */
+.stat-dial { display: inline-flex; height: 1.05em; vertical-align: top; }
+@property --stat-edge-alpha {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+.stat-wheel {
+  display: inline-block;
+  width: 0.62em;
+  height: 1.05em;
+  overflow: hidden;
+  mask-image: linear-gradient(rgba(0, 0, 0, var(--stat-edge-alpha)), #000 18%, #000 82%, rgba(0, 0, 0, var(--stat-edge-alpha)));
+  -webkit-mask-image: linear-gradient(rgba(0, 0, 0, var(--stat-edge-alpha)), #000 18%, #000 82%, rgba(0, 0, 0, var(--stat-edge-alpha)));
+  transition: --stat-edge-alpha 320ms ease-out;
+}
+.stat-wheel.is-settled { --stat-edge-alpha: 1; }
+.stat-wheel-track { display: block; }
+.stat-wheel-digit { display: block; height: 1.05em; line-height: 1.05; text-align: center; }
+.stat-dial-suffix { line-height: 1.05; }
+
 .stat-label {
   display: block;
   margin: 8px 0 0;
