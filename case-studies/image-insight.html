@@ -704,7 +704,9 @@
     max-width: none;
   }
 
-  .ii-grid .ui-video { max-width: none; }
+  /* .ui-video's own 28px top margin would drop the video below the
+     picture beside it */
+  .ii-grid .ui-video { max-width: none; margin: 0; }
 
   .ii-grid figcaption { max-width: 38rem; }
 
@@ -838,18 +840,18 @@
   .theme-light .ii-reel-dot[aria-current="true"]::before { background: rgba(var(--ink), 0.85); }
   .theme-light .ii-reel-dot:focus-visible { outline-color: rgba(var(--ink), 0.72); }
 
-  /* Watch the demo: the light nav bar's frosted white, bold type a little
-     grey (0.75 ink), the play mark in the accent like the Menu icon */
+  /* Watch the demo: a dark button in the headline's colour (ink at 82%,
+     #10282ed1), with white type and play mark; full ink on hover */
   .theme-light a.ii-watch {
-    background: rgba(255, 255, 255, 0.7);
+    background: #10282ed1;
     border-color: transparent;
-    color: rgba(var(--ink), 0.75);
+    color: #fff;
   }
-  .theme-light a.ii-watch svg { color: var(--accent-mark); }
+  .theme-light a.ii-watch svg { color: #fff; }
   .theme-light a.ii-watch:hover,
   .theme-light a.ii-watch:focus-visible {
-    background-color: rgba(255, 255, 255, 0.88);
-    color: rgb(var(--ink));
+    background-color: rgb(var(--ink));
+    color: #fff;
   }
 
   /* hero band */
