@@ -131,6 +131,13 @@
 
   #other-work-heading { margin-top: 0; }
 
+  /* Smaller projects: the home page's two image cards, two-up from 820px
+     (the shared approach-blocks rule would make them three-up) */
+  .case-blocks.approach-blocks.experiments-blocks { grid-template-columns: 1fr; }
+  @media (min-width: 820px) {
+    .case-blocks.approach-blocks.experiments-blocks { grid-template-columns: repeat(2, 1fr); }
+  }
+
   @keyframes card-fade-in {
     from { opacity: 0; }
     to   { opacity: 1; }
@@ -284,7 +291,7 @@
     </div>
   </nav>
   <main>
-    <span class="eyebrow head-fade">Case Studies</span>
+    <span class="eyebrow head-fade">Quantemplate case studies</span>
 
     <h1 class="lede display head-fade">Untangling complexity in product for data automation and AI platforms.</h1>
 
@@ -329,23 +336,19 @@
     <hr class="rule">
 
     <section aria-labelledby="other-work-heading">
-      <h2 class="eyebrow" id="other-work-heading">Other work</h2>
-      <div class="case-blocks">
-        <a class="case-block has-image is-light" href="/case-studies/image-insight">
+      <h2 class="eyebrow" id="other-work-heading">Smaller projects</h2>
+      <div class="case-blocks approach-blocks experiments-blocks">
+        <a class="case-block has-image" href="/case-studies/image-insight">
           <img class="case-block-media" src="/case-studies/media/image-insight-card.jpg" width="1484" height="916" alt="The Image Insight logo over a blurred grid of session images." loading="lazy">
           <span class="case-block-text">
-            <span class="case-block-kicker">Image Insight</span>
-            <span class="case-block-title">Making space for deeper reflection</span>
-            <span class="case-block-subtitle">Digital coaching tool that uses images and visual metaphors to prompt deeper reflection in online and face-to-face sessions.</span>
+            <span class="case-block-title">Image Insight</span>
           </span>
         </a>
 
-        <a class="case-block has-image is-light" href="/case-studies/zonefully">
+        <a class="case-block has-image" href="/case-studies/zonefully">
           <img class="case-block-media" src="/case-studies/media/zonefully-card.jpg" width="1484" height="916" alt="The Zonefully logo over a blurred app screenshot." loading="lazy">
           <span class="case-block-text">
-            <span class="case-block-kicker">Zonefully</span>
-            <span class="case-block-title">Connecting long-term goals to everyday routines</span>
-            <span class="case-block-subtitle">A planning app that connects personal goals with recurring routines and a calendar to put them into practice.</span>
+            <span class="case-block-title">Zonefully</span>
           </span>
         </a>
       </div>
