@@ -963,6 +963,10 @@
   }
   .theme-light .outcome-quote::before { color: rgba(15, 156, 184, 0.35); }
 
+  /* no shadow on any picture or video in the page body; the hero picture,
+     outside main, keeps its own */
+  body.theme-light main :is(img, video, .ui-video) { box-shadow: none; }
+
   /* footer and back to top */
   .theme-light .site-footer-copy { color: rgba(var(--ink), 0.66); }
   .theme-light .site-footer-links a { color: rgba(var(--ink), 0.8); text-decoration-color: rgba(var(--ink), 0.25); }
