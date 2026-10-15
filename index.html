@@ -336,6 +336,10 @@
 
   .case-block[target="_blank"]::after { content: none; }
 
+  /* The two wide case-study cards: a much bigger headline, about 42px at a
+     1440 window, scaling down with it */
+  .case-blocks-wide .case-block-title { font-size: clamp(26px, 2.9vw, 42px); line-height: 1.12; letter-spacing: -0.005em; }
+
   .hero-armed .about-statement { opacity: 0; }
 
   .hero-armed .about-statement .word {
@@ -875,8 +879,23 @@
     .case-blocks-wide > .case-block:nth-child(even).has-image .case-block-text { grid-area: 1 / 1 / 2 / 6; }
   }
 
-  /* "More case studies": a small link under the two cards. */
-  .more-case-studies { margin: clamp(24px, 3vw, 36px) 0 0; font-size: 17px; }
+  /* "More case studies": a button, centred under the two cards, in the
+     dark button style of the About and Contact pages */
+  .more-case-studies { margin: clamp(32px, 4vw, 52px) 0 0; text-align: center; }
+  .more-case-studies a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 22px;
+    border: 1px solid rgb(33, 33, 33);
+    border-radius: 8px;
+    background: rgb(33, 33, 33);
+    color: #fff;
+    font: 600 16px/1 "Fakt Blond SemiBold", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+  .more-case-studies a:hover,
+  .more-case-studies a:focus-visible { background: rgb(48, 48, 48); border-color: rgb(48, 48, 48); }
   @media (min-width: 1024px) {
     main > section > .more-case-studies,
     main > section > .q-reel { grid-column: 1 / -1; }
