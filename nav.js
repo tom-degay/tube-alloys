@@ -28,7 +28,7 @@ window.addEventListener('pageswap', e => {
   const links = doc.createElement('div');
   links.className = 'identity-links'; links.id = 'identity-links';
   const sections = [];
-  [['Case studies', '/case-studies', 'Case Studies'], ['Approach', '/#approach-heading', 'Approach'], ['About', '/about'], ['Contact', '/contact']].forEach(([label, href, sourceLabel]) => {
+  [['Home', '/'], ['Case studies', '/case-studies', 'Case Studies'], ['Approach', '/#approach-heading', 'Approach'], ['About', '/about'], ['Contact', '/contact']].forEach(([label, href, sourceLabel]) => {
     const sourceItem = [...source.querySelectorAll('.nav-item')].find(item => {
       const heading = item.querySelector(':scope > a');
       return heading && heading.textContent.trim() === sourceLabel;

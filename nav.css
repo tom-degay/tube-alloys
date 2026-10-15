@@ -115,7 +115,8 @@ html.identity-menu-open { overflow: hidden; }
 /* Smaller Approach surfaces need a larger percentage for the same visible motion. */
 [data-navigation="identity"] .identity-dialog .menu-subsections--approach a { --surface-start-x: .94; --surface-start-y: .9; --surface-peak-x: 1.04; --surface-peak-y: .98; --surface-settle-x: .99; --surface-settle-y: 1.025; }
 @media (hover: hover) and (pointer: fine) {
-  [data-navigation="identity"] .identity-dialog .menu-subsections a:hover::before { opacity: 1; transform: scale(1); animation: menu-surface-settle 550ms cubic-bezier(.22,1,.36,1) both; }
+  /* a plain fade and grow, no overshoot (the settle wobble was removed) */
+  [data-navigation="identity"] .identity-dialog .menu-subsections a:hover::before { opacity: 1; transform: scale(1); }
 }
 [data-navigation="identity"] .identity-dialog .menu-subsections a:is(:focus-visible, :active)::before { opacity: 1; transform: scale(1); }
 @keyframes menu-surface-settle {
