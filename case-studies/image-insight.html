@@ -966,23 +966,20 @@
   body.theme-light .menu-subsection-divider { border-top-color: rgba(var(--ink), 0.14); }
   body.theme-light .menu-subsection-title, body.theme-light .menu-subsection-copy { color: inherit; }
 
-  /* On phones the hero picture is full bleed: edge to edge and down to
-     the bottom of the hero, with no radius or shadow. Last in the block
-     so it beats the light theme's shadow on the same selector. */
+  /* On phones the picture runs in from the window's left edge, cut about
+     halfway through the hot-air-balloon column of the grid (x=623 of the
+     1630px picture; that column spans 472-774), and stops at the page's
+     right margin, rounded on the right. What is left, 1007x1212, is a tall
+     crop: the session panel whole and the grid giving way on the left.
+     Last in the block so it beats the stacked layout's all-round radius. */
   @media (max-width: 640px) {
-    .ii-hero { padding-bottom: 0; }
-    .ii-hero-media { margin-inline: calc(-1 * var(--hero-inset)); }
-    .ii-hero-media img,
-    .theme-light .ii-hero-media img {
-      border-radius: 0;
-      box-shadow: none;
-    }
-    /* a square crop, anchored right so the session panel stays whole and
-       the grid gives way on the left */
+    .ii-hero { padding-bottom: 48px; }
+    .ii-hero-media { margin-left: calc(-1 * var(--hero-inset)); }
     .ii-hero-media img {
-      aspect-ratio: 1 / 1;
+      aspect-ratio: 1007 / 1212;
       object-fit: cover;
       object-position: right center;
+      border-radius: 0 12px 12px 0;
     }
   }
 
