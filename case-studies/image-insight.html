@@ -635,6 +635,17 @@
     .ii-hero-logo { width: 64px; }
     .ii-hero h1 { font-size: clamp(34px, 10vw, 46px); line-height: 1.06; }
     .ii-hero p.subtitle { font-size: clamp(19px, 5.4vw, 23px); line-height: 1.4; }
+
+    /* the picture slides up as it comes into view (after jamesfinch.co.uk):
+       100px rise with a fade, on a springy ease that settles a hair past
+       its mark. The script below arms it only on phones, without reduced
+       motion, so with no JS the picture is simply there. */
+    .ii-hero-media.is-armed {
+      opacity: 0;
+      transform: translateY(100px);
+      transition: transform 0.6s cubic-bezier(0.22, 1.25, 0.36, 1), opacity 0.35s linear;
+    }
+    .ii-hero-media.is-armed.is-in { opacity: 1; transform: none; }
   }
 
   /* -- carousel: the screens run in a full-width horizontal strip, the
@@ -1369,6 +1380,23 @@
         window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
         link.blur();
       });
+    })();
+
+    /* Phone hero: arm the picture's slide-up, and play it once 40px of
+       it has scrolled into view. */
+    (function () {
+      var media = document.querySelector(".ii-hero-media");
+      if (!media || !("IntersectionObserver" in window)) return;
+      if (!window.matchMedia("(max-width: 640px)").matches) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      if (media.getBoundingClientRect().top < window.innerHeight - 40) return;
+      media.classList.add("is-armed");
+      var io = new IntersectionObserver(function (entries) {
+        if (!entries[0].isIntersecting) return;
+        io.disconnect();
+        media.classList.add("is-in");
+      }, { rootMargin: "0px 0px -40px 0px" });
+      io.observe(media);
     })();
 
     /* Carousel: dots follow the scroll position and jump on click; a mouse
