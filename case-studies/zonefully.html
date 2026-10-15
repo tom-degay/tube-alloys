@@ -651,20 +651,19 @@
 
   .zf-ipad svg { display: block; flex: none; }
 
-  /* status bar: the time left; signal, wi-fi and battery right. The
-     app's own columns carry on up behind it -- the dark sidebar (0-160 of
-     the screenshot's 2662px), the light calendar, the white side panel
-     (from 2122) -- so the app reads as running under the status bar. The
-     time sits over the sidebar, so it is white */
+  /* status bar: the time left; signal, wi-fi and battery right, all in
+     one dark colour as on a real iPad. Behind it, the app's light ground
+     runs the full width -- the calendar's #f6f6f6, and the side panel's
+     white from 2122 of the screenshot's 2662px -- with the dark sidebar
+     starting below it, so nothing in the bar sits on a dark patch */
   .zf-status {
-    background: linear-gradient(90deg, #272727 0 6.01%, #f6f6f6 6.01% 79.71%, #fff 79.71%);
+    background: linear-gradient(90deg, #f6f6f6 0 79.71%, #fff 79.71%);
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: calc(2.5 * var(--u));
     padding: calc(0.4 * var(--u)) calc(2.2 * var(--u)) 0;
   }
-  .zf-status-left { color: #fff; }
   .zf-status-right { display: flex; align-items: center; gap: calc(0.5 * var(--u)); }
   .zf-status-right svg { height: calc(1.05 * var(--u)); width: auto; }
   .zf-status-right .zf-battery { height: calc(1.15 * var(--u)); }
