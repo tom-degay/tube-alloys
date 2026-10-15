@@ -970,6 +970,13 @@
       border-radius: 0;
       box-shadow: none;
     }
+    /* a square crop, anchored right so the session panel stays whole and
+       the grid gives way on the left */
+    .ii-hero-media img {
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      object-position: right center;
+    }
   }
 
   /* ================================================================
