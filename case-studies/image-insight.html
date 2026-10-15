@@ -33,6 +33,36 @@
 <style>
   html { scroll-padding-top: 100px; }
 
+  /* attributed quotes as cards, as on Validation and Column mapping */
+  .case-body blockquote.outcome-quote {
+    box-sizing: border-box;
+    background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
+    border: none;
+    border-radius: 10px;
+    padding: clamp(20px, 2.4vw, 32px);
+    color: rgba(255, 255, 255, 0.82);
+    font-size: clamp(20px, 2vw, 30px);
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+
+  .outcome-quote::before {
+    content: "\201C";
+    display: block;
+    font-family: "Fakt Blond SemiBold", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 600;
+    font-size: clamp(96px, 10vw, 150px);
+    line-height: 0.95;
+    margin-bottom: -0.52em;
+    margin-left: -0.066em;
+    color: rgba(255, 255, 255, 0.22);
+  }
+
+  .outcome-quote cite a[target="_blank"]::after { content: none; }
+
+  .case-body blockquote.outcome-quote + blockquote.outcome-quote { margin-top: clamp(16px, 2vw, 24px); }
+
+
   body {
     font-family: "Fakt Blond", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -923,6 +953,16 @@
   /* the hero's top colour runs up behind the nav to the top of the page */
   .theme-light nav.identity-nav { background: #e3f6f9; }
 
+  /* quote cards: white, easing to the page's cyan, with the hero
+     picture's hairline and soft shadow; the open-quote mark in the
+     accent, faint */
+  .theme-light .case-body blockquote.outcome-quote {
+    background: linear-gradient(to bottom, #ffffff, #f3feff);
+    color: rgba(var(--ink), 0.85);
+    box-shadow: 0 0 0 1px rgba(var(--ink), 0.07), 0 2px 6px rgba(var(--ink), 0.04), 0 12px 32px rgba(var(--ink), 0.07);
+  }
+  .theme-light .outcome-quote::before { color: rgba(15, 156, 184, 0.35); }
+
   /* footer and back to top */
   .theme-light .site-footer-copy { color: rgba(var(--ink), 0.66); }
   .theme-light .site-footer-links a { color: rgba(var(--ink), 0.8); text-decoration-color: rgba(var(--ink), 0.25); }
@@ -1279,10 +1319,10 @@
     <section aria-labelledby="refining-heading" class="case-body">
       <h3 id="refining-heading">Refining around real sessions</h3>
       <p>The app was trialled in a beta with two schools. Feedback on the design approach was overwhelmingly positive.</p>
-      <blockquote>It gave a focus to answering the question, without distracting from the question.
+      <blockquote class="outcome-quote">It gave a focus to answering the question, without distracting from the question.
         <cite>Helen, Client &middot; <a href="https://imageinsight.app/" target="_blank" rel="noopener noreferrer">Source</a></cite>
       </blockquote>
-      <blockquote>I love the simplicity.
+      <blockquote class="outcome-quote">I love the simplicity.
         <cite>Ed, Head Teacher / Coach &middot; <a href="https://imageinsight.app/" target="_blank" rel="noopener noreferrer">Source</a></cite>
       </blockquote>
 
@@ -1338,7 +1378,7 @@
       <h3>A strong baseline to build upon</h3>
       <p>The beta test across two schools and 120 active users showed some promising early results, with positive qualitative feedback, and a 71% completion rate on sessions. This provides a good baseline for testing the recent round of improvements.</p>
       <p>Coaches highlighted the tool&rsquo;s simplicity, while co-founder Anna Malone credited the design work with making the product easier to use.</p>
-      <blockquote>Tom has been crucial in transforming Image Insight from a clunky MVP to an intuitive, easy-to-use product that I&rsquo;m really proud of.
+      <blockquote class="outcome-quote">Tom has been crucial in transforming Image Insight from a clunky MVP to an intuitive, easy-to-use product that I&rsquo;m really proud of.
         <cite>Anna Malone, Co-founder, Image Insight</cite>
       </blockquote>
 
