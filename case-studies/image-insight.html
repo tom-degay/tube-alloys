@@ -646,6 +646,13 @@
     }
     /* the transition only on the way in, so arming jumps straight to the
        start position rather than animating down to it */
+    /* the way back down, once it has played: back to the top of the page
+       reverses it, on a plain ease with no overshoot */
+    .ii-hero-media.is-armed.is-played {
+      transition: transform 0.6s cubic-bezier(0.55, 0, 0.45, 1),
+                  margin-top 0.6s cubic-bezier(0.55, 0, 0.45, 1),
+                  opacity 0.4s linear 0.2s;
+    }
     /* ... and it comes to rest higher than it started, closing the empty
        space under the button to 56px: the script measures that space into
        --close, and the margin pulls the picture and the page below it up */
@@ -1418,10 +1425,21 @@
       }
       var io = new IntersectionObserver(function (entries) {
         if (!entries[0].isIntersecting) return;
-        io.disconnect();
-        media.classList.add("is-in");
+        media.classList.add("is-in", "is-played");
       }, { rootMargin: "0px 0px 260px 0px" });
       io.observe(media);
+
+      // back at the top of the page the slide-up runs in reverse, and
+      // plays again on the way down
+      var ticking = false;
+      window.addEventListener("scroll", function () {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(function () {
+          ticking = false;
+          if (window.scrollY <= 0 && media.classList.contains("is-in")) media.classList.remove("is-in");
+        });
+      }, { passive: true });
     })();
 
     /* Carousel: dots follow the scroll position and jump on click; a mouse
