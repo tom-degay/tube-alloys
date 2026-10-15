@@ -553,12 +553,15 @@
      follow the mockup: picture 53.4vw, a 6.4vw gap, text to 7.6vw short of
      the right edge (just wide enough, with the title at 3.75vw, for
      "long-term goals to" to share a line). -- */
+  /* Desktop: text on the left, the Planner screenshot on the right running
+     off the window's right edge (rounded on the left only). The markup
+     keeps the picture first, so the columns are placed explicitly. */
   .zf-hero {
     display: grid;
-    grid-template-columns: 53.4vw minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) 53.4vw;
     align-items: center;
     column-gap: 6.4vw;
-    padding: clamp(40px, 9vw, 180px) 7.6vw clamp(56px, 10vw, 200px) 0;
+    padding: clamp(40px, 9vw, 180px) 0 clamp(56px, 10vw, 200px) 7.6vw;
     background: linear-gradient(180deg, #131313 0%, #222121 100%);
   }
 
@@ -566,8 +569,13 @@
     display: block;
     width: 100%;
     height: auto;
-    border-radius: 0 clamp(12px, 1.4vw, 28px) clamp(12px, 1.4vw, 28px) 0;
+    border-radius: clamp(12px, 1.4vw, 28px) 0 0 clamp(12px, 1.4vw, 28px);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08), 0 18px 48px rgba(0, 0, 0, 0.14);
+  }
+
+  @media (min-width: 1024px) {
+    .zf-hero-text { grid-column: 1; grid-row: 1; }
+    .zf-hero-media { grid-column: 2; grid-row: 1; }
   }
 
   .zf-hero h1 {
@@ -1037,19 +1045,14 @@
   body.theme-light .menu-subsection-divider { border-top-color: rgba(var(--ink), 0.14); }
   body.theme-light .menu-subsection-title, body.theme-light .menu-subsection-copy { color: inherit; }
 
-  /* On phones the hero picture is full bleed: edge to edge (cropped on
-     the right) and down to the bottom of the hero, with no radius or shadow. Last in the block
+  /* On phones the hero picture is full bleed: edge to edge and down to
+     the bottom of the hero, with no radius or shadow. Last in the block
      so it beats the light theme's shadow on the same selector. */
   @media (max-width: 640px) {
     .zf-hero { padding-bottom: 0; }
     .zf-hero-media { margin-inline: calc(-1 * var(--hero-inset)); overflow: hidden; }
-    /* enlarged so the window's right edge cuts through the "g" of
-       "Program" in the detail panel: that letter sits at x=1180 of the
-       1380px-wide image, so the image is 1380 / 1180 of the window */
     .zf-hero-media img,
     .theme-light .zf-hero-media img {
-      width: calc(100% * 1380 / 1180);
-      max-width: none;
       border-radius: 0;
       box-shadow: none;
     }
@@ -1139,7 +1142,7 @@
   </nav>
   <div class="zf-hero">
     <div class="zf-hero-media">
-      <img src="media/zonefully-hero-programs.jpg" width="1380" height="1026" alt="Zonefully&rsquo;s Programs screen: a list of programmes, a new &lsquo;Untitled Program&rsquo; selected, and its detail panel opening beside it.">
+      <img src="media/planner-with-thin-sidebar.png" width="2662" height="1854" alt="Zonefully&rsquo;s Planner: a week of cycling rides and weekend breakfasts laid out on the calendar, with a side panel naming the activity, programme and routine for the selected ride.">
     </div>
     <div class="zf-hero-text">
       <img class="zf-hero-logo" src="media/zonefully-logo.svg" width="133" height="228" alt="Zonefully">
