@@ -9,6 +9,9 @@
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
 }
 .tdg-dial[hidden] { display: none; }
+@media (pointer: coarse), (max-width: 640px) {
+  .tdg-dial { touch-action: pan-y pinch-zoom; }
+}
 .theme-light .tdg-dial { --dial-ink: var(--ink, 28, 28, 30); --dial-focus: rgba(var(--dial-ink), .8); }
 .tdg-dial-track { position: absolute; inset: 0; pointer-events: none; }
 .tdg-dial-mark {

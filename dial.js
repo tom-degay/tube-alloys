@@ -38,6 +38,42 @@
         var button = buttons[event.key === 'ArrowLeft' ? 0 : 1];
         if (!button.disabled) button.click();
       });
+      var swipe = null, suppressClickUntil = 0;
+      root.addEventListener('pointerdown', function (event) {
+        if (!event.isPrimary || event.button !== 0) return;
+        if (event.pointerType === 'mouse' && !window.matchMedia('(max-width: 640px)').matches) return;
+        swipe = { id: event.pointerId, x: event.clientX, y: event.clientY, horizontal: false };
+      });
+      root.addEventListener('pointermove', function (event) {
+        if (!swipe || swipe.id !== event.pointerId) return;
+        var dx = event.clientX - swipe.x, dy = event.clientY - swipe.y;
+        if (!swipe.horizontal && Math.abs(dy) > 10 && Math.abs(dy) > Math.abs(dx)) {
+          swipe = null;
+          return;
+        }
+        if (!swipe.horizontal && Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+          swipe.horizontal = true;
+          root.setPointerCapture(event.pointerId);
+        }
+      });
+      function endSwipe(event) {
+        if (!swipe || swipe.id !== event.pointerId) return;
+        var gesture = swipe;
+        swipe = null;
+        if (!gesture.horizontal) return;
+        suppressClickUntil = Date.now() + 500;
+        var dx = event.clientX - gesture.x, dy = event.clientY - gesture.y;
+        if (event.type !== 'pointerup' || Math.abs(dx) < 32 || Math.abs(dx) <= Math.abs(dy) * 1.5) return;
+        var step = dx < 0 ? 1 : -1;
+        if (!buttons[step < 0 ? 0 : 1].disabled) options.onStep(step);
+      }
+      window.addEventListener('pointerup', endSwipe);
+      window.addEventListener('pointercancel', endSwipe);
+      root.addEventListener('click', function (event) {
+        if (!event.detail || Date.now() >= suppressClickUntil) return;
+        event.preventDefault();
+        event.stopPropagation();
+      }, true);
       var lastSelected = -1;
       function render(phase, selected) {
         var start = Math.floor(phase * 6) - 24;

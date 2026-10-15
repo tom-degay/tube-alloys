@@ -1208,13 +1208,14 @@
   }
   @media (max-width: 640px) {
     main { --hero-top-space: 0px; }
-    .hero-spread { display: block; padding-top: clamp(12px, 2svh, 18px); padding-bottom: clamp(16px, 4.3svh, 36px); height: calc(100svh - 86px); min-height: 0; }
+    .hero-spread { display: block; padding-top: clamp(12px, 2svh, 18px); padding-bottom: 12px; height: calc(100svh - 86px); min-height: 0; }
     .hero-rotation { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); height: 100%; }
     .hero-copy { grid-row: 1; align-self: start; }
     .hero-spread .about-statement { font-size: clamp(22px, min(7.3vw, 5svh), 42px); max-width: 21ch; }
     .hero-statements { padding: clamp(8px, 1.8svh, 16px) var(--hero-fade-gutter) 0; touch-action: pan-y pinch-zoom; }
     .hero-rotation-controls { margin-top: 12px; }
-    .hero-arrow-art { grid-column: 1; grid-row: 2; width: auto; height: 100%; min-height: 0; max-width: min(90vw, 380px); max-height: min(90vw, 380px); margin: 0 -4% 0 0; }
+    /* Offset the SVG's clear border so the visible arrows sit near the corner. */
+    .hero-arrow-art { grid-column: 1; grid-row: 2; width: auto; height: 100%; min-height: 0; max-width: min(90vw, 380px); max-height: min(90vw, 380px); margin: 0 -4% 0 0; transform: translate(14%, 14%); }
   }
   @media (min-width: 641px) and (max-height: 500px) {
     .hero-statements { padding-top: 8px; padding-bottom: 8px; }
