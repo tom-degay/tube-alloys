@@ -917,13 +917,14 @@
   .theme-light .timeframe-donut-track { stroke: rgba(var(--ink), 0.12); }
   .theme-light .timeframe-donut-value { stroke: var(--accent-mark); }
 
-  /* screens, detail shots and videos sit straight on the page, each with
-     a hairline and a soft shadow to hold its edge; carousel dots in ink */
+  /* screens, detail shots and videos sit straight on the page with a soft
+     shadow and no border (only the hero picture keeps a hairline);
+     carousel dots in ink */
   .theme-light .ii-reel-slide img,
   .theme-light .ii-grid img,
   .theme-light .ui-video {
     background: #fff;
-    box-shadow: 0 0 0 1px rgba(var(--ink), 0.1), 0 8px 24px rgba(var(--ink), 0.1);
+    box-shadow: 0 8px 24px rgba(var(--ink), 0.1);
   }
   .theme-light .ii-reel-dots { background: rgba(var(--ink), 0.06); }
   .theme-light .ii-reel-dot::before { background: rgba(var(--ink), 0.25); }
