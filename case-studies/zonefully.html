@@ -582,37 +582,34 @@
   .zf-hero h1 { text-wrap: balance; }
   .zf-hero p.subtitle { text-wrap: pretty; }
 
-  /* "Watch video": the site's button module (p.links a), jumping to the
-     demo video at the foot of the page */
+  /* "Watch video": styled as the nav bar (nav.css .identity-bar and its
+     Menu toggle), jumping to the demo video at the foot of the page */
   .zf-watch-row { margin: clamp(20px, 2.4vw, 32px) 0 0; }
 
   a.zf-watch {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px 16px 10px 13px;
-    border: 1px solid rgb(33, 33, 33);
-    border-radius: 8px;
-    background-color: rgb(33, 33, 33);
-    color: #fff;
-    font-family: "Fakt Blond SemiBold", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    font-weight: 600;
-    font-size: 15px;
-    line-height: 1;
+    gap: 9px;
+    min-height: 44px;
+    padding: 9px 22px 9px 18px;
+    border: 1px solid #ffffff09;
+    border-radius: 16px;
+    background: rgba(29, 29, 29, 0.5);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    color: #eee;
+    font: 17px/24px "Fakt", sans-serif;
     white-space: nowrap;
-    transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.08s ease;
+    transition: background-color 0.15s ease, color 0.15s ease;
   }
 
-  a.zf-watch span { display: block; transform: translateY(2px); }
+  a.zf-watch svg { flex: 0 0 auto; width: 14px; height: 14px; }
 
-  a.zf-watch svg { flex: 0 0 auto; width: 16px; height: 16px; }
+  a.zf-watch:hover, a.zf-watch:focus-visible { color: #fff; }
 
-  a.zf-watch:hover, a.zf-watch:focus-visible {
-    background-color: rgb(48, 48, 48);
-    border-color: rgb(48, 48, 48);
+  @media (max-width: 640px) {
+    a.zf-watch { border-radius: 13px; }
   }
-
-  a.zf-watch:active { transform: translateY(1px); }
 
   /* keeps "long-term" whole rather than breaking at its hyphen */
   .zf-hero .nowrap { white-space: nowrap; }
@@ -887,19 +884,18 @@
   .theme-light .zf-reel-dot[aria-current="true"]::before { background: rgba(var(--ink), 0.85); }
   .theme-light .zf-reel-dot:focus-visible { outline-color: rgba(var(--ink), 0.72); }
 
-  /* Watch video: white on the grey, ink type, the play mark in the accent */
+  /* Watch video: the light nav bar's frosted white, ink type, the play
+     mark in the accent like the Menu icon */
   .theme-light a.zf-watch {
-    background-color: #fff;
-    border-color: #fff;
-    color: rgb(var(--ink));
-    box-shadow: 0 1px 2px rgba(var(--ink), 0.06), 0 4px 14px rgba(var(--ink), 0.08);
+    background: rgba(255, 255, 255, 0.7);
+    border-color: transparent;
+    color: rgba(var(--ink), 0.72);
   }
   .theme-light a.zf-watch svg { color: var(--accent-mark); }
   .theme-light a.zf-watch:hover,
   .theme-light a.zf-watch:focus-visible {
-    background-color: #fff;
-    border-color: #fff;
-    box-shadow: 0 2px 4px rgba(var(--ink), 0.08), 0 8px 22px rgba(var(--ink), 0.14);
+    background-color: rgba(255, 255, 255, 0.88);
+    color: rgb(var(--ink));
   }
 
   /* hero band: the page colour at the top, easing to a paler grey */
@@ -1091,7 +1087,7 @@
     <div class="zf-hero-text">
       <h1 class="display head-fade">Connecting <span class="nowrap">long-term</span> goals to everyday&nbsp;routines</h1>
       <p class="subtitle head-fade">A planning app that connects personal goals with recurring routines and a calendar to put them into&nbsp;practice.</p>
-      <p class="zf-watch-row head-fade"><a class="zf-watch" href="#video"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 2.8v10.4a.6.6 0 0 0 .9.5l8.2-5.2a.6.6 0 0 0 0-1L5.4 2.3a.6.6 0 0 0-.9.5z" fill="currentColor"/></svg><span>Watch video</span></a></p>
+      <p class="zf-watch-row head-fade"><a class="zf-watch" href="#video"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 2.8v10.4a.6.6 0 0 0 .9.5l8.2-5.2a.6.6 0 0 0 0-1L5.4 2.3a.6.6 0 0 0-.9.5z" fill="currentColor"/></svg>Watch video</a></p>
     </div>
   </div>
   <main>
