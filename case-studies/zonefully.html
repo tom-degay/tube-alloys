@@ -618,9 +618,9 @@
   }
 
   /* the screen: the iPad's own shape, with its tighter radius and a
-     hairline where the glass meets the bezel. Inside it, top to bottom:
-     the status bar, Safari's toolbar, then the app, which loses the
-     bottom of its (empty) evening rows to make room for them */
+     hairline where the glass meets the bezel. Inside it, the status bar
+     and then the app, running full screen as a native app would; it
+     loses the bottom of its (empty) evening rows to the status bar */
   .zf-screen {
     display: flex;
     flex-direction: column;
@@ -651,60 +651,25 @@
 
   .zf-ipad svg { display: block; flex: none; }
 
-  /* status bar: time and date left; signal, wi-fi and battery right */
+  /* status bar: the time left; signal, wi-fi and battery right. The
+     app's own columns carry on up behind it -- the dark sidebar (0-160 of
+     the screenshot's 2662px), the light calendar, the white side panel
+     (from 2122) -- so the app reads as running under the status bar. The
+     time sits over the sidebar, so it is white */
   .zf-status {
+    background: linear-gradient(90deg, #272727 0 6.01%, #f6f6f6 6.01% 79.71%, #fff 79.71%);
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: calc(2.5 * var(--u));
     padding: calc(0.4 * var(--u)) calc(2.2 * var(--u)) 0;
   }
-  .zf-status-left { display: flex; gap: calc(0.55 * var(--u)); }
-  .zf-status-left span + span { font-weight: 500; }
+  .zf-status-left { color: #fff; }
   .zf-status-right { display: flex; align-items: center; gap: calc(0.5 * var(--u)); }
   .zf-status-right svg { height: calc(1.05 * var(--u)); width: auto; }
   .zf-status-right .zf-battery { height: calc(1.15 * var(--u)); }
   .zf-status-pct { font-weight: 500; font-size: calc(1.05 * var(--u)); }
 
-  /* Safari: glass capsules for the controls, the address in the middle */
-  .zf-safari {
-    display: flex;
-    align-items: center;
-    gap: calc(0.8 * var(--u));
-    height: calc(4.6 * var(--u));
-    padding: 0 calc(1.4 * var(--u)) calc(0.5 * var(--u));
-    color: #3a3a3c;
-  }
-  .zf-safari-group {
-    display: flex;
-    align-items: center;
-    gap: calc(1.3 * var(--u));
-    height: calc(3.2 * var(--u));
-    padding: 0 calc(1.2 * var(--u));
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.78);
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 calc(0.3 * var(--u)) calc(1 * var(--u)) rgba(0, 0, 0, 0.06);
-  }
-  .zf-safari-group svg { width: calc(1.6 * var(--u)); height: calc(1.6 * var(--u)); }
-  .zf-safari-group .is-off { opacity: 0.3; }
-  .zf-url {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: calc(0.6 * var(--u));
-    position: relative;
-    height: calc(3.2 * var(--u));
-    margin: 0 calc(4 * var(--u));
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.78);
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 calc(0.3 * var(--u)) calc(1 * var(--u)) rgba(0, 0, 0, 0.06);
-    font-weight: 500;
-    font-size: calc(1.3 * var(--u));
-  }
-  .zf-url svg { width: calc(1.1 * var(--u)); height: calc(1.1 * var(--u)); }
-  .zf-url .zf-url-page { position: absolute; left: calc(1.2 * var(--u)); width: calc(1.6 * var(--u)); height: calc(1.6 * var(--u)); }
-  .zf-url .zf-url-reload { position: absolute; right: calc(1.2 * var(--u)); width: calc(1.4 * var(--u)); height: calc(1.4 * var(--u)); }
 
   .zf-hero h1 {
     font-size: clamp(32px, 3.75vw, 76px);
@@ -1279,7 +1244,7 @@
   </nav>
   <div class="zf-hero">
     <div class="zf-hero-media">
-      <div class="zf-ipad"><div class="zf-screen"><div class="zf-status" aria-hidden="true"><span class="zf-status-left"><span>9:41</span><span>Tue 9 Feb</span></span><span class="zf-status-right"><svg viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx=".8"/><rect x="4.6" y="5" width="3" height="6" rx=".8"/><rect x="9.2" y="2.6" width="3" height="8.4" rx=".8"/><rect x="13.8" y="0" width="3" height="11" rx=".8"/></svg><svg viewBox="0 0 16 11.5" fill="currentColor"><path d="M8 2.3c2.3 0 4.4.9 6 2.4.2.2.5.2.7 0l.9-.9c.2-.2.2-.5 0-.7A11 11 0 0 0 8 0 11 11 0 0 0 .4 3.1c-.2.2-.2.5 0 .7l.9.9c.2.2.5.2.7 0A8.6 8.6 0 0 1 8 2.3Zm0 3.4c1.3 0 2.5.5 3.5 1.3.2.2.5.2.7 0l.9-.9c.2-.2.2-.5 0-.7A7.6 7.6 0 0 0 8 3.4a7.6 7.6 0 0 0-5.1 2c-.2.2-.2.5 0 .7l.9.9c.2.2.5.2.7 0 1-.8 2.2-1.3 3.5-1.3Zm2.3 2.3c.2-.2.2-.5 0-.7A3.4 3.4 0 0 0 8 6.8c-.9 0-1.7.3-2.3.9-.2.2-.2.5 0 .7l2 2c.2.2.4.2.6 0l2-2Z"/></svg><span class="zf-status-pct">100%</span><svg class="zf-battery" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.6" fill="none" stroke="currentColor" stroke-opacity=".4"/><rect x="2" y="2" width="20" height="9" rx="2.2" fill="currentColor"/><path d="M25 4.3v4.4c.9-.3 1.5-1.2 1.5-2.2s-.6-1.9-1.5-2.2Z" fill="currentColor" fill-opacity=".45"/></svg></span></div><div class="zf-safari" aria-hidden="true"><span class="zf-safari-group"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="3.5" width="16" height="13" rx="3"/><path d="M8 3.5v13"/></svg><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12.5 4 6.5 10l6 6"/></svg><svg class="is-off" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4 6 6-6 6"/></svg></span><span class="zf-url"><svg class="zf-url-page" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 6h12M4 10h12M4 14h7"/></svg><svg viewBox="0 0 12 14" fill="currentColor"><path d="M3 6V4.2a3 3 0 0 1 6 0V6h.4c.9 0 1.6.7 1.6 1.6v4.8c0 .9-.7 1.6-1.6 1.6H2.6c-.9 0-1.6-.7-1.6-1.6V7.6C1 6.7 1.7 6 2.6 6H3Zm1.5 0h3V4.2a1.5 1.5 0 0 0-3 0V6Z"/></svg>zonefully.com<svg class="zf-url-reload" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a6 6 0 1 1-1.8-4.3M16 3.5v3.7h-3.7"/></svg></span><span class="zf-safari-group"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7.5H5.5A1.5 1.5 0 0 0 4 9v7.5A1.5 1.5 0 0 0 5.5 18h9a1.5 1.5 0 0 0 1.5-1.5V9a1.5 1.5 0 0 0-1.5-1.5H13M10 12.5V2M6.8 5 10 1.8 13.2 5"/></svg><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M10 3.5v13M3.5 10h13"/></svg><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="6" width="11.5" height="11.5" rx="2.5"/><path d="M6 3h8.5A2.5 2.5 0 0 1 17 5.5V14"/></svg></span></div><img src="media/planner-with-thin-sidebar.png" width="2662" height="1854" alt="Zonefully&rsquo;s Planner: a week of cycling rides and weekend breakfasts laid out on the calendar, with a side panel naming the activity, programme and routine for the selected ride."></div></div>
+      <div class="zf-ipad"><div class="zf-screen"><div class="zf-status" aria-hidden="true"><span class="zf-status-left">9:41</span><span class="zf-status-right"><svg viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx=".8"/><rect x="4.6" y="5" width="3" height="6" rx=".8"/><rect x="9.2" y="2.6" width="3" height="8.4" rx=".8"/><rect x="13.8" y="0" width="3" height="11" rx=".8"/></svg><svg viewBox="0 0 16 11.5" fill="currentColor"><path d="M8 2.3c2.3 0 4.4.9 6 2.4.2.2.5.2.7 0l.9-.9c.2-.2.2-.5 0-.7A11 11 0 0 0 8 0 11 11 0 0 0 .4 3.1c-.2.2-.2.5 0 .7l.9.9c.2.2.5.2.7 0A8.6 8.6 0 0 1 8 2.3Zm0 3.4c1.3 0 2.5.5 3.5 1.3.2.2.5.2.7 0l.9-.9c.2-.2.2-.5 0-.7A7.6 7.6 0 0 0 8 3.4a7.6 7.6 0 0 0-5.1 2c-.2.2-.2.5 0 .7l.9.9c.2.2.5.2.7 0 1-.8 2.2-1.3 3.5-1.3Zm2.3 2.3c.2-.2.2-.5 0-.7A3.4 3.4 0 0 0 8 6.8c-.9 0-1.7.3-2.3.9-.2.2-.2.5 0 .7l2 2c.2.2.4.2.6 0l2-2Z"/></svg><span class="zf-status-pct">100%</span><svg class="zf-battery" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.6" fill="none" stroke="currentColor" stroke-opacity=".4"/><rect x="2" y="2" width="20" height="9" rx="2.2" fill="currentColor"/><path d="M25 4.3v4.4c.9-.3 1.5-1.2 1.5-2.2s-.6-1.9-1.5-2.2Z" fill="currentColor" fill-opacity=".45"/></svg></span></div><img src="media/planner-with-thin-sidebar.png" width="2662" height="1854" alt="Zonefully&rsquo;s Planner: a week of cycling rides and weekend breakfasts laid out on the calendar, with a side panel naming the activity, programme and routine for the selected ride."></div></div>
     </div>
     <div class="zf-hero-text">
       <img class="zf-hero-logo" src="media/zonefully-logo.svg" width="133" height="228" alt="Zonefully">
