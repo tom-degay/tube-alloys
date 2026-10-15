@@ -615,6 +615,20 @@
 
   @media (max-width: 640px) {
     .ii-hero { --hero-inset: 30px; }
+
+    /* the logo, title, strapline and button fill the first screen below
+       the nav bar (whose spacer is 86px tall here), centred in it; the
+       picture waits just below the fold and scrolls up into view */
+    .ii-hero { padding-top: 0; }
+    .ii-hero-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: calc(100vh - 86px);
+      min-height: calc(100svh - 86px);
+      padding-bottom: 24px;
+      box-sizing: border-box;
+    }
   }
 
   /* -- carousel: the screens run in a full-width horizontal strip, the
