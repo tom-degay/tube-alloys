@@ -923,7 +923,15 @@
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
-    padding: 4px calc((100vw - var(--reel-slide)) / 2) 28px;
+    /* The strip starts on the page's content edge, like Apple's "Get the
+       highlights" gallery: the first card lines up with the cards and
+       labels above, and the strip runs off the right only until you move
+       it. --reel-start is that edge, measured by the script (a fallback
+       here for no JS); the same space at the far end lets the last card
+       come to rest there too. */
+    --reel-start: clamp(24px, 5vw, 56px);
+    padding: 4px var(--reel-start) 28px;
+    scroll-padding-inline: var(--reel-start);
     scrollbar-width: none;
     outline: none;
   }
@@ -945,7 +953,7 @@
     box-sizing: border-box;
     margin: 0;
     max-width: none;
-    scroll-snap-align: center;
+    scroll-snap-align: start;
     padding: clamp(22px, 2.6vw, 36px);
     border: none;
     border-radius: 10px;
@@ -957,8 +965,9 @@
     transition: opacity 0.3s ease;
   }
 
-  /* the neighbours sit back a little */
-  .q-reel-slide:not(.is-current) { opacity: 0.5; cursor: pointer; }
+  /* left-aligned, the cards after the current one are fully in view, so
+     they are not dimmed; a click on one still brings it to the edge */
+  .q-reel-slide:not(.is-current) { cursor: pointer; }
 
   .q-reel-slide::before {
     content: "\201C";
@@ -1569,11 +1578,26 @@
       var dots = Array.prototype.slice.call(reel.querySelectorAll(".q-reel-dot"));
       var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+      // the strip starts on the page's content edge: measure it off the
+      // case-study cards above, and keep it current as the window changes
+      var edge = document.querySelector(".case-blocks-wide") || reel.parentElement;
+      function setStart() {
+        track.style.setProperty("--reel-start", Math.max(16, Math.round(edge.getBoundingClientRect().left)) + "px");
+      }
+      setStart();
+      window.addEventListener("resize", setStart);
+
+      function startPad() { return parseFloat(getComputedStyle(track).paddingLeft) || 0; }
+
+      // where the track scrolls to bring slide i to the content edge, held
+      // within what the track can actually scroll
       function centreOf(i) {
-        return slides[i].offsetLeft + slides[i].offsetWidth / 2 - track.clientWidth / 2;
+        var max = track.scrollWidth - track.clientWidth;
+        return Math.max(0, Math.min(max, slides[i].offsetLeft - startPad()));
       }
 
       function current() {
+        if (track.scrollLeft >= track.scrollWidth - track.clientWidth - 2) return slides.length - 1;
         var best = 0, dist = Infinity;
         slides.forEach(function (s, i) {
           var d = Math.abs(centreOf(i) - track.scrollLeft);
