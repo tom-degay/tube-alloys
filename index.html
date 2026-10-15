@@ -505,59 +505,7 @@
       padding-right: var(--gutter);
     }
 
-    /* -- the opening spread: statement left, video running off the right
-       of the window. The two are placed explicitly rather than reordered
-       in the markup, so the stacking order below 1024px stays
-       video-first.
-
-       40/60 is the balance point: the video still reads as the hero, and
-       the statement lands on four or five lines instead of one long
-       banner. The label sits above the statement here rather than in the
-       rail -- the masthead is the one place the rail would squeeze the
-       display type into something unreadable. -- */
-    .hero-spread {
-      display: grid;
-      grid-template-columns: subgrid;
-      align-items: center;
-    }
-
-    /* Statement on columns 1-5, video from column 6 to (and past) the edge. */
-    .hero-spread > section {
-      grid-column: 1 / 6;
-      grid-row: 1;
-    }
-
-    /* Grid items do not collapse margins, so the air under the spread lives
-       on the hairline that follows it. */
-    .hero-spread + hr.rule { margin-top: clamp(88px, 9vw, 136px); }
-
-    /* The video runs off the right of the window rather than stopping at
-       the band. Growing the box is what makes the video bigger -- it is
-       width:100% of it -- so the frame scales up and the overhang is the
-       part that falls off the edge. */
-    .hero-spread .hero-video {
-      grid-column: 6 / -1;
-      grid-row: 1;
-      margin-bottom: 0;
-      margin-right: calc(-1 * (var(--gutter) + var(--outer) + var(--bleed)));
-    }
-
-    /* The caption shares the statement's columns, pinned to the row's bottom
-       edge -- which is the bottom of the laptop. */
-    .hero-spread .hero-caption {
-      grid-column: 1 / 6;
-      grid-row: 1;
-      align-self: end;
-      /* The laptop's base stops ~5.3% of the picture's height above the
-         video box's bottom edge; the script below sets --hero-lift to that. */
-      margin-bottom: calc(var(--hero-lift, 0px) + 16px);
-    }
-
-    /* The statement sits a little higher than dead centre. */
-    .hero-spread > section { margin-bottom: clamp(48px, 5.5vw, 88px); }
-
-    /* Sized for the 40% column, not the old full-width line. */
-    .hero-spread .about-statement { font-size: 36px; }
+    .hero-spread + hr.rule { margin-top: clamp(88px, calc(7vw + 24px), 132px); }
 
     /* -- sections: [label rail] [content]. Children sit in the content
        column by default; the hairline, the sub-label and the card grids
@@ -1065,6 +1013,151 @@
     .hero-spread > section { margin-bottom: clamp(24px, 5vw, 36px); }
     .hero-caption { margin-top: -8px; }
   }
+  .problem-item summary {
+    list-style: none;
+    cursor: pointer;
+    /* Hover shape matches the nav dropdown cards (.nav-dropdown-card) and
+       spans the full content column; the padding is taken back with
+       negative margins so the text stays exactly where it was. */
+    margin: -18px -16px -16px;
+    padding: 18px 16px 16px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+    display: grid;
+    grid-template-columns: 14px 1fr;
+    column-gap: 14px;
+  }
+  .problem-item summary::-webkit-details-marker { display: none; }
+  .problem-item summary:hover,
+  .problem-item summary:focus-visible { background-color: rgba(255, 255, 255, 0.08); }
+  .problem-item-icon {
+    position: relative;
+    grid-row: 1;
+    height: 30px;  /* the title's line height, so the icon centres on it */
+  }
+  .problem-item-icon::before,
+  .problem-item-icon::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 14px;
+    height: 1.5px;
+    margin-top: -0.75px;
+    background: #00d8aa;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .problem-item-icon::after { transform: rotate(90deg); }
+  .problem-item[open]:not(.is-closing) .problem-item-icon::after { transform: rotate(0deg); }
+
+  /* Full-width opening statement and Current role disclosure. */
+  .hero-spread .about-statement {
+    font-size: clamp(38px, 5.6vw, 80px);
+    line-height: 1.12;
+    max-width: 24ch;
+    text-wrap: balance;
+  }
+  .role-details { min-width: 0; margin: 0 0 48px; }
+  .role-details summary { grid-template-columns: minmax(0, max-content) 20px; column-gap: 10px; }
+  .role-expand-icon {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    align-self: center;
+    justify-self: center;
+    font: 28px/1 "Fakt", sans-serif;
+    color: #00d8aa;
+  }
+  .role-expand-icon::before { content: "+"; }
+  .role-details[open]:not(.is-closing) .role-expand-icon::before { content: "−"; }
+  .role-details .job-company { grid-column: 1; line-height: 1.25; }
+  .role-details .job-subtitle { grid-column: 1; margin: 8px 0 0; }
+  .role-more-tail { white-space: nowrap; }
+  .role-more-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 18px;
+    padding: 0 7px;
+    margin-left: 4px;
+    vertical-align: 4px;
+    border-radius: 6px;
+    background: rgb(40, 40, 40);
+    color: rgba(255, 255, 255, 0.72);
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+  .role-more-chip svg { display: block; }
+  .role-details summary:hover .role-more-chip,
+  .role-details summary:focus-visible .role-more-chip { background: rgb(56, 56, 56); color: #fff; }
+  .role-details .problem-item-body { padding-left: 0; }
+  .role-details .stats { margin-top: 32px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .role-details .stat { grid-column: auto; }
+  @media (min-width: 700px) { .role-details .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  .role-details .job-summary { margin-top: 32px; max-width: 55ch; }
+  .role-demo { margin: 0; min-width: 0; --role-bleed: calc(clamp(24px, 5vw, 56px) + max(0px, (100vw - 900px) / 2) + clamp(32px, 9vw, 80px)); }
+  @media (min-width: 1024px) { .role-demo { --role-bleed: calc(var(--gutter) + var(--outer) + var(--bleed)); } }
+  .role-demo .hero-video { position: static; width: calc(100% + var(--role-bleed)); margin: 0 calc(-1 * var(--role-bleed)) 0 0; aspect-ratio: auto; }
+  .role-demo video { position: static; display: block; width: 100%; height: auto; }
+  .role-demo .hero-caption { margin: 12px 0 0; }
+  .role-demo .hero-caption-arrow::before { content: "\2191"; }
+  @media (max-width: 640px) {
+    html, body { overflow-x: clip; }
+    main { padding-top: 0; }
+    .hero-spread {
+      display: flex;
+      align-items: center;
+      min-height: calc(100vh - 86px);
+      min-height: calc(100svh - 86px);
+      padding-bottom: 12svh;
+      box-sizing: border-box;
+    }
+    .hero-spread .about-statement { font-size: clamp(30px, 8vw, 48px); }
+    .hero-spread + hr.rule { display: none; }
+    .current-role.is-armed { opacity: 0; transform: translateY(300px); }
+    .current-role.is-armed.is-played {
+      transition: transform 0.6s cubic-bezier(0.55, 0, 0.45, 1),
+                  margin-top 0.6s cubic-bezier(0.55, 0, 0.45, 1),
+                  opacity 0.4s linear 0.2s;
+    }
+    .current-role.is-armed.is-in {
+      opacity: 1;
+      transform: none;
+      margin-top: calc(-1 * var(--close, 0px));
+      transition: transform 0.75s cubic-bezier(0.22, 1.25, 0.36, 1),
+                  margin-top 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+                  opacity 0.4s linear;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .current-role.is-armed { opacity: 1; transform: none; transition: none; }
+  }
+
+  .hero-statements { display: grid; }
+  .hero-rotation.is-ready .about-statement {
+    grid-area: 1 / 1;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(12px);
+    transition: opacity 500ms ease, transform 650ms cubic-bezier(.16, 1, .3, 1), visibility 500ms;
+    pointer-events: none;
+  }
+  .hero-rotation.is-ready .about-statement.is-active {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    pointer-events: auto;
+  }
+  .hero-statements a { color: inherit; border: 0; padding: 0; text-decoration: underline; text-decoration-color: rgba(255,255,255,.24); text-decoration-thickness: 1px; text-underline-offset: .12em; }
+  .hero-statements a:hover, .hero-statements a:focus-visible { text-decoration-color: #00d8aa; }
+  .hero-rotation-controls { display: flex; align-items: center; gap: 2px; margin-top: 20px; }
+  .hero-rotation-controls[hidden] { display: none; }
+  .hero-rotation-controls button { border: 0; background: none; color: rgba(255,255,255,.6); cursor: pointer; }
+  .hero-dot { display: grid; place-items: center; width: 32px; height: 36px; padding: 0; }
+  .hero-dot::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.3); }
+  .hero-dot[aria-current="true"]::before { background: #00d8aa; }
+  .hero-rotation-controls button:focus-visible { outline: 1px solid #00d8aa; outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-rotation.is-ready .about-statement { transition: none; transform: none; }
+  }
 </style>
 <script>
   /* Arm the entrance animations before first paint, but only when motion is welcome. */
@@ -1153,32 +1246,34 @@
   </nav>
   <main>
       <h1 class="visually-hidden">Tom de Gay &mdash; Digital Product Designer</h1>
-    <!-- Opening spread. Below 1024px this wrapper is inert and the blocks
-         stack: statement, then the laptop, then its caption. Above it, they
-         become one two-column grid: statement left, video right, and the
-         caption level with the bottom of the laptop. -->
     <div class="hero-spread">
-      <section>
-        <p class="about-statement display">Product designer. Big-picture thinker. Small-detail obsessive. Complexity to clarity.</p>
-      </section>
-
-      <div class="hero-video">
-        <video autoplay muted loop playsinline disablepictureinpicture poster="media/tdg-laptop-demo.jpg">
-          <source src="media/tdg-laptop-demo.mp4" type="video/mp4">
-        </video>
+      <div class="hero-rotation" role="region" aria-label="About Tom">
+        <div class="hero-statements">
+          <p class="about-statement display is-active">Product designer. Big-picture thinker. Small-detail obsessive. Complexity to clarity.</p>
+          <p class="about-statement display" hidden>Designing for <a href="/case-studies">data tools</a>. Complex workflows. From discovery to delivery.</p>
+          <p class="about-statement display" hidden>14 years in product. Background in <a href="/wayfinding">wayfinding</a>. Passionate about the <a href="/design-craft">craft</a>.</p>
+          <p class="about-statement display" hidden><a href="/design-craft#isokon-heading">Micro-museum</a> co-founder. Side project wrangler. Aspirant <a href="/about.html#:~:text=Outside%20of%20work%2C%20I%E2%80%99m%20usually%20to%20be%20found%20at%20the%20climbing%20wall%20with%20my%20family%20or%2C%20even%20better%2C%20bouldering%20in%20the%20forest%20of%20Fontainebleau.">Bleausard</a>.</p>
+        </div>
+        <div class="hero-rotation-controls" hidden>
+          <button type="button" class="hero-dot" aria-label="Show statement 1 of 4" aria-current="true"></button>
+          <button type="button" class="hero-dot" aria-label="Show statement 2 of 4"></button>
+          <button type="button" class="hero-dot" aria-label="Show statement 3 of 4"></button>
+          <button type="button" class="hero-dot" aria-label="Show statement 4 of 4"></button>
+        </div>
       </div>
-
-      <p class="hero-caption"><span class="hero-caption-arrow" aria-hidden="true"></span>Quantemplate Pipelines: visual workflow builder<br>for data transformation. <a href="#case-studies-heading">See case studies</a>.</p>
     </div>
 
     <hr class="rule">
 
-    <section aria-labelledby="experience-heading">
+    <section class="current-role" aria-labelledby="experience-heading">
       <h2 class="eyebrow" id="experience-heading">Current role</h2>
-      <div class="job">
-        <p class="job-company display">Head of Design | <a href="https://quantemplate.com" target="_blank" rel="noopener noreferrer">Quantemplate</a></p>
-        <p class="job-desc job-subtitle">Product strategy and hands-on design</p>
-
+      <details class="role-details problem-item">
+        <summary>
+          <span class="role-expand-icon" aria-hidden="true"></span>
+          <span class="job-company display">Head of Design | <a href="https://quantemplate.com" target="_blank" rel="noopener noreferrer">Quantemplate</a></span>
+          <span class="job-desc job-subtitle">Product strategy and hands-on <span class="role-more-tail">design <span class="role-more-chip" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+        </summary>
+        <div class="problem-item-body">
         <dl class="stats">
           <div class="stat">
             <dt class="stat-value">14</dt>
@@ -1200,7 +1295,16 @@
 
         <p class="job-desc job-summary">I&rsquo;ve helped Quantemplate evolve from startup to mature enterprise platform, trusted by blue-chip insurers such as AXA XL. Working closely with users and engineering, I&rsquo;ve brought together product strategy, systems thinking and interaction design to make complex data workflows intuitive, and establish design as a competitive differentiator.</p>
         <p class="job-video-link"><a href="https://www.youtube.com/watch?v=n1prlc_ovts" target="_blank" rel="noopener noreferrer">Five-minute demo</a></p>
+        </div>
+      </details>
+      <figure class="role-demo">
+      <div class="hero-video">
+        <video autoplay muted loop playsinline disablepictureinpicture poster="media/tdg-laptop-demo.jpg">
+          <source src="media/tdg-laptop-demo.mp4" type="video/mp4">
+        </video>
       </div>
+      <figcaption class="hero-caption"><span class="hero-caption-arrow" aria-hidden="true"></span>Quantemplate Pipelines: visual workflow builder<br>for data transformation. <a href="#case-studies-heading">See case studies</a>.</figcaption>
+      </figure>
     </section>
 
     <hr class="rule">
@@ -1320,54 +1424,75 @@
 
   </main>
   <script>
+    // Match the Image Insight / Zonefully phone entrance and return-to-top replay.
+    (function () {
+      var role = document.querySelector('.current-role');
+      var statement = document.querySelector('.about-statement');
+      if (!role || !statement || !('IntersectionObserver' in window)) return;
+      if (!window.matchMedia('(max-width: 640px)').matches) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (role.getBoundingClientRect().top < window.innerHeight - 40) return;
+      var gap = role.getBoundingClientRect().top - statement.getBoundingClientRect().bottom;
+      role.style.setProperty('--close', Math.max(0, Math.round(gap - 56)) + 'px');
+      role.classList.add('is-armed');
+      var io = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting && window.scrollY > 0) role.classList.add('is-in', 'is-played');
+      }, { rootMargin: '0px 0px 260px 0px' });
+      io.observe(role);
+      var ticking = false;
+      window.addEventListener('scroll', function () {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(function () {
+          ticking = false;
+          if (window.scrollY <= 0) role.classList.remove('is-in');
+        });
+      }, { passive: true });
+    })();
 
     (function () {
-      var root = document.documentElement;
-      if (!root.classList.contains('hero-armed')) return;
-
-      var stmt = document.querySelector('.about-statement');
-      if (!stmt) { root.classList.remove('hero-armed'); return; }
-
-      try {
-        // split on plain spaces only -- \s would also match &nbsp;, which is
-        // there to keep a pair of words on the same line
-        var words = stmt.textContent.replace(/[\t\n\r]+/g, ' ').trim().split(/ +/);
-        stmt.textContent = '';
-        var wordEls = words.map(function (w, i) {
-          var s = document.createElement('span');
-          s.className = 'word' + (/[.!?]$/.test(w) ? ' sentence-end' : '');
-          s.textContent = w;
-          stmt.appendChild(s);
-          if (i < words.length - 1) stmt.appendChild(document.createTextNode(' '));
-          if (/[.!?]$/.test(w) && i < words.length - 1) {
-            // a line break that only exists on a phone (see .sentence-break)
-            var br = document.createElement('br'); br.className = 'sentence-break'; stmt.appendChild(br);
-          }
-          return s;
-        });
-
-        var STEP = 58;      // ms between words
-        var LEAD = 120;     // ms before the first word starts
-        wordEls.forEach(function (el, i) {
-          el.style.transitionDelay = (LEAD + i * STEP) + 'ms';
-        });
-
-        requestAnimationFrame(function () {
-          requestAnimationFrame(function () {
-            root.classList.add('hero-play');
-          });
-        });
-
-        // tidy up once the run is over
-        setTimeout(function () {
-          wordEls.forEach(function (el) {
-            el.style.willChange = '';
-            el.style.transitionDelay = '';
-          });
-        }, LEAD + wordEls.length * STEP + 900);
-      } catch (e) {
-        root.classList.remove('hero-armed');
+      var hero = document.querySelector('.hero-rotation');
+      var slides = Array.from(hero.querySelectorAll('.about-statement'));
+      var controls = hero.querySelector('.hero-rotation-controls');
+      var dots = Array.from(hero.querySelectorAll('.hero-dot'));
+      var motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      var current = 0, paused = motion.matches, timer, visible = true;
+      document.documentElement.classList.remove('hero-armed');
+      slides.forEach(function (slide, i) {
+        slide.hidden = false;
+        slide.inert = i !== 0;
+        slide.setAttribute('aria-hidden', String(i !== 0));
+      });
+      hero.classList.add('is-ready');
+      controls.hidden = false;
+      function schedule() {
+        clearTimeout(timer);
+        if (!paused && !document.hidden && visible && !hero.matches(':hover') && !hero.contains(document.activeElement)) {
+          timer = setTimeout(function () { show((current + 1) % slides.length); }, 4000);
+        }
       }
+      function show(index) {
+        current = index;
+        slides.forEach(function (slide, i) {
+          slide.classList.toggle('is-active', i === index);
+          slide.inert = i !== index;
+          slide.setAttribute('aria-hidden', String(i !== index));
+          if (i === index) dots[i].setAttribute('aria-current', 'true');
+          else dots[i].removeAttribute('aria-current');
+        });
+        schedule();
+      }
+      dots.forEach(function (dot, i) { dot.addEventListener('click', function () { show(i); }); });
+      hero.addEventListener('mouseenter', schedule);
+      hero.addEventListener('mouseleave', schedule);
+      hero.addEventListener('focusin', schedule);
+      hero.addEventListener('focusout', function () { setTimeout(schedule, 0); });
+      document.addEventListener('visibilitychange', schedule);
+      motion.addEventListener('change', function () { paused = motion.matches; schedule(); });
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (entries) { visible = entries[0].isIntersecting; schedule(); }).observe(hero);
+      }
+      schedule();
     })();
 
     (function () {
@@ -1770,20 +1895,50 @@
       }
     })();
   </script>
+
   <script>
-  /* Lift the laptop caption so its last line sits on the laptop's base, not
-     on the bottom of the (slightly taller) video box. The base is 54px above
-     the bottom of a 1010px-tall frame, i.e. 5.35% of the box's height. */
-  (function () {
-    var spread = document.querySelector('.hero-spread');
-    var box = spread && spread.querySelector('.hero-video');
-    if (!box) return;
-    function lift() { spread.style.setProperty('--hero-lift', (box.getBoundingClientRect().height * 0.0535).toFixed(1) + 'px'); }
-    lift();
-    window.addEventListener('resize', lift);
-    window.addEventListener('load', lift);
-    if (window.ResizeObserver) new ResizeObserver(lift).observe(box);
-  })();
-</script>
+    /* Problem items: animate each <details> body open and closed. The
+       body's height is tweened from where it is now, so a click mid-way
+       reverses smoothly; reduced motion falls back to the native toggle. */
+    (function () {
+      var items = document.querySelectorAll('.problem-item');
+      if (!items.length || !('animate' in Element.prototype)) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      Array.prototype.forEach.call(items, function (d) {
+        var summary = d.querySelector('summary'), body = d.querySelector('.problem-item-body');
+        var anim = null;
+        function run(from, to, done) {
+          if (anim) anim.cancel();
+          body.style.overflow = 'clip';
+          anim = body.animate(
+            [{ height: from + 'px', opacity: to ? 0.4 : 1 }, { height: to + 'px', opacity: to ? 1 : 0 }],
+            { duration: Math.min(520, 260 + Math.abs(to - from) * 0.25), easing: 'cubic-bezier(0.16, 1, 0.3, 1)' }
+          );
+          anim.onfinish = function () {
+            anim = null;
+            body.style.overflow = '';
+            if (done) done();
+          };
+        }
+        summary.addEventListener('click', function (e) {
+          if (e.target.closest('a')) return;
+          e.preventDefault();
+          var now = body.getBoundingClientRect().height;
+          if (d.open && !d.classList.contains('is-closing')) {
+            d.classList.add('is-closing');
+            run(now, 0, function () { d.open = false; d.classList.remove('is-closing'); });
+          } else {
+            var reopening = d.open;
+            var from = d.open ? now : 0;
+            d.classList.remove('is-closing');
+            d.open = true;
+            run(from, body.scrollHeight);
+            // Reversing a close keeps `open` true, so no native toggle fires.
+            if (reopening) d.dispatchEvent(new Event('disclosure-reopen'));
+          }
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
