@@ -33,7 +33,12 @@ window.addEventListener('pageswap', e => {
       const heading = item.querySelector(':scope > a');
       return heading && heading.textContent.trim() === sourceLabel;
     });
-    const cards = sourceItem ? [...sourceItem.querySelectorAll('.nav-dropdown-card')] : [];
+    let cards = sourceItem ? [...sourceItem.querySelectorAll('.nav-dropdown-card')] : [];
+    // The case-studies menu shows just the two headline studies, then a
+    // link to the full list on /case-studies.
+    const FEATURED = ['/case-studies/column-mapping', '/case-studies/validation'];
+    const featuredOnly = sourceLabel === 'Case Studies';
+    if (featuredOnly) cards = cards.filter(card => FEATURED.includes(card.getAttribute('href')));
     if (!cards.length) {
       const link = doc.createElement('a');
       link.className = 'menu-primary'; link.textContent = label; link.href = href; links.append(link);
@@ -53,7 +58,7 @@ window.addEventListener('pageswap', e => {
     trigger.setAttribute('aria-expanded', 'false'); trigger.setAttribute('aria-controls', panel.id);
     // Read the existing site menu so titles, routes and ordering stay in sync.
     // The case-studies list is two groups split by a divider: label each.
-    const groupLabels = sectionId === 'case-studies' &&
+    const groupLabels = !featuredOnly && sectionId === 'case-studies' &&
       source.querySelector('.nav-dropdown-divider') ? ['Quantemplate case studies', 'Smaller projects'] : null;
     const addGroupLabel = (text, delay) => {
       const group = doc.createElement('div'); group.className = 'menu-subsection-group menu-subsection-item';
@@ -61,7 +66,7 @@ window.addEventListener('pageswap', e => {
     };
     if (groupLabels) addGroupLabel(groupLabels[0], 40);
     cards.forEach((card, index) => {
-      if (card.previousElementSibling && card.previousElementSibling.classList.contains('nav-dropdown-divider')) {
+      if (!featuredOnly && card.previousElementSibling && card.previousElementSibling.classList.contains('nav-dropdown-divider')) {
         const divider = doc.createElement('hr'); divider.className = 'menu-subsection-divider'; grid.append(divider);
         if (groupLabels) addGroupLabel(groupLabels[1], 60 + index * 35);
       }
@@ -88,6 +93,13 @@ window.addEventListener('pageswap', e => {
       title.textContent = (sourceTitle || card).textContent.trim();
       copy.append(title); link.append(copy); item.append(link); grid.append(item);
     });
+    if (featuredOnly) {
+      const item = doc.createElement('div'); item.className = 'menu-subsection-item menu-subsection-more';
+      item.style.setProperty('--entry-delay', (60 + cards.length * 35) + 'ms');
+      const link = doc.createElement('a'); link.href = href;
+      link.innerHTML = '<span class="menu-subsection-copy"><span class="menu-subsection-title">More case studies <span aria-hidden="true">&rarr;</span></span></span>';
+      item.append(link); grid.append(item);
+    }
     const entry = {trigger, panel}; sections.push(entry);
     trigger.addEventListener('click', () => {
       const expand = trigger.getAttribute('aria-expanded') !== 'true';
