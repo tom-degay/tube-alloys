@@ -601,7 +601,10 @@
 
     .ii-hero-text { grid-row: 1; }
 
-    .ii-hero-media img { border-radius: clamp(12px, 2.6vw, 26px); }
+    /* the picture still runs off the window's left edge, rounded on the
+       right only, as on desktop and phones */
+    .ii-hero-media { margin-left: calc(-1 * var(--hero-inset)); }
+    .ii-hero-media img { border-radius: 0 clamp(12px, 2.6vw, 26px) clamp(12px, 2.6vw, 26px) 0; }
 
     .ii-hero h1 { font-size: clamp(32px, 5vw, 56px); line-height: 1.1; max-width: 13.5em; }
 

@@ -653,7 +653,10 @@
 
     .zf-hero-text { grid-row: 1; }
 
-    .zf-hero-media img { border-radius: clamp(6px, 1.3vw, 13px); }
+    /* the picture still runs off the window's right edge, rounded on the
+       left only, as on desktop and phones */
+    .zf-hero-media { margin-right: calc(-1 * var(--hero-inset)); }
+    .zf-hero-media img { border-radius: clamp(6px, 1.3vw, 13px) 0 0 clamp(6px, 1.3vw, 13px); }
 
     .zf-hero h1 { font-size: clamp(32px, 5vw, 56px); line-height: 1.1; max-width: 13.5em; }
 
