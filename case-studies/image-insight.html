@@ -953,13 +953,12 @@
   /* the hero's top colour runs up behind the nav to the top of the page */
   .theme-light nav.identity-nav { background: #e3f6f9; }
 
-  /* quote cards: white, easing to the page's cyan, with the hero
-     picture's hairline and soft shadow; the open-quote mark in the
-     accent, faint */
+  /* quote cards: solid white, no border, a soft shadow; the open-quote
+     mark in the accent, faint */
   .theme-light .case-body blockquote.outcome-quote {
-    background: linear-gradient(to bottom, #ffffff, #f3feff);
+    background: #fff;
     color: rgba(var(--ink), 0.85);
-    box-shadow: 0 0 0 1px rgba(var(--ink), 0.07), 0 2px 6px rgba(var(--ink), 0.04), 0 12px 32px rgba(var(--ink), 0.07);
+    box-shadow: 0 2px 6px rgba(var(--ink), 0.04), 0 12px 32px rgba(var(--ink), 0.07);
   }
   .theme-light .outcome-quote::before { color: rgba(15, 156, 184, 0.35); }
 
