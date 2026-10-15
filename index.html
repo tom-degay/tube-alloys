@@ -90,6 +90,25 @@
   }
 
   .job-video-link { margin: 16px 0 0; }
+  .job-video-link a {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border: 1px solid rgb(33, 33, 33);
+    border-radius: 8px;
+    background: rgb(33, 33, 33);
+    font-family: "Fakt Blond SemiBold", sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 1;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+  .job-video-link a:hover,
+  .job-video-link a:focus-visible { background: rgb(48, 48, 48); border-color: rgb(48, 48, 48); }
+  .job-video-link a span { transform: translateY(2px); }
+  .job-video-link a svg { width: 1em; height: 1em; flex: 0 0 auto; opacity: 0.7; }
+  .job-video-link a[target="_blank"]::after { content: none; }
 
   /* The real source of the gap above the subtitle: .job-company keeps
      the browser default <p> margin (1em 0, ~20px here) below 1024px --
@@ -1027,36 +1046,40 @@
     text-wrap: balance;
   }
   .role-details { min-width: 0; margin: 0 0 48px; }
-  .role-details summary { grid-template-columns: minmax(0, max-content) 20px; column-gap: 10px; }
-  .role-expand-icon {
-    grid-column: 2;
-    grid-row: 1 / 3;
-    align-self: center;
-    justify-self: center;
-    font: 28px/1 "Fakt", sans-serif;
-    color: #00d8aa;
-  }
-  .role-expand-icon::before { content: "+"; }
-  .role-details[open]:not(.is-closing) .role-expand-icon::before { content: "−"; }
+  .role-details summary { grid-template-columns: minmax(0, 1fr) auto; column-gap: 20px; margin-right: 0; }
   .role-details .job-company { grid-column: 1; line-height: 1.25; }
-  .role-details .job-subtitle { grid-column: 1; margin: 8px 0 0; }
-  .role-more-tail { white-space: nowrap; }
-  .role-more-chip {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 18px;
-    padding: 0 7px;
-    margin-left: 4px;
-    vertical-align: 4px;
-    border-radius: 6px;
-    background: rgb(40, 40, 40);
-    color: rgba(255, 255, 255, 0.72);
-    transition: background-color 0.15s ease, color 0.15s ease;
+  .role-details .job-company a,
+  .role-details .role-separator { font-family: "Fakt Blond", sans-serif; font-weight: 400; }
+  .role-details .job-company a[target="_blank"]::after {
+    content: "↗";
+    display: inline-block;
+    position: static;
+    margin-left: 0.2em;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1em;
+    opacity: 1;
+    transform: none;
   }
-  .role-more-chip svg { display: block; }
-  .role-details summary:hover .role-more-chip,
-  .role-details summary:focus-visible .role-more-chip { background: rgb(56, 56, 56); color: #fff; }
+  .role-details .job-subtitle { grid-column: 1; margin: 8px 0 0; }
+  .role-more-label { grid-column: 2; grid-row: 1 / 3; align-self: center; justify-self: end; color: rgba(255, 255, 255, 0.5); font-size: clamp(18px, 2.3vw, 22px); line-height: 30px; font-weight: 400; white-space: nowrap; transition: color 0.15s ease; }
+  .role-show-more::after,
+  .role-show-less::after {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-left: 7px;
+    vertical-align: 3px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: rotate(45deg);
+  }
+  .role-show-less::after { transform: rotate(225deg); vertical-align: 0; }
+  .role-show-less { display: none; }
+  .role-details[open]:not(.is-closing) .role-show-more { display: none; }
+  .role-details[open]:not(.is-closing) .role-show-less { display: inline; }
+  .role-details summary:hover .role-more-label,
+  .role-details summary:focus-visible .role-more-label { color: #fff; }
   .role-details .problem-item-body { padding-left: 0; }
   .role-details .stats { margin-top: 32px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .role-details .stat { grid-column: auto; }
@@ -1365,9 +1388,9 @@
       <h2 class="eyebrow" id="experience-heading">Current role</h2>
       <details class="role-details problem-item">
         <summary>
-          <span class="role-expand-icon" aria-hidden="true"></span>
-          <span class="job-company display">Head of Design | <a href="https://quantemplate.com" target="_blank" rel="noopener noreferrer">Quantemplate</a></span>
-          <span class="job-desc job-subtitle">Product strategy and hands-on <span class="role-more-tail">design <span class="role-more-chip" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+          <span class="job-company display">Head of Design <span class="role-separator">/</span> <a href="https://quantemplate.com" target="_blank" rel="noopener noreferrer">Quantemplate</a></span>
+          <span class="job-desc job-subtitle">Product strategy and hands-on design</span>
+          <span class="role-more-label"><span class="role-show-more">Show more</span><span class="role-show-less">Show less</span></span>
         </summary>
         <div class="problem-item-body">
         <dl class="stats">
@@ -1390,7 +1413,7 @@
         </dl>
 
         <p class="job-desc job-summary">I&rsquo;ve helped Quantemplate evolve from startup to mature enterprise platform, trusted by blue-chip insurers such as AXA XL. Working closely with users and engineering, I&rsquo;ve brought together product strategy, systems thinking and interaction design to make complex data workflows intuitive, and establish design as a competitive differentiator.</p>
-        <p class="job-video-link"><a href="https://www.youtube.com/watch?v=n1prlc_ovts" target="_blank" rel="noopener noreferrer">Five-minute demo</a></p>
+        <p class="job-video-link"><a href="https://www.youtube.com/watch?v=n1prlc_ovts" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M4 2.5a.75.75 0 0 1 1.14-.64l8 5a.75.75 0 0 1 0 1.28l-8 5A.75.75 0 0 1 4 12.5z"/></svg><span>Watch the demo</span></a></p>
         </div>
       </details>
       <figure class="role-demo">
