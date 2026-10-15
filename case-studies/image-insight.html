@@ -29,6 +29,8 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/dial.css">
+<script src="/dial.js"></script>
 <link rel="stylesheet" href="/nav.css?v=20261015b">
 <style>
   html { scroll-padding-top: 100px; }
@@ -820,43 +822,7 @@
 
   .ii-reel-slide:not(.is-current) figcaption { opacity: 0; }
 
-  /* iOS-style page dots, on a faint capsule */
-  .ii-reel-dots {
-    display: flex;
-    width: max-content;
-    margin: 4px auto 0;
-    padding: 0 6px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.08);
-  }
-
-  .ii-reel-dot {
-    display: grid;
-    place-items: center;
-    width: 24px;
-    height: 24px;
-    padding: 0;
-    border: 0;
-    background: none;
-    cursor: pointer;
-  }
-
-  .ii-reel-dot::before {
-    content: "";
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
-    transition: background-color 0.2s ease;
-  }
-
-  .ii-reel-dot[aria-current="true"]::before { background: #fff; }
-
-  .ii-reel-dot:focus-visible {
-    outline: 2px solid rgba(255, 255, 255, 0.6);
-    outline-offset: -2px;
-    border-radius: 50%;
-  }
+  .ii-reel-dial { margin: 4px auto 0; }
 
   /* ================================================================
      EXPERIMENT: light theme for this page only, switched on by
@@ -926,10 +892,6 @@
     background: #fff;
     box-shadow: 0 8px 24px rgba(var(--ink), 0.1);
   }
-  .theme-light .ii-reel-dots { background: rgba(var(--ink), 0.06); }
-  .theme-light .ii-reel-dot::before { background: rgba(var(--ink), 0.25); }
-  .theme-light .ii-reel-dot[aria-current="true"]::before { background: rgba(var(--ink), 0.85); }
-  .theme-light .ii-reel-dot:focus-visible { outline-color: rgba(var(--ink), 0.72); }
 
   /* Watch the demo: a dark button in the headline's colour (ink at 82%,
      #10282ed1), with white type and play mark; full ink on hover */
@@ -1281,7 +1243,7 @@
       <!-- The screens in the order you meet them in the app: signing in,
            the dashboard, a session, then its review. -->
       <div class="ii-reel">
-        <div class="ii-reel-track" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Image Insight screens">
+        <div class="ii-reel-track" id="ii-reel-track" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Image Insight screens">
           <figure class="figure ii-reel-slide is-current" role="group" aria-roledescription="slide" aria-label="1 of 4">
             <img src="media/image-insight-login.jpg" width="2000" height="1300" alt="Image Insight&rsquo;s sign-in page: a soft card on a pale teal background patterned with the app&rsquo;s rounded image-grid motif, with email and password fields and Google or Azure options." loading="lazy" draggable="false">
             <figcaption>The sign-in page: the same calm palette and generous whitespace as the rest of the app, and a logo built from the signature image grid.</figcaption>
@@ -1299,12 +1261,7 @@
             <figcaption>The session review pairs each image with its reflection and foregrounds the actions to take forward, ready to export as a PDF.</figcaption>
           </figure>
         </div>
-        <div class="ii-reel-dots">
-          <button class="ii-reel-dot" type="button" aria-label="Show screen 1 of 4" aria-current="true"></button>
-          <button class="ii-reel-dot" type="button" aria-label="Show screen 2 of 4"></button>
-          <button class="ii-reel-dot" type="button" aria-label="Show screen 3 of 4"></button>
-          <button class="ii-reel-dot" type="button" aria-label="Show screen 4 of 4"></button>
-        </div>
+        <div class="ii-reel-dial tdg-dial" hidden></div>
       </div>
     </section>
 
@@ -1487,7 +1444,7 @@
       }, { passive: true });
     })();
 
-    /* Carousel: dots follow the scroll position and jump on click; a mouse
+    /* Carousel: the dial follows the actual scroll position; a mouse
        can drag the strip; clicking a screen that is not the current one
        brings it in rather than opening it full size. Moves made here glide
        on a gentle ease-in-out rather than the browser's brisk smooth
@@ -1497,7 +1454,11 @@
       if (!reel) return;
       var track = reel.querySelector(".ii-reel-track");
       var slides = Array.prototype.slice.call(track.querySelectorAll(".ii-reel-slide"));
-      var dots = Array.prototype.slice.call(reel.querySelectorAll(".ii-reel-dot"));
+      var targetIndex = null;
+      var dial = TDGDial.create(reel.querySelector('.ii-reel-dial'), {
+        count: slides.length, item: 'screen', label: 'Image Insight screens', controls: 'ii-reel-track',
+        onStep: function (step) { go((targetIndex === null ? current() : targetIndex) + step); }
+      });
       var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       function centreOf(i) {
@@ -1515,6 +1476,7 @@
 
       var glide = null;
       function stopGlide() {
+        targetIndex = null;
         if (!glide) return;
         cancelAnimationFrame(glide);
         glide = null;
@@ -1525,16 +1487,18 @@
       function go(i) {
         i = Math.max(0, Math.min(slides.length - 1, i));
         stopGlide();
+        targetIndex = i;
         var from = track.scrollLeft, to = centreOf(i), dist = to - from;
-        if (reduce || Math.abs(dist) < 1) { track.scrollLeft = to; return; }
+        if (reduce || Math.abs(dist) < 1) { track.scrollLeft = to; targetIndex = null; paint(); return; }
         var dur = Math.min(1100, Math.max(650, 450 + Math.abs(dist) * 0.25)), t0 = null;
         track.classList.add("is-gliding");
         function step(now) {
           if (t0 === null) t0 = now;
           var t = Math.min(1, (now - t0) / dur);
           track.scrollLeft = from + dist * ease(t);
+          paint();
           if (t < 1) glide = requestAnimationFrame(step);
-          else { glide = null; track.classList.remove("is-gliding"); }
+          else { glide = null; targetIndex = null; track.classList.remove("is-gliding"); paint(); }
         }
         glide = requestAnimationFrame(step);
       }
@@ -1549,16 +1513,22 @@
         ticking = false;
         var i = current();
         slides.forEach(function (s, si) { s.classList.toggle("is-current", si === i); });
-        dots.forEach(function (d, di) {
-          if (di === i) d.setAttribute("aria-current", "true");
-          else d.removeAttribute("aria-current");
-        });
+        // Fractional slide position makes the curved marks track swipes and glides exactly.
+        var phase = 0;
+        for (var n = 0; n < slides.length - 1; n++) {
+          var left = centreOf(n), right = centreOf(n + 1);
+          if (track.scrollLeft >= right) { phase = n + 1; continue; }
+          if (track.scrollLeft > left && right > left) phase = n + (track.scrollLeft - left) / (right - left);
+          break;
+        }
+        dial.render(phase, i);
       }
       track.addEventListener("scroll", function () {
         if (!ticking) { ticking = true; requestAnimationFrame(paint); }
       }, { passive: true });
 
-      dots.forEach(function (d, i) { d.addEventListener("click", function () { go(i); }); });
+      window.addEventListener("resize", paint);
+      paint();
 
       var drag = null, moved = false;
       track.addEventListener("pointerdown", function (e) {

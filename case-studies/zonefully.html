@@ -29,6 +29,8 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/dial.css">
+<script src="/dial.js"></script>
 <link rel="stylesheet" href="/nav.css?v=20261015b">
 <style>
   html { scroll-padding-top: 100px; }
@@ -825,43 +827,7 @@
 
   .zf-reel-slide:not(.is-current) figcaption { opacity: 0; }
 
-  /* iOS-style page dots, on a faint capsule */
-  .zf-reel-dots {
-    display: flex;
-    width: max-content;
-    margin: 4px auto 0;
-    padding: 0 6px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.08);
-  }
-
-  .zf-reel-dot {
-    display: grid;
-    place-items: center;
-    width: 24px;
-    height: 24px;
-    padding: 0;
-    border: 0;
-    background: none;
-    cursor: pointer;
-  }
-
-  .zf-reel-dot::before {
-    content: "";
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
-    transition: background-color 0.2s ease;
-  }
-
-  .zf-reel-dot[aria-current="true"]::before { background: #fff; }
-
-  .zf-reel-dot:focus-visible {
-    outline: 2px solid rgba(255, 255, 255, 0.6);
-    outline-offset: -2px;
-    border-radius: 50%;
-  }
+  .zf-reel-dial { margin: 4px auto 0; }
 
   /* ================================================================
      EXPERIMENT: light theme for this page only, switched on by
@@ -946,10 +912,6 @@
     background: #fff;
     box-shadow: 0 0 0 1px rgba(var(--ink), 0.1), 0 8px 24px rgba(var(--ink), 0.1);
   }
-  .theme-light .zf-reel-dots { background: rgba(var(--ink), 0.06); }
-  .theme-light .zf-reel-dot::before { background: rgba(var(--ink), 0.25); }
-  .theme-light .zf-reel-dot[aria-current="true"]::before { background: rgba(var(--ink), 0.85); }
-  .theme-light .zf-reel-dot:focus-visible { outline-color: rgba(var(--ink), 0.72); }
 
   /* Watch the demo: black at 82%, with white type and play mark; full
      black on hover */
@@ -1209,7 +1171,7 @@
            list, a programme's controls, a new programme, one of its routines,
            then the calendar. -->
       <div class="zf-reel">
-        <div class="zf-reel-track" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Zonefully screens">
+        <div class="zf-reel-track" id="zf-reel-track" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Zonefully screens">
           <figure class="figure zf-reel-slide is-current" role="group" aria-roledescription="slide" aria-label="1 of 5">
             <img src="media/zonefully-programs.jpg" width="1440" height="964" alt="Zonefully&rsquo;s Programs screen: a searchable list of programmes on the left, and the selected programme&rsquo;s detail &mdash; cover image, activity and ordered routines &mdash; on the right." loading="lazy" draggable="false">
             <figcaption>Programme list and detail share one spacious structure; the activity colour and selection highlight tie a programme to its routines.</figcaption>
@@ -1231,13 +1193,7 @@
             <figcaption>A programme&rsquo;s routines placed on the calendar, with the chain from activity to programme to routine kept in view.</figcaption>
           </figure>
         </div>
-        <div class="zf-reel-dots">
-          <button class="zf-reel-dot" type="button" aria-label="Show screen 1 of 5" aria-current="true"></button>
-          <button class="zf-reel-dot" type="button" aria-label="Show screen 2 of 5"></button>
-          <button class="zf-reel-dot" type="button" aria-label="Show screen 3 of 5"></button>
-          <button class="zf-reel-dot" type="button" aria-label="Show screen 4 of 5"></button>
-          <button class="zf-reel-dot" type="button" aria-label="Show screen 5 of 5"></button>
-        </div>
+        <div class="zf-reel-dial tdg-dial" hidden></div>
       </div>
     </section>
 
@@ -1370,7 +1326,7 @@
       }, { passive: true });
     })();
 
-    /* Carousel: dots follow the scroll position and jump on click; a mouse
+    /* Carousel: the dial follows the actual scroll position; a mouse
        can drag the strip; clicking a screen that is not the current one
        brings it in rather than opening it full size. Moves made here glide
        on a gentle ease-in-out rather than the browser's brisk smooth
@@ -1380,7 +1336,11 @@
       if (!reel) return;
       var track = reel.querySelector(".zf-reel-track");
       var slides = Array.prototype.slice.call(track.querySelectorAll(".zf-reel-slide"));
-      var dots = Array.prototype.slice.call(reel.querySelectorAll(".zf-reel-dot"));
+      var targetIndex = null;
+      var dial = TDGDial.create(reel.querySelector('.zf-reel-dial'), {
+        count: slides.length, item: 'screen', label: 'Zonefully screens', controls: 'zf-reel-track',
+        onStep: function (step) { go((targetIndex === null ? current() : targetIndex) + step); }
+      });
       var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       function centreOf(i) {
@@ -1398,6 +1358,7 @@
 
       var glide = null;
       function stopGlide() {
+        targetIndex = null;
         if (!glide) return;
         cancelAnimationFrame(glide);
         glide = null;
@@ -1408,16 +1369,18 @@
       function go(i) {
         i = Math.max(0, Math.min(slides.length - 1, i));
         stopGlide();
+        targetIndex = i;
         var from = track.scrollLeft, to = centreOf(i), dist = to - from;
-        if (reduce || Math.abs(dist) < 1) { track.scrollLeft = to; return; }
+        if (reduce || Math.abs(dist) < 1) { track.scrollLeft = to; targetIndex = null; paint(); return; }
         var dur = Math.min(1100, Math.max(650, 450 + Math.abs(dist) * 0.25)), t0 = null;
         track.classList.add("is-gliding");
         function step(now) {
           if (t0 === null) t0 = now;
           var t = Math.min(1, (now - t0) / dur);
           track.scrollLeft = from + dist * ease(t);
+          paint();
           if (t < 1) glide = requestAnimationFrame(step);
-          else { glide = null; track.classList.remove("is-gliding"); }
+          else { glide = null; targetIndex = null; track.classList.remove("is-gliding"); paint(); }
         }
         glide = requestAnimationFrame(step);
       }
@@ -1432,16 +1395,22 @@
         ticking = false;
         var i = current();
         slides.forEach(function (s, si) { s.classList.toggle("is-current", si === i); });
-        dots.forEach(function (d, di) {
-          if (di === i) d.setAttribute("aria-current", "true");
-          else d.removeAttribute("aria-current");
-        });
+        // Fractional slide position makes the curved marks track swipes and glides exactly.
+        var phase = 0;
+        for (var n = 0; n < slides.length - 1; n++) {
+          var left = centreOf(n), right = centreOf(n + 1);
+          if (track.scrollLeft >= right) { phase = n + 1; continue; }
+          if (track.scrollLeft > left && right > left) phase = n + (track.scrollLeft - left) / (right - left);
+          break;
+        }
+        dial.render(phase, i);
       }
       track.addEventListener("scroll", function () {
         if (!ticking) { ticking = true; requestAnimationFrame(paint); }
       }, { passive: true });
 
-      dots.forEach(function (d, i) { d.addEventListener("click", function () { go(i); }); });
+      window.addEventListener("resize", paint);
+      paint();
 
       var drag = null, moved = false;
       track.addEventListener("pointerdown", function (e) {
