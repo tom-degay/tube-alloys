@@ -34,11 +34,16 @@ window.addEventListener('pageswap', e => {
       return heading && heading.textContent.trim() === sourceLabel;
     });
     let cards = sourceItem ? [...sourceItem.querySelectorAll('.nav-dropdown-card')] : [];
-    // The case-studies menu shows just the two headline studies, then a
-    // link to the full list on /case-studies.
+    // The case-studies menu shows two of the Quantemplate studies, a link to
+    // the full list on /case-studies, then the smaller projects (every card
+    // after the source menu's divider).
     const FEATURED = ['/case-studies/column-mapping', '/case-studies/validation'];
     const featuredOnly = sourceLabel === 'Case Studies';
-    if (featuredOnly) cards = cards.filter(card => FEATURED.includes(card.getAttribute('href')));
+    if (featuredOnly) {
+      const divider = sourceItem.querySelector('.nav-dropdown-divider');
+      cards = cards.filter(card => FEATURED.includes(card.getAttribute('href')) ||
+        (divider && divider.compareDocumentPosition(card) & Node.DOCUMENT_POSITION_FOLLOWING));
+    }
     if (!cards.length) {
       const link = doc.createElement('a');
       link.className = 'menu-primary'; link.textContent = label; link.href = href; links.append(link);
@@ -54,11 +59,21 @@ window.addEventListener('pageswap', e => {
     const clip = doc.createElement('div'); clip.className = 'menu-subsections-clip';
     const grid = doc.createElement('div'); grid.className = 'menu-subsections-grid';
     clip.append(grid); panel.append(clip);
+    let moreAdded = false;
+    const addMore = delay => {
+      if (!featuredOnly || moreAdded) return;
+      moreAdded = true;
+      const item = doc.createElement('div'); item.className = 'menu-subsection-item menu-subsection-more';
+      item.style.setProperty('--entry-delay', delay + 'ms');
+      const link = doc.createElement('a'); link.href = href;
+      link.innerHTML = '<span class="menu-subsection-copy"><span class="menu-subsection-title">More case studies <span aria-hidden="true">&rarr;</span></span></span>';
+      item.append(link); grid.append(item);
+    };
     trigger.setAttribute('aria-label', label);
     trigger.setAttribute('aria-expanded', 'false'); trigger.setAttribute('aria-controls', panel.id);
     // Read the existing site menu so titles, routes and ordering stay in sync.
     // The case-studies list is two groups split by a divider: label each.
-    const groupLabels = !featuredOnly && sectionId === 'case-studies' &&
+    const groupLabels = sectionId === 'case-studies' &&
       source.querySelector('.nav-dropdown-divider') ? ['Quantemplate case studies', 'Smaller projects'] : null;
     const addGroupLabel = (text, delay) => {
       const group = doc.createElement('div'); group.className = 'menu-subsection-group menu-subsection-item';
@@ -66,7 +81,8 @@ window.addEventListener('pageswap', e => {
     };
     if (groupLabels) addGroupLabel(groupLabels[0], 40);
     cards.forEach((card, index) => {
-      if (!featuredOnly && card.previousElementSibling && card.previousElementSibling.classList.contains('nav-dropdown-divider')) {
+      if (card.previousElementSibling && card.previousElementSibling.classList.contains('nav-dropdown-divider')) {
+        addMore(60 + index * 35);
         const divider = doc.createElement('hr'); divider.className = 'menu-subsection-divider'; grid.append(divider);
         if (groupLabels) addGroupLabel(groupLabels[1], 60 + index * 35);
       }
@@ -93,13 +109,7 @@ window.addEventListener('pageswap', e => {
       title.textContent = (sourceTitle || card).textContent.trim();
       copy.append(title); link.append(copy); item.append(link); grid.append(item);
     });
-    if (featuredOnly) {
-      const item = doc.createElement('div'); item.className = 'menu-subsection-item menu-subsection-more';
-      item.style.setProperty('--entry-delay', (60 + cards.length * 35) + 'ms');
-      const link = doc.createElement('a'); link.href = href;
-      link.innerHTML = '<span class="menu-subsection-copy"><span class="menu-subsection-title">More case studies <span aria-hidden="true">&rarr;</span></span></span>';
-      item.append(link); grid.append(item);
-    }
+    addMore(60 + cards.length * 35);
     const entry = {trigger, panel}; sections.push(entry);
     trigger.addEventListener('click', () => {
       const expand = trigger.getAttribute('aria-expanded') !== 'true';
