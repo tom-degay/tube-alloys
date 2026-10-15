@@ -12,7 +12,7 @@
 <meta property="og:title" content="Making space for deeper reflection — Tom de Gay">
 <meta property="og:description" content="How Tom de Gay simplified Image Insight, a digital coaching tool that uses images to prompt reflection, into a calm, low-friction experience.">
 <meta property="og:url" content="https://tomdegay.com/case-studies/image-insight">
-<meta property="og:image" content="https://tomdegay.com/case-studies/media/image-insight-og.png">
+<meta property="og:image" content="https://tomdegay.com/case-studies/media/image-insight-og-light.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Making space for deeper reflection — an Image Insight case study by Tom de Gay">
@@ -20,7 +20,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Making space for deeper reflection — Tom de Gay">
 <meta name="twitter:description" content="How Tom de Gay simplified Image Insight, a digital coaching tool that uses images to prompt reflection, into a calm, low-friction experience.">
-<meta name="twitter:image" content="https://tomdegay.com/case-studies/media/image-insight-og.png">
+<meta name="twitter:image" content="https://tomdegay.com/case-studies/media/image-insight-og-light.png">
 
 <link rel="icon" href="/tdg-favicon.svg" type="image/svg+xml">
 
@@ -43,10 +43,6 @@
     max-width: 900px;
     margin: 0 auto;
     padding: clamp(24px, 6vw, 72px) clamp(24px, 5vw, 56px);
-  }
-
-  @media (min-width: 1100px) {
-    main { max-width: 1320px; }
   }
 
   hr.rule {
@@ -223,23 +219,14 @@
     border-radius: 6px;
   }
 
-  @media (min-width: 1100px) {
-    main {
-      display: grid;
-      grid-template-columns: 230px minmax(0, 1fr);
-      column-gap: 96px;
-      align-items: start;
-    }
+  /* No section rail: one reading column, centred on the page. */
+  main { max-width: none; }
 
-    .toc {
-      display: flex;
-      flex-direction: column;
-      grid-column: 1;
-      grid-row: 1;
-      position: sticky;
-      top: 100px;
-    }
-  }
+  /* Half the old space between the hero and the project stats, which was
+     main's top padding plus the meta row's own 40px margin. */
+  main { padding-top: calc((clamp(24px, 6vw, 72px) + 40px) / 2); }
+  .content > header .meta-row { margin-top: 0; }
+  .content { max-width: 46rem; margin-inline: auto; }
 
   /* -- .figure-wide: an opt-in modifier for large videos/images. 140%
      of the 46rem text column, centred on it (expanding out of both
@@ -253,15 +240,12 @@
      left/right overhang is 9.2rem each -- margin-left takes that back
      off the element's normal (flush-left) position to centre it.
 
-     Only turned on at 1500px+: below that, the 96px rail-gap between
-     .toc and the content column isn't wide enough for a 9.2rem
-     (147px) left bleed to clear the toc without overlapping it -- see
-     the column-gap override below, which exists only to make room for
-     this. Below 1500px .figure-wide is inert; each instance just keeps
-     whatever width its base class already gives it. */
-  @media (min-width: 1500px) {
-    main { column-gap: 200px; }
-
+     Turned on at 1200px+, the narrowest window that fits 64.4rem plus
+     main's side padding (the 1500px limit it used to have only existed to
+     clear the section rail this page no longer has). Below that
+     .figure-wide is inert; each instance just keeps whatever width its
+     base class already gives it. */
+  @media (min-width: 1200px) {
     .figure-wide {
       width: 64.4rem;
       max-width: none;
@@ -285,8 +269,6 @@
       max-width: 100%;
     }
   }
-
-  .toc-heading { margin: 0 0 16px; }
 
   /* This study has no case-icon svg above the kicker (that's a Quantemplate-
      only vector), so the kicker itself needs to sit flush at the top to
@@ -524,31 +506,264 @@
     }
   }
 
-  /* -- hero video -- */
-  .case-hero-video {
-    padding: clamp(24px, 2.5vw, 28px) clamp(24px, 2.5vw, 28px) 0;
+  /* -- hero: the app screenshot runs in from the left edge of the window
+     (rounded on the right only), title and strapline beside it. Columns
+     follow the Zonefully page: picture 53.4vw, a 6.4vw gap, text to 7.6vw
+     short of the right edge. -- */
+  .ii-hero {
+    display: grid;
+    grid-template-columns: 53.4vw minmax(0, 1fr);
+    align-items: center;
+    column-gap: 6.4vw;
+    padding: clamp(40px, 9vw, 180px) 7.6vw clamp(56px, 10vw, 200px) 0;
     background: linear-gradient(180deg, #131313 0%, #222121 100%);
   }
 
-  .case-hero-video-frame {
-    max-width: 1024px;
-    margin: 0 auto;
-    overflow: hidden;
-    border: 1px solid #282828;
-    border-bottom: none;
-    border-radius: 10px 10px 0 0;
-  }
-
-  .case-hero-video-frame video {
+  .ii-hero-media img {
     display: block;
     width: 100%;
     height: auto;
+    border-radius: 0 clamp(12px, 1.4vw, 28px) clamp(12px, 1.4vw, 28px) 0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08), 0 18px 48px rgba(0, 0, 0, 0.14);
   }
 
-  @media (max-width: 799.98px) {
-    .case-hero-video-frame {
-      border-radius: 6px 6px 0 0;
+  .ii-hero h1 {
+    font-size: clamp(32px, 3.75vw, 76px);
+    line-height: 1.04;
+    letter-spacing: -0.01em;
+    max-width: none;
+  }
+
+  /* no orphans: a non-breaking space glues each line's last two words,
+     and balanced wrapping evens out the title's lines */
+  .ii-hero h1 { text-wrap: balance; }
+  .ii-hero p.subtitle { text-wrap: pretty; }
+
+  /* "Watch the demo": styled as the nav bar (nav.css .identity-bar), set
+     in the bar's bold Fakt like "Tom de Gay", jumping to the demo video at the foot of the page */
+  .ii-watch-row { margin: clamp(20px, 2.4vw, 32px) 0 0; }
+
+  a.ii-watch {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 44px;
+    padding: 9px 22px 9px 18px;
+    border: 1px solid #ffffff09;
+    border-radius: 16px;
+    background: rgba(29, 29, 29, 0.5);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    color: #eee;
+    font: 600 17px/24px "Fakt", sans-serif;
+    white-space: nowrap;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  a.ii-watch svg { flex: 0 0 auto; width: 14px; height: 14px; }
+
+  a.ii-watch:hover, a.ii-watch:focus-visible { color: #fff; }
+
+  @media (max-width: 640px) {
+    a.ii-watch { border-radius: 13px; }
+  }
+
+  /* keeps "face-to-face" whole rather than breaking at a hyphen */
+  .ii-hero .nowrap { white-space: nowrap; }
+
+  .ii-hero p.subtitle {
+    margin-top: clamp(16px, 1.8vw, 36px);
+    font-size: clamp(18px, 1.7vw, 32px);
+    line-height: 1.35;
+    max-width: 24em;
+  }
+
+  /* Below 1024px the hero stacks, title first: the text and the picture
+     both line up with the content edges of the nav bar above them (the
+     bar is min(820px, 100% - 48px) wide with 22px padding; at 640px and
+     under, 100% - 28px with 16px), and the picture is rounded all round
+     instead of running off the edge. */
+  @media (max-width: 1023.98px) {
+    .ii-hero {
+      --hero-inset: calc(max(24px, (100% - 820px) / 2) + 22px);
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: clamp(40px, 11vw, 110px);
+      padding: clamp(32px, 8.8vw, 88px) var(--hero-inset) clamp(48px, 10vw, 100px);
     }
+
+    .ii-hero-text { grid-row: 1; }
+
+    .ii-hero-media img { border-radius: clamp(12px, 2.6vw, 26px); }
+
+    .ii-hero h1 { font-size: clamp(32px, 5vw, 56px); line-height: 1.1; max-width: 13.5em; }
+
+    .ii-hero p.subtitle {
+      margin-top: clamp(14px, 2vw, 22px);
+      font-size: clamp(18px, 2.25vw, 24px);
+      line-height: 1.42;
+      max-width: 27.5em;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .ii-hero { --hero-inset: 30px; }
+  }
+
+  /* -- carousel: the screens run in a full-width horizontal strip, the
+     current one centred on the text column (which is centred on the
+     page) with its neighbours peeking in either side. Native scrolling
+     with snap points, so touch swipe and trackpads work as they do
+     anywhere; a mouse can drag, and the dots jump. The strip breaks out
+     of the 46rem column, which is why html and body clip horizontal
+     overflow. -- */
+  html, body { overflow-x: clip; }
+
+  .ii-reel {
+    --reel-peek: clamp(36px, 12vw, 240px);
+    --reel-gap: clamp(12px, 2vw, 28px);
+    /* never narrower than the text column, so on small screens a screen
+       spans it edge to edge and the neighbours just show in the margins */
+    --reel-slide: max(min(46rem, 100vw - 2 * clamp(24px, 5vw, 56px)),
+                      min(64.4rem, 100vw - 2 * (var(--reel-peek) + var(--reel-gap))));
+    width: 100vw;
+    margin: clamp(28px, 4vw, 44px) 0 0 calc(50% - 50vw);
+  }
+
+  .ii-reel-track {
+    position: relative;
+    display: flex;
+    gap: var(--reel-gap);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    padding: 4px calc((100vw - var(--reel-slide)) / 2) 28px;
+    scrollbar-width: none;
+    outline: none;
+  }
+
+  .ii-reel-track::-webkit-scrollbar { display: none; }
+
+  /* snapping is off while a drag or the dots' own animation moves it */
+  .ii-reel-track.is-dragging,
+  .ii-reel-track.is-gliding { scroll-snap-type: none; }
+
+  .ii-reel-track.is-dragging {
+    cursor: grabbing;
+    user-select: none;
+  }
+
+  .ii-reel .ii-reel-slide {
+    flex: 0 0 var(--reel-slide);
+    margin: 0;
+    max-width: none;
+    scroll-snap-align: center;
+  }
+
+  .ii-reel-slide img { -webkit-user-drag: none; }
+
+  /* a neighbour comes in on click rather than opening full size */
+  .ii-reel-slide:not(.is-current) img { cursor: pointer; }
+
+  /* the demo video: as wide as the window
+     allows, up to 90rem, keeping the page's side margins, centred on the
+     text column */
+  .ii-big {
+    --video-w: min(90rem, 100vw - 2 * clamp(24px, 5vw, 56px));
+    width: var(--video-w);
+    max-width: none;
+    margin-left: calc((100% - var(--video-w)) / 2);
+  }
+
+  .ii-big .ui-video { max-width: none; }
+
+  .ii-big figcaption { max-width: 38rem; }
+
+  /* a grid of the detail shots at the carousel's width, in explicit rows;
+     each figure takes a share of its row in proportion to its aspect ratio
+     (--ar, width / height) so the pictures in a row share one height.
+     Stacked on phones. */
+  .ii-grid {
+    --grid-w: min(64.4rem, 100vw - 2 * clamp(24px, 5vw, 56px));
+    display: flex;
+    flex-direction: column;
+    gap: clamp(24px, 3vw, 40px);
+    width: var(--grid-w);
+    margin: clamp(20px, 3vw, 32px) 0 0 calc((100% - var(--grid-w)) / 2);
+  }
+
+  .ii-grid-row {
+    display: flex;
+    align-items: flex-start;
+    gap: clamp(16px, 2vw, 28px);
+  }
+
+  .ii-grid .figure {
+    flex: var(--ar) 1 0;
+    min-width: 0;
+    margin: 0;
+    max-width: none;
+  }
+
+  .ii-grid .ui-video { max-width: none; }
+
+  .ii-grid figcaption { max-width: 38rem; }
+
+  @media (max-width: 640px) {
+    .ii-grid-row { flex-direction: column; gap: clamp(24px, 3vw, 40px); }
+    .ii-grid .figure { flex: none; width: 100%; }
+  }
+
+  /* the screens in the strip are not all one shape: the expanded session
+     is 2000x1356 against the others' 2000x1300, so it is cut to match
+     (28px off top and bottom, clear of its card); full size in the
+     lightbox */
+  .ii-reel-slide img { aspect-ratio: 20 / 13; object-fit: cover; }
+
+  /* only the current screen's caption shows; the neighbours' would peek
+     in as clipped fragments of text */
+  .ii-reel-slide figcaption {
+    max-width: 38rem;
+    transition: opacity 0.3s ease;
+  }
+
+  .ii-reel-slide:not(.is-current) figcaption { opacity: 0; }
+
+  /* iOS-style page dots, on a faint capsule */
+  .ii-reel-dots {
+    display: flex;
+    width: max-content;
+    margin: 4px auto 0;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .ii-reel-dot {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+
+  .ii-reel-dot::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transition: background-color 0.2s ease;
+  }
+
+  .ii-reel-dot[aria-current="true"]::before { background: #fff; }
+
+  .ii-reel-dot:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.6);
+    outline-offset: -2px;
+    border-radius: 50%;
   }
 
   /* ================================================================
@@ -577,7 +792,7 @@
   .theme-light .case-body blockquote { color: rgb(var(--ink)); border-left-color: var(--accent-mark); }
 
   /* labels and accents */
-  .theme-light .eyebrow, .theme-light .kicker, .theme-light .toc a.is-active { color: var(--accent); }
+  .theme-light .eyebrow, .theme-light .kicker { color: var(--accent); }
   .theme-light .key-points li { color: rgb(var(--ink)); }
   .theme-light .key-points li::before { color: var(--accent-mark); }
   .theme-light .kicker a:hover, .theme-light .kicker a:focus-visible { border-color: var(--accent); }
@@ -610,32 +825,39 @@
   .theme-light .timeframe-donut-track { stroke: rgba(var(--ink), 0.12); }
   .theme-light .timeframe-donut-value { stroke: var(--accent-mark); }
 
-  /* image frames: the hero's gradient, with a soft shadow */
-  .theme-light .figure-portrait-frame {
-    background: linear-gradient(180deg, #e3f6f9 0%, #ffffff 100%);
-    box-shadow: 0 1px 2px rgba(var(--ink), 0.06), 0 8px 24px rgba(var(--ink), 0.08);
+  /* screens, detail shots and videos sit straight on the page, each with
+     a hairline and a soft shadow to hold its edge; carousel dots in ink */
+  .theme-light .ii-reel-slide img,
+  .theme-light .ii-grid img,
+  .theme-light .ui-video {
+    background: #fff;
+    box-shadow: 0 0 0 1px rgba(var(--ink), 0.1), 0 8px 24px rgba(var(--ink), 0.1);
   }
-  .theme-light .figure-portrait-frame img,
-  .theme-light .figure-portrait-frame > .ui-video,
-  .theme-light .figure-portrait-frame > .figure-strip-imgs { box-shadow: 0 6px 20px rgba(var(--ink), 0.14); }
-  /* only the PDF report keeps its frame; everything else sits on the page */
-  .theme-light .figure-portrait-frame:not(:has(img[src$="image-insight-pdf-report.jpg"])) {
-    padding: 0;
-    background: none;
-    box-shadow: none;
+  .theme-light .ii-reel-dots { background: rgba(var(--ink), 0.06); }
+  .theme-light .ii-reel-dot::before { background: rgba(var(--ink), 0.25); }
+  .theme-light .ii-reel-dot[aria-current="true"]::before { background: rgba(var(--ink), 0.85); }
+  .theme-light .ii-reel-dot:focus-visible { outline-color: rgba(var(--ink), 0.72); }
+
+  /* Watch the demo: the light nav bar's frosted white, bold type a little
+     grey (0.75 ink), the play mark in the accent like the Menu icon */
+  .theme-light a.ii-watch {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: transparent;
+    color: rgba(var(--ink), 0.75);
+  }
+  .theme-light a.ii-watch svg { color: var(--accent-mark); }
+  .theme-light a.ii-watch:hover,
+  .theme-light a.ii-watch:focus-visible {
+    background-color: rgba(255, 255, 255, 0.88);
+    color: rgb(var(--ink));
   }
 
   /* hero band */
-  .theme-light .case-hero-video { background: linear-gradient(180deg, #e3f6f9 0%, #ffffff 100%); }
+  .theme-light .ii-hero { background: linear-gradient(180deg, #e3f6f9 0%, #ffffff 100%); }
+  .theme-light .ii-hero h1 { color: rgba(var(--ink), 0.82); }
+  .theme-light .ii-hero-media img { box-shadow: 0 2px 6px rgba(var(--ink), 0.06), 0 18px 48px rgba(var(--ink), 0.12); }
   /* the hero's top colour runs up behind the nav to the top of the page */
   .theme-light nav.identity-nav { background: #e3f6f9; }
-  .theme-light .case-hero-video-frame { border-color: rgba(var(--ink), 0.1); }
-
-  /* side menu (on this page) */
-  .theme-light .toc a { color: rgba(var(--ink), 0.66); border-left-color: rgba(var(--ink), 0.14); }
-  .theme-light .toc a:hover, .theme-light .toc a:focus-visible { color: rgb(var(--ink)); border-left-color: rgba(var(--ink), 0.5); }
-  .theme-light .toc a.is-active { color: var(--accent); }
-  .theme-light .toc-indicator { background: var(--accent-mark); }
 
   /* footer and back to top */
   .theme-light .site-footer-copy { color: rgba(var(--ink), 0.66); }
@@ -684,6 +906,19 @@
   body.theme-light .menu-subsection-group { color: rgba(var(--ink), 0.66); }
   body.theme-light .menu-subsection-divider { border-top-color: rgba(var(--ink), 0.14); }
   body.theme-light .menu-subsection-title, body.theme-light .menu-subsection-copy { color: inherit; }
+
+  /* On phones the hero picture is full bleed: edge to edge and down to
+     the bottom of the hero, with no radius or shadow. Last in the block
+     so it beats the light theme's shadow on the same selector. */
+  @media (max-width: 640px) {
+    .ii-hero { padding-bottom: 0; }
+    .ii-hero-media { margin-inline: calc(-1 * var(--hero-inset)); }
+    .ii-hero-media img,
+    .theme-light .ii-hero-media img {
+      border-radius: 0;
+      box-shadow: none;
+    }
+  }
 
   /* ================================================================
      OPTION B: deep cyan. Add "theme-teal" alongside "theme-light"
@@ -871,22 +1106,20 @@
       </div>
     </div>
   </nav>
-  <div class="case-hero-video">
-    <div class="case-hero-video-frame" data-hover-controls>
-      <video width="1600" height="900" autoplay muted loop playsinline disablepictureinpicture poster="media/image-insight-hero-poster.jpg">
-        <source src="media/image-insight-hero.mp4" type="video/mp4">
-      </video>
+  <div class="ii-hero">
+    <div class="ii-hero-media">
+      <img src="media/image-insight-hero-ui.jpg" width="1630" height="1212" alt="Image Insight&rsquo;s main screen: a scrolling grid of photographs with a floating toolbar, alongside a &lsquo;My session&rsquo; panel holding the coach&rsquo;s question and the participant&rsquo;s chosen images.">
+    </div>
+    <div class="ii-hero-text">
+      <h1 class="display">Making space for deeper&nbsp;reflection</h1>
+      <p class="subtitle">Digital coaching tool that uses images and visual metaphors to prompt deeper reflection in online and <span class="nowrap">face-to-face</span>&nbsp;sessions.</p>
+      <p class="ii-watch-row"><a class="ii-watch" href="#video"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 2.8v10.4a.6.6 0 0 0 .9.5l8.2-5.2a.6.6 0 0 0 0-1L5.4 2.3a.6.6 0 0 0-.9.5z" fill="currentColor"/></svg>Watch the demo</a></p>
     </div>
   </div>
   <main>
   <div class="content">
     <header>
-      <span class="kicker head-fade">Case Study | <a href="https://imageinsight.app" target="_blank" rel="noopener noreferrer">Image Insight</a></span>
-      <h1 class="display head-fade">Making space for deeper reflection</h1>
-      <p class="subtitle head-fade">Digital coaching tool that uses images and visual metaphors to prompt deeper reflection in online and face-to-face sessions.</p>
       <p class="keywords"><span class="keyword">Interaction design</span><span class="keyword">Visual design</span><span class="keyword">Accessibility</span></p>
-
-      <hr class="rule">
 
       <div class="meta-row">
         <div class="meta-item">
@@ -912,39 +1145,12 @@
 
     <hr class="rule">
 
-    <section aria-labelledby="keypoints-heading">
-      <h2 class="eyebrow" id="keypoints-heading">Key points</h2>
-      <div class="key-points-grid">
-        <ul class="key-points">
-          <li>Simplified a working prototype into a calm, low-friction coaching experience</li>
-          <li>Adapted to different participants&rsquo; needs, based on beta testing</li>
-          <li>Refined the session workflow in response to feedback from a school&rsquo;s beta</li>
-        </ul>
-      </div>
-
-      <figure class="figure figure-wide">
-        <div class="figure-portrait-frame">
-          <img src="media/image-insight-session-expanded.jpg" width="2000" height="1356" alt="The session opened to full screen: a large 'What cards represent your weaknesses?' heading above three chosen images, with 'Review session' and 'Add question' below.">
-        </div>
-        <figcaption>The redesign in one view: the question and the chosen images hold the centre, and the rest of the interface steps back.</figcaption>
-      </figure>
-    </section>
-
-    <hr class="rule">
-
     <section aria-labelledby="problem-heading" class="case-body">
       <h2 class="eyebrow" id="problem-heading">Problem</h2>
       <h3>Bringing coaching cards into a digital session</h3>
       <p>Physical image cards give people a starting point for conversations that can be difficult to begin with words alone. Taking that approach online makes it possible to explore images together during a video call, then capture the reflections and actions in one place.</p>
       <p>The tool was intended for coaches and therapists, including those working in schools with children from primary age through to teenagers. The design needed to support the conversation without becoming another task to manage.</p>
       <p>The co-founder approached me with a working prototype. My role was to simplify the interface and key interactions, making the tool easier to use while keeping imagery and conversation at the centre.</p>
-
-      <figure class="figure figure-wide">
-        <div class="figure-portrait-frame">
-          <img src="media/image-insight-ui.jpg" width="2000" height="1212" alt="Image Insight's main screen: a scrolling grid of photographs with a floating toolbar, alongside a 'My session' panel holding the coach's question and the participant's chosen images." loading="lazy">
-        </div>
-        <figcaption>Images to explore together in a session, with the session&rsquo;s picks and notes gathered in one panel: the conversation supported without being another tool to manage.</figcaption>
-      </figure>
     </section>
 
     <hr class="rule">
@@ -959,107 +1165,99 @@
 
       <p class="see-also"><a href="/design-craft">More visual identities and material explorations &rarr;</a></p>
 
-      <figure class="figure figure-wide">
-        <div class="figure-portrait-frame">
-          <img src="media/image-insight-landing.jpg" width="2000" height="1300" alt="Image Insight's dashboard: cards for a new session and past sessions, a count of completed and active sessions, and panels for referrals, tutorials and support." loading="lazy">
+      <!-- The screens in the order you meet them in the app: signing in,
+           the dashboard, a session, then its review. -->
+      <div class="ii-reel">
+        <div class="ii-reel-track" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Image Insight screens">
+          <figure class="figure ii-reel-slide is-current" role="group" aria-roledescription="slide" aria-label="1 of 4">
+            <img src="media/image-insight-login.jpg" width="2000" height="1300" alt="Image Insight&rsquo;s sign-in page: a soft card on a pale teal background patterned with the app&rsquo;s rounded image-grid motif, with email and password fields and Google or Azure options." loading="lazy" draggable="false">
+            <figcaption>The sign-in page: the same calm palette and generous whitespace as the rest of the app, and a logo built from the signature image grid.</figcaption>
+          </figure>
+          <figure class="figure ii-reel-slide" role="group" aria-roledescription="slide" aria-label="2 of 4">
+            <img src="media/image-insight-landing.jpg" width="2000" height="1300" alt="Image Insight&rsquo;s dashboard: cards for a new session and past sessions, a count of completed and active sessions, and panels for referrals, tutorials and support." loading="lazy" draggable="false">
+            <figcaption>The dashboard applies the same calm treatment across the app: one clear primary action, a light summary of activity, and help within reach.</figcaption>
+          </figure>
+          <figure class="figure ii-reel-slide" role="group" aria-roledescription="slide" aria-label="3 of 4">
+            <img src="media/image-insight-session-expanded.jpg" width="2000" height="1356" alt="The session opened to full screen: a large &lsquo;What cards represent your weaknesses?&rsquo; heading above three chosen images, with &lsquo;Review session&rsquo; and &lsquo;Add question&rsquo; below." loading="lazy" draggable="false">
+            <figcaption>The redesign in one view: the question and the chosen images hold the centre, and the rest of the interface steps back.</figcaption>
+          </figure>
+          <figure class="figure ii-reel-slide" role="group" aria-roledescription="slide" aria-label="4 of 4">
+            <img src="media/image-insight-session-review.jpg" width="2000" height="1300" alt="Image Insight&rsquo;s session review screen: each chosen image paired with the participant&rsquo;s reflection, and an Actions panel listing next steps to carry forward." loading="lazy" draggable="false">
+            <figcaption>The session review pairs each image with its reflection and foregrounds the actions to take forward, ready to export as a PDF.</figcaption>
+          </figure>
         </div>
-        <figcaption>The dashboard applies the same calm treatment across the app: one clear primary action, a light summary of activity, and help within reach.</figcaption>
-      </figure>
-
-      <figure class="figure figure-wide">
-        <div class="figure-portrait-frame">
-          <img src="media/image-insight-login.jpg" width="2000" height="1300" alt="Image Insight's sign-in page: a soft card on a pale teal background patterned with the app's rounded image-grid motif, with email and password fields and Google or Azure options." loading="lazy">
+        <div class="ii-reel-dots">
+          <button class="ii-reel-dot" type="button" aria-label="Show screen 1 of 4" aria-current="true"></button>
+          <button class="ii-reel-dot" type="button" aria-label="Show screen 2 of 4"></button>
+          <button class="ii-reel-dot" type="button" aria-label="Show screen 3 of 4"></button>
+          <button class="ii-reel-dot" type="button" aria-label="Show screen 4 of 4"></button>
         </div>
-        <figcaption>The sign-in page: the same calm palette and generous whitespace as the rest of the app, and a logo built from the signature image grid.</figcaption>
-      </figure>
+      </div>
     </section>
 
     <hr class="rule">
 
-    <section aria-labelledby="keydecisions-heading" class="case-body">
-      <h2 class="eyebrow" id="keydecisions-heading">Key decisions</h2>
-      <h3>Keeping imagery and conversation at the centre</h3>
+    <section aria-labelledby="centre-heading" class="case-body">
+      <h3 id="centre-heading">Keeping imagery and conversation at the centre</h3>
       <p>The coach asks an open-ended question and the participant selects images from a grid. These become talking points, with reflections translated into actions. A downloadable PDF records the session, with key actions foregrounded.</p>
 
       <p>Adult, teen and child modes change the selection of images shown. AI can describe images to help narrow the selection.</p>
       <blockquote>My focus was on making the surrounding interface simple enough for the coach and participant to stay with the conversation.</blockquote>
-
-      <figure class="figure figure-wide">
-        <div class="figure-portrait-frame">
-          <img src="media/image-insight-session-sidebar.jpg" width="2000" height="969" alt="Two panels side by side: a 'My session' panel with the coach's question and the participant's chosen images, and a 'Session settings' panel with a session name, a Junior/Teen/Adult profile, and optional client name and notes." loading="lazy">
-        </div>
-        <figcaption>Session settings panel: easy to flip into session settings, which otherwise stay out of the way.</figcaption>
-      </figure>
     </section>
 
     <hr class="rule">
 
-    <section aria-labelledby="implementation-heading" class="case-body">
-      <h2 class="eyebrow" id="implementation-heading">Implementation</h2>
+    <section aria-labelledby="refining-heading" class="case-body">
+      <h3 id="refining-heading">Refining around real sessions</h3>
+      <p>The app was trialled in a beta with two schools. Feedback on the design approach was overwhelmingly positive.</p>
+      <blockquote>It gave a focus to answering the question, without distracting from the question.
+        <cite>Helen, Client &middot; <a href="https://imageinsight.app/" target="_blank" rel="noopener noreferrer">Source</a></cite>
+      </blockquote>
+      <blockquote>I love the simplicity.
+        <cite>Ed, Head Teacher / Coach &middot; <a href="https://imageinsight.app/" target="_blank" rel="noopener noreferrer">Source</a></cite>
+      </blockquote>
 
-      <div class="subsection" id="impl-validating">
-        <h3>Validating the approach</h3>
-        <p>The app was trialled in a beta with two schools. Feedback on the design approach was overwhelmingly positive.</p>
-        <blockquote>It gave a focus to answering the question, without distracting from the question.
-          <cite>Helen, Client &middot; <a href="https://imageinsight.app/" target="_blank" rel="noopener noreferrer">Source</a></cite>
-        </blockquote>
-        <blockquote>I love the simplicity.
-          <cite>Ed, Head Teacher / Coach &middot; <a href="https://imageinsight.app/" target="_blank" rel="noopener noreferrer">Source</a></cite>
-        </blockquote>
+      <p>Feedback from the beta cohort highlighted two areas where the interface needed to be more flexible.</p>
 
-        <figure class="figure figure-wide">
-          <div class="figure-portrait-frame">
-            <img src="media/image-insight-session-review.jpg" width="2000" height="1300" alt="Image Insight's session review screen: each chosen image paired with the participant's reflection, and an Actions panel listing next steps to carry forward." loading="lazy">
-          </div>
-          <figcaption>The session review pairs each image with its reflection and foregrounds the actions to take forward, ready to export as a PDF.</figcaption>
-        </figure>
+      <h4>Starting a session</h4>
+      <p>Coaches wanted to begin immediately rather than schedule something for later. Engineering proposed a separate instant-session button. I made the case for one clear entry point for a new session, avoiding competing actions for essentially the same task.</p>
 
-        <figure class="figure figure-wide">
-          <div class="figure-portrait-frame">
+      <h4>Controlling the image grid</h4>
+      <p>Coaches reported that a large grid could feel overwhelming for some participants, including some neurodivergent children and young people. We added a slider to control how many images were displayed. I floated it over the bottom of the grid so coaches could see the effect immediately and adjust it during the conversation.</p>
+
+      <p>A gallery selector let coaches choose different image collections, while a refresh button brought up a new batch. Together, these controls made it easier to <a href="/wayfinding#start-heading">adapt the session to the person taking part</a>.</p>
+
+      <div class="ii-grid">
+        <div class="ii-grid-row">
+          <figure class="figure" style="--ar: 1.759">
+            <img src="media/image-insight-new-session.jpg" width="2146" height="1220" alt="A menu opening from the sidebar&rsquo;s add button: &lsquo;New session &mdash; start a session using your default settings&rsquo; above &lsquo;Schedule a session &mdash; schedule and customise a session&rsquo;." loading="lazy">
+            <figcaption>One entry point for a new session: start straight away on default settings, or open the same flow to schedule and customise.</figcaption>
+          </figure>
+          <figure class="figure" style="--ar: 0.7066">
             <img src="media/image-insight-pdf-report.jpg" width="1050" height="1486" alt="A one-page PDF session summary: an Image Insight header, a narrative summary, a list of actions, and the session review questions with their images and reflections." loading="lazy">
-          </div>
-          <figcaption>The downloadable summary the coach shares afterwards: the narrative, the actions to take forward, and the images and reflections from the review.</figcaption>
-        </figure>
-      </div>
-
-      <div class="subsection" id="impl-refining">
-        <h3>Refining around real sessions</h3>
-        <p>Feedback from the beta cohort highlighted two areas where the interface needed to be more flexible.</p>
-
-        <h4>Starting a session</h4>
-        <p>Coaches wanted to begin immediately rather than schedule something for later. Engineering proposed a separate instant-session button. I made the case for one clear entry point for a new session, avoiding competing actions for essentially the same task.</p>
-
-        <figure class="figure">
-          <div class="figure-portrait-frame">
-            <img src="media/image-insight-new-session.jpg" width="2146" height="1220" alt="A menu opening from the sidebar's add button: 'New session — start a session using your default settings' above 'Schedule a session — schedule and customise a session'." loading="lazy">
-          </div>
-          <figcaption>One entry point for a new session: start straight away on default settings, or open the same flow to schedule and customise.</figcaption>
-        </figure>
-
-        <h4>Controlling the image grid</h4>
-        <p>Coaches reported that a large grid could feel overwhelming for some participants, including some neurodivergent children and young people. We added a slider to control how many images were displayed. I floated it over the bottom of the grid so coaches could see the effect immediately and adjust it during the conversation.</p>
-
-        <figure class="figure figure-wide">
-          <div class="figure-portrait-frame">
-            <img src="media/image-insight-toolbar.jpg" width="1800" height="415" alt="A toolbar floating over the bottom of the image grid: a Refresh button, a gallery selector reading 'Standard', and a slider set to 25 images." loading="lazy">
-          </div>
-          <figcaption>The grid toolbar floats over the images: refresh for a new batch, a gallery selector, and a slider for how many images show.</figcaption>
-        </figure>
-
-        <p>A gallery selector let coaches choose different image collections, while a refresh button brought up a new batch. Together, these controls made it easier to <a href="/wayfinding#start-heading">adapt the session to the person taking part</a>.</p>
-      </div>
-
-      <div class="subsection" id="impl-wip">
-        <h3>Work in progress</h3>
-        <p>The app continues to develop in response to user feedback. I&rsquo;m currently ensuring all elements meet WCAG visual contrast guidelines and working on a dark mode, using Figma&rsquo;s variables and modes.</p>
-
-        <div class="figure-portrait-frame">
-          <div class="ui-video" data-hover-controls>
-            <video autoplay muted loop playsinline disablepictureinpicture poster="media/figma-modes.jpg">
-              <source src="media/figma-modes.mp4" type="video/mp4">
-            </video>
-            <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
-          </div>
+            <figcaption>The downloadable summary the coach shares afterwards: the narrative, the actions to take forward, and the images and reflections from the review.</figcaption>
+          </figure>
+        </div>
+        <div class="ii-grid-row">
+          <figure class="figure" style="--ar: 2.064">
+            <img src="media/image-insight-session-sidebar.jpg" width="2000" height="969" alt="Two panels side by side: a &lsquo;My session&rsquo; panel with the coach&rsquo;s question and the participant&rsquo;s chosen images, and a &lsquo;Session settings&rsquo; panel with a session name, a Junior/Teen/Adult profile, and optional client name and notes." loading="lazy">
+            <figcaption>Session settings panel: easy to flip into session settings, which otherwise stay out of the way.</figcaption>
+          </figure>
+          <figure class="figure" style="--ar: 1.798">
+            <div class="ui-video" data-hover-controls>
+              <video autoplay muted loop playsinline disablepictureinpicture width="1600" height="890" poster="media/figma-modes.jpg">
+                <source src="media/figma-modes.mp4" type="video/mp4">
+              </video>
+              <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+            </div>
+            <figcaption>Work in progress: light and dark modes built with Figma&rsquo;s variables and modes.</figcaption>
+          </figure>
+        </div>
+        <div class="ii-grid-row">
+          <figure class="figure" style="--ar: 4.337">
+            <img src="media/image-insight-toolbar.jpg" width="1800" height="415" alt="A toolbar floating over the bottom of the image grid: a Refresh button, a gallery selector reading &lsquo;Standard&rsquo;, and a slider set to 25 images." loading="lazy">
+            <figcaption>The grid toolbar floats over the images: refresh for a new batch, a gallery selector, and a slider for how many images show.</figcaption>
+          </figure>
         </div>
       </div>
     </section>
@@ -1074,15 +1272,18 @@
       <blockquote>Tom has been crucial in transforming Image Insight from a clunky MVP to an intuitive, easy-to-use product that I&rsquo;m really proud of.
         <cite>Anna Malone, Co-founder, Image Insight</cite>
       </blockquote>
-    </section>
 
-    <hr class="rule">
+      <p>The app continues to develop in response to user feedback. I&rsquo;m currently ensuring all elements meet WCAG visual contrast guidelines and working on a dark mode, using Figma&rsquo;s variables and modes.</p>
 
-    <section aria-labelledby="resources-heading" class="case-body">
-      <h2 class="eyebrow" id="resources-heading">Resources</h2>
-      <ul class="resources-list">
-        <li><a href="https://imageinsight.app" target="_blank" rel="noopener noreferrer">Image Insight</a></li>
-      </ul>
+      <figure class="figure ii-big" id="video">
+        <div class="ui-video">
+          <video controls playsinline preload="metadata" disablepictureinpicture controlslist="nofullscreen nodownload" width="1600" height="900" poster="media/image-insight-hero-poster.jpg">
+            <source src="media/image-insight-hero.mp4" type="video/mp4">
+          </video>
+          <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+        </div>
+        <figcaption>1-minute demo: choosing a question, picking images together, then reviewing the session and exporting its summary.</figcaption>
+      </figure>
     </section>
 
     <hr class="rule">
@@ -1105,17 +1306,6 @@
 
 
   </div>
-
-  <nav class="toc" aria-label="Section navigation">
-    <span class="toc-indicator" aria-hidden="true"></span>
-    <span class="eyebrow toc-heading">On this page</span>
-    <a href="#keypoints-heading">Key points</a>
-    <a href="#problem-heading">Problem</a>
-    <a href="#approach-heading">Approach</a>
-    <a href="#keydecisions-heading">Key decisions</a>
-    <a href="#implementation-heading">Implementation</a>
-    <a href="#outcome-heading">Outcome</a>
-  </nav>
 
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged image" tabindex="-1">
     <div class="lightbox-media">
@@ -1150,57 +1340,116 @@
       });
     })();
 
+    /* Carousel: dots follow the scroll position and jump on click; a mouse
+       can drag the strip; clicking a screen that is not the current one
+       brings it in rather than opening it full size. Moves made here glide
+       on a gentle ease-in-out rather than the browser's brisk smooth
+       scroll, with snapping paused until they land. */
     (function () {
-      var links = document.querySelectorAll(".toc a");
-      if (!links.length || !("IntersectionObserver" in window)) return;
+      var reel = document.querySelector(".ii-reel");
+      if (!reel) return;
+      var track = reel.querySelector(".ii-reel-track");
+      var slides = Array.prototype.slice.call(track.querySelectorAll(".ii-reel-slide"));
+      var dots = Array.prototype.slice.call(reel.querySelectorAll(".ii-reel-dot"));
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      var indicator = document.querySelector(".toc-indicator");
-      function moveIndicator(link) {
-        if (!indicator || !link) return;
-        indicator.style.height = link.offsetHeight + "px";
-        indicator.style.transform = "translateY(" + link.offsetTop + "px)";
-        indicator.classList.add("is-visible");
+      function centreOf(i) {
+        return slides[i].offsetLeft + slides[i].offsetWidth / 2 - track.clientWidth / 2;
       }
-      window.addEventListener("resize", function () {
-        var active = document.querySelector(".toc a.is-active");
-        if (active) moveIndicator(active);
+
+      function current() {
+        var best = 0, dist = Infinity;
+        slides.forEach(function (s, i) {
+          var d = Math.abs(centreOf(i) - track.scrollLeft);
+          if (d < dist) { dist = d; best = i; }
+        });
+        return best;
+      }
+
+      var glide = null;
+      function stopGlide() {
+        if (!glide) return;
+        cancelAnimationFrame(glide);
+        glide = null;
+        track.classList.remove("is-gliding");
+      }
+      function ease(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+
+      function go(i) {
+        i = Math.max(0, Math.min(slides.length - 1, i));
+        stopGlide();
+        var from = track.scrollLeft, to = centreOf(i), dist = to - from;
+        if (reduce || Math.abs(dist) < 1) { track.scrollLeft = to; return; }
+        var dur = Math.min(1100, Math.max(650, 450 + Math.abs(dist) * 0.25)), t0 = null;
+        track.classList.add("is-gliding");
+        function step(now) {
+          if (t0 === null) t0 = now;
+          var t = Math.min(1, (now - t0) / dur);
+          track.scrollLeft = from + dist * ease(t);
+          if (t < 1) glide = requestAnimationFrame(step);
+          else { glide = null; track.classList.remove("is-gliding"); }
+        }
+        glide = requestAnimationFrame(step);
+      }
+
+      // a hand on the strip takes over from a glide in progress
+      ["wheel", "touchstart"].forEach(function (type) {
+        track.addEventListener(type, stopGlide, { passive: true });
       });
 
-      // Observe the whole section (not just its heading) so a link stays
-      // highlighted for the entire time its section is in view, even when
-      // the section is tall and its heading has long scrolled past.
-      var sections = [];
-      links.forEach(function (link) {
-        var id = link.getAttribute("href").slice(1);
-        var el = document.getElementById(id);
-        var section = el ? el.closest("section") || el : null;
-        if (section) sections.push({ section: section, link: link });
+      var ticking = false;
+      function paint() {
+        ticking = false;
+        var i = current();
+        slides.forEach(function (s, si) { s.classList.toggle("is-current", si === i); });
+        dots.forEach(function (d, di) {
+          if (di === i) d.setAttribute("aria-current", "true");
+          else d.removeAttribute("aria-current");
+        });
+      }
+      track.addEventListener("scroll", function () {
+        if (!ticking) { ticking = true; requestAnimationFrame(paint); }
+      }, { passive: true });
+
+      dots.forEach(function (d, i) { d.addEventListener("click", function () { go(i); }); });
+
+      var drag = null, moved = false;
+      track.addEventListener("pointerdown", function (e) {
+        if (e.pointerType !== "mouse" || e.button !== 0) return;
+        stopGlide();
+        drag = { x: e.clientX, left: track.scrollLeft, from: current() };
+        moved = false;
+      });
+      window.addEventListener("pointermove", function (e) {
+        if (!drag) return;
+        var dx = e.clientX - drag.x;
+        if (!moved && Math.abs(dx) < 6) return;
+        if (!moved) { moved = true; track.classList.add("is-dragging"); }
+        track.scrollLeft = drag.left - dx;
+      });
+      window.addEventListener("pointerup", function (e) {
+        if (!drag) return;
+        var dx = e.clientX - drag.x, from = drag.from;
+        drag = null;
+        if (!moved) return;
+        // the click that follows a drag is swallowed below; clear the flag
+        // afterwards in case the drag ended off the strip and none comes
+        setTimeout(function () { moved = false; }, 0);
+        // a deliberate flick moves one screen even if it fell short of halfway
+        var to = current();
+        if (to === from && Math.abs(dx) > 60) to = from + (dx < 0 ? 1 : -1);
+        go(to);
+        track.classList.remove("is-dragging");
       });
 
-      var observer = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (entry) {
-            var match = null;
-            for (var i = 0; i < sections.length; i++) {
-              if (sections[i].section === entry.target) {
-                match = sections[i];
-                break;
-              }
-            }
-            if (!match) return;
-            if (entry.isIntersecting) {
-              links.forEach(function (l) { l.classList.remove("is-active"); });
-              match.link.classList.add("is-active");
-              moveIndicator(match.link);
-            }
-          });
-        },
-        { rootMargin: "-20% 0px -70% 0px", threshold: 0 }
-      );
-
-      sections.forEach(function (s) {
-        observer.observe(s.section);
-      });
+      // capture phase, so it runs before the lightbox's own click handler
+      track.addEventListener("click", function (e) {
+        if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; return; }
+        var slide = e.target.closest(".ii-reel-slide");
+        if (!slide) return;
+        var i = slides.indexOf(slide);
+        if (i !== current()) { e.preventDefault(); e.stopPropagation(); go(i); }
+      }, true);
     })();
 
   </script>
