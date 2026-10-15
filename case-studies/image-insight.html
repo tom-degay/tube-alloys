@@ -646,10 +646,16 @@
     }
     /* the transition only on the way in, so arming jumps straight to the
        start position rather than animating down to it */
+    /* ... and it comes to rest higher than it started, closing the empty
+       space under the button to 56px: the script measures that space into
+       --close, and the margin pulls the picture and the page below it up */
     .ii-hero-media.is-armed.is-in {
       opacity: 1;
       transform: none;
-      transition: transform 0.75s cubic-bezier(0.22, 1.25, 0.36, 1), opacity 0.4s linear;
+      margin-top: calc(-1 * var(--close, 0px));
+      transition: transform 0.75s cubic-bezier(0.22, 1.25, 0.36, 1),
+                  margin-top 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+                  opacity 0.4s linear;
     }
   }
 
@@ -1398,6 +1404,11 @@
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       if (media.getBoundingClientRect().top < window.innerHeight - 40) return;
       media.classList.add("is-armed");
+      var button = document.querySelector(".ii-watch");
+      if (button) {
+        var gap = media.getBoundingClientRect().top - 300 - button.getBoundingClientRect().bottom;
+        media.style.setProperty("--close", Math.max(0, Math.round(gap - 56)) + "px");
+      }
       var io = new IntersectionObserver(function (entries) {
         if (!entries[0].isIntersecting) return;
         io.disconnect();
