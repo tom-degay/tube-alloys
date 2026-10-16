@@ -31,8 +31,6 @@
 <link rel="stylesheet" href="/styles.css">
 <link rel="stylesheet" href="/nav.css?v=20261016d">
 <style>
-  .content > header { position: relative; }
-  .slide-mode-link { position: absolute; top: 0; left: 0; width: 100%; max-width: 46rem; margin: 0; text-align: right; }
 
   html { scroll-padding-top: 100px; }
 
@@ -184,11 +182,10 @@
     max-width: 46rem;
   }
 
-  /* Keep the five project-info fields arranged like Column Mapping. */
+  /* Six project-info fields, matching Column mapping. */
   .meta-row { grid-template-columns: 1fr; }
   @media (min-width: 700px) {
     .meta-row { grid-template-columns: repeat(2, 1fr); }
-    .meta-item:last-child { grid-column: span 2; }
   }
   @media (min-width: 1100px) {
     .meta-row { grid-template-columns: repeat(3, 1fr); }
@@ -296,32 +293,198 @@
     background: rgba(0, 0, 0, 0.8);
   }
 
-  /* -- hero video -- */
-  .case-hero-video {
-    padding: clamp(24px, 2.5vw, 28px) clamp(24px, 2.5vw, 28px) 0;
+  /* -- hero: as on Zonefully and Image Insight. Desktop: the study icon,
+     title, strapline and View slides on the left; the Validation card artwork on the right running off the window's right edge
+     (rounded on the left only). The markup keeps the picture first, so the
+     columns are placed explicitly. -- */
+  .val-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 53.4vw;
+    align-items: center;
+    column-gap: 6.4vw;
+    padding: clamp(40px, 9vw, 180px) 0 clamp(56px, 10vw, 200px) 7.6vw;
     background: linear-gradient(180deg, #131313 0%, #222121 100%);
   }
 
-  .case-hero-video-frame {
-    max-width: 1024px;
-    margin: 0 auto;
+  .val-hero-media {
+    box-sizing: border-box;
+    padding: clamp(18px, 2.4vw, 36px) clamp(18px, 2.4vw, 36px) 0;
     overflow: hidden;
-    border: 1px solid #282828;
-    border-bottom: none;
-    border-radius: 10px 10px 0 0;
+    background: #000;
+    border-radius: clamp(6px, 0.7vw, 14px) 0 0 clamp(6px, 0.7vw, 14px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08), 0 18px 48px rgba(0, 0, 0, 0.14);
   }
 
-  .case-hero-video-frame video {
+  .val-hero-media > svg {
     display: block;
     width: 100%;
     height: auto;
+    aspect-ratio: 5 / 3;
   }
 
-  @media (max-width: 799.98px) {
-    .case-hero-video-frame {
-      border-radius: 6px 6px 0 0;
+  @media (min-width: 1024px) {
+    .val-hero-text { grid-column: 1; grid-row: 1; }
+    .val-hero-media { grid-column: 2; grid-row: 1; }
+  }
+
+  .val-hero h1 {
+    font-size: clamp(32px, 3.75vw, 76px);
+    line-height: 1.04;
+    letter-spacing: -0.01em;
+    max-width: none;
+  }
+
+  /* no orphans: a non-breaking space glues each line's last two words,
+     and balanced wrapping evens out the title's lines */
+  .val-hero h1 { text-wrap: balance; }
+  .val-hero p.subtitle { text-wrap: pretty; }
+
+  /* View slides: styled as the nav bar (nav.css .identity-bar), set
+     in the bar's bold Fakt like "Tom de Gay". */
+  .val-watch-row { display: flex; flex-wrap: wrap; gap: 10px; margin: clamp(20px, 2.4vw, 32px) 0 0; }
+
+  a.val-watch {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 44px;
+    padding: 9px 22px 9px 18px;
+    border: 1px solid #ffffff09;
+    border-radius: 16px;
+    background: #131313;
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    color: #eee;
+    font: 600 17px/24px "Fakt", sans-serif;
+    white-space: nowrap;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  a.val-watch svg { flex: 0 0 auto; width: 14px; height: 14px; }
+
+  a.val-watch:hover, a.val-watch:focus-visible { background: #000; color: #fff; }
+
+  @media (max-width: 640px) {
+    a.val-watch { border-radius: 13px; }
+  }
+
+  /* the study's icon (the drawn one from the old header) above the title,
+     at the size of the Image Insight and Zonefully logos */
+  .val-hero .case-icon.val-hero-logo {
+    display: block;
+    width: auto;
+    height: clamp(53px, 4.8vw, 86px);
+    margin-bottom: clamp(20px, 2.4vw, 36px);
+  }
+
+  .val-hero p.subtitle {
+    margin-top: clamp(16px, 1.8vw, 36px);
+    font-size: clamp(18px, 1.7vw, 32px);
+    line-height: 1.35;
+    max-width: 24em;
+  }
+
+  /* Below 1024px the hero stacks, title first: the text and the picture
+     both line up with the content edges of the nav bar above them (the
+     bar is min(820px, 100% - 48px) wide with 22px padding; at 640px and
+     under, 100% - 28px with 16px), and the picture is rounded all round
+     instead of running off the edge. */
+  @media (max-width: 1023.98px) {
+    .val-hero {
+      --hero-inset: calc(max(24px, (100% - 820px) / 2) + 22px);
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: clamp(40px, 11vw, 110px);
+      padding: clamp(32px, 8.8vw, 88px) var(--hero-inset) clamp(48px, 10vw, 100px);
+    }
+
+    .val-hero-text { grid-row: 1; }
+
+    /* On tablets the picture runs off the right edge, as on desktop.
+       Phones reverse the bleed below. */
+    .val-hero-media { margin-right: calc(-1 * var(--hero-inset)); }
+    .val-hero-media { border-radius: clamp(6px, 1.3vw, 13px) 0 0 clamp(6px, 1.3vw, 13px); }
+
+    .val-hero h1 { font-size: clamp(32px, 5vw, 56px); line-height: 1.1; max-width: 13.5em; }
+
+    .val-hero p.subtitle {
+      margin-top: clamp(14px, 2vw, 22px);
+      font-size: clamp(18px, 2.25vw, 24px);
+      line-height: 1.42;
+      max-width: 27.5em;
     }
   }
+
+  @media (max-width: 640px) {
+    .val-hero { --hero-inset: 30px; }
+
+    /* the logo, title, strapline and button fill the first screen below
+       the nav bar (whose spacer is 86px tall here), centred in it; the
+       picture waits just below the fold and scrolls up into view */
+    .val-hero { padding-top: 0; }
+    .val-hero-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: calc(100vh - 86px);
+      min-height: calc(100svh - 86px);
+      /* weighted a little above centre */
+      padding-bottom: 12svh;
+      box-sizing: border-box;
+    }
+
+    /* bigger type to fill more of the width */
+    .val-hero .case-icon.val-hero-logo { height: 64px; align-self: flex-start; }
+    .val-hero h1 { font-size: clamp(32px, 9.2vw, 44px); line-height: 1.06; }
+    .val-hero p.subtitle { font-size: clamp(19px, 5.4vw, 23px); line-height: 1.4; }
+
+    /* the picture slides up as it comes into view (after jamesfinch.co.uk,
+       but further): a 300px rise with a fade, on a springy ease that
+       settles a hair past its mark. The script below arms it only on phones, without reduced
+       motion, so with no JS the picture is simply there. */
+    .val-hero-media.is-armed {
+      opacity: 0;
+      transform: translateY(300px);
+    }
+    /* the transition only on the way in, so arming jumps straight to the
+       start position rather than animating down to it */
+    /* the way back down, once it has played: back to the top of the page
+       reverses it, on a plain ease with no overshoot */
+    .val-hero-media.is-armed.is-played {
+      transition: transform 0.6s cubic-bezier(0.55, 0, 0.45, 1),
+                  margin-top 0.6s cubic-bezier(0.55, 0, 0.45, 1),
+                  opacity 0.4s linear 0.2s;
+    }
+    /* ... and it comes to rest higher than it started, closing the empty
+       space under the button to 56px: the script measures that space into
+       --close, and the margin pulls the picture and the page below it up */
+    .val-hero-media.is-armed.is-in {
+      opacity: 1;
+      transform: none;
+      margin-top: calc(-1 * var(--close, 0px));
+      transition: transform 0.75s cubic-bezier(0.22, 1.25, 0.36, 1),
+                  margin-top 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+                  opacity 0.4s linear;
+    }
+  }
+
+
+  /* On phones keep the magnified crop, anchored to the right content
+     margin so it bleeds off the left edge, with rounded right corners. */
+  @media (max-width: 640px) {
+    .val-hero { padding-bottom: 48px; }
+    .val-hero-media {
+      width: calc((100vw - var(--hero-inset)) / 0.67);
+      max-width: none;
+      justify-self: end;
+      margin-left: 0;
+      margin-right: 0;
+      border-radius: 0 6px 6px 0;
+    }
+  }
+
+  /* the hero picture runs off the window's edge, and html and body clip
+     the overflow so the page never scrolls sideways */
+  html, body { overflow-x: clip; }
 
   /* -- inline diagram -- */
   .diagram {
@@ -407,23 +570,14 @@
     .figure-strip-imgs { grid-template-columns: 1fr; }
   }
 
-  @media (min-width: 1100px) {
-    main {
-      display: grid;
-      grid-template-columns: 230px minmax(0, 1fr);
-      column-gap: 96px;
-      align-items: start;
-    }
+  /* No section rail: one reading column, centred on the page. */
+  main { max-width: none; }
 
-    .toc {
-      display: flex;
-      flex-direction: column;
-      grid-column: 1;
-      grid-row: 1;
-      position: sticky;
-      top: 100px;
-    }
-  }
+  /* Half the old space between the hero and the project stats, which was
+     main's top padding plus the meta row's own 40px margin. */
+  main { padding-top: calc((clamp(24px, 6vw, 72px) + 40px) / 2); }
+  .content > header .meta-row { margin-top: 0; }
+  .content { max-width: 46rem; margin-inline: auto; }
 
   /* -- .figure-wide: an opt-in modifier for large videos/images. 140%
      of the 46rem text column, centred on it (expanding out of both
@@ -437,14 +591,8 @@
      left/right overhang is 9.2rem each -- margin-left takes that back
      off the element's normal (flush-left) position to centre it.
 
-     Only turned on at 1500px+: below that, the 96px rail-gap between
-     .toc and the content column isn't wide enough for a 9.2rem
-     (147px) left bleed to clear the toc without overlapping it -- see
-     the column-gap override below, which exists only to make room for
-     this. Below 1500px .figure-wide is inert; each instance just keeps
-     whatever width its base class already gives it. */
-  @media (min-width: 1500px) {
-    main { column-gap: 200px; }
+     Turned on at 1200px+, where the wider figure and page padding fit. */
+  @media (min-width: 1200px) {
 
     .figure-wide {
       width: 64.4rem;
@@ -640,6 +788,51 @@
     color: rgba(255, 255, 255, 0.45);
   }
   .framing-card .evidence-list { margin-top: -6px; }
+
+  /* Supporting evidence: native details keeps the full copy accessible
+     by keyboard and works without JavaScript. */
+  .evidence-disclosure { padding: 0; transition: background-color 0.15s ease; }
+  .evidence-disclosure:hover { background: rgb(48, 48, 48); }
+  .evidence-disclosure > summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 20px 24px;
+    border-radius: inherit;
+    list-style: none;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+  }
+  .evidence-disclosure > summary::-webkit-details-marker { display: none; }
+  .evidence-disclosure > summary::marker { content: ""; }
+  .evidence-disclosure > summary:focus-visible { outline: 2px solid #00d8aa; outline-offset: 3px; }
+  .evidence-disclosure .framing-label { flex: 1; min-width: 0; }
+  .evidence-toggle {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+    gap: 7px;
+    margin-left: 8px;
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  .evidence-disclosure:hover .evidence-toggle { color: #fff; }
+  .evidence-less { display: none; }
+  .evidence-disclosure[open]:not(.is-closing) .evidence-more { display: none; }
+  .evidence-disclosure[open]:not(.is-closing) .evidence-less { display: inline; }
+  .evidence-chevron { transition: transform 0.2s ease; }
+  .evidence-disclosure[open]:not(.is-closing) .evidence-chevron { transform: rotate(180deg); }
+  .evidence-body { display: flow-root; box-sizing: border-box; padding: 0 24px 22px; }
+  @media (max-width: 480px) {
+    .evidence-disclosure > summary { padding: 18px 16px; }
+    .evidence-disclosure .framing-label { font-size: 12px; letter-spacing: 1px; }
+    .evidence-body { padding: 0 16px 20px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .evidence-chevron { transition: none; }
+  }
 
   /* flow-root keeps the children's margins inside the body, so the height
      the script animates to (scrollHeight) is the height it settles at. */
@@ -1023,18 +1216,12 @@
       </div>
     </div>
   </nav>
-  <div class="case-hero-video">
-    <div class="case-hero-video-frame" data-hover-controls>
-      <video autoplay muted loop playsinline disablepictureinpicture poster="media/validation-hero-poster.jpg">
-        <source src="media/validation-hero.mp4" type="video/mp4">
-      </video>
+  <div class="val-hero">
+    <div class="val-hero-media">
+      <svg class="validation-vector" viewBox="0 0 1600 960" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Date Cleanse and Validate checks, with green and yellow status segments above and green, yellow and red segments below."><rect width="1600" height="960" fill="#000"/><g transform="translate(64 0)"><g stroke="#222" stroke-width="2"><path d="M0 110H490M540 110H1600M0 355H490M540 355H1600M560 475H1600M560 595H1600M560 715H1600M560 835H1600"/></g><g transform="translate(85 170) rotate(-90)" fill="none" stroke-width="10"><circle class="validation-arc" r="36" pathLength="100" stroke="#00a989" stroke-dasharray="64 100" style="--arc:64;--ring-delay:0s"/><circle class="validation-arc" r="36" pathLength="100" stroke="#f3ff85" stroke-dasharray="36 100" stroke-dashoffset="-64" style="--arc:36;--ring-delay:0s"/></g><text x="157" y="184" fill="#bcbccb" font-family="Fakt Blond SemiBold, sans-serif" font-size="42" font-weight="600">Date Cleanse</text><g transform="translate(85 415) rotate(-90)" fill="none" stroke-width="10"><circle class="validation-arc" r="36" pathLength="100" stroke="#00a989" stroke-dasharray="70 100" stroke-dashoffset="-0" style="--arc:70;--ring-delay:.18s"/><circle class="validation-arc" r="36" pathLength="100" stroke="#f3ff85" stroke-dasharray="22 100" stroke-dashoffset="-70" style="--arc:22;--ring-delay:.18s"/><circle class="validation-arc" r="36" pathLength="100" stroke="#ff414b" stroke-dasharray="8 100" stroke-dashoffset="-92" style="--arc:8;--ring-delay:.18s"/></g><text x="157" y="429" fill="#bcbccb" font-family="Fakt Blond SemiBold, sans-serif" font-size="42" font-weight="600">Validate</text><g class="validation-rule" style="--rule-delay:0.00s"><g transform="translate(576 52) scale(1.2 1)"><path d="M-17 13L-3-14Q0-19 3-14L17 13Q19 17 14 17H-14Q-19 17-17 13" fill="#f3ff85"/><path d="M0-6V5" stroke="#000" stroke-width="4"/><circle cy="11" r="2" fill="#000"/></g><text x="616" y="66" fill="#bcbccb" font-family="Fakt Blond SemiBold, sans-serif" font-size="41" font-weight="600">Policy Count = Integer</text></g><g class="validation-rule" style="--rule-delay:0.13s"><g transform="translate(576 172) scale(1.2 1)"><path d="M-17 13L-3-14Q0-19 3-14L17 13Q19 17 14 17H-14Q-19 17-17 13" fill="#f3ff85"/><path d="M0-6V5" stroke="#000" stroke-width="4"/><circle cy="11" r="2" fill="#000"/></g><text x="616" y="186" fill="#bcbccb" font-family="Fakt Blond SemiBold, sans-serif" font-size="41" font-weight="600">Claims Valuation Date</text></g><g class="validation-rule" style="--rule-delay:0.26s"><g transform="translate(576 292) scale(1.2 1)"><path d="M-17 13L-3-14Q0-19 3-14L17 13Q19 17 14 17H-14Q-19 17-17 13" fill="#f3ff85"/><path d="M0-6V5" stroke="#000" stroke-width="4"/><circle cy="11" r="2" fill="#000"/></g><text x="616" y="306" fill="#bcbccb" font-family="Fakt Blond SemiBold, sans-serif" font-size="41" font-weight="600">Date Reported</text></g><g class="validation-rule" style="--rule-delay:0.39s"><g transform="translate(576 415) scale(1.2 1)"><path d="M-17 13L-3-14Q0-19 3-14L17 13Q19 17 14 17H-14Q-19 17-17 13" fill="#f3ff85"/><path d="M0-6V5" stroke="#000" stroke-width="4"/><circle cy="11" r="2" fill="#000"/></g><text x="616" y="429" fill="#bcbccb" font-family="Fakt Blond SemiBold, sans-serif" font-size="41" font-weight="600">Policy effective date must be before expiry</text></g><g class="validation-rule" style="--rule-delay:0.52s"><g transform="translate(576 535)" stroke="#ff414b" stroke-width="5" fill="none"><circle r="15"/><path d="M-10-10L10 10"/></g><text x="616" y="549" fill="#bcbccb" font-family="Fakt Blond SemiBold, sans-serif" font-size="41" font-weight="600">No post office boxes for street addresses</text></g><g class="validation-rule" style="--rule-delay:0.65s"><g transform="translate(576 655) scale(1.2 1)"><path d="M-17 13L-3-14Q0-19 3-14L17 13Q19 17 14 17H-14Q-19 17-17 13" fill="#f3ff85"/><path d="M0-6V5" stroke="#000" stroke-width="4"/><circle cy="11" r="2" fill="#000"/></g><text x="616" y="669" fill="#bcbccb" font-family="Fakt Blond SemiBold, sans-serif" font-size="41" font-weight="600">Zip must be populated and 5 digits long</text></g><g class="validation-rule" style="--rule-delay:0.78s"><g transform="translate(576 775) scale(1.2 1)"><path d="M-17 13L-3-14Q0-19 3-14L17 13Q19 17 14 17H-14Q-19 17-17 13" fill="#f3ff85"/><path d="M0-6V5" stroke="#000" stroke-width="4"/><circle cy="11" r="2" fill="#000"/></g><text x="616" y="789" fill="#bcbccb" font-family="Fakt Blond SemiBold, sans-serif" font-size="41" font-weight="600">Minimum rate of 15% for exposures</text></g><g class="validation-rule" style="--rule-delay:0.91s"><g transform="translate(576 895) scale(1.2 1)"><path d="M-17 13L-3-14Q0-19 3-14L17 13Q19 17 14 17H-14Q-19 17-17 13" fill="#f3ff85"/><path d="M0-6V5" stroke="#000" stroke-width="4"/><circle cy="11" r="2" fill="#000"/></g><text x="616" y="909" fill="#bcbccb" font-family="Fakt Blond SemiBold, sans-serif" font-size="41" font-weight="600">Program deductible or SIR must be greater</text></g></g></svg>
     </div>
-  </div>
-  <main>
-  <div class="content">
-    <header id="case-intro">
-      <p class="links slide-mode-link"><a href="../slides/validation.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>View slides</span></a></p>
-      <svg class="case-icon" viewBox="0 0 16 16" fill="none" stroke="#00d8aa" stroke-width="0.762" aria-hidden="true" focusable="false">
+    <div class="val-hero-text">
+      <svg class="case-icon val-hero-logo" viewBox="0 0 16 16" fill="none" stroke="#00d8aa" stroke-width="0.762" aria-hidden="true" focusable="false">
         <g transform="translate(-461, -474)">
           <g transform="translate(461.5264, 474.5072)">
             <circle cx="10.4736274" cy="10.4927727" r="4.5" pathLength="100" class="case-icon-trace" style="animation-delay:0.12s"/>
@@ -1043,27 +1230,14 @@
           </g>
         </g>
       </svg>
-      <span class="kicker head-fade">Case Study | <a href="https://help.quantemplate.com/validation-corrections" target="_blank" rel="noopener noreferrer">Quantemplate Validations</a></span>
-      <h1 class="display head-fade">Closing the loop on data quality</h1>
-      <p class="subtitle head-fade">Enabled users to fix data errors where they find them, with the control of rules-based corrections and a full audit trail. Over 23,000 cells corrected in the first three months.</p>
-
-    </header>
-
-    <hr class="rule">
-
-    <section aria-labelledby="keypoints-heading">
-      <h2 class="eyebrow" id="keypoints-heading">Key points</h2>
-      <div class="key-points-grid">
-        <ul class="key-points">
-          <li>Turned dead-end error reports into complete correction workflows</li>
-          <li>Made bulk correction authorship traceable, helping clients meet audit goals</li>
-          <li>Achieved step change in speed at which clients could work.</li>
-        </ul>
-      </div>
-    </section>
-
-    <hr class="rule">
-
+      <h1 class="display">Closing the loop on data&nbsp;quality</h1>
+      <p class="subtitle">Enabled users to fix data errors where they find them, with rules-based corrections and a full audit trail. Over 23,000 cells corrected in the first three months.</p>
+      <p class="val-watch-row"><a class="val-watch" href="../slides/validation.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>View slides</a></p>
+    </div>
+  </div>
+  <main>
+  <div class="content">
+    <header id="case-intro">
     <div class="meta-row">
       <div class="meta-item">
         <span class="eyebrow">Role</span>
@@ -1084,16 +1258,35 @@
         </div>
       </div>
       <div class="meta-item">
+        <span class="eyebrow">Company</span>
+        <p><a href="https://quantemplate.com" target="_blank" rel="noopener noreferrer">Quantemplate</a></p>
+      </div>
+      <div class="meta-item">
         <span class="eyebrow">Domain</span>
         <p>Wholesale insurance data management.</p>
       </div>
       <div class="meta-item">
-        <span class="eyebrow">User profiles</span>
-        <p>Data analyst: domain expert with deep knowledge of the data.<br>Technical skill level: competent Excel user.</p>
+        <span class="eyebrow">User profile</span>
+        <p>Data analyst: domain expert<br>and Excel power user.</p>
       </div>
     </div>
+    </header>
 
     <hr class="rule">
+
+    <section aria-labelledby="keypoints-heading">
+      <h2 class="eyebrow" id="keypoints-heading">Key points</h2>
+      <div class="key-points-grid">
+        <ul class="key-points">
+          <li>Turned dead-end error reports into complete correction workflows</li>
+          <li>Made bulk correction authorship traceable, helping clients meet audit goals</li>
+          <li>Achieved step change in speed at which clients could work.</li>
+        </ul>
+      </div>
+    </section>
+
+    <hr class="rule">
+
 
     <section aria-labelledby="problem-heading" class="case-body">
       <h2 class="eyebrow" id="problem-heading">Problem</h2>
@@ -1132,16 +1325,20 @@
         <figcaption>Desire lines in the product: an ad hoc correction added by a user to a pipeline, modifying the Accident State for a specific policy number.</figcaption>
       </figure>
 
-      <div class="evidence-card">
-        <div class="framing-head">
+      <details class="evidence-card evidence-disclosure">
+        <summary class="framing-head">
           <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M12.1426 2.85254L2.82812 12.167L12.1426 21.4814V24.3096L0 12.167L12.1426 0.0244141V2.85254Z" fill="#00D8AA"/><path d="M45.832 12.167L33.665 24.334L22.916 13.585L12.168 24.333V21.5049L21.502 12.1709L21.498 12.167L21.502 12.1631L12.168 2.8291V0.000976562L22.916 10.749L33.665 0L45.832 12.167ZM24.3301 12.1631L24.334 12.167L24.3301 12.1709L33.665 21.5059L43.0039 12.167L33.665 2.82812L24.3301 12.1631Z" fill="#605F5F"/></svg>
           <span class="framing-label">Evidence</span>
-        </div>
-        <ul class="evidence-list">
+
+          <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
+        </summary>
+        <div class="evidence-body">
+<ul class="evidence-list">
             <li>Users making ad hoc corrections in the pipeline</li>
             <li>Specifically mentioned in sales process loss analysis</li>
         </ul>
-      </div>
+        </div>
+      </details>
         </div>
       </details>
 
@@ -1155,16 +1352,20 @@
         <div class="problem-item-body">
       <p>When we spoke to clients at the management level, they wanted to play their validation reports back to their suppliers, to inform them of their data quality performance. Currently they did this by downloading failed rows and emailing them, which was a slow process. We spotted an opportunity for value-add here: show suppliers validation results and ask them for corrections.</p>
 
-      <div class="evidence-card">
-        <div class="framing-head">
+      <details class="evidence-card evidence-disclosure">
+        <summary class="framing-head">
           <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M12.1426 2.85254L2.82812 12.167L12.1426 21.4814V24.3096L0 12.167L12.1426 0.0244141V2.85254Z" fill="#00D8AA"/><path d="M45.832 12.167L33.665 24.334L22.916 13.585L12.168 24.333V21.5049L21.502 12.1709L21.498 12.167L21.502 12.1631L12.168 2.8291V0.000976562L22.916 10.749L33.665 0L45.832 12.167ZM24.3301 12.1631L24.334 12.167L24.3301 12.1709L33.665 21.5059L43.0039 12.167L33.665 2.82812L24.3301 12.1631Z" fill="#605F5F"/></svg>
           <span class="framing-label">Evidence</span>
-        </div>
-        <ul class="evidence-list">
+
+          <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
+        </summary>
+        <div class="evidence-body">
+<ul class="evidence-list">
             <li>Clients&rsquo; management-level users had objectives to improve the quality coming from their suppliers.</li>
             <li>IT teams asked for an API to access validation results, to build their own feedback rig.</li>
         </ul>
-      </div>
+        </div>
+      </details>
         </div>
       </details>
 
@@ -1178,16 +1379,20 @@
         <div class="problem-item-body">
       <p>We had made it easier to add validation rules and implementations had become ambitious: clients had hundreds of rules and users spent days in the report analysing the results. There were aspects of the navigation and interaction that were proving cumbersome. We set out to fix this.</p>
 
-      <div class="evidence-card">
-        <div class="framing-head">
+      <details class="evidence-card evidence-disclosure">
+        <summary class="framing-head">
           <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M12.1426 2.85254L2.82812 12.167L12.1426 21.4814V24.3096L0 12.167L12.1426 0.0244141V2.85254Z" fill="#00D8AA"/><path d="M45.832 12.167L33.665 24.334L22.916 13.585L12.168 24.333V21.5049L21.502 12.1709L21.498 12.167L21.502 12.1631L12.168 2.8291V0.000976562L22.916 10.749L33.665 0L45.832 12.167ZM24.3301 12.1631L24.334 12.167L24.3301 12.1709L33.665 21.5059L43.0039 12.167L33.665 2.82812L24.3301 12.1631Z" fill="#605F5F"/></svg>
           <span class="framing-label">Evidence</span>
-        </div>
-        <ul class="evidence-list">
+
+          <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
+        </summary>
+        <div class="evidence-body">
+<ul class="evidence-list">
             <li>User feedback like &lsquo;I don&rsquo;t care about seeing the passed rules&rsquo; and &lsquo;When I go back to the report view after looking at a rule, my scroll position is lost&rsquo;.</li>
             <li>Production pipelines had hundreds of rules, we&rsquo;d planned for dozens.</li>
         </ul>
-      </div>
+        </div>
+      </details>
 
       <figure class="figure">
         <div class="figure-portrait-frame">
@@ -1312,38 +1517,50 @@
 
       <p>Before defining the solution, I explored alternative problem framings by analysing user feedback alongside the platform&rsquo;s constraints and our product strategy.</p>
 
-      <div class="evidence-card framing-card">
-        <div class="framing-head">
+      <details class="evidence-card evidence-disclosure framing-card">
+        <summary class="framing-head">
           <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><rect x="22.9123" y="12.1673" width="15.2071" height="15.2071" transform="rotate(-45 22.9123 12.1673)" stroke="#B7B7B7" stroke-opacity="0.5" stroke-width="2"/><rect x="1.41421" y="12.1673" width="15.2071" height="15.2071" transform="rotate(-45 1.41421 12.1673)" stroke="#00D8AA" stroke-width="2"/></svg>
-          <span class="framing-label">Framing</span>
-        </div>
-        <p class="framing-term">Client feedback</p>
+          <span class="framing-label">Framing · Engineering constraint</span>
+
+          <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
+        </summary>
+        <div class="evidence-body">
+<p class="framing-term">Client feedback</p>
         <p class="framing-quote">&lsquo;I just want to edit the failed cell&rsquo;</p>
         <p class="framing-term">Engineering constraint</p>
         <p>Quantemplate is designed around rules-based transformations to data, so cell-level editing is not possible. Instead we need to make adding a rule as easy as editing a cell, and make its effect obvious.</p>
-      </div>
-
-      <div class="evidence-card framing-card">
-        <div class="framing-head">
-          <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><rect x="22.9123" y="12.1673" width="15.2071" height="15.2071" transform="rotate(-45 22.9123 12.1673)" stroke="#B7B7B7" stroke-opacity="0.5" stroke-width="2"/><rect x="1.41421" y="12.1673" width="15.2071" height="15.2071" transform="rotate(-45 1.41421 12.1673)" stroke="#00D8AA" stroke-width="2"/></svg>
-          <span class="framing-label">Framing</span>
         </div>
-        <p class="framing-term">Client feedback</p>
+      </details>
+
+      <details class="evidence-card evidence-disclosure framing-card">
+        <summary class="framing-head">
+          <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><rect x="22.9123" y="12.1673" width="15.2071" height="15.2071" transform="rotate(-45 22.9123 12.1673)" stroke="#B7B7B7" stroke-opacity="0.5" stroke-width="2"/><rect x="1.41421" y="12.1673" width="15.2071" height="15.2071" transform="rotate(-45 1.41421 12.1673)" stroke="#00D8AA" stroke-width="2"/></svg>
+          <span class="framing-label">Framing · Workflow analysis</span>
+
+          <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
+        </summary>
+        <div class="evidence-body">
+<p class="framing-term">Client feedback</p>
         <p class="framing-quote">&lsquo;When I go back to the report view after looking at a rule, my scroll position is lost&rsquo;.</p>
         <p class="framing-term">Workflow analysis</p>
         <p>The root problem isn&rsquo;t just the scroll position, but having to go back to the report to navigate to the next rule.</p>
-      </div>
-
-      <div class="evidence-card framing-card">
-        <div class="framing-head">
-          <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><rect x="22.9123" y="12.1673" width="15.2071" height="15.2071" transform="rotate(-45 22.9123 12.1673)" stroke="#B7B7B7" stroke-opacity="0.5" stroke-width="2"/><rect x="1.41421" y="12.1673" width="15.2071" height="15.2071" transform="rotate(-45 1.41421 12.1673)" stroke="#00D8AA" stroke-width="2"/></svg>
-          <span class="framing-label">Framing</span>
         </div>
-        <p class="framing-term">Client feedback</p>
+      </details>
+
+      <details class="evidence-card evidence-disclosure framing-card">
+        <summary class="framing-head">
+          <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><rect x="22.9123" y="12.1673" width="15.2071" height="15.2071" transform="rotate(-45 22.9123 12.1673)" stroke="#B7B7B7" stroke-opacity="0.5" stroke-width="2"/><rect x="1.41421" y="12.1673" width="15.2071" height="15.2071" transform="rotate(-45 1.41421 12.1673)" stroke="#00D8AA" stroke-width="2"/></svg>
+          <span class="framing-label">Framing · Strategic decision</span>
+
+          <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
+        </summary>
+        <div class="evidence-body">
+<p class="framing-term">Client feedback</p>
         <p class="framing-quote">&lsquo;Give us an API so we can build our own validation feedback rig&rsquo;</p>
         <p class="framing-term">Strategic decision</p>
         <p>Bringing the feedback workflow into Quantemplate would let business users request and manage supplier corrections without needing their IT team to build and maintain a separate system. It would also keep results and corrections connected in one auditable workflow, increasing the product&rsquo;s value and supporting retention.</p>
-      </div>
+        </div>
+      </details>
     </section>
 
     <hr class="rule">
@@ -1379,12 +1596,15 @@
           <p>Corrections are shown beside the original submitted values. I chose this side-by-side layout to preserve the source data and make it clear that users are creating a mapping, rather than editing the original cell.</p>
           <p>Corrected values stand out in bright green. If no correction has been applied, the placeholder text shows the current value. This helps the user understand exactly what the output data will be.</p>
 
-          <div class="evidence-card framing-card">
-            <div class="framing-head">
+          <details class="evidence-card evidence-disclosure framing-card">
+        <summary class="framing-head">
               <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
               <span class="framing-label">Design validation</span>
-            </div>
-            <figure class="figure">
+
+          <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
+        </summary>
+        <div class="evidence-body">
+<figure class="figure">
               <div class="figure-portrait-frame">
                 <div class="design-pair">
                   <figure>
@@ -1400,7 +1620,8 @@
             </figure>
             <p>I tested the prototype with a small cohort of expert users. Testing exposed two issues: users didn&rsquo;t recognise the correction fields as editable, and adjacent failed columns made it difficult to tell which values belonged together.</p>
             <p>I revised the design to give each row a clearly defined entry field, strengthen the link between original and corrected values, and refine the colour palette.</p>
-          </div>
+        </div>
+      </details>
             </div>
           </details>
 
@@ -1422,13 +1643,17 @@
             <figcaption>Entering a correction. The popup makes the scope explicit &mdash; every matching value, or only where a condition is met &mdash; with a formula bar for deriving the value from another column.</figcaption>
           </figure>
 
-          <div class="evidence-card framing-card">
-            <div class="framing-head">
+          <details class="evidence-card evidence-disclosure framing-card">
+        <summary class="framing-head">
               <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
               <span class="framing-label">Design validation</span>
-            </div>
-            <p>We had identified the need for multiple matching conditions, for example to apply one correction across several policy numbers. A walk-through of the design specification with a cohort of expert users confirmed it. Their feedback was that this would be much easier than wrangling Excel-style IF statements, opening corrections up to users with less technical skill.</p>
-          </div>
+
+          <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
+        </summary>
+        <div class="evidence-body">
+<p>We had identified the need for multiple matching conditions, for example to apply one correction across several policy numbers. A walk-through of the design specification with a cohort of expert users confirmed it. Their feedback was that this would be much easier than wrangling Excel-style IF statements, opening corrections up to users with less technical skill.</p>
+        </div>
+      </details>
             </div>
           </details>
 
@@ -1487,13 +1712,17 @@
             <figcaption>Behind each validation is a log of all corrections applied, allowing reordering of correction rules. We uncovered the need for this in QA testing.</figcaption>
           </figure>
 
-          <div class="evidence-card framing-card">
-            <div class="framing-head">
+          <details class="evidence-card evidence-disclosure framing-card">
+        <summary class="framing-head">
               <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
               <span class="framing-label">Engineering constraint</span>
-            </div>
-            <p>Corrections aren&rsquo;t edits to cells: they&rsquo;re rules, applied in sequence each time the pipeline runs. When two rules match the same value, the later one wins, so the system can&rsquo;t settle the conflict on its own. Order had to become something users could see and control.</p>
-          </div>
+
+          <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
+        </summary>
+        <div class="evidence-body">
+<p>Corrections aren&rsquo;t edits to cells: they&rsquo;re rules, applied in sequence each time the pipeline runs. When two rules match the same value, the later one wins, so the system can&rsquo;t settle the conflict on its own. Order had to become something users could see and control.</p>
+        </div>
+      </details>
             </div>
           </details>
         </div>
@@ -1641,13 +1870,17 @@
             </div>
           </figure>
 
-          <div class="evidence-card framing-card">
-            <div class="framing-head">
+          <details class="evidence-card evidence-disclosure framing-card">
+        <summary class="framing-head">
               <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
               <span class="framing-label">Design validation</span>
-            </div>
-            <p>I reviewed the proposed navigation changes with users in a walkthrough before implementation. No significant issues emerged, and feedback after release confirmed that the changes addressed the navigation friction they had reported.</p>
-          </div>
+
+          <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
+        </summary>
+        <div class="evidence-body">
+<p>I reviewed the proposed navigation changes with users in a walkthrough before implementation. No significant issues emerged, and feedback after release confirmed that the changes addressed the navigation friction they had reported.</p>
+        </div>
+      </details>
             </div>
           </details>
           <details class="problem-item" id="iw-navigation">
@@ -1710,13 +1943,17 @@
             <div class="problem-item-body">
             <p>Clients select the validation results, organisations and people to include, then review the selection before sharing.</p>
 
-            <div class="evidence-card framing-card">
-              <div class="framing-head">
+            <details class="evidence-card evidence-disclosure framing-card">
+        <summary class="framing-head">
                 <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M12.1426 2.85254L2.82812 12.167L12.1426 21.4814V24.3096L0 12.167L12.1426 0.0244141V2.85254Z" fill="#00D8AA"/><path d="M45.832 12.167L33.665 24.334L22.916 13.585L12.168 24.333V21.5049L21.502 12.1709L21.498 12.167L21.502 12.1631L12.168 2.8291V0.000976562L22.916 10.749L33.665 0L45.832 12.167ZM24.3301 12.1631L24.334 12.167L24.3301 12.1709L33.665 21.5059L43.0039 12.167L33.665 2.82812L24.3301 12.1631Z" fill="#605F5F"/></svg>
                 <span class="framing-label">Evidence</span>
-              </div>
-              <p>Clients told us they wanted to share their results but were concerned about sharing proprietary data. We addressed this by allowing them to select specific rules to share.</p>
-            </div>
+
+          <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
+        </summary>
+        <div class="evidence-body">
+<p>Clients told us they wanted to share their results but were concerned about sharing proprietary data. We addressed this by allowing them to select specific rules to share.</p>
+        </div>
+      </details>
             <figure class="figure">
               <div class="figure-portrait-frame">
                 <img src="media/correction-sharing-popup.png" width="2418" height="2216" alt="The sharing popup: &lsquo;Share with 2 partners&rsquo;, listing each partner organisation with its submitters and the validation results selected to share, with a Review sharing button." loading="lazy">
@@ -1759,13 +1996,17 @@
               </div>
               <figcaption>Interaction mockup: pending corrections stay with the supplier until explicitly submitted.</figcaption>
             </figure>
-            <div class="evidence-card framing-card">
-              <div class="framing-head">
+            <details class="evidence-card evidence-disclosure framing-card">
+        <summary class="framing-head">
                 <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
                 <span class="framing-label">Design exploration</span>
-              </div>
-              <p>Exploring the handoff revealed a risk: sending every edit immediately could expose unfinished corrections to the receiver and trigger pipeline runs. I separated preparation from submission, giving suppliers time to check their changes before passing them back.</p>
-            </div>
+
+          <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
+        </summary>
+        <div class="evidence-body">
+<p>Exploring the handoff revealed a risk: sending every edit immediately could expose unfinished corrections to the receiver and trigger pipeline runs. I separated preparation from submission, giving suppliers time to check their changes before passing them back.</p>
+        </div>
+      </details>
             </div>
           </details>
           <details class="problem-item" id="sh-progress">
@@ -1785,14 +2026,18 @@
               <figcaption>Correction requests are attached to the submitted data and visible to both parties.</figcaption>
             </figure>
 
-            <div class="evidence-card framing-card" id="progress-design-exploration">
-              <div class="framing-head">
+            <details class="evidence-card evidence-disclosure framing-card" id="progress-design-exploration">
+        <summary class="framing-head">
                 <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
                 <span class="framing-label">Design exploration</span>
-              </div>
-              <p>Not every failure needed correcting, so I explored tracking only checks users had started working on. But starting another check added all its failures to the total, making progress appear to drop.</p>
+
+          <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
+        </summary>
+        <div class="evidence-body">
+<p>Not every failure needed correcting, so I explored tracking only checks users had started working on. But starting another check added all its failures to the total, making progress appear to drop.</p>
               <p>I kept it simple: show how many corrections had been requested and how many were complete.</p>
-            </div>
+        </div>
+      </details>
 
             <figure class="figure">
               <div class="figure-portrait-frame">
@@ -1916,17 +2161,6 @@
 
   </div>
 
-  <nav class="toc" aria-label="Section navigation">
-    <span class="toc-indicator" aria-hidden="true"></span>
-    <span class="eyebrow toc-heading">On this page</span>
-    <a href="#keypoints-heading">Key points</a>
-    <a href="#problem-heading">Problem</a>
-    <a href="#approach-heading">Approach</a>
-    <a href="#keydecisions-heading">Design decisions</a>
-    <a href="#sharing-heading">Sharing</a>
-    <a href="#outcome-heading">Outcome</a>
-    <a href="#reflections-heading">Reflections</a>
-  </nav>
 
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged image" tabindex="-1">
     <div class="lightbox-media">
@@ -2004,58 +2238,7 @@
       });
     })();
 
-    (function () {
-      var links = document.querySelectorAll(".toc a");
-      if (!links.length || !("IntersectionObserver" in window)) return;
 
-      var indicator = document.querySelector(".toc-indicator");
-      function moveIndicator(link) {
-        if (!indicator || !link) return;
-        indicator.style.height = link.offsetHeight + "px";
-        indicator.style.transform = "translateY(" + link.offsetTop + "px)";
-        indicator.classList.add("is-visible");
-      }
-      window.addEventListener("resize", function () {
-        var active = document.querySelector(".toc a.is-active");
-        if (active) moveIndicator(active);
-      });
-
-      // Observe the whole section (not just its heading) so a link stays
-      // highlighted for the entire time its section is in view, even when
-      // the section is tall and its heading has long scrolled past.
-      var sections = [];
-      links.forEach(function (link) {
-        var id = link.getAttribute("href").slice(1);
-        var el = document.getElementById(id);
-        var section = el ? el.closest("section") || el : null;
-        if (section) sections.push({ section: section, link: link });
-      });
-
-      var observer = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (entry) {
-            var match = null;
-            for (var i = 0; i < sections.length; i++) {
-              if (sections[i].section === entry.target) {
-                match = sections[i];
-                break;
-              }
-            }
-            if (!match) return;
-            if (entry.isIntersecting) {
-              links.forEach(function (l) { l.classList.remove("is-active"); });
-              match.link.classList.add("is-active");
-              moveIndicator(match.link);
-            }
-          });
-        },
-        { rootMargin: "-20% 0px -70% 0px", threshold: 0 }
-      );
-
-      sections.forEach(function (s) {
-        observer.observe(s.section);
-      });
-    })();
 
   </script>
   <script>
@@ -2384,5 +2567,81 @@
       });
     })();
   </script>
-  </body>
+    <script>
+    /* Accordion items: animate each <details> body open and closed. The
+       body's height is tweened from where it is now, so a click mid-way
+       reverses smoothly; reduced motion falls back to the native toggle. */
+    (function () {
+      var items = document.querySelectorAll('.evidence-disclosure');
+      if (!items.length || !('animate' in Element.prototype)) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      Array.prototype.forEach.call(items, function (d) {
+        var summary = d.querySelector('summary'), body = d.querySelector('.evidence-body');
+        var anim = null;
+        function run(from, to, done) {
+          if (anim) anim.cancel();
+          body.style.overflow = 'clip';
+          anim = body.animate(
+            [{ height: from + 'px', opacity: to ? 0.4 : 1 }, { height: to + 'px', opacity: to ? 1 : 0 }],
+            { duration: Math.min(520, 260 + Math.abs(to - from) * 0.25), easing: 'cubic-bezier(0.16, 1, 0.3, 1)' }
+          );
+          anim.onfinish = function () {
+            anim = null;
+            body.style.overflow = '';
+            if (done) done();
+          };
+        }
+        summary.addEventListener('click', function (e) {
+          e.preventDefault();
+          var now = body.getBoundingClientRect().height;
+          if (d.open && !d.classList.contains('is-closing')) {
+            d.classList.add('is-closing');
+            run(now, 0, function () { d.open = false; d.classList.remove('is-closing'); });
+          } else {
+            var from = d.open ? now : 0;
+            d.classList.remove('is-closing');
+            d.open = true;
+            run(from, body.scrollHeight);
+          }
+        });
+      });
+    })();
+  </script>
+  <script>
+    /* Phone hero: arm the picture's slide-up, and play it once 40px of
+       its resting place has scrolled into view. The observer sees the
+       picture where the transform has put it, 300px lower, so the root
+       margin reaches 260px below the window to make up the difference. */
+    (function () {
+      var media = document.querySelector(".val-hero-media");
+      if (!media || !("IntersectionObserver" in window)) return;
+      if (!window.matchMedia("(max-width: 640px)").matches) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      if (media.getBoundingClientRect().top < window.innerHeight - 40) return;
+      media.classList.add("is-armed");
+      var button = document.querySelector(".val-watch-row");
+      if (button) {
+        var gap = media.getBoundingClientRect().top - 300 - button.getBoundingClientRect().bottom;
+        media.style.setProperty("--close", Math.max(0, Math.round(gap - 56)) + "px");
+      }
+      var io = new IntersectionObserver(function (entries) {
+        if (!entries[0].isIntersecting) return;
+        media.classList.add("is-in", "is-played");
+      }, { rootMargin: "0px 0px 260px 0px" });
+      io.observe(media);
+
+      // back at the top of the page the slide-up runs in reverse, and
+      // plays again on the way down
+      var ticking = false;
+      window.addEventListener("scroll", function () {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(function () {
+          ticking = false;
+          if (window.scrollY <= 0 && media.classList.contains("is-in")) media.classList.remove("is-in");
+        });
+      }, { passive: true });
+    })();
+  </script>
+</body>
 </html>

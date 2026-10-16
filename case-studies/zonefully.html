@@ -693,13 +693,33 @@
     .zf-hero h1 { font-size: clamp(32px, 9.2vw, 44px); line-height: 1.06; }
     .zf-hero p.subtitle { font-size: clamp(19px, 5.4vw, 23px); line-height: 1.4; }
 
-    /* The reveal follows scroll progress continuously, without a timed
-       transition or a class switch at a visibility threshold. */
-    .zf-hero-media.is-scroll-reveal {
-      margin-top: calc(-1 * var(--hero-close, 0px));
-      opacity: var(--hero-opacity, 1);
-      transform: translate3d(0, var(--hero-rise, 0px), 0);
-      will-change: transform, opacity;
+    /* the picture slides up as it comes into view (after jamesfinch.co.uk,
+       but further): a 300px rise with a fade, on a springy ease that
+       settles a hair past its mark. The script below arms it only on phones, without reduced
+       motion, so with no JS the picture is simply there. */
+    .zf-hero-media.is-armed {
+      opacity: 0;
+      transform: translateY(300px);
+    }
+    /* the transition only on the way in, so arming jumps straight to the
+       start position rather than animating down to it */
+    /* the way back down, once it has played: back to the top of the page
+       reverses it, on a plain ease with no overshoot */
+    .zf-hero-media.is-armed.is-played {
+      transition: transform 0.6s cubic-bezier(0.55, 0, 0.45, 1),
+                  margin-top 0.6s cubic-bezier(0.55, 0, 0.45, 1),
+                  opacity 0.4s linear 0.2s;
+    }
+    /* ... and it comes to rest higher than it started, closing the empty
+       space under the button to 56px: the script measures that space into
+       --close, and the margin pulls the picture and the page below it up */
+    .zf-hero-media.is-armed.is-in {
+      opacity: 1;
+      transform: none;
+      margin-top: calc(-1 * var(--close, 0px));
+      transition: transform 0.75s cubic-bezier(0.22, 1.25, 0.36, 1),
+                  margin-top 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+                  opacity 0.4s linear;
     }
   }
 
@@ -1273,72 +1293,40 @@
       }
     })();
 
-    /* Phone hero: map scroll position directly to a smooth reveal. There
-       is no trigger, timer, replay, or moving intersection target to snap. */
+    /* Phone hero: arm the picture's slide-up, and play it once 40px of
+       its resting place has scrolled into view. The observer sees the
+       picture where the transform has put it, 300px lower, so the root
+       margin reaches 260px below the window to make up the difference. */
     (function () {
       var media = document.querySelector(".zf-hero-media");
-      if (!media) return;
-      var phone = window.matchMedia("(max-width: 640px)");
-      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-      var active = false, start = 0, distance = 360, ticking = false;
-      var width = window.innerWidth;
-
-      function render() {
-        ticking = false;
-        if (!active) return;
-        var progress = Math.max(0, Math.min(1, (Math.max(0, window.scrollY) - start) / distance));
-        var eased = progress * progress * (3 - 2 * progress);
-        media.style.setProperty("--hero-rise", (300 * (1 - eased)).toFixed(2) + "px");
-        media.style.setProperty("--hero-opacity", Math.min(1, progress * 2).toFixed(3));
+      if (!media || !("IntersectionObserver" in window)) return;
+      if (!window.matchMedia("(max-width: 640px)").matches) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      if (media.getBoundingClientRect().top < window.innerHeight - 40) return;
+      media.classList.add("is-armed");
+      var button = document.querySelector(".zf-watch");
+      if (button) {
+        var gap = media.getBoundingClientRect().top - 300 - button.getBoundingClientRect().bottom;
+        media.style.setProperty("--close", Math.max(0, Math.round(gap - 56)) + "px");
       }
+      var io = new IntersectionObserver(function (entries) {
+        if (!entries[0].isIntersecting) return;
+        media.classList.add("is-in", "is-played");
+      }, { rootMargin: "0px 0px 260px 0px" });
+      io.observe(media);
 
-      function configure() {
-        active = false;
-        media.classList.remove("is-scroll-reveal");
-        ["--hero-close", "--hero-rise", "--hero-opacity"].forEach(function (property) {
-          media.style.removeProperty(property);
-        });
-        if (!phone.matches || reduce.matches) return;
-        var top = media.getBoundingClientRect().top;
-        // Do not hide media already visible at a restored scroll position.
-        if (window.scrollY > 0 && top < window.innerHeight - 40) return;
-        var button = document.querySelector(".zf-watch");
-        var close = button ? Math.max(0, Math.round(top - button.getBoundingClientRect().bottom - 56)) : 0;
-        // Fix the resting space once. Nothing in the flow changes on scroll.
-        media.style.setProperty("--hero-close", close + "px");
-        start = Math.max(0, top + window.scrollY - close + 300 - window.innerHeight + 40);
-        distance = Math.min(360, window.innerHeight * 0.45);
-        active = true;
-        render();
-        media.classList.add("is-scroll-reveal");
-      }
-
+      // back at the top of the page the slide-up runs in reverse, and
+      // plays again on the way down
+      var ticking = false;
       window.addEventListener("scroll", function () {
-        if (ticking || !active) return;
+        if (ticking) return;
         ticking = true;
-        requestAnimationFrame(render);
+        requestAnimationFrame(function () {
+          ticking = false;
+          if (window.scrollY <= 0 && media.classList.contains("is-in")) media.classList.remove("is-in");
+        });
       }, { passive: true });
-      window.addEventListener("resize", function () {
-        // Ignore the mobile browser toolbar opening and closing.
-        if (window.innerWidth === width) return;
-        width = window.innerWidth;
-        configure();
-      });
-      reduce.addEventListener("change", configure);
-      window.addEventListener("pageshow", function (event) {
-        if (event.persisted) configure();
-      });
-      function initialise() {
-        // The deferred nav replaces the fallback header and changes its
-        // height. Measure only after it and the fonts have settled.
-        if (document.fonts) document.fonts.ready.then(configure);
-        else configure();
-      }
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initialise, { once: true });
-      } else initialise();
     })();
-
     /* Carousel: the dial follows the actual scroll position; a mouse
        can drag the strip; clicking a screen that is not the current one
        brings it in rather than opening it full size. Moves made here glide
