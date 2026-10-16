@@ -105,6 +105,10 @@ html.identity-menu-open { overflow: hidden; }
 /* a step quieter than the studies; full strength on hover or focus */
 .menu-subsection-more .menu-subsection-title { opacity: .6; transition: opacity .15s ease; }
 .menu-subsection-more a:is(:hover, :focus-visible) .menu-subsection-title { opacity: 1; }
+/* its hover surface hugs the text: the link only as wide as its content,
+   with the same breathing room right of the text as left of it */
+[data-navigation="identity"] .identity-dialog .menu-subsections .menu-subsection-more a { width: fit-content; padding-right: 16px; }
+[data-navigation="identity"] .identity-dialog .menu-subsections .menu-subsection-more a::before { right: 0; }
 .menu-subsections--approach .menu-subsections-grid { grid-template-columns: 1fr; gap: 0; text-align: center; }
 [data-navigation="identity"] .identity-dialog .menu-subsections--approach a { display: block; width: fit-content; max-width: 100%; margin: 0 auto; }
 @media (min-width: 641px) {
