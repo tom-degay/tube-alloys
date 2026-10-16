@@ -95,31 +95,16 @@ html.identity-menu-open { overflow: hidden; }
 .menu-subsection-copy { grid-column: 2; display: flex; flex-direction: column; gap: 5px; min-width: 0; }
 .menu-subsection-icon { display: block; width: 16px; height: 16px; object-fit: contain; justify-self: end; margin-top: 3px; position: relative; left: 25px; }
 .menu-subsection-icon + .menu-subsection-copy > .menu-subsection-kicker { padding-left: 24px; }
-/* the larger icon above each study's name, inside its text column */
-.menu-subsection-copy > .menu-subsection-icon { width: 28px; height: 28px; left: 0; margin: 0 0 4px; justify-self: auto; object-position: left center; }
-body.theme-light .menu-subsection-copy > .menu-subsection-icon { -webkit-mask-position: left center; mask-position: left center; }
 .menu-subsection-kicker { font: 500 14px/20px "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace; color: #00d8aa; text-transform: uppercase; letter-spacing: 2px; word-spacing: -3px; }
 .menu-subsection-group { grid-column: 1 / -1; padding: 6px 12px 2px; font: 500 13px/20px "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace; color: rgba(255,255,255,.45); text-transform: uppercase; letter-spacing: 2px; word-spacing: -3px; }
 .menu-subsection-divider { grid-column: 1 / -1; width: calc(100% - 24px); border: 0; border-top: 1px solid rgba(255,255,255,.14); margin: 8px 12px; }
 /* "More case studies": a full-width row under the two featured studies,
    its text in the title column so it lines up with theirs */
-.menu-subsection-more { grid-column: 1 / -1; text-align: center; }
-[data-navigation="identity"] .identity-dialog .menu-subsections--case-studies .menu-subsection-more a { display: block; width: fit-content; margin: 0 auto; padding-inline: 20px; }
-[data-navigation="identity"] .identity-dialog .menu-subsections--case-studies .menu-subsection-more a::before { left: 0; right: 0; }
-.menu-subsection-group { text-align: center; }
+.menu-subsection-more { grid-column: 1 / -1; }
 .menu-subsections--approach .menu-subsections-grid { grid-template-columns: 1fr; gap: 0; text-align: center; }
 [data-navigation="identity"] .identity-dialog .menu-subsections--approach a { display: block; width: fit-content; max-width: 100%; margin: 0 auto; }
 @media (min-width: 641px) {
   .menu-subsections--case-studies { width: calc(100% - 40px); transform: translateX(20px); }
-  /* two columns only as wide as their titles, close together and centred;
-     each title runs over two balanced lines */
-  .menu-subsections--case-studies .menu-subsections-grid { grid-template-columns: repeat(2, max-content); justify-content: center; column-gap: 8px; }
-  .menu-subsections--case-studies .menu-subsection-title { max-width: 12em; text-wrap: balance; }
-  /* The left column's balanced titles stop well short of its 12em box,
-     so the visible gap sat ~20px left of the menu's centre line. Nudge the
-     studies (not the centred labels or More) right to centre the gap;
-     relative offset, since transform is taken by the entrance animation */
-  .menu-subsections--case-studies .menu-subsection-item:not(.menu-subsection-group):not(.menu-subsection-more) { position: relative; left: 32px; }
 }
 /* The Agent hover surface: a soft fill settles around stationary text. */
 [data-navigation="identity"] .identity-dialog .menu-subsections a { position: relative; isolation: isolate; --surface-start-x: .975; --surface-start-y: .94; --surface-peak-x: 1.012; --surface-peak-y: .988; --surface-settle-x: .997; --surface-settle-y: 1.006; }
