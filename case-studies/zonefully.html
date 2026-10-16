@@ -693,13 +693,11 @@
     .zf-hero h1 { font-size: clamp(32px, 9.2vw, 44px); line-height: 1.06; }
     .zf-hero p.subtitle { font-size: clamp(19px, 5.4vw, 23px); line-height: 1.4; }
 
-    /* the picture slides up as it comes into view (after jamesfinch.co.uk,
-       but further): a 300px rise with a fade, on a springy ease that
-       settles a hair past its mark. The script below arms it only on phones, without reduced
-       motion, so with no JS the picture is simply there. */
+    /* A short slide starts just below the viewport. A gradual curve keeps
+       the movement visible throughout the entrance, without a fast spring. */
     .zf-hero-media.is-armed {
       opacity: 0;
-      transform: translateY(300px);
+      transform: translateY(80px);
     }
     /* the transition only on the way in, so arming jumps straight to the
        start position rather than animating down to it */
@@ -717,9 +715,9 @@
       opacity: 1;
       transform: none;
       margin-top: calc(-1 * var(--close, 0px));
-      transition: transform 1.05s cubic-bezier(0.22, 1.25, 0.36, 1),
-                  margin-top 1.05s cubic-bezier(0.22, 1, 0.36, 1),
-                  opacity 0.55s linear;
+      transition: transform 1.05s cubic-bezier(0.45, 0, 0.25, 1),
+                  margin-top 1.05s cubic-bezier(0.45, 0, 0.25, 1),
+                  opacity 1.05s ease-in-out;
     }
   }
 
@@ -1293,10 +1291,9 @@
       }
     })();
 
-    /* Phone hero: arm the picture's slide-up, and play it once 40px of
-       its resting place has scrolled into view. The observer sees the
-       picture where the transform has put it, 300px lower, so the root
-       margin reaches 260px below the window to make up the difference. */
+    /* Phone hero: trigger when 40px of its resting place enters view.
+       The 80px starting offset needs a 40px observer margin, keeping
+       the beginning of the animation near the visible viewport edge. */
     (function () {
       var media = document.querySelector(".zf-hero-media");
       if (!media || !("IntersectionObserver" in window)) return;
@@ -1306,13 +1303,13 @@
       media.classList.add("is-armed");
       var button = document.querySelector(".zf-watch");
       if (button) {
-        var gap = media.getBoundingClientRect().top - 300 - button.getBoundingClientRect().bottom;
+        var gap = media.getBoundingClientRect().top - 80 - button.getBoundingClientRect().bottom;
         media.style.setProperty("--close", Math.max(0, Math.round(gap - 56)) + "px");
       }
       var io = new IntersectionObserver(function (entries) {
         if (!entries[0].isIntersecting) return;
         media.classList.add("is-in", "is-played");
-      }, { rootMargin: "0px 0px 260px 0px" });
+      }, { rootMargin: "0px 0px 40px 0px" });
       io.observe(media);
 
       // back at the top of the page the slide-up runs in reverse, and
