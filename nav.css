@@ -119,7 +119,7 @@ body.theme-light .menu-subsection-copy > .menu-subsection-icon { -webkit-mask-po
      so the visible gap sat ~20px left of the menu's centre line. Nudge the
      studies (not the centred labels or More) right to centre the gap;
      relative offset, since transform is taken by the entrance animation */
-  .menu-subsections--case-studies .menu-subsection-item:not(.menu-subsection-group):not(.menu-subsection-more) { position: relative; left: 20px; }
+  .menu-subsections--case-studies .menu-subsection-item:not(.menu-subsection-group):not(.menu-subsection-more) { position: relative; left: 32px; }
 }
 /* The Agent hover surface: a soft fill settles around stationary text. */
 [data-navigation="identity"] .identity-dialog .menu-subsections a { position: relative; isolation: isolate; --surface-start-x: .975; --surface-start-y: .94; --surface-peak-x: 1.012; --surface-peak-y: .988; --surface-settle-x: .997; --surface-settle-y: 1.006; }
