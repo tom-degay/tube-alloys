@@ -108,9 +108,9 @@ html.identity-menu-open { overflow: hidden; }
 [data-navigation="identity"] .identity-dialog .menu-subsections--approach a { display: block; width: fit-content; max-width: 100%; margin: 0 auto; }
 @media (min-width: 641px) {
   .menu-subsections--case-studies { width: calc(100% - 40px); transform: translateX(20px); }
-  /* one column, as wide as its titles and centred; each title runs over
-     two balanced lines */
-  .menu-subsections--case-studies .menu-subsections-grid { grid-template-columns: max-content; justify-content: center; }
+  /* two columns only as wide as their titles, close together and centred;
+     each title runs over two balanced lines */
+  .menu-subsections--case-studies .menu-subsections-grid { grid-template-columns: repeat(2, max-content); justify-content: center; column-gap: 8px; }
   .menu-subsections--case-studies .menu-subsection-title { max-width: 12em; text-wrap: balance; }
 }
 /* The Agent hover surface: a soft fill settles around stationary text. */
