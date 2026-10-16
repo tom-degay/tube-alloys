@@ -389,31 +389,23 @@
     .cm-hero h1 { font-size: clamp(32px, 9.2vw, 44px); line-height: 1.06; }
     .cm-hero p.subtitle { font-size: clamp(19px, 5.4vw, 23px); line-height: 1.4; }
 
-    /* the picture slides up as it comes into view (after jamesfinch.co.uk,
-       but further): a 300px rise with a fade, on a springy ease that
-       settles a hair past its mark. The script below arms it only on phones, without reduced
-       motion, so with no JS the picture is simply there. */
+    /* Reserve the final spacing before revealing the media. Only transform
+       and opacity animate, so scrolling never moves the layout beneath it. */
     .cm-hero-media.is-armed {
+      margin-top: calc(-1 * var(--hero-close, 0px));
       opacity: 0;
-      transform: translateY(300px);
+      transform: translate3d(0, 300px, 0);
+      will-change: transform, opacity;
     }
-    /* the way back down, once it has played: back to the top of the page
-       reverses it, on a plain ease with no overshoot */
     .cm-hero-media.is-armed.is-played {
-      transition: transform 0.6s cubic-bezier(0.55, 0, 0.45, 1),
-                  margin-top 0.6s cubic-bezier(0.55, 0, 0.45, 1),
-                  opacity 0.4s linear 0.2s;
+      transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+                  opacity 0.4s ease;
     }
-    /* ... and it comes to rest higher than it started, closing the empty
-       space under the button to 56px: the script measures that space into
-       --close, and the margin pulls the picture and the page below it up */
     .cm-hero-media.is-armed.is-in {
       opacity: 1;
-      transform: none;
-      margin-top: calc(-1 * var(--close, 0px));
-      transition: transform 0.75s cubic-bezier(0.22, 1.25, 0.36, 1),
-                  margin-top 0.75s cubic-bezier(0.22, 1, 0.36, 1),
-                  opacity 0.4s linear;
+      transform: translate3d(0, 0, 0);
+      transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+                  opacity 0.5s ease;
     }
   }
 
@@ -1899,40 +1891,62 @@
     })();
   </script>
   <script>
-    /* Phone hero: arm the picture's slide-up, and play it once 40px of
-       its resting place has scrolled into view. The observer sees the
-       picture where the transform has put it, 300px lower, so the root
-       margin reaches 260px below the window to make up the difference. */
+    /* Phone hero: a stable document position triggers a compositor-only
+       reveal. The moving image is never used as its own scroll trigger. */
     (function () {
       var media = document.querySelector(".cm-hero-media");
-      if (!media || !("IntersectionObserver" in window)) return;
-      if (!window.matchMedia("(max-width: 640px)").matches) return;
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      if (media.getBoundingClientRect().top < window.innerHeight - 40) return;
-      media.classList.add("is-armed");
-      // the bottom of the View slides button row
-      var button = document.querySelector(".cm-watch-row");
-      if (button) {
-        var gap = media.getBoundingClientRect().top - 300 - button.getBoundingClientRect().bottom;
-        media.style.setProperty("--close", Math.max(0, Math.round(gap - 56)) + "px");
-      }
-      var io = new IntersectionObserver(function (entries) {
-        if (!entries[0].isIntersecting) return;
-        media.classList.add("is-in", "is-played");
-      }, { rootMargin: "0px 0px 260px 0px" });
-      io.observe(media);
+      if (!media) return;
+      var phone = window.matchMedia("(max-width: 640px)");
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+      var active = false, revealAt = 0, ticking = false;
+      var width = window.innerWidth;
 
-      // back at the top of the page the slide-up runs in reverse, and
-      // plays again on the way down
-      var ticking = false;
+      function update() {
+        ticking = false;
+        if (!active) return;
+        if (window.scrollY <= 0) {
+          media.classList.remove("is-in");
+        } else if (revealAt - window.scrollY <= window.innerHeight - 40) {
+          media.classList.add("is-in", "is-played");
+        }
+      }
+
+      function configure() {
+        active = false;
+        media.classList.remove("is-armed", "is-in", "is-played");
+        media.style.removeProperty("--hero-close");
+        if (!phone.matches || reduce.matches) return;
+        var top = media.getBoundingClientRect().top;
+        // Restored scroll positions and already-visible media stay visible.
+        if (top < window.innerHeight - 40) return;
+        revealAt = top + window.scrollY;
+        var button = document.querySelector(".cm-watch-row");
+        if (button) {
+          var gap = top - button.getBoundingClientRect().bottom;
+          media.style.setProperty("--hero-close", Math.max(0, Math.round(gap - 56)) + "px");
+        }
+        media.classList.add("is-armed");
+        active = true;
+        update();
+      }
+
       window.addEventListener("scroll", function () {
-        if (ticking) return;
+        if (ticking || !active) return;
         ticking = true;
-        requestAnimationFrame(function () {
-          ticking = false;
-          if (window.scrollY <= 0 && media.classList.contains("is-in")) media.classList.remove("is-in");
-        });
+        requestAnimationFrame(update);
       }, { passive: true });
+      window.addEventListener("resize", function () {
+        // Mobile browser bars change height while scrolling: do not rearm.
+        if (window.innerWidth === width) return;
+        width = window.innerWidth;
+        configure();
+      });
+      reduce.addEventListener("change", configure);
+      window.addEventListener("pageshow", function (event) {
+        if (event.persisted) configure();
+      });
+      if (document.fonts) document.fonts.ready.then(configure);
+      else configure();
     })();
   </script>
   <script data-goatcounter="https://tomdegay.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
