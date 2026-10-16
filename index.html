@@ -788,7 +788,9 @@
     .case-blocks-wide .validation-vector .vector-inner {
       transform-box: view-box;
       transform-origin: left center;
-      transform: scale(1.3);
+      /* nudged down so the top of the drawing has some air under the card's
+         edge; the extra is lost off the bottom instead */
+      transform: scale(1.3) translate(0, 110px);
     }
 
     /* The animated vector replaces the flat icon here. It is a different
