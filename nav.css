@@ -111,8 +111,11 @@ html.identity-menu-open { overflow: hidden; }
 [data-navigation="identity"] .identity-dialog .menu-subsections .menu-subsection-more a::before { right: 0; }
 .menu-subsections--approach .menu-subsections-grid { grid-template-columns: 1fr; gap: 0; text-align: center; }
 [data-navigation="identity"] .identity-dialog .menu-subsections--approach a { display: block; width: fit-content; max-width: 100%; margin: 0 auto; }
+/* One column at every width: on wider screens it is only as wide as its
+   longest title and centred in the menu, rather than two columns side by
+   side. */
 @media (min-width: 641px) {
-  .menu-subsections--case-studies { width: calc(100% - 40px); transform: translateX(20px); }
+  .menu-subsections--case-studies .menu-subsections-grid { grid-template-columns: max-content; justify-content: center; }
 }
 /* The Agent hover surface: a soft fill settles around stationary text. */
 [data-navigation="identity"] .identity-dialog .menu-subsections a { position: relative; isolation: isolate; --surface-start-x: .975; --surface-start-y: .94; --surface-peak-x: 1.012; --surface-peak-y: .988; --surface-settle-x: .997; --surface-settle-y: 1.006; }
