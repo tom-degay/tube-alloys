@@ -66,7 +66,9 @@ window.addEventListener('pageswap', e => {
       const item = doc.createElement('div'); item.className = 'menu-subsection-item menu-subsection-more';
       item.style.setProperty('--entry-delay', delay + 'ms');
       const link = doc.createElement('a'); link.href = href;
-      link.innerHTML = '<span class="menu-subsection-copy"><span class="menu-subsection-title">More case studies <span aria-hidden="true">&rarr;</span></span></span>';
+      // reads "More" on screen; the full name for screen readers
+      link.setAttribute('aria-label', 'More case studies');
+      link.innerHTML = '<span class="menu-subsection-copy"><span class="menu-subsection-title">More <span aria-hidden="true">&rarr;</span></span></span>';
       item.append(link); grid.append(item);
     };
     trigger.setAttribute('aria-label', label);
