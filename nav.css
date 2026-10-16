@@ -102,6 +102,9 @@ html.identity-menu-open { overflow: hidden; }
 /* "More case studies": a full-width row under the two featured studies,
    its text in the title column so it lines up with theirs */
 .menu-subsection-more { grid-column: 1 / -1; }
+/* a step quieter than the studies; full strength on hover or focus */
+.menu-subsection-more .menu-subsection-title { opacity: .6; transition: opacity .15s ease; }
+.menu-subsection-more a:is(:hover, :focus-visible) .menu-subsection-title { opacity: 1; }
 .menu-subsections--approach .menu-subsections-grid { grid-template-columns: 1fr; gap: 0; text-align: center; }
 [data-navigation="identity"] .identity-dialog .menu-subsections--approach a { display: block; width: fit-content; max-width: 100%; margin: 0 auto; }
 @media (min-width: 641px) {
