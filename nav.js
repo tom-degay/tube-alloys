@@ -89,15 +89,7 @@ window.addEventListener('pageswap', e => {
       const item = doc.createElement('div'); item.className = 'menu-subsection-item';
       item.style.setProperty('--entry-delay', (60 + index * 35) + 'ms');
       const link = doc.createElement('a'); link.href = card.getAttribute('href');
-      const sourceIcon = card.querySelector('.nav-dropdown-card-kicker-icon');
-      const iconSrc = sourceIcon && sourceIcon.getAttribute('src');
-      if (iconSrc) {
-        const icon = doc.createElement('img'); icon.className = 'menu-subsection-icon';
-        icon.src = iconSrc + (iconSrc.endsWith('/feeds.svg') ? '?v=2' : '');
-        icon.alt = ''; icon.width = 16; icon.height = 16; link.append(icon);
-        // lets a themed page repaint the icon in its own colour, via mask-image
-        icon.style.setProperty('--icon', 'url("' + icon.src + '")');
-      }
+      // no study icons in the menu: names only
       const copy = doc.createElement('span'); copy.className = 'menu-subsection-copy';
       const kicker = card.querySelector('.nav-dropdown-card-kicker');
       if (kicker) {
