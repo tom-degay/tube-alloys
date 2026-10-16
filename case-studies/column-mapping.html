@@ -389,23 +389,13 @@
     .cm-hero h1 { font-size: clamp(32px, 9.2vw, 44px); line-height: 1.06; }
     .cm-hero p.subtitle { font-size: clamp(19px, 5.4vw, 23px); line-height: 1.4; }
 
-    /* Reserve the final spacing before revealing the media. Only transform
-       and opacity animate, so scrolling never moves the layout beneath it. */
-    .cm-hero-media.is-armed {
+    /* The reveal follows scroll progress continuously, without a timed
+       transition or a class switch at a visibility threshold. */
+    .cm-hero-media.is-scroll-reveal {
       margin-top: calc(-1 * var(--hero-close, 0px));
-      opacity: 0;
-      transform: translate3d(0, 300px, 0);
+      opacity: var(--hero-opacity, 1);
+      transform: translate3d(0, var(--hero-rise, 0px), 0);
       will-change: transform, opacity;
-    }
-    .cm-hero-media.is-armed.is-played {
-      transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
-                  opacity 0.4s ease;
-    }
-    .cm-hero-media.is-armed.is-in {
-      opacity: 1;
-      transform: translate3d(0, 0, 0);
-      transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-                  opacity 0.5s ease;
     }
   }
 
@@ -1891,52 +1881,53 @@
     })();
   </script>
   <script>
-    /* Phone hero: a stable document position triggers a compositor-only
-       reveal. The moving image is never used as its own scroll trigger. */
+    /* Phone hero: map scroll position directly to a smooth reveal. There
+       is no trigger, timer, replay, or moving intersection target to snap. */
     (function () {
       var media = document.querySelector(".cm-hero-media");
       if (!media) return;
       var phone = window.matchMedia("(max-width: 640px)");
       var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-      var active = false, revealAt = 0, ticking = false;
+      var active = false, start = 0, distance = 360, ticking = false;
       var width = window.innerWidth;
 
-      function update() {
+      function render() {
         ticking = false;
         if (!active) return;
-        if (window.scrollY <= 0) {
-          media.classList.remove("is-in");
-        } else if (revealAt - window.scrollY <= window.innerHeight - 40) {
-          media.classList.add("is-in", "is-played");
-        }
+        var progress = Math.max(0, Math.min(1, (Math.max(0, window.scrollY) - start) / distance));
+        var eased = progress * progress * (3 - 2 * progress);
+        media.style.setProperty("--hero-rise", (300 * (1 - eased)).toFixed(2) + "px");
+        media.style.setProperty("--hero-opacity", Math.min(1, progress * 2).toFixed(3));
       }
 
       function configure() {
         active = false;
-        media.classList.remove("is-armed", "is-in", "is-played");
-        media.style.removeProperty("--hero-close");
+        media.classList.remove("is-scroll-reveal");
+        ["--hero-close", "--hero-rise", "--hero-opacity"].forEach(function (property) {
+          media.style.removeProperty(property);
+        });
         if (!phone.matches || reduce.matches) return;
         var top = media.getBoundingClientRect().top;
-        // Restored scroll positions and already-visible media stay visible.
-        if (top < window.innerHeight - 40) return;
-        revealAt = top + window.scrollY;
+        // Do not hide media already visible at a restored scroll position.
+        if (window.scrollY > 0 && top < window.innerHeight - 40) return;
         var button = document.querySelector(".cm-watch-row");
-        if (button) {
-          var gap = top - button.getBoundingClientRect().bottom;
-          media.style.setProperty("--hero-close", Math.max(0, Math.round(gap - 56)) + "px");
-        }
-        media.classList.add("is-armed");
+        var close = button ? Math.max(0, Math.round(top - button.getBoundingClientRect().bottom - 56)) : 0;
+        // Fix the resting space once. Nothing in the flow changes on scroll.
+        media.style.setProperty("--hero-close", close + "px");
+        start = Math.max(0, top + window.scrollY - close + 300 - window.innerHeight + 40);
+        distance = Math.min(360, window.innerHeight * 0.45);
         active = true;
-        update();
+        render();
+        media.classList.add("is-scroll-reveal");
       }
 
       window.addEventListener("scroll", function () {
         if (ticking || !active) return;
         ticking = true;
-        requestAnimationFrame(update);
+        requestAnimationFrame(render);
       }, { passive: true });
       window.addEventListener("resize", function () {
-        // Mobile browser bars change height while scrolling: do not rearm.
+        // Ignore the mobile browser toolbar opening and closing.
         if (window.innerWidth === width) return;
         width = window.innerWidth;
         configure();
@@ -1945,8 +1936,15 @@
       window.addEventListener("pageshow", function (event) {
         if (event.persisted) configure();
       });
-      if (document.fonts) document.fonts.ready.then(configure);
-      else configure();
+      function initialise() {
+        // The deferred nav replaces the fallback header and changes its
+        // height. Measure only after it and the fonts have settled.
+        if (document.fonts) document.fonts.ready.then(configure);
+        else configure();
+      }
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initialise, { once: true });
+      } else initialise();
     })();
   </script>
   <script data-goatcounter="https://tomdegay.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
