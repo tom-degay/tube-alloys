@@ -782,10 +782,13 @@
       transform: scale(0.9) translate(0, -58px);
     }
 
+    /* Validation, landscape: the drawing enlarged from its left edge, so
+       the rule list runs off the card's top, bottom and right while the
+       Date Cleanse / Validate column stays whole on the left */
     .case-blocks-wide .validation-vector .vector-inner {
       transform-box: view-box;
-      transform-origin: center;
-      transform: scale(0.8);
+      transform-origin: left center;
+      transform: scale(1.3);
     }
 
     /* The animated vector replaces the flat icon here. It is a different
@@ -1166,8 +1169,52 @@
   .hero-rotation.is-ready .about-statement.is-active { pointer-events: auto; }
   .hero-rotation.is-turning .about-statement { pointer-events: none; }
   .hero-compound { white-space: nowrap; }
-  .hero-statements a { color: inherit; border: 0; padding: 0; text-decoration: underline; text-decoration-color: rgba(255,255,255,.4); text-decoration-thickness: 1px; text-underline-offset: .12em; }
-  .hero-statements a:hover, .hero-statements a:focus-visible { text-decoration-color: #fff; }
+  /* Hero links: a quiet 1px white underline at rest; on hover the words take
+     the colour sweep of the Agent demo on Design craft -- its pastel
+     gradient (blue, lavender, pink, back to blue) fading in from white,
+     then turning a full circle every 1.45s for as long as the pointer
+     stays; back to white when it leaves. The angle and strength are
+     animated custom properties; browsers without @property show the
+     gradient without the turn.
+     There is no text-decoration: with the text clipped to its gradient, a
+     text underline is painted with the text's own (white) fill and its
+     colour is ignored. The script at the foot of the page draws a 1px
+     .hl-line per line of each link instead, just under the baseline (so a
+     link that wraps is underlined on each line). */
+  @property --hl-a { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+  @property --hl-i { syntax: "<number>"; inherits: false; initial-value: 0; }
+  .hero-statements .about-statement { position: relative; }
+  .hero-statements a {
+    --hl-a: 0deg;
+    --hl-i: 0;
+    color: inherit; border: 0; padding: 0; text-decoration: none;
+    background: linear-gradient(var(--hl-a),
+      color-mix(in srgb, #a1d2ec calc(var(--hl-i) * 100%), #fff),
+      color-mix(in srgb, #c6a8ef calc(var(--hl-i) * 100%), #fff) 35%,
+      color-mix(in srgb, #d39be7 calc(var(--hl-i) * 100%), #fff) 55%,
+      color-mix(in srgb, #eca5cd calc(var(--hl-i) * 100%), #fff) 75%,
+      color-mix(in srgb, #b4dcf0 calc(var(--hl-i) * 100%), #fff));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-box-decoration-break: clone; box-decoration-break: clone;
+  }
+  .hero-statements a:hover,
+  .hero-statements a:focus-visible {
+    animation: hl-agent-in 120ms linear forwards, hl-agent-turn 1450ms linear infinite;
+  }
+  .hl-line {
+    position: absolute;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.5);
+    pointer-events: none;
+  }
+  @keyframes hl-agent-in { from { --hl-i: 0; } to { --hl-i: 1; } }
+  @keyframes hl-agent-turn { from { --hl-a: 90deg; } to { --hl-a: -270deg; } }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-statements a:hover,
+    .hero-statements a:focus-visible { animation: none; }
+  }
   .hero-arrow-art {
     grid-column: 2;
     grid-row: 1 / 3;
@@ -1348,9 +1395,9 @@
         <div class="hero-copy">
         <div class="hero-statements" id="hero-statements">
           <p class="about-statement display is-active">Product designer. <span class="hero-compound">Big-picture</span> thinker. <span class="hero-compound">Small-detail</span> obsessive. Complexity to clarity.</p>
-          <p class="about-statement display" hidden>Designing for <a href="/case-studies">data tools</a>. Complex workflows. From discovery to delivery.</p>
+          <p class="about-statement display" hidden>Design for <a href="/case-studies">data tools</a>.<br> Complex workflows.<br> From discovery to&nbsp;delivery.</p>
           <p class="about-statement display" hidden>14 years in product. Background in <a href="/wayfinding">wayfinding</a>. Passionate about the <a href="/design-craft">craft</a>.</p>
-          <p class="about-statement display" hidden><a href="/design-craft#isokon-heading">Micro-museum</a> co-founder. <a href="#other-work-heading">Side project</a> wrangler. Aspirant <a href="/about.html#:~:text=Outside%20of%20work%2C%20I%E2%80%99m%20usually%20to%20be%20found%20at%20the%20climbing%20wall%20with%20my%20family%20or%2C%20even%20better%2C%20bouldering%20in%20the%20forest%20of%20Fontainebleau.">Bleausard</a>.</p>
+          <p class="about-statement display" hidden><a href="/design-craft#isokon-heading">Micro-museum</a><br> co-founder&nbsp;/&nbsp;designer.<br> <a href="#other-work-heading">Side project</a> wrangler.<br> Aspirant <a href="/about.html#:~:text=Outside%20of%20work%2C%20I%E2%80%99m%20usually%20to%20be%20found%20at%20the%20climbing%20wall%20with%20my%20family%20or%2C%20even%20better%2C%20bouldering%20in%20the%20forest%20of%20Fontainebleau.">Bleausard</a>.</p>
         </div>
         <div class="hero-rotation-controls tdg-dial" hidden></div>
         </div>
@@ -1363,7 +1410,7 @@
 
                   <polygon class="hero-arrow is-active" data-arrow="0" points="105.23729 72.2832 108.625 75.6699 81.77049 101.5459 136.54879 101.5469 136.54879 106.2168 81.72749 106.2158 108.626 132.1348 105.23929 135.5205 73.54689 103.9014 105.23729 72.2832"/>
                 </g>
-                <g class="hero-arrow-control" role="button" tabindex="0" data-statement="1" aria-label="Show statement 2: Designing for data tools" aria-controls="hero-statements" aria-pressed="false">
+                <g class="hero-arrow-control" role="button" tabindex="0" data-statement="1" aria-label="Show statement 2: Design for data tools" aria-controls="hero-statements" aria-pressed="false">
                   <polygon class="hero-arrow-hit" points="33.02 20.27 47.85 20.44 71.54 64.15 71.54 78.53 40.20 112.67 8.63 78.59 8.63 64.31" aria-hidden="true"/>
 
                   <path class="hero-arrow" data-arrow="1" d="M45.80029,88.5703l2.0478-68.1279-7.6855,2.7226-6.8433-2.8974h-.7021l1.939,68.2685c-4.7637-5.9414-12.9219-14.6181-25.8916-24.2295,0,14.4532-.0303,0-.0313,14.2813,17.0649,14.7148,30.2632,32.2109,31.478,33.8389l-.0009.2412s.0361-.0498.0888-.1221c.002.0029.0122.0166.0122.0166v-.0342c1.2139-1.6494,14.272-19.206,31.32861-33.914,0-7.5372,0-6.1006,0-5.542,0-.5596,0-2.6856.002-8.919-12.84861,9.7334-20.97751,18.4639-25.74171,24.417"/>
@@ -1373,7 +1420,7 @@
 
                   <polygon class="hero-arrow" data-arrow="2" points="118.24319 47.4082 74.68069 48.3623 74.68069 35.6455 118.13769 36.418 98.79589 21.084 116.66209 20.9766 130.33979 33.6406 130.37789 33.6055 139.36619 41.9434 117.95119 61.7881 99.94429 61.7949 118.24319 47.4082"/>
                 </g>
-                <g class="hero-arrow-control" role="button" tabindex="0" data-statement="3" aria-label="Show statement 4: Micro-museum co-founder" aria-controls="hero-statements" aria-pressed="false">
+                <g class="hero-arrow-control" role="button" tabindex="0" data-statement="3" aria-label="Show statement 4: Micro-museum co-founder and designer" aria-controls="hero-statements" aria-pressed="false">
                   <polygon class="hero-arrow-hit" points="39.63 134.08 54.99 119.29 57.83 117.92 59.29 118.29 76.86 133.10 76.86 156.11 75.67 158.90 73.02 160.14 43.19 160.59 40.63 159.35 39.53 156.65" aria-hidden="true"/>
 
                   <path class="hero-arrow" data-arrow="3" d="M54.99319,119.2939c.3662-.3046.8081-.6093,1.3271-.915.5171-.3047,1.02-.458,1.5088-.458.5493,0,1.0371.123,1.4644.3662.4262.2451.79151.5186,1.0981.8242l14.8203,13.083c1.0977.9756,1.6475,1.9532,1.6475,2.9278,0,1.0371-.3975,1.9668-1.1885,2.79-.79489.8233-1.6787,1.2354-2.6543,1.2354-.4883,0-.9609-.1211-1.418-.3662-.457-.2432-1.0527-.7002-1.7841-1.3721l-11.71-10.4297-11.8941,10.1543c-.6723.6113-1.2211,1.0225-1.6469,1.2353-.4273.2149-.8853.3213-1.3721.3213-.977,0-1.8301-.4121-2.562-1.2353-.7319-.8242-1.0981-1.7227-1.0981-2.6992,0-1.1582.5791-2.2256,1.7382-3.2032l13.7237-12.2588ZM54.99319,139.8789c.3662-.3037.8081-.6084,1.3271-.915.5171-.3037,1.02-.4571,1.5088-.4571.5493,0,1.0371.1231,1.4644.3662.4262.2442.79151.5186,1.0981.8233l14.8203,13.083c1.0977.9756,1.6475,1.9531,1.6475,2.9277,0,1.0381-.3975,1.9668-1.1885,2.7901-.79489.8242-1.6787,1.2353-2.6543,1.2353-.4883,0-.9609-.1211-1.418-.3662-.457-.2432-1.0527-.7002-1.7841-1.3721l-11.71-10.4296-11.8941,10.1552c-.6723.6104-1.2211,1.0225-1.6469,1.2354-.4273.2138-.8853.3203-1.3721.3203-.977,0-1.8301-.4121-2.562-1.2354-.7319-.8242-1.0981-1.7226-1.0981-2.6992,0-1.1582.5791-2.2256,1.7382-3.2021l13.7237-12.2598Z"/>
@@ -2055,6 +2102,53 @@
         var i = slides.indexOf(slide);
         if (i !== current()) { e.preventDefault(); e.stopPropagation(); go(i); }
       }, true);
+    })();
+  </script>
+  <script>
+    /* Hero link underlines: a 1px line under each line of each link, just
+       under the baseline, laid inside the link so it fades and turns with
+       its statement. Measured from the link's own line boxes relative to
+       its statement, so only when the hero is still; redrawn when a
+       statement changes size and after each turn. */
+    (function () {
+      var stage = document.querySelector('.hero-statements');
+      if (!stage) return;
+      var rot = stage.closest('.hero-rotation');
+      function draw(p) {
+        if (rot && rot.classList.contains('is-turning')) return;
+        var pr = p.getBoundingClientRect();
+        if (!pr.width) return;
+        p.querySelectorAll('a').forEach(function (a) {
+          a.querySelectorAll('.hl-line').forEach(function (n) { n.remove(); });
+          Array.prototype.forEach.call(a.getClientRects(), function (r) {
+            if (r.width < 2) return;
+            var n = document.createElement('span');
+            n.className = 'hl-line';
+            n.setAttribute('aria-hidden', 'true');
+            n.style.left = (r.left - pr.left) + 'px';
+            n.style.top = (r.top - pr.top + Math.round(r.height * 0.86)) + 'px';
+            n.style.width = r.width + 'px';
+            a.appendChild(n);
+          });
+        });
+      }
+      var slides = Array.prototype.slice.call(stage.querySelectorAll('.about-statement'));
+      function drawAll() { slides.forEach(draw); }
+      if ('ResizeObserver' in window) {
+        var ro = new ResizeObserver(function (entries) { entries.forEach(function (e) { draw(e.target); }); });
+        slides.forEach(function (p) { ro.observe(p); });
+      }
+      if (rot && 'MutationObserver' in window) {
+        var wasTurning = rot.classList.contains('is-turning');
+        new MutationObserver(function () {
+          var now = rot.classList.contains('is-turning');
+          if (wasTurning && !now) drawAll();
+          wasTurning = now;
+        }).observe(rot, { attributes: true, attributeFilter: ['class'] });
+      }
+      window.addEventListener('load', drawAll);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawAll);
+      drawAll();
     })();
   </script>
   <script data-goatcounter="https://tomdegay.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
