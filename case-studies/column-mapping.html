@@ -282,57 +282,202 @@
     background: rgba(0, 0, 0, 0.8);
   }
 
-  /* -- hero video -- */
-  .case-hero-video {
-    padding: clamp(24px, 2.5vw, 28px) clamp(24px, 2.5vw, 28px) 0;
-    background: #000;
+  /* -- hero: as on Zonefully and Image Insight. Desktop: the study icon,
+     kicker, title, strapline and Watch the demo on the left; the Map Column
+     Headers screen on the right running off the window's right edge
+     (rounded on the left only). The markup keeps the picture first, so the
+     columns are placed explicitly. -- */
+  .cm-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 53.4vw;
+    align-items: center;
+    column-gap: 6.4vw;
+    padding: clamp(40px, 9vw, 180px) 0 clamp(56px, 10vw, 200px) 7.6vw;
+    background: linear-gradient(180deg, #131313 0%, #222121 100%);
   }
 
-  .case-hero-video-frame {
-    max-width: 900px;
-    margin: -28px auto 0;
-    overflow: hidden;
-    border-radius: 10px 10px 0 0;
-    /* Short laptop windows (a 15" MacBook Air is ~780px tall): keep the case
-       study icon, kicker and the start of "On this page" above the fold, by
-       leaving ~270px under the hero. Taller windows keep the full 750px. */
-    max-height: min(750px, max(320px, calc(100vh - 270px)));
-  }
-
-  @media (min-width: 1024px) {
-    .case-hero-video-frame { max-width: 1370px; }
-  }
-
-  @media (min-width: 1100px) {
-    .case-hero-video {
-      background: linear-gradient(180deg, #131313 0%, #222121 100%);
-    }
-
-    .case-hero-video-frame {
-      max-width: 1024px;
-      max-height: none;
-      margin: 0 auto;
-      border: 1px solid #282828;
-      border-bottom: none;
-    }
-  }
-
-  .case-hero-video-frame video {
+  .cm-hero-media img {
     display: block;
     width: 100%;
     height: auto;
+    border-radius: clamp(6px, 0.7vw, 14px) 0 0 clamp(6px, 0.7vw, 14px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08), 0 18px 48px rgba(0, 0, 0, 0.14);
   }
 
-  @media (max-width: 799.98px) {
-    .case-hero-video {
-      padding-left: 0;
-      padding-right: 0;
+  @media (min-width: 1024px) {
+    .cm-hero-text { grid-column: 1; grid-row: 1; }
+    .cm-hero-media { grid-column: 2; grid-row: 1; }
+  }
+
+  .cm-hero h1 {
+    font-size: clamp(32px, 3.75vw, 76px);
+    line-height: 1.04;
+    letter-spacing: -0.01em;
+    max-width: none;
+  }
+
+  /* no orphans: a non-breaking space glues each line's last two words,
+     and balanced wrapping evens out the title's lines */
+  .cm-hero h1 { text-wrap: balance; }
+  .cm-hero p.subtitle { text-wrap: pretty; }
+
+  /* "Watch the demo": styled as the nav bar (nav.css .identity-bar), set
+     in the bar's bold Fakt like "Tom de Gay", jumping to the demo video in
+     Outcomes */
+  .cm-watch-row { display: flex; flex-wrap: wrap; gap: 10px; margin: clamp(20px, 2.4vw, 32px) 0 0; }
+
+  a.cm-watch {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 44px;
+    padding: 9px 22px 9px 18px;
+    border: 1px solid #ffffff09;
+    border-radius: 16px;
+    background: rgba(29, 29, 29, 0.5);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    color: #eee;
+    font: 600 17px/24px "Fakt", sans-serif;
+    white-space: nowrap;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  a.cm-watch svg { flex: 0 0 auto; width: 14px; height: 14px; }
+
+  a.cm-watch:hover, a.cm-watch:focus-visible { color: #fff; }
+
+  @media (max-width: 640px) {
+    a.cm-watch { border-radius: 13px; }
+  }
+
+  /* the study's icon (the drawn one from the old header) above the title,
+     at the size of the Image Insight and Zonefully logos; the kicker sits
+     between it and the title */
+  .cm-hero .case-icon.cm-hero-logo {
+    display: block;
+    width: auto;
+    height: clamp(53px, 4.8vw, 86px);
+    margin-bottom: clamp(20px, 2.4vw, 36px);
+  }
+  .cm-hero .kicker { margin-bottom: clamp(12px, 1.4vw, 20px); }
+
+  .cm-hero p.subtitle {
+    margin-top: clamp(16px, 1.8vw, 36px);
+    font-size: clamp(18px, 1.7vw, 32px);
+    line-height: 1.35;
+    max-width: 24em;
+  }
+
+  /* Below 1024px the hero stacks, title first: the text and the picture
+     both line up with the content edges of the nav bar above them (the
+     bar is min(820px, 100% - 48px) wide with 22px padding; at 640px and
+     under, 100% - 28px with 16px), and the picture is rounded all round
+     instead of running off the edge. */
+  @media (max-width: 1023.98px) {
+    .cm-hero {
+      --hero-inset: calc(max(24px, (100% - 820px) / 2) + 22px);
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: clamp(40px, 11vw, 110px);
+      padding: clamp(32px, 8.8vw, 88px) var(--hero-inset) clamp(48px, 10vw, 100px);
     }
 
-    .case-hero-video-frame {
-      border-radius: 0;
+    .cm-hero-text { grid-row: 1; }
+
+    /* the picture still runs off the window's right edge, rounded on the
+       left only, as on desktop and phones */
+    .cm-hero-media { margin-right: calc(-1 * var(--hero-inset)); }
+    .cm-hero-media img { border-radius: clamp(6px, 1.3vw, 13px) 0 0 clamp(6px, 1.3vw, 13px); }
+
+    .cm-hero h1 { font-size: clamp(32px, 5vw, 56px); line-height: 1.1; max-width: 13.5em; }
+
+    .cm-hero p.subtitle {
+      margin-top: clamp(14px, 2vw, 22px);
+      font-size: clamp(18px, 2.25vw, 24px);
+      line-height: 1.42;
+      max-width: 27.5em;
     }
   }
+
+  @media (max-width: 640px) {
+    .cm-hero { --hero-inset: 30px; }
+
+    /* the logo, title, strapline and button fill the first screen below
+       the nav bar (whose spacer is 86px tall here), centred in it; the
+       picture waits just below the fold and scrolls up into view */
+    .cm-hero { padding-top: 0; }
+    .cm-hero-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: calc(100vh - 86px);
+      min-height: calc(100svh - 86px);
+      /* weighted a little above centre */
+      padding-bottom: 12svh;
+      box-sizing: border-box;
+    }
+
+    /* bigger type to fill more of the width */
+    .cm-hero .case-icon.cm-hero-logo { height: 64px; align-self: flex-start; }
+    .cm-hero h1 { font-size: clamp(32px, 9.2vw, 44px); line-height: 1.06; }
+    .cm-hero p.subtitle { font-size: clamp(19px, 5.4vw, 23px); line-height: 1.4; }
+
+    /* the picture slides up as it comes into view (after jamesfinch.co.uk,
+       but further): a 300px rise with a fade, on a springy ease that
+       settles a hair past its mark. The script below arms it only on phones, without reduced
+       motion, so with no JS the picture is simply there. */
+    .cm-hero-media.is-armed {
+      opacity: 0;
+      transform: translateY(300px);
+    }
+    /* the way back down, once it has played: back to the top of the page
+       reverses it, on a plain ease with no overshoot */
+    .cm-hero-media.is-armed.is-played {
+      transition: transform 0.6s cubic-bezier(0.55, 0, 0.45, 1),
+                  margin-top 0.6s cubic-bezier(0.55, 0, 0.45, 1),
+                  opacity 0.4s linear 0.2s;
+    }
+    /* ... and it comes to rest higher than it started, closing the empty
+       space under the button to 56px: the script measures that space into
+       --close, and the margin pulls the picture and the page below it up */
+    .cm-hero-media.is-armed.is-in {
+      opacity: 1;
+      transform: none;
+      margin-top: calc(-1 * var(--close, 0px));
+      transition: transform 0.75s cubic-bezier(0.22, 1.25, 0.36, 1),
+                  margin-top 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+                  opacity 0.4s linear;
+    }
+  }
+
+
+  /* On phones the picture is magnified and cropped, as on Zonefully: it
+     starts at the page's left margin, rounded on the left, and runs off
+     the right edge just past the first source file's column (0.67 of the
+     cropped screenshot's width), so it is (window - inset) / 0.67 wide. */
+  @media (max-width: 640px) {
+    .cm-hero { padding-bottom: 48px; }
+    .cm-hero-media {
+      width: calc((100vw - var(--hero-inset)) / 0.67);
+      max-width: none;
+    }
+    .cm-hero-media img { border-radius: 6px 0 0 6px; }
+  }
+
+  /* the hero picture runs off the window's edge, and html and body clip
+     the overflow so the page never scrolls sideways */
+  html, body { overflow-x: clip; }
+
+  /* the demo video in Outcomes: as wide as the window allows, up to 90rem,
+     keeping the page's side margins, centred on the text column */
+  .cm-big {
+    --video-w: min(90rem, 100vw - 2 * clamp(24px, 5vw, 56px));
+    width: var(--video-w);
+    max-width: none;
+    margin-left: calc((100% - var(--video-w)) / 2);
+  }
+  .cm-big .ui-video { max-width: none; }
+  .cm-big figcaption { max-width: 38rem; }
 
   /* -- inline diagram -- */
   .diagram {
@@ -511,23 +656,14 @@
     .figure-strip-imgs { grid-template-columns: 1fr; }
   }
 
-  @media (min-width: 1100px) {
-    main {
-      display: grid;
-      grid-template-columns: 230px minmax(0, 1fr);
-      column-gap: 96px;
-      align-items: start;
-    }
+  /* No section rail: one reading column, centred on the page. */
+  main { max-width: none; }
 
-    .toc {
-      display: flex;
-      flex-direction: column;
-      grid-column: 1;
-      grid-row: 1;
-      position: sticky;
-      top: 100px;
-    }
-  }
+  /* Half the old space between the hero and the project stats, which was
+     main's top padding plus the meta row's own 40px margin. */
+  main { padding-top: calc((clamp(24px, 6vw, 72px) + 40px) / 2); }
+  .content > header .meta-row { margin-top: 0; }
+  .content { max-width: 46rem; margin-inline: auto; }
 
   /* -- .figure-wide: an opt-in modifier for large videos/images. 140%
      of the 46rem text column, centred on it (expanding out of both
@@ -541,14 +677,12 @@
      left/right overhang is 9.2rem each -- margin-left takes that back
      off the element's normal (flush-left) position to centre it.
 
-     Only turned on at 1500px+: below that, the 96px rail-gap between
-     .toc and the content column isn't wide enough for a 9.2rem
-     (147px) left bleed to clear the toc without overlapping it -- see
-     the column-gap override below, which exists only to make room for
-     this. Below 1500px .figure-wide is inert; each instance just keeps
-     whatever width its base class already gives it. */
-  @media (min-width: 1500px) {
-    main { column-gap: 200px; }
+     Turned on at 1200px+, the narrowest window that fits 64.4rem plus
+     main's side padding (the 1500px limit it used to have only existed to
+     clear the section rail this page no longer has). Below that
+     .figure-wide is inert; each instance just keeps whatever width its
+     base class already gives it. */
+  @media (min-width: 1200px) {
 
     .figure-wide {
       width: 64.4rem;
@@ -758,7 +892,6 @@
   .problem-item-body { display: flow-root; box-sizing: border-box; padding-left: 28px; }  /* 14px icon + 14px gap */
   .problem-item-body > :first-child { margin-top: 20px; }
 
-  .toc-heading { margin: 0 0 16px; }
 
   /* -- next case study link block -- */
   .case-block {
@@ -1118,43 +1251,26 @@
       </div>
     </div>
   </nav>
-  <div class="case-hero-video">
-    <div class="case-hero-video-frame" data-hover-controls>
-      <video autoplay muted loop playsinline disablepictureinpicture poster="media/mch-automap-hero.jpg">
-        <source src="media/mch-automap-hero.mp4" type="video/mp4">
-      </video>
+  <div class="cm-hero">
+    <div class="cm-hero-media">
+      <img src="media/column-mapping-hero.jpg" width="1518" height="948" alt="Quantemplate&rsquo;s Map Column Headers screen: the master schema down the left, and two source files&rsquo; columns mapped against it, with Automap ready to suggest the rest.">
+    </div>
+    <div class="cm-hero-text">
+      <svg class="case-icon cm-hero-logo" viewBox="0 0 16 16" fill="none" stroke="#00d8aa" stroke-width="0.762" aria-hidden="true" focusable="false">
+        <g transform="translate(-442, -474)">
+          <path d="M442.5,474.5 L450.5,474.5 L450.5,480.5 L453,480.5 C454.242641,480.5 455.367641,481.00368 456.181981,481.818019 C456.99632,482.632359 457.5,483.757359 457.5,485 C457.5,486.242641 456.99632,487.367641 456.181981,488.181981 C455.367641,488.99632 454.242641,489.5 453,489.5 C451.757359,489.5 450.632359,488.99632 449.818019,488.181981 C449.00368,487.367641 448.5,486.242641 448.5,485 L448.5,482.5 L442.5,482.5 L442.5,474.5 Z" pathLength="100" class="case-icon-trace" style="animation-delay:0.12s"/>
+        </g>
+      </svg>
+      <span class="kicker">Case Study | <a href="https://help.quantemplate.com/map-columns" target="_blank" rel="noopener noreferrer">Quantemplate Column Mapping</a></span>
+      <h1 class="display">Mapping inconsistent schemas at&nbsp;scale</h1>
+      <p class="subtitle">Helped analysts align inconsistent incoming files into a common format, then reuse those mappings each month. Automated column mapping for an average of 2,000 files per customer per&nbsp;month.</p>
+      <p class="cm-watch-row"><a class="cm-watch" href="#video"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 2.8v10.4a.6.6 0 0 0 .9.5l8.2-5.2a.6.6 0 0 0 0-1L5.4 2.3a.6.6 0 0 0-.9.5z" fill="currentColor"/></svg>Watch the demo</a> <a class="cm-watch" href="../slides/column-mapping.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>View slides</a></p>
     </div>
   </div>
   <main>
   <div class="content">
     <header id="case-intro">
-      <p class="links slide-mode-link"><a href="../slides/column-mapping.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>View slides</span></a></p>
-      <svg class="case-icon" viewBox="0 0 16 16" fill="none" stroke="#00d8aa" stroke-width="0.762" aria-hidden="true" focusable="false">
-        <g transform="translate(-442, -474)">
-          <path d="M442.5,474.5 L450.5,474.5 L450.5,480.5 L453,480.5 C454.242641,480.5 455.367641,481.00368 456.181981,481.818019 C456.99632,482.632359 457.5,483.757359 457.5,485 C457.5,486.242641 456.99632,487.367641 456.181981,488.181981 C455.367641,488.99632 454.242641,489.5 453,489.5 C451.757359,489.5 450.632359,488.99632 449.818019,488.181981 C449.00368,487.367641 448.5,486.242641 448.5,485 L448.5,482.5 L442.5,482.5 L442.5,474.5 Z" pathLength="100" class="case-icon-trace" style="animation-delay:0.12s"/>
-        </g>
-      </svg>
-      <span class="kicker head-fade">Case Study | <a href="https://help.quantemplate.com/map-columns" target="_blank" rel="noopener noreferrer">Quantemplate Column Mapping</a></span>
-      <h1 class="display head-fade">Mapping inconsistent schemas at scale</h1>
-      <p class="subtitle head-fade">Helped analysts align inconsistent incoming files into a common format, then reuse those mappings each month. Automated column mapping for an average of 2,000 files per customer per month.</p>
 
-    </header>
-
-    <hr class="rule">
-
-    <section aria-labelledby="keypoints-heading">
-      <h2 class="eyebrow" id="keypoints-heading">Key points</h2>
-      <div class="key-points-grid">
-        <ul class="key-points">
-          <li>Created a new mapping interaction model from users’ spreadsheet workarounds</li>
-          <li>Achieved 100% adoption in business-critical workflows</li>
-          <li>Automated column mapping for 2,000 files per month</li>
-          <li>2026 upgrade delivered 73% fewer semantic mapping errors in testing</li>
-        </ul>
-      </div>
-    </section>
-
-    <hr class="rule">
 
     <div class="meta-row">
       <div class="meta-item">
@@ -1184,6 +1300,21 @@
         <p>Data analyst: domain expert with deep knowledge of the data.<br>Technical skill level: competent Excel user.</p>
       </div>
     </div>
+    </header>
+
+    <hr class="rule">
+
+    <section aria-labelledby="keypoints-heading">
+      <h2 class="eyebrow" id="keypoints-heading">Key points</h2>
+      <div class="key-points-grid">
+        <ul class="key-points">
+          <li>Created a new mapping interaction model from users’ spreadsheet workarounds</li>
+          <li>Achieved 100% adoption in business-critical workflows</li>
+          <li>Automated column mapping for 2,000 files per month</li>
+          <li>2026 upgrade delivered 73% fewer semantic mapping errors in testing</li>
+        </ul>
+      </div>
+    </section>
 
     <hr class="rule">
 
@@ -1464,6 +1595,16 @@
           I cannot adequately express how receptive Tom was to our suggestions for improvement. He would listen, ask questions and make our wishlist items reality; even enhancing our&nbsp;suggestions.
           <cite><a href="https://www.linkedin.com/in/tom-dg/details/recommendations/?detailScreenTabIndex=0" target="_blank" rel="noopener noreferrer">Lee Ann Dewell Lang</a>, Quantemplate user-client, James River Insurance</cite>
         </blockquote>
+
+        <figure class="figure cm-big" id="video">
+          <div class="ui-video" data-hover-controls>
+            <video controls playsinline preload="metadata" disablepictureinpicture controlslist="nofullscreen nodownload" width="1600" height="1100" poster="media/mch-automap-hero.jpg">
+              <source src="media/mch-automap-hero.mp4" type="video/mp4">
+            </video>
+            <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+          </div>
+          <figcaption>Demo: mapping columns from the unmapped list, then an Automap preview, dragging the confidence threshold to choose which suggestions to apply.</figcaption>
+        </figure>
       </div>
     </section>
 
@@ -1514,19 +1655,6 @@
 
 
   </div>
-
-  <nav class="toc" aria-label="Section navigation">
-    <span class="toc-indicator" aria-hidden="true"></span>
-    <span class="eyebrow toc-heading">On this page</span>
-    <a href="#keypoints-heading">Key points</a>
-    <a href="#problem-heading">Problem</a>
-    <a href="#approach-heading">Approach</a>
-    <a href="#keydecisions-heading">Design decisions</a>
-    <a href="#automation-heading">Automation</a>
-    <a href="#evolution-heading">Evolution</a>
-    <a href="#outcome-heading">Outcomes</a>
-    <a href="#reflections-heading">Reflections</a>
-  </nav>
 
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged image" tabindex="-1">
     <div class="lightbox-media">
@@ -1619,58 +1747,6 @@
       });
     })();
 
-    (function () {
-      var links = document.querySelectorAll(".toc a");
-      if (!links.length || !("IntersectionObserver" in window)) return;
-
-      var indicator = document.querySelector(".toc-indicator");
-      function moveIndicator(link) {
-        if (!indicator || !link) return;
-        indicator.style.height = link.offsetHeight + "px";
-        indicator.style.transform = "translateY(" + link.offsetTop + "px)";
-        indicator.classList.add("is-visible");
-      }
-      window.addEventListener("resize", function () {
-        var active = document.querySelector(".toc a.is-active");
-        if (active) moveIndicator(active);
-      });
-
-      // Observe the whole section (not just its heading) so a link stays
-      // highlighted for the entire time its section is in view, even when
-      // the section is tall and its heading has long scrolled past.
-      var sections = [];
-      links.forEach(function (link) {
-        var id = link.getAttribute("href").slice(1);
-        var el = document.getElementById(id);
-        var section = el ? el.closest("section") || el : null;
-        if (section) sections.push({ section: section, link: link });
-      });
-
-      var observer = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (entry) {
-            var match = null;
-            for (var i = 0; i < sections.length; i++) {
-              if (sections[i].section === entry.target) {
-                match = sections[i];
-                break;
-              }
-            }
-            if (!match) return;
-            if (entry.isIntersecting) {
-              links.forEach(function (l) { l.classList.remove("is-active"); });
-              match.link.classList.add("is-active");
-              moveIndicator(match.link);
-            }
-          });
-        },
-        { rootMargin: "-20% 0px -70% 0px", threshold: 0 }
-      );
-
-      sections.forEach(function (s) {
-        observer.observe(s.section);
-      });
-    })();
 
   </script>
   <script>
@@ -1817,6 +1893,43 @@
           }
         });
       });
+    })();
+  </script>
+  <script>
+    /* Phone hero: arm the picture's slide-up, and play it once 40px of
+       its resting place has scrolled into view. The observer sees the
+       picture where the transform has put it, 300px lower, so the root
+       margin reaches 260px below the window to make up the difference. */
+    (function () {
+      var media = document.querySelector(".cm-hero-media");
+      if (!media || !("IntersectionObserver" in window)) return;
+      if (!window.matchMedia("(max-width: 640px)").matches) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      if (media.getBoundingClientRect().top < window.innerHeight - 40) return;
+      media.classList.add("is-armed");
+      // the bottom of the button row (two buttons here, stacked on phones)
+      var button = document.querySelector(".cm-watch-row");
+      if (button) {
+        var gap = media.getBoundingClientRect().top - 300 - button.getBoundingClientRect().bottom;
+        media.style.setProperty("--close", Math.max(0, Math.round(gap - 56)) + "px");
+      }
+      var io = new IntersectionObserver(function (entries) {
+        if (!entries[0].isIntersecting) return;
+        media.classList.add("is-in", "is-played");
+      }, { rootMargin: "0px 0px 260px 0px" });
+      io.observe(media);
+
+      // back at the top of the page the slide-up runs in reverse, and
+      // plays again on the way down
+      var ticking = false;
+      window.addEventListener("scroll", function () {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(function () {
+          ticking = false;
+          if (window.scrollY <= 0 && media.classList.contains("is-in")) media.classList.remove("is-in");
+        });
+      }, { passive: true });
     })();
   </script>
   <script data-goatcounter="https://tomdegay.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
