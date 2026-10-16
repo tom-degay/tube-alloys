@@ -442,7 +442,7 @@
     }
 
     /* sits close under the dashboard caption instead of a full row below */
-    .poster > .p-item.p-tuck { margin-top: calc(32px - var(--gv) - var(--tuck)); }
+    .poster > .p-item.p-tuck { margin-top: calc(32px - var(--gv) - var(--tuck) + var(--caption-clearance, 0px)); }
 
     /* The visual-language card (inside the cluster) rises as far as the
        dashboard above allows -- the script sets --lift: to 24px under the
@@ -2894,6 +2894,23 @@
       dash.style.translate = t;
       p1.style.setProperty("--tuck", (gap - 56) + "px");
     }
+    function clearDashboardCaption() {
+      var cluster = document.querySelector(".p-cluster.p-tuck");
+      var frame = document.querySelector(".figure-portrait-frame");
+      if (!cluster || !frame) return;
+      cluster.style.removeProperty("--caption-clearance");
+      if (!wide.matches) return;
+      var figure = frame.closest(".p-item"), caption = figure.querySelector("figcaption");
+      if (!caption) return;
+      // Measure the resting layout, independently of scroll entrance motion.
+      var ft = figure.style.translate, ct = cluster.style.translate;
+      figure.style.translate = "";
+      cluster.style.translate = "";
+      var clearance = caption.getBoundingClientRect().bottom + 32 - cluster.getBoundingClientRect().top;
+      figure.style.translate = ft;
+      cluster.style.translate = ct;
+      cluster.style.setProperty("--caption-clearance", Math.max(0, clearance) + "px");
+    }
     function lift() {
       /* the visual-language card: as close under the dashboard as it can sit
          without touching the picture's frame or the caption's text */
@@ -2913,6 +2930,7 @@
     }
     function pull() {
       tuck();
+      clearDashboardCaption();
       lift();
       links.forEach(function (l) {
         var p = document.querySelector(l.poster);
@@ -2941,7 +2959,7 @@
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(pull);
     if (window.ResizeObserver) {
       var ro = new ResizeObserver(pull);
-      ["#move-fast-heading", "#quantemplate-heading", "#profile-graphic", "#isokon-heading", "#white-rainbow-heading"].forEach(function (id) { var a = el(id); if (a) ro.observe(a); });
+      ["#move-fast-heading", "#quantemplate-heading", "#profile-graphic", "#isokon-heading", "#white-rainbow-heading", ".figure-portrait-frame", ".p-fig-free > figcaption"].forEach(function (id) { var a = el(id); if (a) ro.observe(a); });
     }
   })();
 </script>
