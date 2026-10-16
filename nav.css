@@ -100,7 +100,10 @@ html.identity-menu-open { overflow: hidden; }
 .menu-subsection-divider { grid-column: 1 / -1; width: calc(100% - 24px); border: 0; border-top: 1px solid rgba(255,255,255,.14); margin: 8px 12px; }
 /* "More case studies": a full-width row under the two featured studies,
    its text in the title column so it lines up with theirs */
-.menu-subsection-more { grid-column: 1 / -1; }
+.menu-subsection-more { grid-column: 1 / -1; text-align: center; }
+[data-navigation="identity"] .identity-dialog .menu-subsections--case-studies .menu-subsection-more a { display: block; width: fit-content; margin: 0 auto; padding-inline: 20px; }
+[data-navigation="identity"] .identity-dialog .menu-subsections--case-studies .menu-subsection-more a::before { left: 0; right: 0; }
+.menu-subsection-group { text-align: center; }
 .menu-subsections--approach .menu-subsections-grid { grid-template-columns: 1fr; gap: 0; text-align: center; }
 [data-navigation="identity"] .identity-dialog .menu-subsections--approach a { display: block; width: fit-content; max-width: 100%; margin: 0 auto; }
 @media (min-width: 641px) {
