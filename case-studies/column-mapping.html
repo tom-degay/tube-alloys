@@ -351,8 +351,8 @@
 
     .cm-hero-text { grid-row: 1; }
 
-    /* the picture still runs off the window's right edge, rounded on the
-       left only, as on desktop and phones */
+    /* On tablets the picture runs off the right edge, as on desktop.
+       Phones reverse the bleed below. */
     .cm-hero-media { margin-right: calc(-1 * var(--hero-inset)); }
     .cm-hero-media { border-radius: clamp(6px, 1.3vw, 13px) 0 0 clamp(6px, 1.3vw, 13px); }
 
@@ -418,17 +418,18 @@
   }
 
 
-  /* On phones the picture is magnified and cropped, as on Zonefully: it
-     starts at the page's left margin, rounded on the left, and runs off
-     the right edge through the second source column (0.67 of the
-     cropped video's width), so it is (window - inset) / 0.67 wide. */
+  /* On phones keep the magnified crop, anchored to the right content
+     margin so it bleeds off the left edge, with rounded right corners. */
   @media (max-width: 640px) {
     .cm-hero { padding-bottom: 48px; }
     .cm-hero-media {
       width: calc((100vw - var(--hero-inset)) / 0.67);
       max-width: none;
+      justify-self: end;
+      margin-left: 0;
+      margin-right: 0;
+      border-radius: 0 6px 6px 0;
     }
-    .cm-hero-media { border-radius: 6px 0 0 6px; }
   }
 
   /* the hero picture runs off the window's edge, and html and body clip
