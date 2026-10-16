@@ -693,30 +693,9 @@
     .zf-hero h1 { font-size: clamp(32px, 9.2vw, 44px); line-height: 1.06; }
     .zf-hero p.subtitle { font-size: clamp(19px, 5.4vw, 23px); line-height: 1.4; }
 
-    /* Match Image Insight’s two-part rise while keeping layout fixed:
-       the 300px slide and measured gap closure animate independently. */
-    .zf-hero { overflow: clip; }
-    .zf-hero-media.has-reveal-spacing {
+    /* Static image, keeping the established gap beneath the button. */
+    .zf-hero-media {
       margin-top: calc(-1 * var(--hero-close, 0px));
-    }
-    .zf-hero-media.is-armed {
-      opacity: 0;
-      transform: translate3d(0, 300px, 0);
-      translate: 0 var(--hero-close, 0px);
-      will-change: transform, translate, opacity;
-    }
-    .zf-hero-media.is-armed.is-played {
-      transition: transform 0.6s cubic-bezier(0.55, 0, 0.45, 1),
-                  translate 0.6s cubic-bezier(0.55, 0, 0.45, 1),
-                  opacity 0.4s linear 0.2s;
-    }
-    .zf-hero-media.is-armed.is-in {
-      opacity: 1;
-      transform: translate3d(0, 0, 0);
-      translate: 0 0;
-      transition: transform 0.75s cubic-bezier(0.22, 1.25, 0.36, 1),
-                  translate 0.75s cubic-bezier(0.22, 1, 0.36, 1),
-                  opacity 0.4s linear;
     }
   }
 
@@ -1046,7 +1025,7 @@
 </noscript>
   <script src="/lightbox.js" defer></script>
   <script src="/nav.js?v=20261016d" defer></script>
-  <script src="/hero-reveal.js?v=20261017b" defer></script>
+  <script src="/hero-spacing.js?v=20261017a" defer></script>
   <script src="/footer.js" defer></script>
 </head>
 <body class="theme-light">
@@ -1113,7 +1092,7 @@
     </div>
   </nav>
   <div class="zf-hero">
-    <div class="zf-hero-media" data-hero-reveal data-reveal-button=".zf-watch">
+    <div class="zf-hero-media" data-hero-spacing data-spacing-button=".zf-watch">
       <img src="media/planner-with-thin-sidebar.png" width="2662" height="1854" alt="Zonefully&rsquo;s Planner: a week of cycling rides and weekend breakfasts laid out on the calendar, with a side panel naming the activity, programme and routine for the selected ride.">
     </div>
     <div class="zf-hero-text">
