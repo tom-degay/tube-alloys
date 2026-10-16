@@ -308,14 +308,15 @@
 
   .val-hero-media {
     box-sizing: border-box;
-    padding: clamp(18px, 2.4vw, 36px) clamp(18px, 2.4vw, 36px) 0;
+    padding: 0;
     overflow: hidden;
     background: #000;
     border-radius: clamp(6px, 0.7vw, 14px) 0 0 clamp(6px, 0.7vw, 14px);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08), 0 18px 48px rgba(0, 0, 0, 0.14);
   }
 
-  .val-hero-media > img {
+  .val-hero-media > picture,
+  .val-hero-media img {
     display: block;
     width: 100%;
     height: auto;
@@ -460,17 +461,16 @@
   }
 
 
-  /* On phones keep the magnified crop, anchored to the right content
-     margin so it bleeds off the left edge, with rounded right corners. */
+  /* On phones show Policy Number and Effective without the LOB column. */
   @media (max-width: 640px) {
     .val-hero { padding-bottom: 48px; }
     .val-hero-media {
-      width: calc((100vw - var(--hero-inset)) / 0.67);
+      width: calc(100vw - var(--hero-inset));
       max-width: none;
-      justify-self: end;
+      justify-self: start;
       margin-left: 0;
       margin-right: 0;
-      border-radius: 0 6px 6px 0;
+      border-radius: 6px 0 0 6px;
     }
   }
 
@@ -1213,7 +1213,10 @@
   </nav>
   <div class="val-hero">
     <div class="val-hero-media" data-hero-reveal data-reveal-button=".val-watch-row">
-      <img src="media/validation-corrections-hero.png" width="1716" height="1304" fetchpriority="high" alt="Validation errors for effective dates, with original values and editable corrections shown side by side.">
+      <picture>
+        <source media="(max-width: 640px)" srcset="media/validation-corrections-hero-mobile.svg" width="1334" height="1304">
+        <img src="media/validation-corrections-hero.png" width="1716" height="1304" fetchpriority="high" alt="Validation errors for effective dates, with original values and editable corrections shown side by side.">
+      </picture>
     </div>
     <div class="val-hero-text">
       <svg class="case-icon val-hero-logo" viewBox="0 0 16 16" fill="none" stroke="#00d8aa" stroke-width="0.762" aria-hidden="true" focusable="false">
