@@ -389,26 +389,30 @@
     .cm-hero h1 { font-size: clamp(32px, 9.2vw, 44px); line-height: 1.06; }
     .cm-hero p.subtitle { font-size: clamp(19px, 5.4vw, 23px); line-height: 1.4; }
 
-    /* Reserve the final space once. Only transform and opacity change
-       during playback, so scrolling never relays out the page. */
+    /* Match Image Insight’s two-part rise while keeping layout fixed:
+       the 300px slide and measured gap closure animate independently. */
     .cm-hero { overflow: clip; }
     .cm-hero-media.has-reveal-spacing {
       margin-top: calc(-1 * var(--hero-close, 0px));
     }
     .cm-hero-media.is-armed {
       opacity: 0;
-      transform: translate3d(0, calc(80px + var(--hero-close, 0px)), 0);
-      will-change: transform, opacity;
+      transform: translate3d(0, 300px, 0);
+      translate: 0 var(--hero-close, 0px);
+      will-change: transform, translate, opacity;
     }
     .cm-hero-media.is-armed.is-played {
       transition: transform 0.6s cubic-bezier(0.55, 0, 0.45, 1),
-                  opacity 0.4s ease-in-out;
+                  translate 0.6s cubic-bezier(0.55, 0, 0.45, 1),
+                  opacity 0.4s linear 0.2s;
     }
     .cm-hero-media.is-armed.is-in {
       opacity: 1;
       transform: translate3d(0, 0, 0);
-      transition: transform 1.05s cubic-bezier(0.45, 0, 0.25, 1),
-                  opacity 1.05s ease-in-out;
+      translate: 0 0;
+      transition: transform 0.75s cubic-bezier(0.22, 1.25, 0.36, 1),
+                  translate 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+                  opacity 0.4s linear;
     }
   }
 
@@ -1183,7 +1187,7 @@
 </noscript>
   <script src="/lightbox.js?v=20261009-lines2" defer></script>
   <script src="/nav.js?v=20261016d" defer></script>
-  <script src="/hero-reveal.js?v=20261017a" defer></script>
+  <script src="/hero-reveal.js?v=20261017b" defer></script>
   <script src="/footer.js" defer></script>
 </head>
 <body>

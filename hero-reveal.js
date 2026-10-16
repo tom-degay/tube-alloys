@@ -6,7 +6,7 @@
   var button = document.querySelector(media.getAttribute('data-reveal-button'));
   var phone = window.matchMedia('(max-width: 640px)');
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-  var active = false, ready = false, trigger = 0;
+  var active = false, ready = false, restingTop = 0;
   var width = window.innerWidth, generation = 0, queued = false;
 
   function update() {
@@ -14,7 +14,7 @@
     if (!active || !ready) return;
     if (window.scrollY <= 0) {
       media.classList.remove('is-in');
-    } else if (window.scrollY >= trigger) {
+    } else if (window.scrollY >= Math.max(1, restingTop - window.innerHeight + 40)) {
       media.classList.add('is-played', 'is-in');
     }
   }
@@ -36,9 +36,10 @@
     // Retain the visible image when restoring a page partway down.
     if (reduce.matches || (window.scrollY > 0 && top - close < window.innerHeight - 40)) return;
 
-    // The trigger stays in document coordinates; it never follows the
-    // animated image or changes when Safari's browser toolbar retracts.
-    trigger = Math.max(1, documentTop - window.innerHeight + 40);
+    // Match Image Insight: start when 40px of the original resting slot
+    // enters view. Keep the slot fixed, but use the current viewport height
+    // in update() so Safari's expanding/collapsing toolbar cannot delay it.
+    restingTop = documentTop;
     active = true;
     media.classList.add('is-armed');
     // Commit the hidden, composited starting state before playback can
@@ -58,7 +59,10 @@
     requestAnimationFrame(update);
   }, { passive: true });
   window.addEventListener('resize', function () {
-    if (window.innerWidth === width) return;
+    if (window.innerWidth === width) {
+      update();
+      return;
+    }
     width = window.innerWidth;
     configure();
   });
