@@ -389,30 +389,25 @@
     .cm-hero h1 { font-size: clamp(32px, 9.2vw, 44px); line-height: 1.06; }
     .cm-hero p.subtitle { font-size: clamp(19px, 5.4vw, 23px); line-height: 1.4; }
 
-    /* A short slide starts just below the viewport. A gradual curve keeps
-       the movement visible throughout the entrance, without a fast spring. */
+    /* Reserve the final space once. Only transform and opacity change
+       during playback, so scrolling never relays out the page. */
+    .cm-hero { overflow: clip; }
+    .cm-hero-media.has-reveal-spacing {
+      margin-top: calc(-1 * var(--hero-close, 0px));
+    }
     .cm-hero-media.is-armed {
       opacity: 0;
-      transform: translateY(80px);
+      transform: translate3d(0, calc(80px + var(--hero-close, 0px)), 0);
+      will-change: transform, opacity;
     }
-    /* the transition only on the way in, so arming jumps straight to the
-       start position rather than animating down to it */
-    /* the way back down, once it has played: back to the top of the page
-       reverses it, on a plain ease with no overshoot */
     .cm-hero-media.is-armed.is-played {
       transition: transform 0.6s cubic-bezier(0.55, 0, 0.45, 1),
-                  margin-top 0.6s cubic-bezier(0.55, 0, 0.45, 1),
-                  opacity 0.4s linear 0.2s;
+                  opacity 0.4s ease-in-out;
     }
-    /* ... and it comes to rest higher than it started, closing the empty
-       space under the button to 56px: the script measures that space into
-       --close, and the margin pulls the picture and the page below it up */
     .cm-hero-media.is-armed.is-in {
       opacity: 1;
-      transform: none;
-      margin-top: calc(-1 * var(--close, 0px));
+      transform: translate3d(0, 0, 0);
       transition: transform 1.05s cubic-bezier(0.45, 0, 0.25, 1),
-                  margin-top 1.05s cubic-bezier(0.45, 0, 0.25, 1),
                   opacity 1.05s ease-in-out;
     }
   }
@@ -1188,6 +1183,7 @@
 </noscript>
   <script src="/lightbox.js?v=20261009-lines2" defer></script>
   <script src="/nav.js?v=20261016d" defer></script>
+  <script src="/hero-reveal.js?v=20261017a" defer></script>
   <script src="/footer.js" defer></script>
 </head>
 <body>
@@ -1254,7 +1250,7 @@
     </div>
   </nav>
   <div class="cm-hero">
-    <div class="cm-hero-media case-hero-video-frame" data-hover-controls>
+    <div class="cm-hero-media case-hero-video-frame" data-hover-controls data-hero-reveal data-reveal-button=".cm-watch-row">
       <video autoplay muted loop playsinline disablepictureinpicture preload="metadata" width="1720" height="1376" poster="media/column-mapping-hero-poster.jpg?v=2" aria-label="Two source schemas in the completed column mapping interface, switching between mapped and unmapped fields.">
         <source src="media/column-mapping-hero.mp4?v=2" type="video/mp4">
       </video>
@@ -1896,41 +1892,6 @@
           }
         });
       });
-    })();
-  </script>
-  <script>
-    /* Phone hero: trigger when 40px of its resting place enters view.
-       The 80px starting offset needs a 40px observer margin, keeping
-       the beginning of the animation near the visible viewport edge. */
-    (function () {
-      var media = document.querySelector(".cm-hero-media");
-      if (!media || !("IntersectionObserver" in window)) return;
-      if (!window.matchMedia("(max-width: 640px)").matches) return;
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      if (media.getBoundingClientRect().top < window.innerHeight - 40) return;
-      media.classList.add("is-armed");
-      var button = document.querySelector(".cm-watch-row");
-      if (button) {
-        var gap = media.getBoundingClientRect().top - 80 - button.getBoundingClientRect().bottom;
-        media.style.setProperty("--close", Math.max(0, Math.round(gap - 56)) + "px");
-      }
-      var io = new IntersectionObserver(function (entries) {
-        if (!entries[0].isIntersecting) return;
-        media.classList.add("is-in", "is-played");
-      }, { rootMargin: "0px 0px 40px 0px" });
-      io.observe(media);
-
-      // back at the top of the page the slide-up runs in reverse, and
-      // plays again on the way down
-      var ticking = false;
-      window.addEventListener("scroll", function () {
-        if (ticking) return;
-        ticking = true;
-        requestAnimationFrame(function () {
-          ticking = false;
-          if (window.scrollY <= 0 && media.classList.contains("is-in")) media.classList.remove("is-in");
-        });
-      }, { passive: true });
     })();
   </script>
   <script data-goatcounter="https://tomdegay.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
