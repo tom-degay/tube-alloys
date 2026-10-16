@@ -296,10 +296,11 @@
     background: linear-gradient(180deg, #131313 0%, #222121 100%);
   }
 
-  .cm-hero-media img {
+  .cm-hero-media svg {
     display: block;
     width: 100%;
     height: auto;
+    aspect-ratio: 1412 / 794;
     border-radius: clamp(6px, 0.7vw, 14px) 0 0 clamp(6px, 0.7vw, 14px);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08), 0 18px 48px rgba(0, 0, 0, 0.14);
   }
@@ -334,7 +335,7 @@
     padding: 9px 22px 9px 18px;
     border: 1px solid #ffffff09;
     border-radius: 16px;
-    background: rgba(29, 29, 29, 0.5);
+    background: #131313;
     -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
     color: #eee;
@@ -352,15 +353,13 @@
   }
 
   /* the study's icon (the drawn one from the old header) above the title,
-     at the size of the Image Insight and Zonefully logos; the kicker sits
-     between it and the title */
+     at the size of the Image Insight and Zonefully logos */
   .cm-hero .case-icon.cm-hero-logo {
     display: block;
     width: auto;
     height: clamp(53px, 4.8vw, 86px);
     margin-bottom: clamp(20px, 2.4vw, 36px);
   }
-  .cm-hero .kicker { margin-bottom: clamp(12px, 1.4vw, 20px); }
 
   .cm-hero p.subtitle {
     margin-top: clamp(16px, 1.8vw, 36px);
@@ -387,7 +386,7 @@
     /* the picture still runs off the window's right edge, rounded on the
        left only, as on desktop and phones */
     .cm-hero-media { margin-right: calc(-1 * var(--hero-inset)); }
-    .cm-hero-media img { border-radius: clamp(6px, 1.3vw, 13px) 0 0 clamp(6px, 1.3vw, 13px); }
+    .cm-hero-media svg { border-radius: clamp(6px, 1.3vw, 13px) 0 0 clamp(6px, 1.3vw, 13px); }
 
     .cm-hero h1 { font-size: clamp(32px, 5vw, 56px); line-height: 1.1; max-width: 13.5em; }
 
@@ -461,7 +460,7 @@
       width: calc((100vw - var(--hero-inset)) / 0.67);
       max-width: none;
     }
-    .cm-hero-media img { border-radius: 6px 0 0 6px; }
+    .cm-hero-media svg { border-radius: 6px 0 0 6px; }
   }
 
   /* the hero picture runs off the window's edge, and html and body clip
@@ -1252,8 +1251,8 @@
     </div>
   </nav>
   <div class="cm-hero">
-    <div class="cm-hero-media">
-      <img src="media/column-mapping-hero.jpg" width="1518" height="948" alt="Quantemplate&rsquo;s Map Column Headers screen: the master schema down the left, and two source files&rsquo; columns mapped against it, with Automap ready to suggest the rest.">
+    <div class="cm-hero-media mapping-card">
+      <svg class="mapping-vector" viewBox="0 0 1412 794" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Column mappings appear from highest to lowest confidence as blue progress bars fill green; yellow low-confidence suggestions appear last."><rect width="1412" height="794" fill="#000"/><g transform="translate(119 0)"><rect x="0" y="116" width="565" height="14" rx="7" fill="#405fb1"/><rect class="mapping-progress mapping-progress-left" x="0" y="116" width="565" height="14" rx="7" fill="#60d6b1"/><rect y="189" width="565" height="605" fill="#19182e"/><path d="M0 188H52L68 173L84 188H565" fill="none" stroke="#60d6b1" stroke-width="1.5"/><path d="M0 239H565" stroke="#2b293d"/><path d="M0 289H565" stroke="#2b293d"/><g><text x="8" y="273" fill="#626880" font-family="Arial,sans-serif" font-size="23">Policy Number</text><rect x="529" y="254" width="25" height="25" rx="4" fill="#606073"/><text x="541.5" y="273" text-anchor="middle" fill="#19182e" font-family="Arial,sans-serif" font-size="18" font-weight="600">ID</text></g><path d="M0 339H565" stroke="#2b293d"/><path d="M0 389H565" stroke="#2b293d"/><g class="mapping-row" style="--mapping-delay:0.4s"><text x="8" y="373" fill="#87aaff" font-family="Arial,sans-serif" font-size="23">Policy Expiration</text><text x="518" y="373" text-anchor="end" fill="#a4a3b5" font-family="Arial,sans-serif" font-size="23">95.8%</text><rect x="529" y="354" width="25" height="25" rx="4" fill="#606073"/><text x="541.5" y="373" text-anchor="middle" fill="#19182e" font-family="Arial,sans-serif" font-size="18" font-weight="600">31</text></g><path d="M0 439H565" stroke="#2b293d"/><g><text x="8" y="423" fill="#626880" font-family="Arial,sans-serif" font-size="23">New-Renewal</text><rect x="529" y="404" width="25" height="25" rx="4" fill="#606073"/><text x="541.5" y="423" text-anchor="middle" fill="#19182e" font-family="Arial,sans-serif" font-size="18" font-weight="600">T</text></g><path d="M0 489H565" stroke="#2b293d"/><g><text x="8" y="473" fill="#626880" font-family="Arial,sans-serif" font-size="23">Insured</text><rect x="529" y="454" width="25" height="25" rx="4" fill="#606073"/><text x="541.5" y="473" text-anchor="middle" fill="#19182e" font-family="Arial,sans-serif" font-size="18" font-weight="600">T</text></g><path d="M0 539H565" stroke="#2b293d"/><g class="mapping-row" style="--mapping-delay:2.1s"><text x="8" y="523" fill="#87aaff" font-family="Arial,sans-serif" font-size="23">Street</text><text x="518" y="523" text-anchor="end" fill="#f7ce55" font-family="Arial,sans-serif" font-size="23">59.0%</text><rect x="529" y="504" width="25" height="25" rx="4" fill="#606073"/><text x="541.5" y="523" text-anchor="middle" fill="#19182e" font-family="Arial,sans-serif" font-size="18" font-weight="600">T</text></g><path d="M0 589H565" stroke="#2b293d"/><g><text x="8" y="573" fill="#626880" font-family="Arial,sans-serif" font-size="23">City</text><rect x="529" y="554" width="25" height="25" rx="4" fill="#606073"/><text x="541.5" y="573" text-anchor="middle" fill="#19182e" font-family="Arial,sans-serif" font-size="18" font-weight="600">T</text></g><path d="M0 639H565" stroke="#2b293d"/><g><text x="8" y="623" fill="#626880" font-family="Arial,sans-serif" font-size="23">State</text><rect x="529" y="604" width="25" height="25" rx="4" fill="#606073"/><text x="541.5" y="623" text-anchor="middle" fill="#19182e" font-family="Arial,sans-serif" font-size="18" font-weight="600">T</text></g><path d="M0 689H565" stroke="#2b293d"/><g><text x="8" y="673" fill="#626880" font-family="Arial,sans-serif" font-size="23">Zip</text><rect x="529" y="654" width="25" height="25" rx="4" fill="#606073"/><text x="541.5" y="673" text-anchor="middle" fill="#19182e" font-family="Arial,sans-serif" font-size="18" font-weight="600">#</text></g><path d="M0 739H565" stroke="#2b293d"/><path d="M0 789H565" stroke="#2b293d"/><g><text x="8" y="773" fill="#626880" font-family="Arial,sans-serif" font-size="23">Class Code</text><rect x="529" y="754" width="25" height="25" rx="4" fill="#606073"/><text x="541.5" y="773" text-anchor="middle" fill="#19182e" font-family="Arial,sans-serif" font-size="18" font-weight="600">#</text></g></g><g transform="translate(728 0)"><rect x="0" y="116" width="565" height="14" rx="7" fill="#405fb1"/><rect class="mapping-progress mapping-progress-right" x="0" y="116" width="554" height="14" rx="7" fill="#60d6b1"/><rect y="189" width="565" height="605" fill="#19182e"/><path d="M0 188H52L68 173L84 188H565" fill="none" stroke="#60d6b1" stroke-width="1.5"/><path d="M0 239H565" stroke="#2b293d"/><g class="mapping-row" style="--mapping-delay:2.4s"><text x="8" y="223" fill="#87aaff" font-family="Arial,sans-serif" font-size="23">Line of Business</text><text x="518" y="223" text-anchor="end" fill="#f7ce55" font-family="Arial,sans-serif" font-size="23">30.9%</text><rect x="529" y="204" width="25" height="25" rx="4" fill="#606073"/><text x="541.5" y="223" text-anchor="middle" fill="#19182e" font-family="Arial,sans-serif" font-size="18" font-weight="600">T</text></g><path d="M0 289H565" stroke="#2b293d"/><g class="mapping-row" style="--mapping-delay:0.15s"><text x="8" y="273" fill="#87aaff" font-family="Arial,sans-serif" font-size="23">Policy No</text><text x="518" y="273" text-anchor="end" fill="#a4a3b5" font-family="Arial,sans-serif" font-size="23">97.1%</text><rect x="529" y="254" width="25" height="25" rx="4" fill="#606073"/><text x="541.5" y="273" text-anchor="middle" fill="#19182e" font-family="Arial,sans-serif" font-size="18" font-weight="600">ID</text></g><path d="M0 339H565" stroke="#2b293d"/><g class="mapping-row" style="--mapping-delay:0.9s"><text x="8" y="323" fill="#87aaff" font-family="Arial,sans-serif" font-size="23">Effective Date</text><text x="518" y="323" text-anchor="end" fill="#a4a3b5" font-family="Arial,sans-serif" font-size="23">86.6%</text><rect x="529" y="304" width="25" height="25" rx="4" fill="#606073"/><text x="541.5" y="323" text-anchor="middle" fill="#19182e" font-family="Arial,sans-serif" font-size="18" font-weight="600">31</text></g><path d="M0 389H565" stroke="#2b293d"/><g class="mapping-row" style="--mapping-delay:0.65s"><text x="8" y="373" fill="#87aaff" font-family="Arial,sans-serif" font-size="23">Expiry Date</text><text x="518" y="373" text-anchor="end" fill="#a4a3b5" font-family="Arial,sans-serif" font-size="23">92.0%</text><rect x="529" y="354" width="25" height="25" rx="4" fill="#606073"/><text x="541.5" y="373" text-anchor="middle" fill="#19182e" font-family="Arial,sans-serif" font-size="18" font-weight="600">31</text></g><path d="M0 439H565" stroke="#2b293d"/><g><text x="8" y="423" fill="#626880" font-family="Arial,sans-serif" font-size="23">New-Renewal</text><rect x="529" y="404" width="25" height="25" rx="4" fill="#606073"/><text x="541.5" y="423" text-anchor="middle" fill="#19182e" font-family="Arial,sans-serif" font-size="18" font-weight="600">T</text></g><path d="M0 489H565" stroke="#2b293d"/><g><text x="8" y="473" fill="#626880" font-family="Arial,sans-serif" font-size="23">Insured</text><rect x="529" y="454" width="25" height="25" rx="4" fill="#606073"/><text x="541.5" y="473" text-anchor="middle" fill="#19182e" font-family="Arial,sans-serif" font-size="18" font-weight="600">T</text></g><path d="M0 539H565" stroke="#2b293d"/><g class="mapping-row" style="--mapping-delay:1.4s"><text x="8" y="523" fill="#87aaff" font-family="Arial,sans-serif" font-size="23">Address</text><text x="518" y="523" text-anchor="end" fill="#a4a3b5" font-family="Arial,sans-serif" font-size="23">82.5%</text><rect x="529" y="504" width="25" height="25" rx="4" fill="#606073"/><text x="541.5" y="523" text-anchor="middle" fill="#19182e" font-family="Arial,sans-serif" font-size="18" font-weight="600">T</text></g><path d="M0 589H565" stroke="#2b293d"/><g class="mapping-row" style="--mapping-delay:2.7s"><text x="8" y="573" fill="#87aaff" font-family="Arial,sans-serif" font-size="23">Extra Field 1</text><text x="518" y="573" text-anchor="end" fill="#f7ce55" font-family="Arial,sans-serif" font-size="23">20.0%</text><rect x="529" y="554" width="25" height="25" rx="4" fill="#606073"/><text x="541.5" y="573" text-anchor="middle" fill="#19182e" font-family="Arial,sans-serif" font-size="18" font-weight="600">T</text></g><path d="M0 639H565" stroke="#2b293d"/><g><text x="8" y="623" fill="#626880" font-family="Arial,sans-serif" font-size="23">State</text><rect x="529" y="604" width="25" height="25" rx="4" fill="#606073"/><text x="541.5" y="623" text-anchor="middle" fill="#19182e" font-family="Arial,sans-serif" font-size="18" font-weight="600">Q</text></g><path d="M0 689H565" stroke="#2b293d"/><g class="mapping-row" style="--mapping-delay:1.65s"><text x="8" y="673" fill="#87aaff" font-family="Arial,sans-serif" font-size="23">ZIP Code</text><text x="518" y="673" text-anchor="end" fill="#a4a3b5" font-family="Arial,sans-serif" font-size="23">79.3%</text><rect x="529" y="654" width="25" height="25" rx="4" fill="#606073"/><text x="541.5" y="673" text-anchor="middle" fill="#19182e" font-family="Arial,sans-serif" font-size="18" font-weight="600">Q</text></g><path d="M0 739H565" stroke="#2b293d"/><g class="mapping-row" style="--mapping-delay:1.15s"><text x="8" y="723" fill="#87aaff" font-family="Arial,sans-serif" font-size="23">Product</text><text x="518" y="723" text-anchor="end" fill="#a4a3b5" font-family="Arial,sans-serif" font-size="23">83.8%</text><rect x="529" y="704" width="25" height="25" rx="4" fill="#606073"/><text x="541.5" y="723" text-anchor="middle" fill="#19182e" font-family="Arial,sans-serif" font-size="18" font-weight="600">T</text></g><path d="M0 789H565" stroke="#2b293d"/><g><text x="8" y="773" fill="#626880" font-family="Arial,sans-serif" font-size="23">Class Code</text><rect x="529" y="754" width="25" height="25" rx="4" fill="#606073"/><text x="541.5" y="773" text-anchor="middle" fill="#19182e" font-family="Arial,sans-serif" font-size="18" font-weight="600">#</text></g></g></svg>
     </div>
     <div class="cm-hero-text">
       <svg class="case-icon cm-hero-logo" viewBox="0 0 16 16" fill="none" stroke="#00d8aa" stroke-width="0.762" aria-hidden="true" focusable="false">
@@ -1261,7 +1260,6 @@
           <path d="M442.5,474.5 L450.5,474.5 L450.5,480.5 L453,480.5 C454.242641,480.5 455.367641,481.00368 456.181981,481.818019 C456.99632,482.632359 457.5,483.757359 457.5,485 C457.5,486.242641 456.99632,487.367641 456.181981,488.181981 C455.367641,488.99632 454.242641,489.5 453,489.5 C451.757359,489.5 450.632359,488.99632 449.818019,488.181981 C449.00368,487.367641 448.5,486.242641 448.5,485 L448.5,482.5 L442.5,482.5 L442.5,474.5 Z" pathLength="100" class="case-icon-trace" style="animation-delay:0.12s"/>
         </g>
       </svg>
-      <span class="kicker">Case Study | <a href="https://help.quantemplate.com/map-columns" target="_blank" rel="noopener noreferrer">Quantemplate Column Mapping</a></span>
       <h1 class="display">Mapping inconsistent schemas at&nbsp;scale</h1>
       <p class="subtitle">Helped analysts align inconsistent incoming files into a common format, then reuse those mappings each month. Automated column mapping for an average of 2,000 files per customer per&nbsp;month.</p>
       <p class="cm-watch-row"><a class="cm-watch" href="#video"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 2.8v10.4a.6.6 0 0 0 .9.5l8.2-5.2a.6.6 0 0 0 0-1L5.4 2.3a.6.6 0 0 0-.9.5z" fill="currentColor"/></svg>Watch the demo</a> <a class="cm-watch" href="../slides/column-mapping.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>View slides</a></p>
@@ -1846,7 +1844,8 @@
             else if (!entry.isIntersecting) inView = false;
             update();
           }, { threshold: [0, 0.6], rootMargin: '-64px 0px 0px 0px' });
-          observer.observe(card.querySelector('.case-block-media'));
+          // the hero artwork has no card wrapper: observe the hero media itself
+          observer.observe(card.querySelector('.case-block-media') || card);
         }
         update();
       }
