@@ -35,32 +35,6 @@
   .slide-mode-link { position: absolute; top: 0; left: 0; width: 100%; max-width: 46rem; margin: 0; text-align: right; }
   html { scroll-padding-top: 100px; }
 
-  .case-body blockquote.outcome-quote {
-    box-sizing: border-box;
-    background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
-    border: none;
-    border-radius: 10px;
-    padding: clamp(20px, 2.4vw, 32px);
-    color: rgba(255, 255, 255, 0.82);
-    font-size: clamp(20px, 2vw, 30px);
-    line-height: 1.5;
-    text-wrap: pretty;
-  }
-
-  .outcome-quote::before {
-    content: "\201C";
-    display: block;
-    font-family: "Fakt Blond SemiBold", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    font-weight: 600;
-    font-size: clamp(96px, 10vw, 150px);
-    line-height: 0.95;
-    margin-bottom: -0.52em;
-    margin-left: -0.066em;
-    color: rgba(255, 255, 255, 0.22);
-  }
-
-  .outcome-quote cite a[target="_blank"]::after { content: none; }
-
   /* Estimated error counts share one scale: 11 versus 3. */
   .model-chart {
     max-width: 46rem;
@@ -145,24 +119,12 @@
     }
   }
 
-  /* This page's .meta-row has 5 items, not the usual 3, so the shared
-     auto-fit columns (styles.css) can't be trusted to always land
-     Domain and User profiles together -- it's width-dependent and can
-     put User profiles alone on its own row with 3+ empty columns
-     beside it. Three explicit, deterministic states instead, all
-     driven by the same rule: User profiles (last in the markup) always
-     spans 2 columns, so it only ever shares a row when there are 2+
-     columns to share, and drops to its own full-width row otherwise.
-       3 columns (>=1100px): Role | Team | Timeframe, then
-         Domain | User profiles.
-       2 columns (>=700px):  Role | Team, then Timeframe | Domain,
-         then User profiles alone.
-       1 column (below 700px): every item stacks in order. */
+  /* Six metadata items: Role / Team / Timeframe, then Company / Domain /
+     User profile on desktop; two columns on tablets and one on phones. */
   .meta-row { grid-template-columns: 1fr; }
 
   @media (min-width: 700px) {
     .meta-row { grid-template-columns: repeat(2, 1fr); }
-    .meta-item:last-child { grid-column: span 2; }
   }
 
   @media (min-width: 1100px) {
@@ -283,8 +245,8 @@
   }
 
   /* -- hero: as on Zonefully and Image Insight. Desktop: the study icon,
-     kicker, title, strapline and Watch the demo on the left; the Map Column
-     Headers screen on the right running off the window's right edge
+     title, strapline and View slides on the left; a crop of the completed
+     interface video on the right running off the window's right edge
      (rounded on the left only). The markup keeps the picture first, so the
      columns are placed explicitly. -- */
   .cm-hero {
@@ -296,13 +258,20 @@
     background: linear-gradient(180deg, #131313 0%, #222121 100%);
   }
 
-  .cm-hero-media svg {
+  .cm-hero-media {
+    box-sizing: border-box;
+    padding: clamp(18px, 2.4vw, 36px) clamp(18px, 2.4vw, 36px) 0;
+    overflow: hidden;
+    background: #000;
+    border-radius: clamp(6px, 0.7vw, 14px) 0 0 clamp(6px, 0.7vw, 14px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08), 0 18px 48px rgba(0, 0, 0, 0.14);
+  }
+
+  .cm-hero-media video {
     display: block;
     width: 100%;
     height: auto;
-    aspect-ratio: 1412 / 794;
-    border-radius: clamp(6px, 0.7vw, 14px) 0 0 clamp(6px, 0.7vw, 14px);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08), 0 18px 48px rgba(0, 0, 0, 0.14);
+    aspect-ratio: 860 / 688;
   }
 
   @media (min-width: 1024px) {
@@ -322,9 +291,8 @@
   .cm-hero h1 { text-wrap: balance; }
   .cm-hero p.subtitle { text-wrap: pretty; }
 
-  /* "Watch the demo": styled as the nav bar (nav.css .identity-bar), set
-     in the bar's bold Fakt like "Tom de Gay", jumping to the demo video in
-     Outcomes */
+  /* View slides: styled as the nav bar (nav.css .identity-bar), set
+     in the bar's bold Fakt like "Tom de Gay". */
   .cm-watch-row { display: flex; flex-wrap: wrap; gap: 10px; margin: clamp(20px, 2.4vw, 32px) 0 0; }
 
   a.cm-watch {
@@ -386,7 +354,7 @@
     /* the picture still runs off the window's right edge, rounded on the
        left only, as on desktop and phones */
     .cm-hero-media { margin-right: calc(-1 * var(--hero-inset)); }
-    .cm-hero-media svg { border-radius: clamp(6px, 1.3vw, 13px) 0 0 clamp(6px, 1.3vw, 13px); }
+    .cm-hero-media { border-radius: clamp(6px, 1.3vw, 13px) 0 0 clamp(6px, 1.3vw, 13px); }
 
     .cm-hero h1 { font-size: clamp(32px, 5vw, 56px); line-height: 1.1; max-width: 13.5em; }
 
@@ -452,36 +420,20 @@
 
   /* On phones the picture is magnified and cropped, as on Zonefully: it
      starts at the page's left margin, rounded on the left, and runs off
-     the right edge just past the first source file's column (0.67 of the
-     cropped screenshot's width), so it is (window - inset) / 0.67 wide. */
+     the right edge through the second source column (0.67 of the
+     cropped video's width), so it is (window - inset) / 0.67 wide. */
   @media (max-width: 640px) {
     .cm-hero { padding-bottom: 48px; }
     .cm-hero-media {
       width: calc((100vw - var(--hero-inset)) / 0.67);
       max-width: none;
     }
-    .cm-hero-media svg { border-radius: 6px 0 0 6px; }
+    .cm-hero-media { border-radius: 6px 0 0 6px; }
   }
 
   /* the hero picture runs off the window's edge, and html and body clip
      the overflow so the page never scrolls sideways */
   html, body { overflow-x: clip; }
-
-  /* the hero artwork's labels in the site's Fakt rather than the Arial the
-     card copies carry; the bold ID/type badges in the semibold cut */
-  .cm-hero-media svg text { font-family: "Fakt Blond", sans-serif; }
-  .cm-hero-media svg text[font-weight="600"] { font-family: "Fakt Blond SemiBold", sans-serif; }
-
-  /* the demo video in Outcomes: as wide as the window allows, up to 90rem,
-     keeping the page's side margins, centred on the text column */
-  .cm-big {
-    --video-w: min(90rem, 100vw - 2 * clamp(24px, 5vw, 56px));
-    width: var(--video-w);
-    max-width: none;
-    margin-left: calc((100% - var(--video-w)) / 2);
-  }
-  .cm-big .ui-video { max-width: none; }
-  .cm-big figcaption { max-width: 38rem; }
 
   /* -- inline diagram -- */
   .diagram {
@@ -880,6 +832,51 @@
   }
   .framing-card .evidence-list { margin-top: -6px; }
 
+  /* Supporting evidence: native details keeps the full copy accessible
+     by keyboard and works without JavaScript. */
+  .evidence-disclosure { padding: 0; transition: background-color 0.15s ease; }
+  .evidence-disclosure:hover { background: rgb(48, 48, 48); }
+  .evidence-disclosure > summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 20px 24px;
+    border-radius: inherit;
+    list-style: none;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+  }
+  .evidence-disclosure > summary::-webkit-details-marker { display: none; }
+  .evidence-disclosure > summary::marker { content: ""; }
+  .evidence-disclosure > summary:focus-visible { outline: 2px solid #00d8aa; outline-offset: 3px; }
+  .evidence-disclosure .framing-label { flex: 1; min-width: 0; }
+  .evidence-toggle {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+    gap: 7px;
+    margin-left: 8px;
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  .evidence-disclosure:hover .evidence-toggle { color: #fff; }
+  .evidence-less { display: none; }
+  .evidence-disclosure[open]:not(.is-closing) .evidence-more { display: none; }
+  .evidence-disclosure[open]:not(.is-closing) .evidence-less { display: inline; }
+  .evidence-chevron { transition: transform 0.2s ease; }
+  .evidence-disclosure[open]:not(.is-closing) .evidence-chevron { transform: rotate(180deg); }
+  .evidence-body { display: flow-root; box-sizing: border-box; padding: 0 24px 22px; }
+  @media (max-width: 480px) {
+    .evidence-disclosure > summary { padding: 18px 16px; }
+    .evidence-disclosure .framing-label { font-size: 12px; letter-spacing: 1px; }
+    .evidence-body { padding: 0 16px 20px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .evidence-chevron { transition: none; }
+  }
+
   /* flow-root keeps the children's margins inside the body, so the height
      the script animates to (scrollHeight) is the height it settles at. */
   /* A small "Design validation" tag on a summary, hinting that the item
@@ -1256,8 +1253,10 @@
     </div>
   </nav>
   <div class="cm-hero">
-    <div class="cm-hero-media mapping-card">
-      <svg class="mapping-vector" viewBox="0 0 1412 794" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Column mappings appear from highest to lowest confidence as blue progress bars fill green; yellow low-confidence suggestions appear last."><rect width="1412" height="794" fill="#000"/><g transform="translate(119 0)"><rect x="0" y="116" width="565" height="14" rx="7" fill="#405fb1"/><rect class="mapping-progress mapping-progress-left" x="0" y="116" width="565" height="14" rx="7" fill="#60d6b1"/><rect y="187" width="565" height="607" fill="#19182e"/><path d="M0 188H52L68 173L84 188H565" fill="#19182e" stroke="#60d6b1" stroke-width="1.5"/><path d="M0 239H565" stroke="#2b293d"/><path d="M0 289H565" stroke="#2b293d"/><g><text x="8" y="273" fill="#626880" font-family="Arial,sans-serif" font-size="23">Policy Number</text><g transform="translate(529 254)"><rect width="25" height="25" rx="4" fill="#606073"/><path d="M7 7.5V17.5M10.5 7.5H13.3A4.6 5 0 0 1 13.3 17.5H10.5Z" fill="none" stroke="#19182e" stroke-width="2"/></g></g><path d="M0 339H565" stroke="#2b293d"/><path d="M0 389H565" stroke="#2b293d"/><g class="mapping-row" style="--mapping-delay:0.4s"><text x="8" y="373" fill="#87aaff" font-family="Arial,sans-serif" font-size="23">Policy Expiration</text><text x="518" y="373" text-anchor="end" fill="#a4a3b5" font-family="Arial,sans-serif" font-size="23">95.8%</text><g transform="translate(529 354)"><rect width="25" height="25" rx="4" fill="#606073"/><path d="M0 5H25" fill="none" stroke="#19182e" stroke-width="1.3"/><text x="12.5" y="21.8" text-anchor="middle" fill="#19182e" font-size="15.5" font-weight="600">31</text></g></g><path d="M0 439H565" stroke="#2b293d"/><g><text x="8" y="423" fill="#626880" font-family="Arial,sans-serif" font-size="23">New-Renewal</text><g transform="translate(529 404)"><rect width="25" height="25" rx="4" fill="#606073"/><path d="M7 7.5H18M12.5 7.5V18.5" fill="none" stroke="#19182e" stroke-width="2"/></g></g><path d="M0 489H565" stroke="#2b293d"/><g><text x="8" y="473" fill="#626880" font-family="Arial,sans-serif" font-size="23">Insured</text><g transform="translate(529 454)"><rect width="25" height="25" rx="4" fill="#606073"/><path d="M7 7.5H18M12.5 7.5V18.5" fill="none" stroke="#19182e" stroke-width="2"/></g></g><path d="M0 539H565" stroke="#2b293d"/><g class="mapping-row" style="--mapping-delay:2.1s"><text x="8" y="523" fill="#87aaff" font-family="Arial,sans-serif" font-size="23">Street</text><text x="518" y="523" text-anchor="end" fill="#f7ce55" font-family="Arial,sans-serif" font-size="23">59.0%</text><g transform="translate(529 504)"><rect width="25" height="25" rx="4" fill="#606073"/><path d="M7 7.5H18M12.5 7.5V18.5" fill="none" stroke="#19182e" stroke-width="2"/></g></g><path d="M0 589H565" stroke="#2b293d"/><g><text x="8" y="573" fill="#626880" font-family="Arial,sans-serif" font-size="23">City</text><g transform="translate(529 554)"><rect width="25" height="25" rx="4" fill="#606073"/><path d="M7 7.5H18M12.5 7.5V18.5" fill="none" stroke="#19182e" stroke-width="2"/></g></g><path d="M0 639H565" stroke="#2b293d"/><g><text x="8" y="623" fill="#626880" font-family="Arial,sans-serif" font-size="23">State</text><g transform="translate(529 604)"><rect width="25" height="25" rx="4" fill="#606073"/><path d="M7 7.5H18M12.5 7.5V18.5" fill="none" stroke="#19182e" stroke-width="2"/></g></g><path d="M0 689H565" stroke="#2b293d"/><g><text x="8" y="673" fill="#626880" font-family="Arial,sans-serif" font-size="23">Zip</text><g transform="translate(529 654)"><rect width="25" height="25" rx="4" fill="#606073"/><path d="M10.6 6.5L9.6 18.5M15.6 6.5L14.6 18.5M6.5 10.4H18.5M6.2 14.6H18.2" fill="none" stroke="#19182e" stroke-width="2"/></g></g><path d="M0 739H565" stroke="#2b293d"/><path d="M0 789H565" stroke="#2b293d"/><g><text x="8" y="773" fill="#626880" font-family="Arial,sans-serif" font-size="23">Class Code</text><g transform="translate(529 754)"><rect width="25" height="25" rx="4" fill="#606073"/><path d="M10.6 6.5L9.6 18.5M15.6 6.5L14.6 18.5M6.5 10.4H18.5M6.2 14.6H18.2" fill="none" stroke="#19182e" stroke-width="2"/></g></g></g><g transform="translate(728 0)"><rect x="0" y="116" width="565" height="14" rx="7" fill="#405fb1"/><rect class="mapping-progress mapping-progress-right" x="0" y="116" width="554" height="14" rx="7" fill="#60d6b1"/><rect y="187" width="565" height="607" fill="#19182e"/><path d="M0 188H52L68 173L84 188H565" fill="#19182e" stroke="#60d6b1" stroke-width="1.5"/><path d="M0 239H565" stroke="#2b293d"/><g class="mapping-row" style="--mapping-delay:2.4s"><text x="8" y="223" fill="#87aaff" font-family="Arial,sans-serif" font-size="23">Line of Business</text><text x="518" y="223" text-anchor="end" fill="#f7ce55" font-family="Arial,sans-serif" font-size="23">30.9%</text><g transform="translate(529 204)"><rect width="25" height="25" rx="4" fill="#606073"/><path d="M7 7.5H18M12.5 7.5V18.5" fill="none" stroke="#19182e" stroke-width="2"/></g></g><path d="M0 289H565" stroke="#2b293d"/><g class="mapping-row" style="--mapping-delay:0.15s"><text x="8" y="273" fill="#87aaff" font-family="Arial,sans-serif" font-size="23">Policy No</text><text x="518" y="273" text-anchor="end" fill="#a4a3b5" font-family="Arial,sans-serif" font-size="23">97.1%</text><g transform="translate(529 254)"><rect width="25" height="25" rx="4" fill="#606073"/><path d="M7 7.5V17.5M10.5 7.5H13.3A4.6 5 0 0 1 13.3 17.5H10.5Z" fill="none" stroke="#19182e" stroke-width="2"/></g></g><path d="M0 339H565" stroke="#2b293d"/><g class="mapping-row" style="--mapping-delay:0.9s"><text x="8" y="323" fill="#87aaff" font-family="Arial,sans-serif" font-size="23">Effective Date</text><text x="518" y="323" text-anchor="end" fill="#a4a3b5" font-family="Arial,sans-serif" font-size="23">86.6%</text><g transform="translate(529 304)"><rect width="25" height="25" rx="4" fill="#606073"/><path d="M0 5H25" fill="none" stroke="#19182e" stroke-width="1.3"/><text x="12.5" y="21.8" text-anchor="middle" fill="#19182e" font-size="15.5" font-weight="600">31</text></g></g><path d="M0 389H565" stroke="#2b293d"/><g class="mapping-row" style="--mapping-delay:0.65s"><text x="8" y="373" fill="#87aaff" font-family="Arial,sans-serif" font-size="23">Expiry Date</text><text x="518" y="373" text-anchor="end" fill="#a4a3b5" font-family="Arial,sans-serif" font-size="23">92.0%</text><g transform="translate(529 354)"><rect width="25" height="25" rx="4" fill="#606073"/><path d="M0 5H25" fill="none" stroke="#19182e" stroke-width="1.3"/><text x="12.5" y="21.8" text-anchor="middle" fill="#19182e" font-size="15.5" font-weight="600">31</text></g></g><path d="M0 439H565" stroke="#2b293d"/><g><text x="8" y="423" fill="#626880" font-family="Arial,sans-serif" font-size="23">New-Renewal</text><g transform="translate(529 404)"><rect width="25" height="25" rx="4" fill="#606073"/><path d="M7 7.5H18M12.5 7.5V18.5" fill="none" stroke="#19182e" stroke-width="2"/></g></g><path d="M0 489H565" stroke="#2b293d"/><g><text x="8" y="473" fill="#626880" font-family="Arial,sans-serif" font-size="23">Insured</text><g transform="translate(529 454)"><rect width="25" height="25" rx="4" fill="#606073"/><path d="M7 7.5H18M12.5 7.5V18.5" fill="none" stroke="#19182e" stroke-width="2"/></g></g><path d="M0 539H565" stroke="#2b293d"/><g class="mapping-row" style="--mapping-delay:1.4s"><text x="8" y="523" fill="#87aaff" font-family="Arial,sans-serif" font-size="23">Address</text><text x="518" y="523" text-anchor="end" fill="#a4a3b5" font-family="Arial,sans-serif" font-size="23">82.5%</text><g transform="translate(529 504)"><rect width="25" height="25" rx="4" fill="#606073"/><path d="M7 7.5H18M12.5 7.5V18.5" fill="none" stroke="#19182e" stroke-width="2"/></g></g><path d="M0 589H565" stroke="#2b293d"/><g class="mapping-row" style="--mapping-delay:2.7s"><text x="8" y="573" fill="#87aaff" font-family="Arial,sans-serif" font-size="23">Extra Field 1</text><text x="518" y="573" text-anchor="end" fill="#f7ce55" font-family="Arial,sans-serif" font-size="23">20.0%</text><g transform="translate(529 554)"><rect width="25" height="25" rx="4" fill="#606073"/><path d="M7 7.5H18M12.5 7.5V18.5" fill="none" stroke="#19182e" stroke-width="2"/></g></g><path d="M0 639H565" stroke="#2b293d"/><g><text x="8" y="623" fill="#626880" font-family="Arial,sans-serif" font-size="23">State</text><g transform="translate(529 604)"><rect width="25" height="25" rx="4" fill="#606073"/><circle cx="12.5" cy="10.3" r="3.3" fill="#19182e"/><path d="M8.2 6.4A5.6 5.6 0 0 0 16.4 14.7M12.4 16.2V19M9.4 19.2H15.4" fill="none" stroke="#19182e" stroke-width="1.6"/></g></g><path d="M0 689H565" stroke="#2b293d"/><g class="mapping-row" style="--mapping-delay:1.65s"><text x="8" y="673" fill="#87aaff" font-family="Arial,sans-serif" font-size="23">ZIP Code</text><text x="518" y="673" text-anchor="end" fill="#a4a3b5" font-family="Arial,sans-serif" font-size="23">79.3%</text><g transform="translate(529 654)"><rect width="25" height="25" rx="4" fill="#606073"/><circle cx="12.5" cy="10.3" r="3.3" fill="#19182e"/><path d="M8.2 6.4A5.6 5.6 0 0 0 16.4 14.7M12.4 16.2V19M9.4 19.2H15.4" fill="none" stroke="#19182e" stroke-width="1.6"/></g></g><path d="M0 739H565" stroke="#2b293d"/><g class="mapping-row" style="--mapping-delay:1.15s"><text x="8" y="723" fill="#87aaff" font-family="Arial,sans-serif" font-size="23">Product</text><text x="518" y="723" text-anchor="end" fill="#a4a3b5" font-family="Arial,sans-serif" font-size="23">83.8%</text><g transform="translate(529 704)"><rect width="25" height="25" rx="4" fill="#606073"/><path d="M7 7.5H18M12.5 7.5V18.5" fill="none" stroke="#19182e" stroke-width="2"/></g></g><path d="M0 789H565" stroke="#2b293d"/><g><text x="8" y="773" fill="#626880" font-family="Arial,sans-serif" font-size="23">Class Code</text><g transform="translate(529 754)"><rect width="25" height="25" rx="4" fill="#606073"/><path d="M10.6 6.5L9.6 18.5M15.6 6.5L14.6 18.5M6.5 10.4H18.5M6.2 14.6H18.2" fill="none" stroke="#19182e" stroke-width="2"/></g></g></g></svg>
+    <div class="cm-hero-media case-hero-video-frame" data-hover-controls>
+      <video autoplay muted loop playsinline disablepictureinpicture preload="metadata" width="1720" height="1376" poster="media/column-mapping-hero-poster.jpg?v=2" aria-label="Two source schemas in the completed column mapping interface, switching between mapped and unmapped fields.">
+        <source src="media/column-mapping-hero.mp4?v=2" type="video/mp4">
+      </video>
     </div>
     <div class="cm-hero-text">
       <svg class="case-icon cm-hero-logo" viewBox="0 0 16 16" fill="none" stroke="#00d8aa" stroke-width="0.762" aria-hidden="true" focusable="false">
@@ -1267,7 +1266,7 @@
       </svg>
       <h1 class="display">Mapping inconsistent schemas at&nbsp;scale</h1>
       <p class="subtitle">Automated schema matching across 2,000 files per customer each month, then reduced mapping errors by&nbsp;73%.</p>
-      <p class="cm-watch-row"><a class="cm-watch" href="#video"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 2.8v10.4a.6.6 0 0 0 .9.5l8.2-5.2a.6.6 0 0 0 0-1L5.4 2.3a.6.6 0 0 0-.9.5z" fill="currentColor"/></svg>Watch the demo</a> <a class="cm-watch" href="../slides/column-mapping.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>View slides</a></p>
+      <p class="cm-watch-row"><a class="cm-watch" href="../slides/column-mapping.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>View slides</a></p>
     </div>
   </div>
   <main>
@@ -1295,12 +1294,16 @@
         </div>
       </div>
       <div class="meta-item">
+        <span class="eyebrow">Company</span>
+        <p><a href="https://quantemplate.com" target="_blank" rel="noopener noreferrer">Quantemplate</a></p>
+      </div>
+      <div class="meta-item">
         <span class="eyebrow">Domain</span>
         <p>Wholesale insurance data management.</p>
       </div>
       <div class="meta-item">
-        <span class="eyebrow">User profiles</span>
-        <p>Data analyst: domain expert with deep knowledge of the data.<br>Technical skill level: competent Excel user.</p>
+        <span class="eyebrow">User profile</span>
+        <p>Data analyst: domain expert<br>and Excel power user.</p>
       </div>
     </div>
     </header>
@@ -1334,7 +1337,7 @@
       <p>Even worse, the schemas can change from month to month. So any solution needs to be flexible enough to allow a business analyst processing the data to instantly fix the issue. No round trips to IT or service providers.</p>
        <p>We observed that the ingestion process was often performed manually using elaborate Excel hacks. It was slow, specialist work, the knowledge created while mapping one dataset was difficult to reuse, and the next month it all needed doing again.</p>
 
-      
+
     </section>
 
     <hr class="rule">
@@ -1343,18 +1346,22 @@
       <h2 class="eyebrow" id="approach-heading">Approach</h2>
       <h3>Learning from the Excel workarounds</h3>
 
-      <p>We studied how people were already reconciling different schemas by hand.</p>
+      <p>We studied how people were already reconciling different schemas by hand. This provided the key insight: vertically stacked schemas allowed better comparison.</p>
 
-      <div class="evidence-card">
-        <div class="framing-head">
+      <details class="evidence-card evidence-disclosure">
+        <summary class="framing-head">
           <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M12.1426 2.85254L2.82812 12.167L12.1426 21.4814V24.3096L0 12.167L12.1426 0.0244141V2.85254Z" fill="#00D8AA"/><path d="M45.832 12.167L33.665 24.334L22.916 13.585L12.168 24.333V21.5049L21.502 12.1709L21.498 12.167L21.502 12.1631L12.168 2.8291V0.000976562L22.916 10.749L33.665 0L45.832 12.167ZM24.3301 12.1631L24.334 12.167L24.3301 12.1709L33.665 21.5059L43.0039 12.167L33.665 2.82812L24.3301 12.1631Z" fill="#605F5F"/></svg>
           <span class="framing-label">Evidence</span>
-        </div>
+
+          <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
+        </summary>
+        <div class="evidence-body">
         <ul class="evidence-list">
           <li>Across dozens of manual Excel processes, the most effective approaches arranged source and target fields vertically, using row alignment to show mappings.</li>
           <li>Interviews with domain experts exposed the recurring difficulty: rearranging cells while keeping track of what was mapped and what remained.</li>
         </ul>
-      </div>
+        </div>
+      </details>
 
       <figure class="figure figure-strip">
         <div class="figure-portrait-frame">
@@ -1430,13 +1437,17 @@
         </div>
       </div>
 
-      <div class="evidence-card framing-card">
-        <div class="framing-head">
+      <details class="evidence-card framing-card evidence-disclosure">
+        <summary class="framing-head">
           <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
           <span class="framing-label">Ship and learn</span>
-        </div>
+
+          <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
+        </summary>
+        <div class="evidence-body">
         <p>As the sole designer supporting 11 developers, I prioritised a working implementation: full interactive prototyping this data-heavy interaction would have taken comparable effort to building it. We tested internally, then refined it through customer use, adding search, populate cells and enforce schema functions. As our customer base shifted, we adapted the workflow from assembling a master schema field by field to using an existing dataset.</p>
-      </div>
+        </div>
+      </details>
 
     </section>
 
@@ -1478,13 +1489,17 @@
           <figcaption>Interface detail: yellow highlights flag lower-confidence suggestions; the avatar beside Expiry Date identifies a mapping made by another user. Select the image to see the full view.</figcaption>
         </figure>
 
-        <div class="evidence-card framing-card">
-          <div class="framing-head">
+        <details class="evidence-card framing-card evidence-disclosure">
+        <summary class="framing-head">
             <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
             <span class="framing-label">Design validation</span>
-          </div>
+
+          <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
+        </summary>
+        <div class="evidence-body">
           <p>The yellow gradient performed best among the colour options we tested, including in colour-blindness simulations and testing with a user with colour vision deficiency.</p>
         </div>
+      </details>
       </div>
 
     </section>
@@ -1501,14 +1516,18 @@
 
         <p class="see-also"><a href="https://help.quantemplate.com/data-semantics" target="_blank" rel="noopener noreferrer">Data semantics on the Quantemplate Help Centre &rarr;</a></p>
 
-        <div class="evidence-card framing-card">
-          <div class="framing-head">
+        <details class="evidence-card framing-card evidence-disclosure">
+        <summary class="framing-head">
             <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
             <span class="framing-label">Design exploration</span>
-          </div>
+
+          <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
+        </summary>
+        <div class="evidence-body">
           <p>I did a full audit of the current mapping behaviour, identified shortcomings in our approach and evaluated different paths for improvement. Together with a domain expert, I modelled different methodologies for weighting data fingerprints and prior usage.</p>
           <p>My initial proposal prompted a different approach from a colleague. I tested both across a range of scenarios and found the other model's behaviour more logical, predictable and tunable, so we chose it over my original method.</p>
         </div>
+      </details>
 
         <p>When it came to the UI, we displayed the data types, allowing users to click in and see a data profile for each column: sample values, uniques, distribution, statistics and lineage.</p>
 
@@ -1549,22 +1568,17 @@
             <span>Estimated counts from an LLM-assisted review of screenshots across four schema variations mapped to Lloyd&rsquo;s v5.2 (26–27 August 2026).</span>
           </figcaption>
         </figure>
-        <div class="problem-items">
-          <details class="problem-item" id="model-evaluation">
-            <summary>
-              <span class="problem-item-icon" aria-hidden="true"></span>
-              <span class="problem-item-title">How the model was evaluated</span>
-              <span class="problem-item-teaser">Schema variations, reviewed with LLM <span class="problem-item-tail">assistance <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
-              <span class="problem-item-badge"><svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><rect x="22.9123" y="12.1673" width="15.2071" height="15.2071" transform="rotate(-45 22.9123 12.1673)" stroke="#00D8AA" stroke-width="2"/>
-<rect x="1.41421" y="12.1673" width="15.2071" height="15.2071" transform="rotate(-45 1.41421 12.1673)" stroke="#00D8AA" stroke-width="2"/></svg><span class="framing-label">Model evaluation</span></span>
-            </summary>
-            <div class="problem-item-body">
-              <div class="evidence-card framing-card">
-                <div class="framing-head">
+        <details class="evidence-card framing-card evidence-disclosure" id="model-evaluation">
+        <summary class="framing-head">
                   <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><rect x="22.9123" y="12.1673" width="15.2071" height="15.2071" transform="rotate(-45 22.9123 12.1673)" stroke="#00D8AA" stroke-width="2"/>
 <rect x="1.41421" y="12.1673" width="15.2071" height="15.2071" transform="rotate(-45 1.41421 12.1673)" stroke="#00D8AA" stroke-width="2"/></svg>
                   <span class="framing-label">Model evaluation</span>
-                </div>
+
+          <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
+        </summary>
+        <div class="evidence-body">
+                <p class="framing-term">How the model was evaluated</p>
+                <p>Schema variations, reviewed with LLM assistance</p>
                 <p class="framing-term">What was assessed</p>
                 <p>This evaluated the matching model&rsquo;s output, not the usability of the interface.</p>
                 <p class="framing-term">Test data</p>
@@ -1573,10 +1587,8 @@
                 <p>An LLM-assisted assessment of the mappings both models produced, carried out on 26&ndash;27 August 2026. The error counts are estimates from an LLM-assisted review of screenshots across the four schemas.</p>
                 <p class="framing-term">Findings</p>
                 <p>Across the four schemas, only three mappings from the new model were assessed as incorrect, even with the Automap confidence threshold set to 0%. It also handled repeated and numbered fields more consistently, reducing incorrect matches between similar-looking fields with distinct meanings.</p>
-              </div>
-            </div>
-          </details>
         </div>
+      </details>
       </div>
     </section>
 
@@ -1594,20 +1606,6 @@
           <li><strong>73% fewer mapping errors</strong> in <a href="#evaluation-heading">evaluation of the upgraded model</a>.</li>
         </ul>
 
-        <blockquote class="outcome-quote">
-          I cannot adequately express how receptive Tom was to our suggestions for improvement. He would listen, ask questions and make our wishlist items reality; even enhancing our&nbsp;suggestions.
-          <cite><a href="https://www.linkedin.com/in/tom-dg/details/recommendations/?detailScreenTabIndex=0" target="_blank" rel="noopener noreferrer">Lee Ann Dewell Lang</a>, Quantemplate user-client, James River Insurance</cite>
-        </blockquote>
-
-        <figure class="figure cm-big" id="video">
-          <div class="ui-video" data-hover-controls>
-            <video controls playsinline preload="metadata" disablepictureinpicture controlslist="nofullscreen nodownload" width="1600" height="1100" poster="media/mch-automap-hero.jpg">
-              <source src="media/mch-automap-hero.mp4" type="video/mp4">
-            </video>
-            <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
-          </div>
-          <figcaption>Demo: mapping columns from the unmapped list, then an Automap preview, dragging the confidence threshold to choose which suggestions to apply.</figcaption>
-        </figure>
       </div>
     </section>
 
@@ -1732,7 +1730,7 @@
   <script>
     (function () {
       if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        document.querySelectorAll(".ui-video video").forEach(function (v) {
+        document.querySelectorAll(".ui-video video, .cm-hero-media video").forEach(function (v) {
           v.pause();
           v.removeAttribute("autoplay");
         });
@@ -1864,11 +1862,11 @@
        body's height is tweened from where it is now, so a click mid-way
        reverses smoothly; reduced motion falls back to the native toggle. */
     (function () {
-      var items = document.querySelectorAll('.problem-item');
+      var items = document.querySelectorAll('.evidence-disclosure');
       if (!items.length || !('animate' in Element.prototype)) return;
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
       Array.prototype.forEach.call(items, function (d) {
-        var summary = d.querySelector('summary'), body = d.querySelector('.problem-item-body');
+        var summary = d.querySelector('summary'), body = d.querySelector('.evidence-body');
         var anim = null;
         function run(from, to, done) {
           if (anim) anim.cancel();
@@ -1911,7 +1909,7 @@
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       if (media.getBoundingClientRect().top < window.innerHeight - 40) return;
       media.classList.add("is-armed");
-      // the bottom of the button row (two buttons here, stacked on phones)
+      // the bottom of the View slides button row
       var button = document.querySelector(".cm-watch-row");
       if (button) {
         var gap = media.getBoundingClientRect().top - 300 - button.getBoundingClientRect().bottom;
