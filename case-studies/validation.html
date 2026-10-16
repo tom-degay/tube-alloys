@@ -461,9 +461,9 @@
       opacity: 1;
       transform: none;
       margin-top: calc(-1 * var(--close, 0px));
-      transition: transform 0.75s cubic-bezier(0.22, 1.25, 0.36, 1),
-                  margin-top 0.75s cubic-bezier(0.22, 1, 0.36, 1),
-                  opacity 0.4s linear;
+      transition: transform 1.05s cubic-bezier(0.22, 1.25, 0.36, 1),
+                  margin-top 1.05s cubic-bezier(0.22, 1, 0.36, 1),
+                  opacity 0.55s linear;
     }
   }
 
@@ -648,7 +648,7 @@
      <details> behaviour still works. -- */
   .problem-items { max-width: 46rem; margin: 40px 0 8px; }  /* top clears the first row's hover shape off the label */
   .problem-item + .problem-item { margin-top: 34px; }  /* = hover padding, top + bottom */
-  .problem-item summary {
+  .problem-item > summary {
     list-style: none;
     cursor: pointer;
     /* Hover shape matches the nav dropdown cards (.nav-dropdown-card) and
@@ -662,9 +662,9 @@
     grid-template-columns: 14px 1fr;
     column-gap: 14px;
   }
-  .problem-item summary::-webkit-details-marker { display: none; }
-  .problem-item summary:hover,
-  .problem-item summary:focus-visible { background-color: rgba(255, 255, 255, 0.08); }
+  .problem-item > summary::-webkit-details-marker { display: none; }
+  .problem-item > summary:hover,
+  .problem-item > summary:focus-visible { background-color: rgba(255, 255, 255, 0.08); }
   .problem-item-icon {
     position: relative;
     grid-row: 1;
@@ -717,8 +717,8 @@
     transition: background-color 0.15s ease, color 0.15s ease;
   }
   .problem-item-more svg { display: block; }
-  .problem-item summary:hover .problem-item-more,
-  .problem-item summary:focus-visible .problem-item-more { background: rgb(56, 56, 56); color: #fff; }
+  .problem-item > summary:hover .problem-item-more,
+  .problem-item > summary:focus-visible .problem-item-more { background: rgb(56, 56, 56); color: #fff; }
   /* Evidence card at the foot of each problem: dark card, diamond and grey
      mono label (shared with the framing cards), green-arrow list. */
   .evidence-card {
@@ -849,6 +849,8 @@
   .problem-item-badge .framing-label { font-size: 12px; }
   .problem-item-body { display: flow-root; box-sizing: border-box; padding-left: 28px; }  /* 14px icon + 14px gap */
   .problem-item-body > :first-child { margin-top: 20px; }
+  /* Supporting cards span the reading column, outside the text indent. */
+  .problem-item-body > .evidence-card { margin-left: -28px; max-width: none; }
 
   .toc-heading { margin: 0 0 16px; }
 
