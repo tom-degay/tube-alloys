@@ -1866,21 +1866,33 @@
   /* Hero: the corrections grid in the frame, and the correction popup
      floating over it, pointing at the selected field and running out of
      the frame's foot. The popup is drawn at the grid's own scale (both
-     exported at 1x: 476 of the grid's 695px), its pointer tip (238px in)
-     on the selected field's lower edge (406, 219 of 695 x 359). */
+     exported at the same density: 476 of the grid's 695 units), its
+     pointer tip (238 in) on the selected field's lower edge (406, 219 of
+     695 x 359). The ::after spacer reserves the popup's overhang below the
+     frame -- (219 + 249) / 695 of the width, less the frame's 359 / 695,
+     plus a little air -- so the hero is always deep enough to hold it. */
   .val-hero-media {
     position: relative;
     overflow: visible;
     background: none;
     box-shadow: none;
   }
+  /* the frame holds the popup too, so the popup's top can be a share of
+     the grid's height; the grid image carries the frame's corners itself,
+     so nothing clips the popup */
   .val-hero-shot {
-    overflow: hidden;
+    position: relative;
     border-radius: inherit;
     background: #000;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08), 0 18px 48px rgba(0, 0, 0, 0.14);
   }
-  .val-hero-shot img { display: block; width: 100%; height: auto; }
+  .val-hero-shot > img:first-child { display: block; width: 100%; height: auto; border-radius: inherit; }
+  .val-hero-media::after {
+    content: "";
+    display: block;
+    aspect-ratio: 695 / 109;
+    margin-bottom: clamp(8px, 1.6vw, 24px);
+  }
   .val-hero-popup {
     position: absolute;
     left: calc((406 - 238) / 695 * 100%);
@@ -1889,10 +1901,6 @@
     height: auto;
     filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35)) drop-shadow(0 22px 44px rgba(0, 0, 0, 0.5));
     pointer-events: none;
-  }
-  /* phones: room under the frame for the popup that hangs out of it */
-  @media (max-width: 640px) {
-    .val-hero { padding-bottom: 72px; }
   }
 </style>
 <script>
@@ -1981,9 +1989,9 @@
   <div class="val-hero">
     <div class="val-hero-media" data-hero-spacing data-spacing-button=".val-watch-row">
       <div class="val-hero-shot">
-        <img src="media/validation-hero-2.png" width="695" height="359" fetchpriority="high" alt="The validation report&rsquo;s data grid: failed Effective dates in red, each with a correction field beside it; two rows already corrected in green, and the field for 20170105 selected.">
+        <img src="media/validation-hero-2.png" width="2780" height="1436" fetchpriority="high" alt="The validation report&rsquo;s data grid: failed Effective dates in red, each with a correction field beside it; two rows already corrected in green, and the field for 20170105 selected.">
+        <img class="val-hero-popup" src="media/validation-hero-popup.png" width="1904" height="996" alt="The correction popup open on the selected field: 20180105 entered, Change all matching errors chosen, and an Apply button.">
       </div>
-      <img class="val-hero-popup" src="media/validation-hero-popup.png" width="476" height="249" alt="The correction popup open on the selected field: 20180105 entered, Change all matching errors chosen, and an Apply button.">
     </div>
     <div class="val-hero-text">
       <svg class="case-icon val-hero-logo" viewBox="0 0 16 16" fill="none" stroke="#00d8aa" stroke-width="0.762" aria-hidden="true" focusable="false">
