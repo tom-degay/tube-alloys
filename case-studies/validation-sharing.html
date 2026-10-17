@@ -1,0 +1,1879 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Validation sharing</title>
+<meta name="description" content="How Tom de Gay extended Quantemplate's validation corrections to suppliers: sharing selected results, preparing corrections privately and tracking progress on both sides.">
+<meta name="theme-color" content="#131313">
+<link rel="canonical" href="https://tomdegay.com/case-studies/validation-sharing">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sharing validation results with suppliers — Tom de Gay">
+<meta property="og:description" content="How Tom de Gay extended Quantemplate's validation corrections to suppliers: sharing selected results, preparing corrections privately and tracking progress on both sides.">
+<meta property="og:url" content="https://tomdegay.com/case-studies/validation-sharing">
+<meta property="og:image" content="https://tomdegay.com/case-studies/media/validation-og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Closing the loop on data quality — a Quantemplate case study by Tom de Gay">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sharing validation results with suppliers — Tom de Gay">
+<meta name="twitter:description" content="How Tom de Gay extended Quantemplate's validation corrections to suppliers: sharing selected results, preparing corrections privately and tracking progress on both sides.">
+<meta name="twitter:image" content="https://tomdegay.com/case-studies/media/validation-og.png">
+
+<link rel="icon" href="/tdg-favicon.svg" type="image/svg+xml">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/nav.css?v=20261016d">
+<style>
+
+  html { scroll-padding-top: 100px; }
+
+  /* -- sub-page header: a back link to the main study, then the title and
+     strapline in the hero's type, without the hero picture -- */
+  .vs-header { padding-top: clamp(8px, 2vw, 32px); }
+  .vs-back { margin: 0 0 clamp(20px, 2.4vw, 32px); font-size: 15px; }
+  .vs-back a { color: rgba(255, 255, 255, 0.68); border-bottom-color: transparent; }
+  .vs-back a:hover, .vs-back a:focus-visible { color: #fff; border-bottom-color: transparent; }
+  .vs-header h1 {
+    font-size: clamp(32px, 5vw, 56px);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    margin: 0;
+  }
+  .vs-header p.subtitle {
+    margin-top: clamp(14px, 2vw, 22px);
+    font-size: clamp(18px, 2.25vw, 24px);
+    line-height: 1.42;
+    text-wrap: pretty;
+  }
+
+  .case-body blockquote.outcome-quote {
+    box-sizing: border-box;
+    background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
+    border: none;
+    border-radius: 10px;
+    padding: clamp(20px, 2.4vw, 32px);
+    color: rgba(255, 255, 255, 0.82);
+    font-size: clamp(20px, 2vw, 30px);
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+
+  .outcome-quote::before {
+    content: "\201C";
+    display: block;
+    font-family: "Fakt Blond SemiBold", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 600;
+    font-size: clamp(96px, 10vw, 150px);
+    line-height: 0.95;
+    margin-bottom: -0.52em;
+    margin-left: -0.066em;
+    color: rgba(255, 255, 255, 0.22);
+  }
+
+  .corrections-chart {
+    max-width: 46rem;
+    margin: 32px 0;
+    padding: clamp(20px, 4vw, 32px);
+    border-radius: 8px;
+    background: rgb(33, 33, 33);
+  }
+  .corrections-chart h3 { margin: 0 0 8px; }
+  .corrections-chart .corrections-chart-subtitle {
+    margin: 0 0 24px;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.68);
+  }
+  .corrections-chart-plot { position: relative; padding: 0 32px 0 42px; }
+  .corrections-chart-y-axis { position: absolute; left: 0; top: 0; width: 34px; height: calc(100% - 28px); font: 11px "IBM Plex Mono", monospace; color: #00d8aa; }
+  .corrections-chart-y-axis span { position: absolute; right: 0; transform: translateY(-50%); }
+  .corrections-chart-y-axis--right { left: auto; right: 0; width: 25px; color: #fff; }
+  .corrections-chart-y-axis--right span { left: 0; right: auto; }
+  .corrections-chart-line.corrections-chart-line--rules { stroke: #fff; }
+  .corrections-chart-legend { display: flex; justify-content: space-between; gap: 8px 24px; margin-bottom: 20px; font-size: 12px; color: #00d8aa; }
+  .corrections-chart-legend span:last-child { color: #fff; text-align: right; }
+  .corrections-chart-point { cursor: pointer; stroke: transparent; stroke-width: 12; pointer-events: all; transition: r 160ms ease; }
+  .corrections-chart-point:hover, .corrections-chart-point:focus-visible { r: 6px; }
+  @media (prefers-reduced-motion: reduce) { .corrections-chart-point { transition: none; } }
+  .corrections-chart-point:focus { outline: none; stroke: rgba(255,255,255,.3); stroke-width: 4; }
+  .corrections-chart-tooltip { position:absolute; z-index:2; padding:9px 10px 7px; border-radius:6px; background:rgba(0,0,0,.6); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,.12); color:#fff; font-size:12px; line-height:1.4; pointer-events:none; width:max-content; max-width:calc(100% - 16px); transform:translate(-50%,-100%); }
+  .corrections-chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .corrections-chart-series { opacity: .7; transition: opacity 160ms ease; }
+  .corrections-chart-series:hover, .corrections-chart-series:focus-within { opacity: 1; }
+  @media (prefers-reduced-motion: reduce) { .corrections-chart-series { transition: none; } }
+  .corrections-chart-line {
+    fill: none;
+    stroke: #00d8aa;
+    stroke-width: 3;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+  }
+  .corrections-chart-months, .corrections-chart-events { position: relative; height: 28px; font: 12px "IBM Plex Mono", monospace; color: rgba(255,255,255,0.45); }
+  .corrections-chart-months span, .corrections-chart-events span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+  .corrections-chart-months span:first-child { transform: none; }
+  .corrections-chart-months span:last-child { transform: translateX(-100%); }
+  .corrections-chart-events { color: rgba(255,255,255,0.8); }
+
+  .corrections-saved-dates { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; font-size: 13px; line-height: 1.5; color: rgba(255,255,255,0.68); }
+  .corrections-saved-dates strong { display: block; color: #fff; font-weight: normal; }
+  .corrections-chart-dates {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.68);
+  }
+  .corrections-chart-dates span:last-child { text-align: right; }
+  .corrections-chart-dates strong {
+    display: block;
+    margin-bottom: 4px;
+    font: 18px "IBM Plex Mono", monospace;
+    color: #fff;
+  }
+  .corrections-chart-dates span:last-child strong { color: #00d8aa; }
+  .corrections-chart figcaption {
+    margin-top: 24px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.68);
+  }
+  .corrections-snapshot {
+    margin-top: 24px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .corrections-snapshot h4 { margin: 0 0 16px; font-size: 15px; }
+  .corrections-snapshot dl {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px 12px;
+    margin: 0;
+  }
+  .corrections-snapshot dl div { display: flex; flex-direction: column; gap: 6px; }
+  .corrections-snapshot dt { font-size: 13px; color: rgba(255, 255, 255, 0.68); }
+  .corrections-snapshot dd { order: -1; margin: 0; color: #fff; font: 20px "IBM Plex Mono", monospace; }
+  @keyframes corrections-area-reveal { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes corrections-line-draw { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+  @media (prefers-reduced-motion: no-preference) {
+    .corrections-chart.is-waiting .corrections-chart-area { opacity: 0; }
+    .corrections-chart.is-revealed .corrections-chart-area { animation: corrections-area-reveal 1s ease 0.6s both; }
+    .corrections-chart.is-waiting .corrections-chart-line { clip-path: inset(0 100% 0 0); }
+    .corrections-chart.is-revealed .corrections-chart-line {
+      animation: corrections-line-draw 1.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+  }
+
+  body {
+    font-family: "Fakt Blond", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: clamp(24px, 6vw, 72px) clamp(24px, 5vw, 56px);
+  }
+
+  @media (min-width: 1100px) {
+    main { max-width: 1320px; }
+  }
+
+  hr.rule {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    margin: clamp(32px, 5vw, 48px) 0;
+  }
+
+  /* Dividers, project metadata and Key points share the 46rem reading
+     width. The footer divider outside .content keeps its wider measure. */
+  .content > header > hr.rule,
+  .content > hr.rule,
+  .meta-row,
+  section[aria-labelledby="keypoints-heading"] {
+    max-width: 46rem;
+  }
+
+  /* Six project-info fields, matching Column mapping. */
+  .meta-row { grid-template-columns: 1fr; }
+  @media (min-width: 700px) {
+    .meta-row { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 1100px) {
+    .meta-row { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  /* Keep the list aligned with the text below at desktop widths too. */
+  .key-points-grid { display: block; }
+
+  section .eyebrow, .eyebrow {
+    display: block;
+    font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+    color: #00d8aa;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    word-spacing: -3px;
+    text-transform: uppercase;
+    margin: 0 0 20px;
+  }
+
+  @keyframes case-icon-draw {
+    0% { stroke-dashoffset: 150; opacity: 0; }
+    4% { opacity: 1; }
+    100% { stroke-dashoffset: 0; opacity: 1; }
+  }
+
+  h1 {
+    margin: 0;
+    color: #fff;
+    font-size: clamp(24px, 3.6vw, 32px);
+    line-height: 1.35;
+    max-width: 54ch;
+  }
+
+  @keyframes timeframe-donut-fill {
+    to {
+    stroke-dashoffset: var(--donut-offset, 0);
+    }
+  }
+
+  /* -- body copy -- */
+  .about-statement {
+    color: #fff;
+    font-size: clamp(18px, 2.3vw, 22px);
+    line-height: 1.6;
+    margin: 0 0 20px;
+    max-width: 46rem;
+  }
+
+  .about-statement:last-child { margin-bottom: 0; }
+
+  h2 {
+    font-family: "Fakt Blond SemiBold", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 600;
+    margin: 0 0 20px;
+    color: #fff;
+    font-size: clamp(20px, 2.6vw, 25px);
+    line-height: 1.25;
+  }
+
+  /* -- inline UI video -- */
+  .ui-video {
+    position: relative;
+    margin: 28px 0 0;
+    max-width: 46rem;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  /* Unframed videos (the hero repeated under "Applying corrections", the
+     pass filter): a hairline border instead of the grey frame. */
+  .hero-repeat .ui-video { border: 1px solid rgba(255, 255, 255, 0.1); }
+
+  .ui-video video {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .ui-video-expand {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .ui-video:hover .ui-video-expand, .ui-video:focus-within .ui-video-expand {
+    opacity: 1;
+  }
+
+  .ui-video-expand:hover, .ui-video-expand:focus-visible {
+    border-color: rgba(255, 255, 255, 0.85);
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  /* -- hero: as on Zonefully and Image Insight. Desktop: the study icon,
+     title, strapline and View slides on the left; the Validation corrections interface on the right running off the window's right edge
+     (rounded on the left only). The markup keeps the picture first, so the
+     columns are placed explicitly. -- */
+  .val-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 53.4vw;
+    align-items: center;
+    column-gap: 6.4vw;
+    padding: clamp(40px, 9vw, 180px) 0 clamp(56px, 10vw, 200px) 7.6vw;
+    background: linear-gradient(180deg, #131313 0%, #222121 100%);
+  }
+
+  .val-hero-media {
+    box-sizing: border-box;
+    padding: 0;
+    overflow: hidden;
+    background: #000;
+    border-radius: clamp(6px, 0.7vw, 14px) 0 0 clamp(6px, 0.7vw, 14px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08), 0 18px 48px rgba(0, 0, 0, 0.14);
+  }
+
+  .val-hero-media > picture,
+  .val-hero-media img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @media (min-width: 1024px) {
+    .val-hero-text { grid-column: 1; grid-row: 1; }
+    .val-hero-media { grid-column: 2; grid-row: 1; }
+  }
+
+  .val-hero h1 {
+    font-size: clamp(32px, 3.75vw, 76px);
+    line-height: 1.04;
+    letter-spacing: -0.01em;
+    max-width: none;
+  }
+
+  /* no orphans: a non-breaking space glues each line's last two words,
+     and balanced wrapping evens out the title's lines */
+  .val-hero h1 { text-wrap: balance; }
+  .val-hero p.subtitle { text-wrap: pretty; }
+
+  /* View slides: styled as the nav bar (nav.css .identity-bar), set
+     in the bar's bold Fakt like "Tom de Gay". */
+  .val-watch-row { display: flex; flex-wrap: wrap; gap: 10px; margin: clamp(20px, 2.4vw, 32px) 0 0; }
+
+  a.val-watch {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 44px;
+    padding: 9px 22px 9px 18px;
+    border: 1px solid #ffffff09;
+    border-radius: 16px;
+    background: #131313;
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    color: #eee;
+    font: 600 17px/24px "Fakt", sans-serif;
+    white-space: nowrap;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  a.val-watch svg { flex: 0 0 auto; width: 14px; height: 14px; }
+
+  a.val-watch:hover, a.val-watch:focus-visible { background: #000; color: #fff; }
+
+  @media (max-width: 640px) {
+    a.val-watch { border-radius: 13px; }
+  }
+
+  /* the study's icon (the drawn one from the old header) above the title,
+     at the size of the Image Insight and Zonefully logos */
+  .val-hero .case-icon.val-hero-logo {
+    display: block;
+    width: auto;
+    height: clamp(53px, 4.8vw, 86px);
+    margin-bottom: clamp(20px, 2.4vw, 36px);
+  }
+
+  .val-hero p.subtitle {
+    margin-top: clamp(16px, 1.8vw, 36px);
+    font-size: clamp(18px, 1.7vw, 32px);
+    line-height: 1.35;
+    max-width: 24em;
+  }
+
+  /* Below 1024px the hero stacks, title first: the text and the picture
+     both line up with the content edges of the nav bar above them (the
+     bar is min(820px, 100% - 48px) wide with 22px padding; at 640px and
+     under, 100% - 28px with 16px), and the picture is rounded all round
+     instead of running off the edge. */
+  @media (max-width: 1023.98px) {
+    .val-hero {
+      --hero-inset: calc(max(24px, (100% - 820px) / 2) + 22px);
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: clamp(40px, 11vw, 110px);
+      padding: clamp(32px, 8.8vw, 88px) var(--hero-inset) clamp(48px, 10vw, 100px);
+    }
+
+    .val-hero-text { grid-row: 1; }
+
+    /* On tablets the picture runs off the right edge, as on desktop.
+       Phones reverse the bleed below. */
+    .val-hero-media { margin-right: calc(-1 * var(--hero-inset)); }
+    .val-hero-media { border-radius: clamp(6px, 1.3vw, 13px) 0 0 clamp(6px, 1.3vw, 13px); }
+
+    .val-hero h1 { font-size: clamp(32px, 5vw, 56px); line-height: 1.1; max-width: 13.5em; }
+
+    .val-hero p.subtitle {
+      margin-top: clamp(14px, 2vw, 22px);
+      font-size: clamp(18px, 2.25vw, 24px);
+      line-height: 1.42;
+      max-width: 27.5em;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .val-hero { --hero-inset: 30px; }
+
+    /* the logo, title, strapline and button fill the first screen below
+       the nav bar (whose spacer is 86px tall here), centred in it; the
+       picture waits just below the fold and scrolls up into view */
+    .val-hero { padding-top: 0; }
+    .val-hero-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: calc(100vh - 86px);
+      min-height: calc(100svh - 86px);
+      /* weighted a little above centre */
+      padding-bottom: 12svh;
+      box-sizing: border-box;
+    }
+
+    /* bigger type to fill more of the width */
+    .val-hero .case-icon.val-hero-logo { height: 64px; align-self: flex-start; }
+    .val-hero h1 { font-size: clamp(32px, 9.2vw, 44px); line-height: 1.06; }
+    .val-hero p.subtitle { font-size: clamp(19px, 5.4vw, 23px); line-height: 1.4; }
+
+    /* Static image, keeping the established gap beneath the button. */
+    .val-hero-media {
+      margin-top: calc(-1 * var(--hero-close, 0px));
+    }
+  }
+
+
+  /* On phones show Policy Number and Effective without the LOB column. */
+  @media (max-width: 640px) {
+    .val-hero { padding-bottom: 48px; }
+    .val-hero-media {
+      width: calc(100vw - var(--hero-inset));
+      max-width: none;
+      justify-self: start;
+      margin-left: 0;
+      margin-right: 0;
+      border-radius: 6px 0 0 6px;
+    }
+  }
+
+  /* the hero picture runs off the window's edge, and html and body clip
+     the overflow so the page never scrolls sideways */
+  html, body { overflow-x: clip; }
+
+  /* -- inline diagram -- */
+  .diagram {
+    max-width: 46rem;
+    margin: 28px 0 24px;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #000;
+  }
+
+  .submit-mockup-frame { display: block; width: 100%; height: auto; border-radius: 6px; }
+
+  /* -- inline screenshot with caption -- */
+  .figure {
+    margin: 28px 0 24px;
+    max-width: 46rem;
+  }
+
+  .figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+  }
+
+  /* Every content image/video floats on this same grey-gradient backdrop
+     card, rather than sitting straight on the page's black background.
+     Standalone frames (not inside a <figure>) need their own bottom
+     margin to space them from whatever follows -- wrapping ui-video here
+     broke its old `.ui-video + p` sibling spacing, since the frame div
+     now sits between them. Figure-wrapped frames don't need it: the
+     figcaption after them supplies its own margin. */
+  .figure-portrait-frame {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    padding: 5%;
+    margin-bottom: clamp(24px, 3.5vw, 36px);
+    background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
+    border-radius: 10px;
+  }
+
+  .figure-portrait-frame img,
+  .figure-portrait-frame > .ui-video,
+  .figure-portrait-frame > .figure-strip-imgs {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  }
+
+  figure > .figure-portrait-frame {
+    margin-bottom: 0;
+  }
+
+  .figure-portrait-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .figure-portrait-frame > .ui-video {
+    width: 100%;
+    margin: 0;
+  }
+
+  .figure-portrait-frame > .figure-strip-imgs {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .figure-strip-imgs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .figure-strip .figure-strip-imgs img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  @media (max-width: 560px) {
+    .figure-strip-imgs { grid-template-columns: 1fr; }
+  }
+
+  /* No section rail: one reading column, centred on the page. */
+  main { max-width: none; }
+
+  /* Half the old space between the hero and the project stats, which was
+     main's top padding plus the meta row's own 40px margin. */
+  main { padding-top: calc((clamp(24px, 6vw, 72px) + 40px) / 2); }
+  .content > header .meta-row { margin-top: 0; }
+  .content { max-width: 46rem; margin-inline: auto; }
+
+  /* -- .figure-wide: an opt-in modifier for large videos/images. 140%
+     of the 46rem text column, centred on it (expanding out of both
+     sides) -- using an absolute rem width/offset rather than a
+     percentage, since not every instance that carries this class sits
+     in a container that's actually 46rem itself (a bare
+     .figure-portrait-frame with no enclosing .figure, for instance,
+     fills the full grid content column instead).
+
+     46rem x 1.4 = 64.4rem. The extra 18.4rem is split evenly, so the
+     left/right overhang is 9.2rem each -- margin-left takes that back
+     off the element's normal (flush-left) position to centre it.
+
+     Turned on at 1200px+, where the wider figure and page padding fit. */
+  @media (min-width: 1200px) {
+
+    .figure-wide {
+      width: 64.4rem;
+      max-width: none;
+      margin-left: -9.2rem;
+    }
+
+    /* .ui-video carries its own independent max-width: 46rem (for its
+       normal standalone use elsewhere on the page), which still won
+       over the wider frame around it here -- the video was rendering
+       at the old 46rem measure regardless of how wide .figure-wide
+       made its containing frame. Lift it same as the frame itself. */
+    .figure-wide .ui-video {
+      max-width: none;
+    }
+
+    /* The image/video bleeds, but a wide caption is hard to read --
+       keep it at the normal measure, left-aligned with the image's new
+       (further-left) edge rather than the page's normal text column. */
+    .figure-wide figcaption {
+      width: 38rem;
+      max-width: 100%;
+    }
+  }
+
+  /* -- Workflow diagrams: original vs improved, switched
+     by the two pill tabs at its top-left; #wf-tabbg slides between them.
+     The SVG carries its own gradient backdrop, so no portrait frame. In a
+     container under 600px the script re-lays it out as a single column. -- */
+  .wf-diagram {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+  .wf-tab { cursor: pointer; outline: none; }
+  .wf-tab.is-active { cursor: default; }
+  .wf-tab-label { fill: #605F5F; transition: fill 0.25s ease; }
+  .wf-tab:not(.is-active):hover .wf-tab-label { fill: #9A9A9A; }
+  .wf-tab.is-active .wf-tab-label { fill: #fff; }
+  .wf-tab-hit { fill: transparent; stroke: transparent; transition: fill 0.2s ease; }
+  .wf-tab:focus-visible .wf-tab-hit { stroke: rgba(255, 255, 255, 0.6); }
+  /* Hover lightens the background: the sliding pill on the selected tab,
+     a faint fill of its own on the other one. */
+  .wf-diagram [id$="-tabbg"] { fill: #272727; transition: fill 0.2s ease; }
+  .wf-diagram [id$="-tabs"]:has(.wf-tab.is-active:hover) [id$="-tabbg"] { fill: #303030; }
+  .wf-tab:not(.is-active):hover .wf-tab-hit { fill: #232323; }
+
+  /* -- Problem: each problem is a collapsible <details>. The summary
+     reads like a key point -- a green plus that folds to a minus when
+     open -- and the body is indented to line up with the title. The
+     script below animates the body's height; without it, plain
+     <details> behaviour still works. -- */
+  .problem-items { max-width: 46rem; margin: 40px 0 8px; }  /* top clears the first row's hover shape off the label */
+  .problem-item + .problem-item { margin-top: 34px; }  /* = hover padding, top + bottom */
+  .problem-item > summary {
+    list-style: none;
+    cursor: pointer;
+    /* Hover shape matches the nav dropdown cards (.nav-dropdown-card) and
+       spans the full content column; the padding is taken back with
+       negative margins so the text stays exactly where it was. */
+    margin: -18px -16px -16px;
+    padding: 18px 16px 16px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+    display: grid;
+    grid-template-columns: 14px 1fr;
+    column-gap: 14px;
+  }
+  .problem-item > summary::-webkit-details-marker { display: none; }
+  .problem-item > summary:hover,
+  .problem-item > summary:focus-visible { background-color: rgba(255, 255, 255, 0.08); }
+  .problem-item-icon {
+    position: relative;
+    grid-row: 1;
+    height: 30px;  /* the title's line height, so the icon centres on it */
+  }
+  .problem-item-icon::before,
+  .problem-item-icon::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 14px;
+    height: 1.5px;
+    margin-top: -0.75px;
+    background: #00d8aa;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .problem-item-icon::after { transform: rotate(90deg); }
+  .problem-item[open]:not(.is-closing) .problem-item-icon::after { transform: rotate(0deg); }
+  .problem-item-title {
+    grid-column: 2;
+    color: #fff;
+    font-family: "Fakt Blond", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 30px;
+  }
+  .problem-item-teaser {
+    grid-column: 2;
+    margin-top: 6px;
+    color: rgba(255, 255, 255, 0.68);
+    line-height: 1.5;
+  }
+  /* The pill and the last word wrap together, so the pill never ends up
+     alone on a line of its own. */
+  .problem-item-tail { white-space: nowrap; }
+  /* "More" cue: a small tag (keyword-tag colours) holding three dots,
+     drawn rather than typed so they sit centred in the pill. */
+  .problem-item-more {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 18px;
+    padding: 0 7px;
+    margin-left: 4px;
+    vertical-align: 4px;
+    border-radius: 6px;
+    background: rgb(40, 40, 40);
+    color: rgba(255, 255, 255, 0.72);
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+  .problem-item-more svg { display: block; }
+  .problem-item > summary:hover .problem-item-more,
+  .problem-item > summary:focus-visible .problem-item-more { background: rgb(56, 56, 56); color: #fff; }
+  /* Evidence card at the foot of each problem: dark card, diamond and grey
+     mono label (shared with the framing cards), green-arrow list. */
+  .evidence-card {
+    max-width: 46rem;
+    box-sizing: border-box;
+    margin: 28px 0 24px;
+    padding: 20px 24px 22px;
+    background: rgb(33, 33, 33);
+    border-radius: 10px;
+  }
+  .evidence-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .evidence-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 18px;
+    line-height: 1.6;
+  }
+  .evidence-list li::before {
+    content: "\2192";
+    flex: 0 0 auto;
+    color: #00d8aa;
+  }
+
+  /* Problem framing cards: the evidence card, holding a client quote and
+     the analysis of it (or the constraint it ran into). */
+  .framing-card + .framing-card { margin-top: 20px; }
+  .framing-card p { margin: 0 0 16px; }
+  .framing-card p:last-child { margin-bottom: 0; }
+  .framing-card .framing-term {
+    margin: 0 0 4px;
+    color: #00d8aa;
+    font-size: 15px;
+    font-family: "Fakt Blond SemiBold", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 600;
+  }
+  .framing-card .framing-quote { color: #fff; }
+  .framing-card .figure { margin: 0 0 16px; }
+  /* Before and after, side by side in one frame. */
+  .design-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; width: 100%; }
+  .design-pair figure { margin: 0; }
+  @media (max-width: 560px) {
+    .design-pair { grid-template-columns: 1fr; gap: 20px; }
+  }
+  .framing-head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 16px;
+  }
+  .framing-icon { display: block; flex: 0 0 auto; }
+  .framing-label {
+    font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    word-spacing: -3px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.45);
+  }
+  .framing-card .evidence-list { margin-top: -6px; }
+
+  /* Supporting evidence: native details keeps the full copy accessible
+     by keyboard and works without JavaScript. */
+  .evidence-disclosure { padding: 0; transition: background-color 0.15s ease; }
+  .evidence-disclosure:hover { background: rgb(48, 48, 48); }
+  .evidence-disclosure > summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 20px 24px;
+    border-radius: inherit;
+    list-style: none;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+  }
+  .evidence-disclosure > summary::-webkit-details-marker { display: none; }
+  .evidence-disclosure > summary::marker { content: ""; }
+  .evidence-disclosure > summary:focus-visible { outline: 2px solid #00d8aa; outline-offset: 3px; }
+  .evidence-disclosure .framing-label { flex: 1; min-width: 0; }
+  .evidence-toggle {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+    gap: 7px;
+    margin-left: 8px;
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  .evidence-disclosure:hover .evidence-toggle { color: #fff; }
+  .evidence-less { display: none; }
+  .evidence-disclosure[open]:not(.is-closing) .evidence-more { display: none; }
+  .evidence-disclosure[open]:not(.is-closing) .evidence-less { display: inline; }
+  .evidence-chevron { transition: transform 0.2s ease; }
+  .evidence-disclosure[open]:not(.is-closing) .evidence-chevron { transform: rotate(180deg); }
+  .evidence-body { display: flow-root; box-sizing: border-box; padding: 0 24px 22px; }
+  @media (max-width: 480px) {
+    .evidence-disclosure > summary { padding: 18px 16px; }
+    .evidence-disclosure .framing-label { font-size: 12px; letter-spacing: 1px; }
+    .evidence-body { padding: 0 16px 20px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .evidence-chevron { transition: none; }
+  }
+
+  /* flow-root keeps the children's margins inside the body, so the height
+     the script animates to (scrollHeight) is the height it settles at. */
+  /* A small "Design validation" tag on a summary, hinting that the item
+     holds process rationale (the icon and label match the card inside). */
+  .problem-item-badge {
+    grid-column: 2;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .problem-item-badge .framing-icon { width: 24px; height: 13px; }
+  .problem-item-badge .framing-label { font-size: 12px; }
+  .problem-item-body { display: flow-root; box-sizing: border-box; padding-left: 28px; }  /* 14px icon + 14px gap */
+  .problem-item-body > :first-child { margin-top: 20px; }
+  /* Supporting cards span the reading column, outside the text indent. */
+  .problem-item-body > .evidence-card { margin-left: -28px; max-width: none; }
+
+  .toc-heading { margin: 0 0 16px; }
+
+  /* -- next case study link block -- */
+  .case-block {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 18px 22px 12px;
+    border: 1px solid rgb(33, 33, 33);
+    border-radius: 10px;
+    background-color: rgb(33, 33, 33);
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    max-width: 46rem;
+  }
+
+  .case-block:hover, .case-block:focus-visible {
+    background-color: rgb(48, 48, 48);
+    border-color: rgb(48, 48, 48);
+    transform: translateY(-4px);
+  }
+
+  .case-block-kicker {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+    color: #00d8aa;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    word-spacing: -3px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .case-block-title {
+    display: block;
+    font-family: "Fakt Blond SemiBold", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 600;
+    color: #fff;
+    font-size: clamp(18px, 2.4vw, 22px);
+    line-height: 1.3;
+  }
+
+  /* -- horizontal video card (YouTube) -- */
+  .case-block.has-thumb {
+    justify-content: flex-start;
+    gap: 22px;
+    margin-top: 28px;
+    padding: 18px 22px 16px;
+    overflow: hidden;
+    border-color: rgb(33, 33, 33);
+    background-color: rgb(33, 33, 33);
+  }
+
+  .case-block.has-thumb:hover, .case-block.has-thumb:focus-visible {
+    border-color: rgb(48, 48, 48);
+    background-color: rgb(48, 48, 48);
+    transform: none;
+  }
+
+  .case-block-thumb {
+    flex: 0 0 clamp(150px, 26vw, 240px);
+    width: clamp(150px, 26vw, 240px);
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 6px;
+    transition: transform 0.3s ease;
+  }
+
+  .case-block-watch {
+    display: block;
+    margin-top: 12px;
+    font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    word-spacing: -3px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.45);
+  }
+
+  @media (max-width: 560px) {
+    .case-block.has-thumb {
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .case-block-thumb {
+      width: 100%;
+      flex-basis: auto;
+    }
+  }
+
+  /* -- suppress the external-link arrow inside running text -- */
+  .case-body p a[target="_blank"]::after, .about-statement a[target="_blank"]::after, .kicker a[target="_blank"]::after, .case-block[target="_blank"]::after {
+    content: none;
+  }
+
+  /* -- image lightbox -- */
+  .figure img { cursor: zoom-in; }
+
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.92);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    padding: clamp(16px, 5vw, 64px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease;
+    z-index: 1000;
+    cursor: zoom-out;
+  }
+
+  .lightbox.is-open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .lightbox img, .lightbox .lightbox-video {
+    transform: scale(0.96);
+    transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .lightbox.is-open img, .lightbox.is-open .lightbox-video {
+    transform: scale(1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lightbox img, .lightbox .lightbox-video {
+      transition: none;
+      transform: none;
+    }
+  }
+
+  .lightbox img {
+    max-width: 100%;
+    max-height: calc(100vh - 200px);
+    border-radius: 6px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    cursor: default;
+  }
+
+  .lightbox-video {
+    max-width: 100%;
+    max-height: calc(100vh - 200px);
+    border-radius: 6px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    background: #000;
+    cursor: default;
+  }
+
+  .lightbox-caption {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    max-width: 60ch;
+    color: rgba(255, 255, 255, 0.55);
+    font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: center;
+    cursor: default;
+  }
+
+  .lightbox-media {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+  }
+
+  .lightbox-close {
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    margin-bottom: clamp(10px, 2vw, 18px);
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: none;
+    background: none;
+    color: #fff;
+    font-size: 36px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    /* right-aligned so the glyph lines up with the image edge rather than the
+       44px hit area around it; transform-origin keeps that edge fixed when the
+       hover scale fires */
+    justify-content: flex-end;
+    /* the glyph carries ~0.08em of right side bearing, so nudge it out by that
+       much to sit optically flush rather than merely box-flush */
+    margin-right: -0.08em;
+    transform-origin: right center;
+    cursor: pointer;
+    opacity: 0.75;
+    transition: opacity 0.15s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .lightbox.is-tight .lightbox-close {
+    bottom: auto;
+    top: clamp(12px, 3vw, 28px);
+    right: clamp(12px, 3vw, 28px);
+    margin-bottom: 0;
+  }
+
+  .lightbox-close:hover, .lightbox-close:focus-visible {
+    opacity: 1;
+    transform: scale(1.18);
+  }
+
+  .lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .lightbox-nav svg { display: block; }
+
+  .lightbox-prev svg { transform: translateX(-1px); }
+
+  .lightbox-next svg { transform: translateX(1px); }
+
+  .lightbox-nav:hover, .lightbox-nav:focus-visible {
+    background: rgba(255, 255, 255, 0.22);
+  }
+
+  .lightbox-nav[hidden] { display: none; }
+
+  /* -- The handles sit beside the image, never on top of it: the image gives
+     up 48px + 20px a side to make room. A phone hasn't got that width to
+     spare, so there they are hidden and swipe does the navigating. -- */
+  @media (max-width: 639.98px) {
+    .lightbox-nav { display: none; }
+  }
+
+  @media (min-width: 640px) {
+    .lightbox-media { max-width: calc(100% - 2 * (48px + 20px)); }
+
+    .lightbox-prev { right: 100%; margin-right: 20px; }
+
+    .lightbox-next { left: 100%; margin-left: 20px; }
+  }
+
+  /* -- interior-page heading entrance -- */
+  .head-armed .head-fade {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  .head-play .head-fade {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .head-fade {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+  }
+</style>
+<script>
+  (function () {
+    try {
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('head-armed');
+      }
+    } catch (e) {}
+  })();
+</script>
+<noscript>
+  <style>
+    .head-armed .head-fade { opacity: 1 !important; transform: none !important; }
+    .head-armed .key-points li { opacity: 1 !important; transform: none !important; }
+  </style>
+</noscript>
+  <script src="/lightbox.js" defer></script>
+  <script src="/nav.js?v=20261016d" defer></script>
+  <script src="/hero-spacing.js?v=20261017a" defer></script>
+  <script src="/footer.js" defer></script>
+</head>
+<body>
+  <nav class="site-nav">
+    <div class="site-nav-inner">
+      <a class="site-nav-brand display" href="/">Tom de Gay</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav-links" aria-label="Menu">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+      <div class="site-nav-links" id="site-nav-links">
+        <a href="/about">About</a>
+        <div class="nav-item">
+          <a href="/wayfinding">Approach</a>
+          <div class="nav-dropdown nav-dropdown--tight">
+            <div class="nav-dropdown-panel">
+              <a class="nav-dropdown-card" href="/ai">
+                <span class="nav-dropdown-card-title">Design and AI</span>
+              </a>
+              <a class="nav-dropdown-card" href="/design-craft">
+                <span class="nav-dropdown-card-title">Design craft</span>
+              </a>
+              <a class="nav-dropdown-card" href="/wayfinding">
+                <span class="nav-dropdown-card-title">Learning from wayfinding</span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a href="/case-studies" class="is-current">Case Studies</a>
+          <div class="nav-dropdown">
+            <div class="nav-dropdown-panel">
+              <a class="nav-dropdown-card" href="/case-studies/column-mapping">
+                <span class="nav-dropdown-card-kicker"><img class="nav-dropdown-card-kicker-icon" src="/media/icons/mapping.svg" alt="" width="16" height="16">Column mapping</span>
+                <span class="nav-dropdown-card-title">Mapping inconsistent schemas at scale</span>
+              </a>
+              <a class="nav-dropdown-card is-current" href="/case-studies/validation">
+                <span class="nav-dropdown-card-kicker"><img class="nav-dropdown-card-kicker-icon" src="/media/icons/validation.svg" alt="" width="16" height="16">Validation</span>
+                <span class="nav-dropdown-card-title">Closing the loop on data quality</span>
+              </a>
+              <a class="nav-dropdown-card" href="/case-studies/pipelines">
+                <span class="nav-dropdown-card-kicker"><img class="nav-dropdown-card-kicker-icon" src="/media/icons/pipelines.svg" alt="" width="17" height="13">Pipelines</span>
+                <span class="nav-dropdown-card-title">Bringing clarity to complex data flows</span>
+              </a>
+              <a class="nav-dropdown-card" href="/case-studies/feeds">
+                <span class="nav-dropdown-card-kicker"><img class="nav-dropdown-card-kicker-icon" src="/media/icons/feeds.svg" alt="" width="17" height="16">Feeds</span>
+                <span class="nav-dropdown-card-title">Connecting organisations through data</span>
+              </a>
+              <hr class="nav-dropdown-divider">
+              <a class="nav-dropdown-card" href="/case-studies/image-insight">
+                <span class="nav-dropdown-card-kicker"><img class="nav-dropdown-card-kicker-icon" src="/media/icons/image-insight.svg" alt="" width="16" height="16">Image Insight</span>
+                <span class="nav-dropdown-card-title">Making space for deeper reflection</span>
+              </a>
+              <a class="nav-dropdown-card" href="/case-studies/zonefully">
+                <span class="nav-dropdown-card-kicker"><img class="nav-dropdown-card-kicker-icon" src="/media/icons/zonefully.svg" alt="" width="10" height="16">Zonefully</span>
+                <span class="nav-dropdown-card-title">Connecting long-term goals to routines</span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <a href="/contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+  <main>
+  <div class="content">
+    <header class="vs-header" id="case-intro">
+      <p class="vs-back"><a href="/case-studies/validation">&larr; Closing the loop on data quality</a></p>
+      <h1 class="display">Bringing suppliers into the correction&nbsp;workflow</h1>
+      <p class="subtitle">Part of the Validation case study: sharing selected results with suppliers, so they can prepare and submit corrections within&nbsp;Quantemplate.</p>
+    </header>
+
+    <hr class="rule">
+
+    <section aria-labelledby="problem-heading" class="case-body">
+      <h2 class="eyebrow" id="problem-heading">Problem</h2>
+      <p>Clients were downloading failed rows and emailing them to suppliers to request corrections. We extended the correction workflow through <a href="/case-studies/feeds">Feeds</a>, so clients could share selected validation results and suppliers could prepare and submit corrections within Quantemplate. This has now shipped in a limited beta.</p>
+
+      <div class="problem-items">
+      <details class="problem-item">
+        <summary>
+          <span class="problem-item-icon" aria-hidden="true"></span>
+          <span class="problem-item-title">Results were siloed in Quantemplate</span>
+          <span class="problem-item-teaser">Clients wanted an easier way to share results with <span class="problem-item-tail">suppliers <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+              <span class="problem-item-badge"><svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M12.1426 2.85254L2.82812 12.167L12.1426 21.4814V24.3096L0 12.167L12.1426 0.0244141V2.85254Z" fill="#00D8AA"/><path d="M45.832 12.167L33.665 24.334L22.916 13.585L12.168 24.333V21.5049L21.502 12.1709L21.498 12.167L21.502 12.1631L12.168 2.8291V0.000976562L22.916 10.749L33.665 0L45.832 12.167ZM24.3301 12.1631L24.334 12.167L24.3301 12.1709L33.665 21.5059L43.0039 12.167L33.665 2.82812L24.3301 12.1631Z" fill="#605F5F"/></svg><span class="framing-label">Evidence</span></span>
+        </summary>
+        <div class="problem-item-body">
+      <p>When we spoke to clients at the management level, they wanted to play their validation reports back to their suppliers, to inform them of their data quality performance. Currently they did this by downloading failed rows and emailing them, which was a slow process. We spotted an opportunity for value-add here: show suppliers validation results and ask them for corrections.</p>
+
+      <details class="evidence-card evidence-disclosure">
+        <summary class="framing-head">
+          <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M12.1426 2.85254L2.82812 12.167L12.1426 21.4814V24.3096L0 12.167L12.1426 0.0244141V2.85254Z" fill="#00D8AA"/><path d="M45.832 12.167L33.665 24.334L22.916 13.585L12.168 24.333V21.5049L21.502 12.1709L21.498 12.167L21.502 12.1631L12.168 2.8291V0.000976562L22.916 10.749L33.665 0L45.832 12.167ZM24.3301 12.1631L24.334 12.167L24.3301 12.1709L33.665 21.5059L43.0039 12.167L33.665 2.82812L24.3301 12.1631Z" fill="#605F5F"/></svg>
+          <span class="framing-label">Evidence</span>
+
+          <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
+        </summary>
+        <div class="evidence-body">
+<ul class="evidence-list">
+            <li>Clients&rsquo; management-level users had objectives to improve the quality coming from their suppliers.</li>
+            <li>IT teams asked for an API to access validation results, to build their own feedback rig.</li>
+        </ul>
+        </div>
+      </details>
+        </div>
+      </details>
+      </div>
+    </section>
+
+    <hr class="rule">
+
+    <section aria-labelledby="approach-heading" class="case-body">
+      <h2 class="eyebrow" id="approach-heading">Approach</h2>
+
+      <details class="evidence-card evidence-disclosure framing-card">
+        <summary class="framing-head">
+          <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><rect x="22.9123" y="12.1673" width="15.2071" height="15.2071" transform="rotate(-45 22.9123 12.1673)" stroke="#B7B7B7" stroke-opacity="0.5" stroke-width="2"/><rect x="1.41421" y="12.1673" width="15.2071" height="15.2071" transform="rotate(-45 1.41421 12.1673)" stroke="#00D8AA" stroke-width="2"/></svg>
+          <span class="framing-label">Framing · Strategic decision</span>
+
+          <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
+        </summary>
+        <div class="evidence-body">
+<p class="framing-term">Client feedback</p>
+        <p class="framing-quote">&lsquo;Give us an API so we can build our own validation feedback rig&rsquo;</p>
+        <p class="framing-term">Strategic decision</p>
+        <p>Bringing the feedback workflow into Quantemplate would let business users request and manage supplier corrections without needing their IT team to build and maintain a separate system. It would also keep results and corrections connected in one auditable workflow, increasing the product&rsquo;s value and supporting retention.</p>
+        </div>
+      </details>
+    </section>
+
+    <hr class="rule">
+
+    <section aria-labelledby="sharing-heading" class="case-body">
+      <h2 class="eyebrow" id="sharing-heading">Design decisions</h2>
+
+      <div class="subsection" id="impl-sharing">
+
+        <figure class="figure">
+          <img src="media/correction-requests.svg?v=7" width="725" height="315" alt="Correction requests workflow between organisations" loading="lazy">
+        </figure>
+
+        <figure class="figure hero-repeat">
+          <div class="ui-video" data-hover-controls>
+            <video autoplay muted loop playsinline disablepictureinpicture poster="media/validation-sharing-setup.jpg">
+              <source src="media/validation-sharing-setup.mp4" type="video/mp4">
+            </video>
+            <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+          </div>
+          <figcaption>Sharing setup: the user selects which submission to share to and which rules to share. Beta deployment.</figcaption>
+        </figure>
+
+        <div class="problem-items">
+          <details class="problem-item" id="sh-choose">
+            <summary>
+              <span class="problem-item-icon" aria-hidden="true"></span>
+              <span class="problem-item-title">Choose what to share</span>
+              <span class="problem-item-teaser">Select the results, organisations and <span class="problem-item-tail">people <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+              <span class="problem-item-badge"><svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M12.1426 2.85254L2.82812 12.167L12.1426 21.4814V24.3096L0 12.167L12.1426 0.0244141V2.85254Z" fill="#00D8AA"/><path d="M45.832 12.167L33.665 24.334L22.916 13.585L12.168 24.333V21.5049L21.502 12.1709L21.498 12.167L21.502 12.1631L12.168 2.8291V0.000976562L22.916 10.749L33.665 0L45.832 12.167ZM24.3301 12.1631L24.334 12.167L24.3301 12.1709L33.665 21.5059L43.0039 12.167L33.665 2.82812L24.3301 12.1631Z" fill="#605F5F"/></svg><span class="framing-label">Evidence</span></span>
+            </summary>
+            <div class="problem-item-body">
+            <p>Clients select the validation results, organisations and people to include, then review the selection before sharing.</p>
+
+            <details class="evidence-card evidence-disclosure framing-card">
+        <summary class="framing-head">
+                <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M12.1426 2.85254L2.82812 12.167L12.1426 21.4814V24.3096L0 12.167L12.1426 0.0244141V2.85254Z" fill="#00D8AA"/><path d="M45.832 12.167L33.665 24.334L22.916 13.585L12.168 24.333V21.5049L21.502 12.1709L21.498 12.167L21.502 12.1631L12.168 2.8291V0.000976562L22.916 10.749L33.665 0L45.832 12.167ZM24.3301 12.1631L24.334 12.167L24.3301 12.1709L33.665 21.5059L43.0039 12.167L33.665 2.82812L24.3301 12.1631Z" fill="#605F5F"/></svg>
+                <span class="framing-label">Evidence</span>
+
+          <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
+        </summary>
+        <div class="evidence-body">
+<p>Clients told us they wanted to share their results but were concerned about sharing proprietary data. We addressed this by allowing them to select specific rules to share.</p>
+        </div>
+      </details>
+            <figure class="figure">
+              <div class="figure-portrait-frame">
+                <img src="media/correction-sharing-popup.png" width="2418" height="2216" alt="The sharing popup: &lsquo;Share with 2 partners&rsquo;, listing each partner organisation with its submitters and the validation results selected to share, with a Review sharing button." loading="lazy">
+              </div>
+              <figcaption>Corrections sharing popup: the user can select which rules to share, which organisations and users to share with.</figcaption>
+            </figure>
+            <figure class="figure">
+              <div class="figure-portrait-frame">
+                <img src="media/corrections-email.png" width="1442" height="1550" alt="The corrections request email: who shared the validation results, each rule with its count of failing rows and where they are, and a View corrections button linking straight to them." loading="lazy">
+              </div>
+              <figcaption>Sharing request email contains a full breakdown of the failed rows, and a link to go straight to them.</figcaption>
+            </figure>
+            </div>
+          </details>
+          <details class="problem-item" id="sh-submit">
+            <summary>
+              <span class="problem-item-icon" aria-hidden="true"></span>
+              <span class="problem-item-title">Submit only when ready</span>
+              <span class="problem-item-teaser">Prepare corrections privately, then <span class="problem-item-tail">submit <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+              <span class="problem-item-badge"><svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg><span class="framing-label">Design exploration</span></span>
+            </summary>
+            <div class="problem-item-body">
+            <p>I separated preparing corrections from submitting them. A &lsquo;Corrections pending&rsquo; indicator makes the outstanding changes visible, with an explicit Submit action to pass them back when ready.</p>
+
+            <figure class="figure" id="corrections-submit-mockup">
+              <div class="figure-portrait-frame">
+                <svg class="submit-mockup-frame" viewBox="448.5 65 480 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Interaction mockup: a Corrections pending indicator and Submit action appear above the validation report.">
+                  <image width="1377" height="846" href="media/corrections-submit-frame.png"/>
+                  <g transform="translate(558.5 102)"><g data-submit-indicator>
+      <path fill="#252525" d="M13.5 0H246.5A13.5 13.5 0 0 1 246.5 27H13.5A13.5 13.5 0 0 1 13.5 0Z"/>
+      <path stroke="#060606" stroke-width="2" d="M169 0V27"/>
+      <text x="12" y="18" fill="#a7a7a7" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="600">Corrections pending</text>
+      <circle cx="153.5" cy="13.5" r="6.5" fill="#999"/>
+      <path fill="#292929" d="M152.7 12.3h1.6v5h-1.6zm0-3h1.6v1.7h-1.6z"/>
+      <path d="M185 10.2h-2.5a3.4 3.4 0 1 0 0 6.8h2.5" fill="none" stroke="#51fbd8" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M182 13.6h10m-3.5-3.4 3.5 3.4-3.5 3.4" fill="none" stroke="#51fbd8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="199" y="18" fill="#51fbd8" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="600">Submit</text>
+    </g></g>
+                </svg>
+              </div>
+              <figcaption>Interaction mockup: pending corrections stay with the supplier until explicitly submitted.</figcaption>
+            </figure>
+            <details class="evidence-card evidence-disclosure framing-card">
+        <summary class="framing-head">
+                <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
+                <span class="framing-label">Design exploration</span>
+
+          <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
+        </summary>
+        <div class="evidence-body">
+<p>Exploring the handoff revealed a risk: sending every edit immediately could expose unfinished corrections to the receiver and trigger pipeline runs. I separated preparation from submission, giving suppliers time to check their changes before passing them back.</p>
+        </div>
+      </details>
+            </div>
+          </details>
+          <details class="problem-item" id="sh-progress">
+            <summary>
+              <span class="problem-item-icon" aria-hidden="true"></span>
+              <span class="problem-item-title">Give both parties the same measure of progress</span>
+              <span class="problem-item-teaser">Track only the validations that were <span class="problem-item-tail">shared <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
+              <span class="problem-item-badge"><svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg><span class="framing-label">Design exploration</span></span>
+            </summary>
+            <div class="problem-item-body">
+            <p>A supplier may only be asked to address some of a dataset’s validations. Measuring progress across the entire dataset could include validations they weren’t asked to correct. I chose to measure progress against the shared validations, so requester and supplier would see the same percentage and have a consistent understanding of what remained.</p>
+
+            <figure class="figure">
+              <div class="figure-portrait-frame">
+                <img src="media/corrections-request.png" width="2076" height="634" alt="A data submission with a corrections request attached: requested by and last edit submitted, each with the organisation and person, and a progress bar showing 63% corrected." loading="lazy">
+              </div>
+              <figcaption>Correction requests are attached to the submitted data and visible to both parties.</figcaption>
+            </figure>
+
+            <details class="evidence-card evidence-disclosure framing-card" id="progress-design-exploration">
+        <summary class="framing-head">
+                <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
+                <span class="framing-label">Design exploration</span>
+
+          <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
+        </summary>
+        <div class="evidence-body">
+<p>Not every failure needed correcting, so I explored tracking only checks users had started working on. But starting another check added all its failures to the total, making progress appear to drop.</p>
+              <p>I kept it simple: show how many corrections had been requested and how many were complete.</p>
+        </div>
+      </details>
+
+            <figure class="figure">
+              <div class="figure-portrait-frame">
+                <img src="media/validation-progress-bar.png" width="1254" height="680" alt="Two notifications: validations ready to share with a partner organisation, and a progress bar on the sent validations showing '10 results, 88% corrected'." loading="lazy">
+              </div>
+              <figcaption>The progress bar tracks completion of the shared validations specifically, not the full dataset, so requester and supplier see the same number.</figcaption>
+            </figure>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <hr class="rule">
+
+    <section aria-labelledby="outcome-heading" class="case-body">
+      <h2 class="eyebrow" id="outcome-heading">Outcome</h2>
+      <p>Supplier sharing is now in limited beta; we don&rsquo;t yet have usage results or client feedback.</p>
+      <p><a href="/case-studies/validation">Back to the Validation case study</a></p>
+    </section>
+
+  </div>
+
+
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged image" tabindex="-1">
+    <div class="lightbox-media">
+      <img alt="">
+      <video class="lightbox-video" muted loop playsinline hidden></video>
+      <button class="lightbox-close" type="button" aria-label="Close enlarged image">&times;</button>
+      <button class="lightbox-nav lightbox-prev" type="button" aria-label="Previous image"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <button class="lightbox-nav lightbox-next" type="button" aria-label="Next image"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+    </div>
+    <p class="lightbox-caption" hidden></p>
+  </div>
+  </main>
+
+  <script>
+    (function () {
+      var figure = document.getElementById('corrections-submit-mockup');
+      var indicator = figure.querySelector('[data-submit-indicator]');
+      var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+      var motion;
+      var visible = false;
+      function update() {
+        if (reduced.matches) {
+          if (motion) motion.cancel();
+          motion = null;
+          return;
+        }
+        if (!motion) {
+          motion = indicator.animate([
+            { offset: 0, opacity: 0, transform: 'translateY(-132px)', easing: 'cubic-bezier(.42,0,.7,1)' },
+            { offset: .0864, opacity: 0, transform: 'translateY(-19px)', easing: 'cubic-bezier(.35,0,.8,1)' },
+            { offset: .1152, opacity: 1, transform: 'translateY(2px)', easing: 'cubic-bezier(.15,.6,.35,1)' },
+            { offset: .144, opacity: 1, transform: 'translateY(-3px)', easing: 'ease-in-out' },
+            { offset: .18, opacity: 1, transform: 'translateY(0)' },
+            { offset: .88, opacity: 1, transform: 'translateY(0)' },
+            { offset: .94, opacity: 0, transform: 'translateY(0)' },
+            { offset: 1, opacity: 0, transform: 'translateY(0)' }
+          ], { duration: 4000, iterations: Infinity });
+        }
+        if (visible) motion.play();
+        else motion.pause();
+      }
+      if (!indicator.animate) return;
+      reduced.addEventListener('change', update);
+      if ('IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function (entries) {
+          visible = entries.some(function (entry) { return entry.isIntersecting; });
+          update();
+        }, { threshold: .4 });
+        observer.observe(figure);
+      } else {
+        visible = true;
+        update();
+      }
+    })();
+  </script>
+
+  <script>
+    (function () {
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.querySelectorAll(".ui-video video").forEach(function (v) {
+          v.pause();
+          v.removeAttribute("autoplay");
+        });
+      }
+    })();
+
+    (function () {
+      var link = document.querySelector(".back-to-top");
+      if (!link) return;
+      link.addEventListener("click", function (e) {
+        e.preventDefault();
+        var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+        link.blur();
+      });
+    })();
+
+
+
+  </script>
+  <script>
+    (function () {
+      var root = document.documentElement;
+      if (!root.classList.contains('head-armed')) return;
+      var els = document.querySelectorAll('.head-fade');
+      if (!els.length) return;
+      Array.prototype.forEach.call(els, function (el, i) {
+        el.style.transitionDelay = (i * 70) + 'ms';
+      });
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () { root.classList.add('head-play'); });
+      });
+    })();
+
+    (function () {
+      var root = document.documentElement;
+      if (!root.classList.contains('head-armed')) return;
+      Array.prototype.forEach.call(document.querySelectorAll('.key-points'), function (list) {
+        var items = list.querySelectorAll('li');
+        if (!items.length) return;
+
+        function reveal() {
+          Array.prototype.forEach.call(items, function (li, i) {
+            li.style.transitionDelay = (i * 90) + 'ms';
+            li.classList.add('kp-in');
+          });
+          setTimeout(function () {
+            Array.prototype.forEach.call(items, function (li) { li.style.transitionDelay = ''; });
+          }, items.length * 90 + 700);
+        }
+
+        if (!('IntersectionObserver' in window)) { reveal(); return; }
+        var io = new IntersectionObserver(function (entries) {
+          if (!entries.some(function (e) { return e.isIntersecting; })) return;
+          io.disconnect();
+          reveal();
+        }, { threshold: 0.2 });
+        io.observe(list);
+      });
+    })();
+  </script>
+  <script>
+    /* Problem items: animate each <details> body open and closed. The
+       body's height is tweened from where it is now, so a click mid-way
+       reverses smoothly; reduced motion falls back to the native toggle. */
+    (function () {
+      var items = document.querySelectorAll('.problem-item');
+      if (!items.length || !('animate' in Element.prototype)) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      Array.prototype.forEach.call(items, function (d) {
+        var summary = d.querySelector('summary'), body = d.querySelector('.problem-item-body');
+        var anim = null;
+        function run(from, to, done) {
+          if (anim) anim.cancel();
+          body.style.overflow = 'clip';
+          anim = body.animate(
+            [{ height: from + 'px', opacity: to ? 0.4 : 1 }, { height: to + 'px', opacity: to ? 1 : 0 }],
+            { duration: Math.min(520, 260 + Math.abs(to - from) * 0.25), easing: 'cubic-bezier(0.16, 1, 0.3, 1)' }
+          );
+          anim.onfinish = function () {
+            anim = null;
+            body.style.overflow = '';
+            if (done) done();
+          };
+        }
+        summary.addEventListener('click', function (e) {
+          e.preventDefault();
+          var now = body.getBoundingClientRect().height;
+          if (d.open && !d.classList.contains('is-closing')) {
+            d.classList.add('is-closing');
+            run(now, 0, function () { d.open = false; d.classList.remove('is-closing'); });
+          } else {
+            var from = d.open ? now : 0;
+            d.classList.remove('is-closing');
+            d.open = true;
+            run(from, body.scrollHeight);
+          }
+        });
+      });
+    })();
+  </script>
+  <script data-goatcounter="https://tomdegay.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+  <script>
+    (function () {
+      var chart = document.querySelector('.corrections-chart');
+      if (!chart) return;
+      var tooltip = chart.querySelector('.corrections-chart-tooltip');
+      var plot = chart.querySelector('.corrections-chart-plot');
+      chart.querySelectorAll('.corrections-chart-point').forEach(function (point) {
+        function show() {
+          tooltip.textContent = point.getAttribute('data-tooltip');
+          tooltip.hidden = false;
+          var dot = point.getBoundingClientRect();
+          var box = plot.getBoundingClientRect();
+          var half = tooltip.offsetWidth / 2;
+          tooltip.style.left = Math.max(half + 4, Math.min(box.width - half - 4, dot.left + dot.width / 2 - box.left)) + 'px';
+          tooltip.style.top = (dot.top - box.top - 12) + 'px';
+        }
+        function hide() { tooltip.hidden = true; }
+        point.addEventListener('pointerenter', show);
+        point.addEventListener('pointerleave', hide);
+        point.addEventListener('focus', show);
+        point.addEventListener('blur', hide);
+        point.addEventListener('click', show);
+        point.addEventListener('keydown', function (event) { if (event.key === 'Escape') hide(); });
+      });
+      if (!('IntersectionObserver' in window)) return;
+      chart.classList.add('is-waiting');
+      var observer = new IntersectionObserver(function (entries) {
+        if (!entries[0].isIntersecting) return;
+        chart.classList.remove('is-waiting');
+        chart.classList.add('is-revealed');
+        observer.disconnect();
+      }, { threshold: 0.25 });
+      observer.observe(chart);
+    })();
+  </script>
+  <script>
+    /* Workflow diagram: tween between the original (p = 0) and improved
+       (p = 1) workflows; the tab background slides with a slight stretch.
+       Two layouts share one set of shapes. "Wide" is the drawing as
+       exported (725 wide). "Stacked", for containers under STACK_BELOW,
+       re-places each card in a single 302-wide column with transforms --
+       cards 130 x 103 at x 14, 12 apart, connectors turned to point down,
+       and the "next rule" loop and its label down the right-hand side. */
+    (function () {
+      document.querySelectorAll('.wf-diagram').forEach(function (svg) {
+      var prefix = svg.getAttribute('data-id-prefix') || 'wf-';
+      function $(id) { return svg.querySelector('#' + prefix + id); }
+      function slice(list) { return Array.prototype.slice.call(list); }
+      var el = {};
+      ['bg', 'bgrect', 'tabs', 'content', 'card1', 'conn1', 'card2', 'valicon', 'conn2', 'drill',
+       'conn3', 'grid', 'fail', 'failline', 'failmark', 'apply', 'divider', 'feeds', 'arc', 'head',
+       'label'].forEach(function (id) { el[id] = $(id); });
+      var dots = slice($('dots').children), fdots = slice($('fdots').children);
+      var tabs = slice(svg.querySelectorAll('.wf-tab'));
+
+      function clamp(x) { return Math.min(1, Math.max(0, x)); }
+      function ease(x) { return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }
+      function inOutQuart(x) { return x < 0.5 ? 8 * x * x * x * x : 1 - Math.pow(-2 * x + 2, 4) / 2; }
+      function seg(t, a, b) { return ease(clamp((t - a) / (b - a))); }
+      function lerp(a, b, k) { return a + (b - a) * k; }
+      function pop(k) { return k < 1 ? k * 1.3 - 0.3 * k * k : 1; }  // slight overshoot
+      function tr(x, y) { return 'translate(' + x + ' ' + y + ')'; }
+      // Turn a rightward connector that starts at (fx, fy) in the drawing so
+      // it points down from (x, y).
+      function down(x, y, fx, fy) { return tr(x, y) + ' rotate(90) ' + tr(-fx, -fy); }
+
+      // ---- Layout ----------------------------------------------------------
+      var STACK_BELOW = 600;    // container width (px) under which to stack
+      var STACK_SCALE = 1.08;   // px per unit when stacked: text near desktop size
+      var COL = 302, STACK_H = 660;
+      // Stacked card tops (0-based slot) and the column's centre line. A card
+      // drawn at x = cx moves by (14 - cx, top - 81).
+      function slot(i) { return 84 + i * 115; }
+      var MID = 79;
+
+      var stacked = null, W = 0, H = 0;
+      function measure() {
+        var cw = svg.parentNode.clientWidth;
+        var s = cw > 0 && cw < STACK_BELOW;
+        var w = s ? Math.max(COL, Math.round(cw / STACK_SCALE)) : 725;
+        if (s === stacked && w === W) return;
+        stacked = s; W = w; H = s ? STACK_H : 335;
+        var ox = (W - COL) / 2;  // centres the column when the box is wider
+        svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+        el.bgrect.setAttribute('width', W);
+        el.bgrect.setAttribute('height', H);
+        el.bg.setAttribute('x1', W / 2);
+        el.bg.setAttribute('x2', W / 2);
+        el.bg.setAttribute('y2', H);
+        el.tabs.setAttribute('transform', s ? tr(2.5 + ox, 2.5) : tr(18.5, 10.5));
+        el.content.setAttribute('transform', s ? tr(ox, 0) : tr(0, 52));
+        // Units that only move with the layout, not with the animation.
+        var place = s ? {
+          card1: tr(-16, slot(0) - 81),
+          conn1: down(MID, slot(0) + 103, 160, 131.5),
+          card2: tr(-158, slot(1) - 81),
+          conn2: down(MID, slot(1) + 103, 302, 131.5),
+          conn3: down(MID, slot(2) + 103, 444, 131.5),
+          failline: down(MID, slot(3) + 103, 586, 131.5),
+          // The red X (drawn centred on x 649, top 119) sits 6 below the arrow tip.
+          failmark: tr(MID - 649, slot(3) + 103 + 43.5 + 6 - 119.06)
+        } : {};
+        ['card1', 'conn1', 'card2', 'conn2', 'conn3', 'failline', 'failmark'].forEach(function (k) {
+          if (place[k]) el[k].setAttribute('transform', place[k]);
+          else el[k].removeAttribute('transform');
+        });
+        render(p);
+      }
+
+      // ---- Frame -----------------------------------------------------------
+      function render(p) {
+        var out = seg(p, 0, 0.22), drop = seg(p, 0.10, 0.36), move = seg(p, 0.28, 0.62),
+            apply = seg(p, 0.60, 0.80), div = seg(p, 0.66, 0.86), feeds = seg(p, 0.74, 1);
+        // Placement of anything drawn under the improved grid (x 314): slot 2.
+        var under = stacked ? tr(-300, slot(2) - 81) + ' ' : '';
+
+        el.fail.style.opacity = 1 - out;
+        el.fail.setAttribute('transform', stacked ? tr(0, -12 * out) : tr(-12 * out, 0));
+        el.drill.style.opacity = 1 - drop;
+        el.drill.setAttribute('transform', under + 'translate(379 132) scale(' + (1 - 0.08 * drop) + ') translate(-379 -132)');
+        el.conn3.style.opacity = 1 - drop;
+
+        el.grid.setAttribute('transform', stacked
+          ? tr(-442, lerp(slot(3), slot(2), move) - 81)
+          : tr(-142 * move, 0));
+        el.valicon.setAttribute('transform', tr(-2 * move, 0));
+        // Stacked: label beside the loop, centred on the slot-2 card.
+        el.label.setAttribute('transform', stacked
+          ? tr(178 - 341.96, slot(2) + 51.5 - 44.87)
+          : tr(-2 * move, -move));
+
+        // "Go to next rule" loop. Wide: over the top, left end walking from
+        // the validation card to the grid. Stacked: down the right-hand side,
+        // from the grid back to the validation card, tightening to a loop on
+        // the grid itself.
+        var d, h;
+        if (stacked) {
+          var sy = lerp(slot(3) + 51.5, slot(2) + 70, move), ey = lerp(slot(1) + 51.5, slot(2) + 33, move);
+          d = 'M144 ' + sy + ' H152 A16 16 0 0 0 168 ' + (sy - 16) + ' V' + (ey + 16) + ' A16 16 0 0 0 152 ' + ey + ' H146.8';
+          h = 'M150.2 ' + (ey - 3.5) + ' L146.8 ' + ey + ' L150.2 ' + (ey + 3.5);
+        } else {
+          var sx = lerp(235.5, 336, move), ex = lerp(522.5, 420, move);
+          d = 'M' + sx + ' 77.8 A22 22 0 0 1 ' + (sx + 22) + ' 56 H' + (ex - 25) + ' A25 25 0 0 1 ' + ex + ' 81';
+          h = 'M' + (sx - 3.5) + ' 74.8 L' + sx + ' 78.2 L' + (sx + 3.5) + ' 74.8';
+        }
+        el.arc.setAttribute('d', d);
+        el.head.setAttribute('d', h);
+
+        dots.forEach(function (c, i) {
+          var k = seg(p, 0.56 + i * 0.05, 0.70 + i * 0.05);
+          c.style.opacity = k; c.setAttribute('r', (2.5 * pop(k)).toFixed(3));
+        });
+        el.apply.style.opacity = apply;
+        el.apply.setAttribute('transform', under + tr(0, 6 * (1 - apply)));
+
+        // Divider draws out: downwards when wide, rightwards when stacked.
+        var dv = el.divider;
+        dv.style.opacity = div ? 1 : 0;
+        if (stacked) {
+          dv.setAttribute('x1', 14); dv.setAttribute('x2', 14 + 274 * div);
+          dv.setAttribute('y1', 476); dv.setAttribute('y2', 476);
+        } else {
+          dv.setAttribute('x1', 493.5); dv.setAttribute('x2', 493.5);
+          dv.setAttribute('y1', 38); dv.setAttribute('y2', 38 + 187 * div);
+        }
+
+        el.feeds.style.opacity = feeds;
+        el.feeds.setAttribute('transform', stacked
+          ? tr(14 - 539, 496 - 81 + 12 * (1 - feeds))
+          : tr(16 * (1 - feeds), 0));
+        fdots.forEach(function (c, i) {
+          var k = seg(p, 0.80 + i * 0.04, 0.88 + i * 0.04);  // last one lands at p = 1
+          c.style.opacity = k; c.setAttribute('r', (2.5 * pop(k)).toFixed(3));
+        });
+      }
+
+      // ---- Tab background: the leading edge runs ahead while the trailing
+      // edge lags, so the pill stretches to about 1.1x mid-move, then catches up.
+      var tabbg = $('tabbg');
+      var SLOTS = [{ l: 15, r: 144 }, { l: 144, r: 282 }];
+      var bg = { l: 15, r: 144 }, bgRaf = 0;
+      function drawBg() {
+        tabbg.setAttribute('x', bg.l.toFixed(2));
+        tabbg.setAttribute('width', (bg.r - bg.l).toFixed(2));
+      }
+      function slideBg(to, instant) {
+        cancelAnimationFrame(bgRaf);
+        var a = { l: bg.l, r: bg.r }, b = SLOTS[to];
+        if (instant) { bg = { l: b.l, r: b.r }; drawBg(); return; }
+        var right = b.l > a.l, t0 = performance.now();
+        function step(now) {
+          var t = Math.min(1, (now - t0) / 520);
+          var lead = ease(clamp(t / 0.95)), trail = inOutQuart(clamp((t - 0.03) / 0.97));
+          bg = { l: lerp(a.l, b.l, right ? trail : lead), r: lerp(a.r, b.r, right ? lead : trail) };
+          drawBg();
+          if (t < 1) bgRaf = requestAnimationFrame(step);
+        }
+        bgRaf = requestAnimationFrame(step);
+      }
+
+      // ---- Switching -------------------------------------------------------
+      var DURATION = 1900;
+      var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var p = +(svg.getAttribute('data-initial-state') || 0), target = p, raf = 0;
+      function go(to) {
+        if (to === target) return;
+        target = to;
+        var from = p, start = performance.now(), span = DURATION * Math.abs(to - from);
+        tabs.forEach(function (t) {
+          var on = +t.getAttribute('data-state') === to;
+          t.classList.toggle('is-active', on);
+          t.setAttribute('aria-pressed', on);
+        });
+        slideBg(to, reduced);
+        cancelAnimationFrame(raf);
+        if (reduced) { p = to; render(p); return; }
+        function step(now) {
+          var k = Math.min(1, (now - start) / span);
+          p = lerp(from, to, k);
+          render(p);
+          if (k < 1) raf = requestAnimationFrame(step);
+        }
+        raf = requestAnimationFrame(step);
+      }
+
+      tabs.forEach(function (t) {
+        var to = +t.getAttribute('data-state');
+        t.addEventListener('click', function () { go(to); });
+        t.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(to); }
+        });
+      });
+      tabs.forEach(function (t) {
+        var on = +t.getAttribute('data-state') === target;
+        t.classList.toggle('is-active', on);
+        t.setAttribute('aria-pressed', on);
+      });
+      slideBg(target, true);
+      measure();
+      if ('ResizeObserver' in window) new ResizeObserver(measure).observe(svg.parentNode);
+      else window.addEventListener('resize', measure);
+      });
+    })();
+  </script>
+    <script>
+    /* Accordion items: animate each <details> body open and closed. The
+       body's height is tweened from where it is now, so a click mid-way
+       reverses smoothly; reduced motion falls back to the native toggle. */
+    (function () {
+      var items = document.querySelectorAll('.evidence-disclosure');
+      if (!items.length || !('animate' in Element.prototype)) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      Array.prototype.forEach.call(items, function (d) {
+        var summary = d.querySelector('summary'), body = d.querySelector('.evidence-body');
+        var anim = null;
+        function run(from, to, done) {
+          if (anim) anim.cancel();
+          body.style.overflow = 'clip';
+          anim = body.animate(
+            [{ height: from + 'px', opacity: to ? 0.4 : 1 }, { height: to + 'px', opacity: to ? 1 : 0 }],
+            { duration: Math.min(520, 260 + Math.abs(to - from) * 0.25), easing: 'cubic-bezier(0.16, 1, 0.3, 1)' }
+          );
+          anim.onfinish = function () {
+            anim = null;
+            body.style.overflow = '';
+            if (done) done();
+          };
+        }
+        summary.addEventListener('click', function (e) {
+          e.preventDefault();
+          var now = body.getBoundingClientRect().height;
+          if (d.open && !d.classList.contains('is-closing')) {
+            d.classList.add('is-closing');
+            run(now, 0, function () { d.open = false; d.classList.remove('is-closing'); });
+          } else {
+            var from = d.open ? now : 0;
+            d.classList.remove('is-closing');
+            d.open = true;
+            run(from, body.scrollHeight);
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
