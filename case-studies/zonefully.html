@@ -766,9 +766,8 @@
 
   .zf-big figcaption { max-width: 38rem; }
 
-  /* a grid of figures at the carousel's width: a full-width one on top,
-     the rest sharing a row, each sized by its aspect ratio (--ar, width /
-     height) so the row has one height; stacked on phones */
+  /* Figure rows share the carousel width; aspect ratios keep paired
+     images the same height, with each figure stacked on phones. */
   .zf-grid {
     --grid-w: min(64.4rem, 100vw - 2 * clamp(24px, 5vw, 56px));
     display: flex;
@@ -780,7 +779,7 @@
   }
 
   .zf-grid .figure {
-    flex: var(--ar) 1 0;
+    flex: var(--ar, 1) 1 0;
     min-width: 0;
     margin: 0;
     max-width: none;
@@ -788,9 +787,72 @@
 
   .zf-grid .zf-grid-full { flex: 0 0 100%; }
 
-  .zf-grid figcaption { max-width: 38rem; }
+  .zf-grid-row {
+    display: flex;
+    align-items: flex-start;
+    gap: inherit;
+    flex: 0 0 100%;
+    min-width: 0;
+  }
+
+  .zf-date-picker-mount {
+    position: relative;
+    box-sizing: border-box;
+    display: grid;
+    place-items: center;
+    padding: 72px 32px;
+    background: #fff;
+    border-radius: 6px;
+  }
+
+  .zf-picker-canvas {
+    position: relative;
+    width: min(100%, 440px);
+    aspect-ratio: 1;
+  }
+  .zf-date-picker-mount object {
+    display: block;
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.12));
+  }
+  .zf-try-hint {
+    position: absolute;
+    z-index: 1;
+    top: calc(-24px - 1.91571%);
+    right: -75px;
+    width: max-content;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--accent-mark, #ed496e);
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+  }
+  .zf-try-hint:hover, .zf-try-hint:focus-visible { color: #c92d50; }
+  .zf-try-hint:focus-visible { outline: 2px solid #ed496e; outline-offset: 4px; border-radius: 2px; }
+  .zf-try-leader { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; color: var(--accent-mark, #ed496e); }
+  .zf-try-leader-compact { display: none; }
+  .zf-try-hint, .zf-try-leader { opacity: 1; transition: opacity 0.3s ease, visibility 0s linear; }
+  .zf-date-picker-mount.is-interacted .zf-try-hint,
+  .zf-date-picker-mount.is-interacted .zf-try-leader { opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.3s ease, visibility 0s linear 0.3s; }
+  @media (prefers-reduced-motion: reduce) {
+    .zf-try-hint, .zf-try-leader { transition: none !important; }
+  }
+  @media (max-width: 1100px) {
+    .zf-try-hint { right: -4px; }
+    .zf-try-leader-wide { display: none; }
+    .zf-try-leader-compact { display: block; }
+  }
 
   @media (max-width: 640px) {
+    .zf-grid-row { flex-wrap: wrap; }
+    .zf-date-picker-mount { padding: 64px 24px; }
     .zf-grid .figure { flex: 0 0 100%; }
   }
 
@@ -1170,6 +1232,11 @@
       <h3>Connecting the bigger goal to the next action</h3>
       <p>Zonefully&rsquo;s founder had developed a conceptual model for connecting long-term goals with recurring activities. He brought me in to turn that model into a usable interface.</p>
       <p>Activities represented the things people wanted to plan and track. Programmes grouped Routines into sequences, which could then be applied to a calendar.</p>
+
+      <figure class="figure" id="activity-programme-routine">
+        <img src="media/zonefully-activity-programme-routine.png" width="1572" height="274" alt="The relationship between Activity, Programme and Routine: Cycling, Ride the Tourmalet and a 100 mile ride." loading="lazy">
+      </figure>
+
       <p>For a cycling goal, that could mean training and recovery programmes containing individual rides and rest days. The design challenge was to make that hierarchy usable: people needed to work on an individual routine, understand how it fitted into a programme, and see where it belonged in their calendar.</p>
     </section>
 
@@ -1230,16 +1297,46 @@
         <div class="zf-grid">
           <figure class="figure zf-grid-full">
             <img src="media/zonefully-planner-week.jpg" width="2000" height="1001" alt="The Planner&rsquo;s week view: rides from the Ride the Tourmalet Recovery programme and weekend breakfasts placed across the days, with the week picker and an activity filter above." loading="lazy">
-            <figcaption>The Planner&rsquo;s week view. Each routine carries its activity&rsquo;s colour, so rides and breakfasts read apart at a glance.</figcaption>
           </figure>
-          <figure class="figure" style="--ar: 0.7614">
-            <img src="media/zonefully-program-selector.png" width="1308" height="1718" alt="The programme selector. Clicking the programme previews it; the arrow beside it opens a searchable list of programmes, where hovering one offers Activate." loading="lazy">
-            <figcaption>The programme selector: click to preview, or open the list to switch, with Activate on hover.</figcaption>
+          <figure class="figure zf-grid-full" id="date-picker">
+            <div class="zf-date-picker-mount">
+              <div class="zf-picker-canvas">
+                <object data="media/zonefully-date-picker-interactive.svg#open" type="image/svg+xml" width="375" height="375" title="Interactive Zonefully date picker">
+                  <a href="media/zonefully-date-picker-interactive.svg">Try the interactive date picker</a>
+                </object>
+                <svg class="zf-try-leader" viewBox="0 0 375 375" aria-hidden="true">
+                  <path class="zf-try-leader-wide" d="M335 65C385 65 405 20 405-10" fill="none" stroke="currentColor" stroke-width="1"/>
+                  <path class="zf-try-leader-compact" d="M335 65C365 65 373 0 348-10" fill="none" stroke="currentColor" stroke-width="1"/>
+                  <circle cx="335" cy="65" r="2.5" fill="currentColor"/>
+                </svg>
+                <button class="zf-try-hint" type="button">Click to try</button>
+              </div>
+            </div>
           </figure>
-          <figure class="figure" style="--ar: 1.5163">
-            <img src="media/zonefully-routines-order.jpg" width="2000" height="1319" alt="A programme&rsquo;s routines in order &mdash; a 10 mile ride, two rest days and a 20 mile ride &mdash; with drag handles and the note &lsquo;Routines follow this order. Drag to reorder.&rsquo;" loading="lazy">
-            <figcaption>Routines run in the order shown, and drag handles make reordering direct.</figcaption>
-          </figure>
+          <div class="zf-grid-row">
+            <figure class="figure" style="--ar: 2.6121">
+              <img src="media/zonefully-formatting-toolbar.png" width="1212" height="464" alt="A floating text-formatting toolbar with emphasis, heading, list and quotation controls." loading="lazy">
+            </figure>
+            <figure class="figure">
+              <img src="media/zonefully-brand-mark.png" width="532" height="532" alt="Zonefully&rsquo;s pink ribbon mark, folded into a Z." loading="lazy">
+            </figure>
+          </div>
+          <div class="zf-grid-row">
+            <figure class="figure" style="--ar: 1.1285">
+              <img src="media/zonefully-colour-type.png" width="1212" height="1074" alt="Zonefully&rsquo;s colour palette, with cyan, green, blue and pink accents and their pale tints, alongside the typography hierarchy." loading="lazy">
+            </figure>
+            <figure class="figure" style="--ar: 0.7614">
+              <img src="media/zonefully-program-selector.png" width="1308" height="1718" alt="The programme selector. Clicking the programme previews it; the arrow beside it opens a searchable list of programmes, where hovering one offers Activate." loading="lazy">
+            </figure>
+          </div>
+          <div class="zf-grid-row">
+            <figure class="figure" style="--ar: 1.5163">
+              <img src="media/zonefully-routines-order.jpg" width="2000" height="1319" alt="A programme&rsquo;s routines in order &mdash; a 10 mile ride, two rest days and a 20 mile ride &mdash; with drag handles and the note &lsquo;Routines follow this order. Drag to reorder.&rsquo;" loading="lazy">
+            </figure>
+            <figure class="figure">
+              <img src="media/zonefully-navigation-icons.png" width="532" height="532" alt="Grey line icons and labels for Activities, Programs and Planner on a light grey background." loading="lazy">
+            </figure>
+          </div>
         </div>
       </div>
     </section>
@@ -1563,5 +1660,25 @@
     })();
   </script>
   <script data-goatcounter="https://tomdegay.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
-  </body>
+  <script>
+(function () {
+  const mount = document.querySelector('.zf-date-picker-mount');
+  const demo = mount.querySelector('object');
+  const hint = mount.querySelector('.zf-try-hint');
+  const dismiss = () => mount.classList.add('is-interacted');
+  function connect() {
+    const doc = demo.contentDocument;
+    if (!doc) return;
+    doc.addEventListener('pointerdown', dismiss, { once: true });
+    doc.addEventListener('keydown', dismiss, { once: true });
+  }
+  demo.addEventListener('load', connect);
+  connect();
+  hint.addEventListener('click', () => {
+    dismiss();
+    demo.contentDocument?.querySelector('[aria-checked="true"]')?.focus();
+  });
+})();
+</script>
+</body>
 </html>
