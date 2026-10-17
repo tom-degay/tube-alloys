@@ -1669,6 +1669,15 @@
   /* cards inside a modal are always open: no More / Less, no pointer */
   .card-modal details.is-static > summary { cursor: default; pointer-events: none; }
   .card-modal details.is-static .evidence-toggle { display: none; }
+
+  /* cards inside a modal: a lighter grey so they stand out from the
+     panel, and no hover change since they don't do anything */
+  .card-modal .evidence-card,
+  .card-modal .evidence-card:hover {
+    background-color: rgb(46, 46, 46);
+    border-color: rgb(46, 46, 46);
+    transform: none;
+  }
 </style>
 <script>
   (function () {
