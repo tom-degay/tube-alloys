@@ -1032,17 +1032,6 @@
       <p>We then broke the code into understandable portions and began building dedicated interfaces for each of them. Workshops with clients helped us map out their data flows.</p>
       <p>This approach meant that each operation could have an interface tailored to its particular task.</p>
 
-      <figure class="figure figure-strip figure-strip-4 figure-big">
-        <div class="figure-portrait-frame">
-          <div class="figure-strip-imgs">
-            <img src="media/code-editor-1.png" width="1670" height="942" alt="The original code editor: a full screen of Python and pandas cleaning a bordereau spreadsheet, with Run, History and Save controls." loading="lazy">
-            <img src="media/code-editor-2.png" width="832" height="624" alt="The same work as a single named operation, Detect Headers, configured by one line: useFirstNRowsAsHeader with a row count of one." loading="lazy">
-            <img src="media/code-editor-3.png" width="2000" height="1128" alt="A pipeline broken into named stages &ndash; Cleanse Data, Column Mapping, Combine Premium Data, Join &ndash; beside a grid of the resulting insurance data." loading="lazy">
-            <img src="media/pipelines-today.png" width="2000" height="1193" alt="Pipelines today: seventeen connected stages from mapping through joins to underwriting and reinsurance outputs, with a validations panel reporting the result of each operation." loading="lazy">
-          </div>
-        </div>
-        <figcaption>Pipeline evolution: from one long script to named operations, each with its own interface &ndash; and the pipeline as it stands today.</figcaption>
-      </figure>
       <p>I started creating UI for each of these script operations incrementally. I worked with solutions architects to stack-rank the operations by frequency of use and difficulty of use as a script. That meant infrequently used operations where only one number needs to be changed were done later, whilst big operations like <a href="/case-studies/column-mapping">Map Column Headers</a> were done first. This delivered the most value, fastest.</p>
     </section>
 
