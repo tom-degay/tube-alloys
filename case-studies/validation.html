@@ -1505,20 +1505,6 @@
     -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 var(--fade-top), #000 calc(100% - var(--fade-bottom)), transparent 100%);
     mask-image: linear-gradient(to bottom, transparent 0, #000 var(--fade-top), #000 calc(100% - var(--fade-bottom)), transparent 100%);
   }
-  .card-modal-close {
-    appearance: none;
-    width: 36px;
-    height: 36px;
-    margin: -8px -10px -8px 0;
-    border: 0;
-    border-radius: 50%;
-    background: none;
-    color: rgba(255, 255, 255, 0.75);
-    font-size: 30px;
-    line-height: 1;
-    cursor: pointer;
-  }
-  .card-modal-close:hover, .card-modal-close:focus-visible { color: #fff; background: rgba(255, 255, 255, 0.08); }
   .card-modal-body > :first-child { margin-top: 0; }
   .card-modal-body > :last-child { margin-bottom: 0; }
 
@@ -1679,24 +1665,107 @@
     transform: none;
   }
 
-  /* the slide modal's previous / next buttons, beside the close */
+  /* ----------------------------------------------------------------
+     Modal controls: the close (every modal) and the previous / next
+     pair (carousel modals). One family: 40px targets (44px on touch),
+     a quiet translucent fill with a hairline edge, icons drawn as 1.5px
+     strokes on a 20px grid rather than font glyphs, so they sit dead
+     centre. Previous / next share one segmented pill with a hairline
+     between them; the close is its own circle. Hover lifts the fill
+     and whitens the icon, the chevrons lean the way they go, a press
+     sinks the button slightly, focus gets the teal ring, and the
+     unavailable direction fades right back and stops responding.
+     ---------------------------------------------------------------- */
+  .card-modal-head { gap: 12px; }
+  .card-modal-close,
   .kd-modal-step {
+    --ctl: 40px;
     appearance: none;
+    position: relative;
     display: grid;
     place-items: center;
-    width: 36px;
-    height: 36px;
-    margin: -8px 0;
+    flex: none;
+    width: var(--ctl);
+    height: var(--ctl);
+    margin: 0;
+    padding: 0;
     border: 0;
-    border-radius: 50%;
-    background: none;
-    color: rgba(255, 255, 255, 0.75);
+    color: rgba(255, 255, 255, 0.72);
+    background: transparent;
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
   }
-  .kd-modal-step:hover, .kd-modal-step:focus-visible { color: #fff; background: rgba(255, 255, 255, 0.08); }
-  .kd-modal-step:disabled { opacity: 0.25; cursor: default; background: none; }
-  .kd-modal .card-modal-head { gap: 4px; }
-  .kd-modal .kd-modal-title { margin-right: 12px; }
+  .card-modal-close svg,
+  .kd-modal-step svg {
+    display: block;
+    transition: transform 0.18s cubic-bezier(.2, .8, .2, 1);
+  }
+  @media (pointer: coarse) {
+    .card-modal-close, .kd-modal-step { --ctl: 44px; }
+  }
+
+  /* the close: its own circle */
+  .card-modal-close {
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    margin-right: -4px;
+  }
+
+  /* previous / next: one segmented pill */
+  .kd-modal-nav {
+    display: flex;
+    flex: none;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  }
+  .kd-modal-step { width: calc(var(--ctl) + 4px); }
+  .kd-modal-step:first-child { border-radius: 999px 0 0 999px; }
+  .kd-modal-step:last-child { border-radius: 0 999px 999px 0; }
+  .kd-modal-step + .kd-modal-step::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 11px;
+    bottom: 11px;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .card-modal-close:hover,
+  .kd-modal-step:hover:not(:disabled) {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  .kd-modal-step[data-step="-1"]:hover:not(:disabled) svg { transform: translateX(-1.5px); }
+  .kd-modal-step[data-step="1"]:hover:not(:disabled) svg { transform: translateX(1.5px); }
+  .card-modal-close:hover svg { transform: rotate(90deg); }
+  .card-modal-close:active svg,
+  .kd-modal-step:active:not(:disabled) svg { transform: scale(0.88); }
+
+  .card-modal-close:focus-visible,
+  .kd-modal-step:focus-visible {
+    outline: 2px solid #00d8aa;
+    outline-offset: 2px;
+    color: #fff;
+    z-index: 1;
+  }
+  .card-modal-close:focus:not(:focus-visible),
+  .kd-modal-step:focus:not(:focus-visible) { outline: none; }
+
+  .kd-modal-step:disabled { color: rgba(255, 255, 255, 0.22); cursor: default; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card-modal-close svg, .kd-modal-step svg { transition: none; transform: none !important; }
+  }
+
+  .kd-modal .kd-modal-title { margin-right: 8px; }
+
+  /* no captions inside the expanded cards (the lightbox still shows
+     them when a picture is opened full size) */
+  .card-modal figcaption { display: none; }
 </style>
 <script>
   (function () {
@@ -2354,7 +2423,7 @@
       <div class="card-modal-head">
         <svg class="framing-icon" width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7.3" stroke="#00D8AA" stroke-width="1"/><path d="M8 7.1v4.4" stroke="#00D8AA" stroke-width="1.1" stroke-linecap="round"/><circle cx="8" cy="4.8" r="0.75" fill="#00D8AA"/></svg>
         <h2 class="framing-label" id="evidence-modal-title">Evidence</h2>
-        <button class="card-modal-close" type="button" aria-label="Close">&times;</button>
+        <button class="card-modal-close" type="button" aria-label="Close"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M5.5 5.5l9 9M14.5 5.5l-9 9"/></svg></button>
       </div>
       <div class="card-modal-body evidence-body case-body">
           <figure class="figure">
@@ -2401,7 +2470,7 @@
       <div class="card-modal-head">
         <svg class="framing-icon" width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7.3" stroke="#00D8AA" stroke-width="1"/><path d="M8 7.1v4.4" stroke="#00D8AA" stroke-width="1.1" stroke-linecap="round"/><circle cx="8" cy="4.8" r="0.75" fill="#00D8AA"/></svg>
         <h2 class="framing-label" id="framing-modal-title">Problem framing</h2>
-        <button class="card-modal-close" type="button" aria-label="Close">&times;</button>
+        <button class="card-modal-close" type="button" aria-label="Close"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M5.5 5.5l9 9M14.5 5.5l-9 9"/></svg></button>
       </div>
       <div class="card-modal-body evidence-body case-body framing-card">
         <div class="framing-pair">
@@ -2424,9 +2493,11 @@
     <div class="card-modal-panel">
       <div class="card-modal-head">
         <h2 class="kd-modal-title" id="kd-modal-title"><span class="kd-modal-num"></span> <span class="kd-modal-name"></span></h2>
-        <button class="kd-modal-step" type="button" data-step="-1" aria-label="Previous"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3.5 5.5 8l4.5 4.5"/></svg></button>
-        <button class="kd-modal-step" type="button" data-step="1" aria-label="Next"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5"/></svg></button>
-        <button class="card-modal-close" type="button" aria-label="Close">&times;</button>
+        <div class="kd-modal-nav" role="group" aria-label="Move between decisions">
+          <button class="kd-modal-step" type="button" data-step="-1" aria-label="Previous decision" aria-keyshortcuts="ArrowLeft"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.75 5.5 7.25 10l4.5 4.5"/></svg></button>
+          <button class="kd-modal-step" type="button" data-step="1" aria-label="Next decision" aria-keyshortcuts="ArrowRight"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.25 5.5 12.75 10l-4.5 4.5"/></svg></button>
+        </div>
+        <button class="card-modal-close" type="button" aria-label="Close"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M5.5 5.5l9 9M14.5 5.5l-9 9"/></svg></button>
       </div>
       <div class="card-modal-body case-body"></div>
     </div>
@@ -2769,8 +2840,6 @@
           if (copy.tagName === 'VIDEO') { copy.muted = true; copy.setAttribute('controls', ''); copy.addEventListener('loadedmetadata', function () { fades(kd); }); }
           else copy.addEventListener('load', function () { fades(kd); });
           fig.appendChild(copy);
-          var cap = media.querySelector('figcaption');
-          if (cap) { var fc = document.createElement('figcaption'); fc.innerHTML = cap.innerHTML; fig.appendChild(fc); }
           kdBody.appendChild(fig);
           var more = slide.querySelector('.kd-more-body');
           if (more) Array.prototype.forEach.call(more.children, function (c) { kdBody.appendChild(c.cloneNode(true)); });
