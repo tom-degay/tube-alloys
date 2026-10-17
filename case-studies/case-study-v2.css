@@ -912,3 +912,7 @@
   transform-origin: left center;
   opacity: 0.9;
 }
+
+/* Back to top: tight under the closing rule, at its right-hand end */
+.content > hr.rule:has(+ .back-to-top-row) { margin-bottom: clamp(10px, 1.2vw, 14px); }
+.content > .back-to-top-row { max-width: none; }

@@ -1988,6 +1988,11 @@
   @media (min-width: 1024px) {
     .case-body .subsection > p.kd-intro { max-width: var(--span7); }
   }
+
+  /* Back to top: tight under the closing rule, at its right-hand end */
+  .content > hr.rule:has(+ .back-to-top-row) { margin-bottom: clamp(10px, 1.2vw, 14px); }
+  .content > .back-to-top-row { max-width: none; }
+  
 </style>
 <script>
   (function () {
@@ -2002,6 +2007,7 @@
   <style>
     .head-armed .head-fade { opacity: 1 !important; transform: none !important; }
     .head-armed .key-points li { opacity: 1 !important; transform: none !important; }
+
   </style>
 </noscript>
   <script src="/lightbox.js" defer></script>
