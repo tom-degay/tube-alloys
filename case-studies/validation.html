@@ -195,6 +195,7 @@
 
   /* the Approach workflow chart, shown big: the carousel slides' width,
      centred on the text column */
+  .case-body .figure-big .ui-video { max-width: none; }
   .case-body .figure-big {
     --big-w: max(min(46rem, 100vw - 2 * clamp(24px, 5vw, 56px)),
                  min(76rem, 100vw - 2 * (clamp(24px, 7vw, 160px) + clamp(12px, 2vw, 28px))));
@@ -205,7 +206,7 @@
 
   /* the big heading over the carousel, in the Problem statement's size */
   .case-body h3.kd-heading {
-    margin: clamp(40px, 5vw, 64px) 0 0;
+    margin: 0;
     font-size: clamp(32px, 4.4vw, 56px);
     line-height: 1.1;
     letter-spacing: -0.01em;
@@ -1751,14 +1752,12 @@
     <hr class="rule">
 
     <section aria-labelledby="keydecisions-heading" class="case-body">
-      <h2 class="eyebrow" id="keydecisions-heading">Design decisions</h2>
 
       <div class="subsection" id="applying-corrections">
-        <p>Users needed to fix failed values directly in the report, without losing the source data or the audit trail. Five principles shaped how corrections are entered, checked and recorded.</p>
         <!-- The five decisions as a carousel, as Image Insight's screens:
              each picture big, its headline and strapline beneath, the
              rest of the text in a collapsing section. -->
-        <h3 class="display kd-heading">Five design decisions</h3>
+        <h3 class="display kd-heading" id="keydecisions-heading">Five design decisions</h3>
         <div class="kd-reel">
           <div class="kd-reel-track" id="kd-reel-track" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Applying corrections: design decisions">
           <div class="kd-slide is-current" id="kd-entering" role="group" aria-roledescription="slide" aria-label="1 of 5">
@@ -1919,7 +1918,18 @@
 
     <section aria-labelledby="outcome-heading" class="case-body">
       <h2 class="eyebrow" id="outcome-heading">Outcome</h2>
-      <h3>Closing the loop</h3>
+      <p class="display problem-statement">Closing the&nbsp;loop</p>
+
+      <figure class="figure figure-big hero-repeat">
+        <div class="ui-video" data-hover-controls>
+          <video autoplay muted loop playsinline disablepictureinpicture poster="media/validation-hero-poster.jpg">
+            <source src="media/validation-hero.mp4" type="video/mp4">
+          </video>
+          <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+        </div>
+        <figcaption>Applying corrections.</figcaption>
+      </figure>
+
       <p>Clients using the in-product correction and report improvements reported a significant boost to their workflow, with the changes addressing their productivity bottlenecks.</p>
       <p>Being able to see who had made corrections was especially valuable to them for supporting their audit processes.</p>
       <blockquote class="outcome-quote">The speed at which we can work now is a real step change. Everything feels much more fluid. I don&rsquo;t even need to click all the way into the validation to see what I need. The changes have helped tremendously: I know what I need to focus on.
@@ -1961,16 +1971,6 @@
             <div><dt>Cells fixed</dt><dd>23,429</dd></div>
             <div><dt>Rules corrected</dt><dd>39</dd></div>
           </dl>
-        </div>
-      </figure>
-
-      <h3>Applying corrections</h3>
-      <figure class="figure hero-repeat">
-        <div class="ui-video" data-hover-controls>
-          <video autoplay muted loop playsinline disablepictureinpicture poster="media/validation-hero-poster.jpg">
-            <source src="media/validation-hero.mp4" type="video/mp4">
-          </video>
-          <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
         </div>
       </figure>
     </section>
