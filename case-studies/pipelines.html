@@ -840,6 +840,9 @@
 <link rel="stylesheet" href="/case-studies/case-study-v2.css?v=20261017d">
 <style>
   /* Pipelines' own additions to the shared treatment */
+  /* a picture straight on the page, at the reading width: no frame */
+  .figure.figure-bare img { border-radius: 0; box-shadow: none; }
+  @media (min-width: 1024px) { .content .case-body > .figure-bare { max-width: var(--span7); } }
   /* hero: the case-study card's artwork, looping */
   .pl-hero-media > svg { display: block; width: 100%; height: auto; }
   @keyframes pipeline-trace {
@@ -1005,11 +1008,18 @@
       <h2 class="eyebrow" id="problem-heading">Problem</h2>
       <p class="display problem-statement">Ferraris on country&nbsp;roads</p>
 
-      <p>Quantemplate&rsquo;s first product offering was a high-performance, drag-and-drop <a href="https://help.quantemplate.com/workspace-overview" target="_blank" rel="noopener noreferrer">analytics suite</a>. In 2013, there was nothing else like it. We had gone to insurers with these tools, but they were struggling to get their data into a form that could be analysed. One client put it memorably:</p>
+      <p>Quantemplate&rsquo;s first product offering was a high-performance, drag-and-drop <a href="https://help.quantemplate.com/workspace-overview" target="_blank" rel="noopener noreferrer">analytics suite</a>. In 2013, there was nothing else like it.</p>
+
+      <figure class="figure figure-bare">
+        <img src="media/analyse-laptop-grey.png" width="2062" height="1272" alt="Quantemplate&rsquo;s Analyse workspace on a laptop: a regional profit breakdown as a pivot table and donut chart, brokerage against costs, and the top five brokers by year." loading="lazy">
+      </figure>
+
+      <p>We had gone to insurers with these tools, but they were struggling to get their data into a form that could be analysed. One client put it memorably:</p>
       <blockquote>Quantemplate is a Ferrari, but our data is on country roads.
         <cite>COO, major European insurance company</cite>
       </blockquote>
-      <p>So we set about building a race track, taking everything we had learnt from building the analytics tools and applying it to data integration.</p>
+      <p>Their data arrived from hundreds of sources, in no common format. Cleaning it up by hand was slow, expensive and error-prone, and it had to be done again every time new data came in.</p>
+      <p>So we set about building a race track, taking everything we had learnt from building the analytics tools and applying it to data clean-up and enrichment. And it all needed to be no-code, to empower the business user.</p>
     </section>
 
     <hr class="rule">
