@@ -916,3 +916,13 @@
 /* Back to top: tight under the closing rule, at its right-hand end */
 .content > hr.rule:has(+ .back-to-top-row) { margin-bottom: clamp(10px, 1.2vw, 14px); }
 .content > .back-to-top-row { max-width: none; }
+
+/* Footer on the page grid: the same width as .content above it */
+body > hr.rule:has(+ .site-footer),
+body > .site-footer {
+  --wide: max(min(46rem, 100vw - 2 * clamp(24px, 5vw, 56px)),
+              min(76rem, 100vw - 2 * (clamp(24px, 7vw, 160px) + clamp(12px, 2vw, 28px))));
+  max-width: var(--wide);
+  padding-left: 0;
+  padding-right: 0;
+}
