@@ -1981,6 +1981,13 @@
     .card-modal .figure-portrait-frame > .ui-video,
     .card-modal .figure-portrait-frame video { box-shadow: none; }
   }
+
+  /* the intro under "Fix errors where you find them": reading width,
+     seven columns */
+  .case-body .subsection > p.kd-intro { margin: clamp(24px, 3vw, 40px) 0 0; }  /* as under "Improve the workflow" */
+  @media (min-width: 1024px) {
+    .case-body .subsection > p.kd-intro { max-width: var(--span7); }
+  }
 </style>
 <script>
   (function () {
@@ -2351,6 +2358,7 @@
              each picture big, its headline and strapline beneath, the
              rest of the text in a collapsing section. -->
         <h3 class="display kd-heading" id="keydecisions-heading"><span class="step-label">Step 2</span>Fix errors where you find&nbsp;them</h3>
+        <p class="kd-intro">Correcting errors in the data was not as simple as it sounds. Rather than editing cells, Quantemplate pipelines apply batch changes to the data using rules, and these rules needed to be applied at the point the data was checked. Five design principles underpinned the solution.</p>
         <div class="kd-reel">
           <div class="kd-reel-track" id="kd-reel-track" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Applying corrections: design decisions">
           <div class="kd-slide is-current" id="kd-entering" role="group" aria-roledescription="slide" aria-label="1 of 5">
