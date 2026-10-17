@@ -34,6 +34,14 @@
 
   html { scroll-padding-top: 100px; }
 
+  /* Approach: one Framing card holding each feedback / reframing pair,
+     separated by a hairline */
+  .framing-pair + .framing-pair {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
   /* Problem: the section opens on one very large statement */
   .case-body p.problem-statement {
     margin: 0 0 clamp(24px, 3vw, 40px);
@@ -1456,30 +1464,23 @@
       <details class="evidence-card evidence-disclosure framing-card">
         <summary class="framing-head">
           <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><rect x="22.9123" y="12.1673" width="15.2071" height="15.2071" transform="rotate(-45 22.9123 12.1673)" stroke="#B7B7B7" stroke-opacity="0.5" stroke-width="2"/><rect x="1.41421" y="12.1673" width="15.2071" height="15.2071" transform="rotate(-45 1.41421 12.1673)" stroke="#00D8AA" stroke-width="2"/></svg>
-          <span class="framing-label">Framing · Engineering constraint</span>
+          <span class="framing-label">Framing</span>
 
           <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
         </summary>
         <div class="evidence-body">
-<p class="framing-term">Client feedback</p>
-        <p class="framing-quote">&lsquo;I just want to edit the failed cell&rsquo;</p>
-        <p class="framing-term">Engineering constraint</p>
-        <p>Quantemplate is designed around rules-based transformations to data, so cell-level editing is not possible. Instead we need to make adding a rule as easy as editing a cell, and make its effect obvious.</p>
-        </div>
-      </details>
-
-      <details class="evidence-card evidence-disclosure framing-card">
-        <summary class="framing-head">
-          <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><rect x="22.9123" y="12.1673" width="15.2071" height="15.2071" transform="rotate(-45 22.9123 12.1673)" stroke="#B7B7B7" stroke-opacity="0.5" stroke-width="2"/><rect x="1.41421" y="12.1673" width="15.2071" height="15.2071" transform="rotate(-45 1.41421 12.1673)" stroke="#00D8AA" stroke-width="2"/></svg>
-          <span class="framing-label">Framing · Workflow analysis</span>
-
-          <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
-        </summary>
-        <div class="evidence-body">
-<p class="framing-term">Client feedback</p>
-        <p class="framing-quote">&lsquo;When I go back to the report view after looking at a rule, my scroll position is lost&rsquo;.</p>
-        <p class="framing-term">Workflow analysis</p>
-        <p>The root problem isn&rsquo;t just the scroll position, but having to go back to the report to navigate to the next rule.</p>
+          <div class="framing-pair">
+            <p class="framing-term">Client feedback</p>
+            <p class="framing-quote">&lsquo;I just want to edit the failed cell&rsquo;</p>
+            <p class="framing-term">Engineering constraint</p>
+            <p>Quantemplate is designed around rules-based transformations to data, so cell-level editing is not possible. Instead we need to make adding a rule as easy as editing a cell, and make its effect obvious.</p>
+          </div>
+          <div class="framing-pair">
+            <p class="framing-term">Client feedback</p>
+            <p class="framing-quote">&lsquo;When I go back to the report view after looking at a rule, my scroll position is lost&rsquo;.</p>
+            <p class="framing-term">Workflow analysis</p>
+            <p>The root problem isn&rsquo;t just the scroll position, but having to go back to the report to navigate to the next rule.</p>
+          </div>
         </div>
       </details>
     </section>
