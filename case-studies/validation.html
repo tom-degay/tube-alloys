@@ -1509,6 +1509,52 @@
   .card-modal-close:hover, .card-modal-close:focus-visible { color: #fff; background: rgba(255, 255, 255, 0.08); }
   .card-modal-body > :first-child { margin-top: 0; }
   .card-modal-body > :last-child { margin-bottom: 0; }
+
+  /* ================================================================
+     12-column grid. From 1024px everything below the hero sits on one
+     12-column grid across the content area (--wide), with a single
+     gutter (--g); every block starts on column 1. Reading text spans
+     columns 1-7, headings and the big statements 1-8, pictures,
+     carousels, dividers and card rows all 12, and Problem's cards sit
+     on 9-12. The project details and Outcome cards are four equal
+     tracks on the same gutter, so each lands on exactly three columns.
+     Widths are set on the blocks rather than by making the sections
+     CSS grids, so their vertical margins still collapse as before.
+     Below 1024px the page stacks as before.
+     ================================================================ */
+  .content {
+    --g: clamp(16px, 2vw, 28px);
+    --col: calc((var(--wide) - 11 * var(--g)) / 12);
+    --span7: calc(7 * var(--col) + 6 * var(--g));
+    --span8: calc(8 * var(--col) + 7 * var(--g));
+  }
+  .meta-row { column-gap: var(--g); }
+  .outcome-cards { gap: var(--g); }
+  @media (min-width: 1024px) {
+    /* reading text: seven columns */
+    .content .case-body > p:not(.problem-statement),
+    .content .case-body > ul,
+    .content .case-body > blockquote,
+    .content .case-body > .corrections-chart,
+    .content .case-body > .case-block,
+    .content .problem-main > p:not(.problem-statement),
+    .content .case-footer > .case-block,
+    .kd-text { max-width: var(--span7); }
+    /* headings and big statements: eight */
+    .content .case-body > h2,
+    .content .case-body > h3,
+    .content .case-body .subsection > h3,
+    .content .case-body p.problem-statement { max-width: var(--span8); }
+    /* full width: pictures, carousels, dividers, card rows */
+    .content .case-body .figure-wide { width: 100%; max-width: none; margin-left: 0; }
+    .content .case-body > .outcome-cards { max-width: none; }
+    /* Problem: text on columns 1-7, the cards on 9-12 */
+    .content .problem-layout {
+      grid-template-columns: var(--span7) minmax(0, 1fr);
+      column-gap: calc(var(--col) + 2 * var(--g));
+    }
+    .content .problem-main > p.problem-statement { width: var(--span8); }
+  }
 </style>
 <script>
   (function () {
