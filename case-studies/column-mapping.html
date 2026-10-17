@@ -1154,7 +1154,8 @@
   /* Column mapping's own additions to the shared treatment */
   .case-body > p.kd-intro { margin: clamp(24px, 3vw, 40px) 0 0; }
   /* text straight under a Step heading gets the same gap as kd-intro */
-  .case-body > h3.kd-heading + .problem-layout { margin-top: clamp(24px, 3vw, 40px); }
+  .case-body > h3.kd-heading + .problem-layout,
+  .case-body > h3.kd-heading + p { margin-top: clamp(24px, 3vw, 40px); }
   @media (min-width: 1024px) { .case-body > p.kd-intro { max-width: var(--span7); } }
   /* three outcome cards, four columns each */
   @media (min-width: 1024px) { .outcome-cards.outcome-cards--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
@@ -1546,19 +1547,9 @@
       <h2 class="eyebrow" id="evolution-heading">Evolution</h2>
       <h3 class="display kd-heading" id="semantics-heading"><span class="step-label">Step 3</span>From column names to column&nbsp;contents</h3>
 
-      <div class="problem-layout">
-        <div class="problem-main">
-          <p>The original interface had served clients well, but its algorithm relied on column-name similarity and previous mappings. Understanding each column&rsquo;s contents could produce more accurate matches to the master schema.</p>
-          <p>In 2026, we ran a project to identify each column&rsquo;s data type and profile its contents, creating a data fingerprint for every field.</p>
-        </div>
-        <aside class="problem-side" aria-label="Supporting material">
-          <button class="side-card" type="button" aria-haspopup="dialog" aria-controls="exploration-modal">
-            <svg class="framing-icon" width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7.3" stroke="#00D8AA" stroke-width="1"/><path d="M8 7.1v4.4" stroke="#00D8AA" stroke-width="1.1" stroke-linecap="round"/><circle cx="8" cy="4.8" r="0.75" fill="#00D8AA"/></svg>
-            <span class="framing-label">Design exploration</span>
-            <span class="side-card-open" aria-hidden="true"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 14.5l9-9M10.5 5.5h4v4M5.5 10.5v4h4"/></svg></span>
-          </button>
-        </aside>
-      </div>
+      <p>The original interface had served clients well, but its algorithm relied on column-name similarity and previous mappings. Understanding each column&rsquo;s contents could produce more accurate matches to the master schema.</p>
+      <p>In 2026, we ran a project to identify each column&rsquo;s data type and profile its contents, creating a data fingerprint for every field.</p>
+    
 
       <p>In the UI, I showed the data types, allowing users to click in and see a data profile for each column: sample values, uniques, distribution, statistics and lineage.</p>
 
@@ -1600,6 +1591,11 @@
             </figure>
           </div>
           <aside class="problem-side" aria-label="Supporting material">
+            <button class="side-card" type="button" aria-haspopup="dialog" aria-controls="exploration-modal">
+            <svg class="framing-icon" width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7.3" stroke="#00D8AA" stroke-width="1"/><path d="M8 7.1v4.4" stroke="#00D8AA" stroke-width="1.1" stroke-linecap="round"/><circle cx="8" cy="4.8" r="0.75" fill="#00D8AA"/></svg>
+            <span class="framing-label">Design exploration</span>
+            <span class="side-card-open" aria-hidden="true"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 14.5l9-9M10.5 5.5h4v4M5.5 10.5v4h4"/></svg></span>
+          </button>
             <button class="side-card" type="button" aria-haspopup="dialog" aria-controls="model-evaluation-modal">
               <svg class="framing-icon" width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7.3" stroke="#00D8AA" stroke-width="1"/><path d="M8 7.1v4.4" stroke="#00D8AA" stroke-width="1.1" stroke-linecap="round"/><circle cx="8" cy="4.8" r="0.75" fill="#00D8AA"/></svg>
               <span class="framing-label">Model evaluation</span>
