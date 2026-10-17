@@ -29,8 +29,6 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="/styles.css">
-<link rel="stylesheet" href="/dial.css">
-<script src="/dial.js"></script>
 <link rel="stylesheet" href="/nav.css?v=20261016d">
 <style>
   html { scroll-padding-top: 100px; }
@@ -1098,6 +1096,44 @@
   body.theme-intense .menu-icon > span { background: rgb(var(--ink)); }
   body.theme-intense[data-navigation="identity"] .identity-dialog { background: rgba(77, 197, 229, 0.94); }
   body.theme-intense .menu-subsection-group { color: rgba(var(--ink), 0.75); }
+
+  /* carousel dots: the case studies' pill of page dots, in the page's ink */
+  .reel-dots {
+    display: flex;
+    box-sizing: border-box;
+    align-items: center;
+    width: max-content;
+    height: 40px;
+    margin: 4px auto 0;
+    padding: 0 9px;
+    border-radius: 999px;
+    background: rgba(var(--ink, 28, 28, 30), 0.05);
+    box-shadow: inset 0 0 0 1px rgba(var(--ink, 28, 28, 30), 0.08);
+  }
+  .reel-dots[hidden] { display: none; }
+  .reel-dot {
+    appearance: none;
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 40px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+  .reel-dot::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(var(--ink, 28, 28, 30), 0.25);
+    transition: background-color 0.25s ease;
+  }
+  .reel-dot:hover::before { background: rgba(var(--ink, 28, 28, 30), 0.55); }
+  .reel-dot[aria-current="true"]::before { background: rgb(var(--ink, 28, 28, 30)); }
+  .reel-dot:focus-visible { outline: 2px solid rgba(var(--ink, 28, 28, 30), 0.8); outline-offset: -6px; border-radius: 999px; }
+  @media (pointer: coarse) { .reel-dots, .reel-dot { height: 44px; } }
 </style>
 <script>
   (function () {
@@ -1261,7 +1297,7 @@
             <figcaption>The session review pairs each image with its reflection and foregrounds the actions to take forward, ready to export as a PDF.</figcaption>
           </figure>
         </div>
-        <div class="ii-reel-dial tdg-dial" hidden></div>
+        <div class="ii-reel-dial reel-dots" role="group" aria-label="Choose a screen" hidden></div>
       </div>
     </section>
 
@@ -1455,10 +1491,22 @@
       var track = reel.querySelector(".ii-reel-track");
       var slides = Array.prototype.slice.call(track.querySelectorAll(".ii-reel-slide"));
       var targetIndex = null;
-      var dial = TDGDial.create(reel.querySelector('.ii-reel-dial'), {
-        count: slides.length, item: 'screen', label: 'Image Insight screens', controls: 'ii-reel-track',
-        onStep: function (step) { go((targetIndex === null ? current() : targetIndex) + step); }
+      // page dots: one per screen, the current one filled
+      var dotsRoot = reel.querySelector('.ii-reel-dial');
+      var dots = slides.map(function (s, i) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'reel-dot';
+        b.setAttribute('aria-label', 'Screen ' + (i + 1) + ' of ' + slides.length);
+        b.setAttribute('aria-controls', 'ii-reel-track');
+        b.addEventListener('click', function () { go(i); });
+        dotsRoot.appendChild(b);
+        return b;
       });
+      dotsRoot.hidden = false;
+      var dial = { render: function (phase, sel) {
+        dots.forEach(function (d, i) { d.setAttribute('aria-current', i === sel ? 'true' : 'false'); });
+      } };
       var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       function centreOf(i) {

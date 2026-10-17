@@ -29,8 +29,6 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="/styles.css">
-<link rel="stylesheet" href="/dial.css">
-<script src="/dial.js"></script>
 <link rel="stylesheet" href="/nav.css?v=20261016d">
 <style>
   html { scroll-padding-top: 100px; }
@@ -1007,6 +1005,44 @@
     }
     .zf-hero-media img { border-radius: 6px 0 0 6px; }
   }
+
+  /* carousel dots: the case studies' pill of page dots, in the page's ink */
+  .reel-dots {
+    display: flex;
+    box-sizing: border-box;
+    align-items: center;
+    width: max-content;
+    height: 40px;
+    margin: 4px auto 0;
+    padding: 0 9px;
+    border-radius: 999px;
+    background: rgba(var(--ink, 28, 28, 30), 0.05);
+    box-shadow: inset 0 0 0 1px rgba(var(--ink, 28, 28, 30), 0.08);
+  }
+  .reel-dots[hidden] { display: none; }
+  .reel-dot {
+    appearance: none;
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 40px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+  .reel-dot::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(var(--ink, 28, 28, 30), 0.25);
+    transition: background-color 0.25s ease;
+  }
+  .reel-dot:hover::before { background: rgba(var(--ink, 28, 28, 30), 0.55); }
+  .reel-dot[aria-current="true"]::before { background: rgb(var(--ink, 28, 28, 30)); }
+  .reel-dot:focus-visible { outline: 2px solid rgba(var(--ink, 28, 28, 30), 0.8); outline-offset: -6px; border-radius: 999px; }
+  @media (pointer: coarse) { .reel-dots, .reel-dot { height: 44px; } }
 </style>
 <script>
   (function () {
@@ -1172,7 +1208,7 @@
             <figcaption>A programme&rsquo;s routines placed on the calendar, with the chain from activity to programme to routine kept in view.</figcaption>
           </figure>
         </div>
-        <div class="zf-reel-dial tdg-dial" hidden></div>
+        <div class="zf-reel-dial reel-dots" role="group" aria-label="Choose a screen" hidden></div>
       </div>
     </section>
 
@@ -1282,10 +1318,22 @@
       var track = reel.querySelector(".zf-reel-track");
       var slides = Array.prototype.slice.call(track.querySelectorAll(".zf-reel-slide"));
       var targetIndex = null;
-      var dial = TDGDial.create(reel.querySelector('.zf-reel-dial'), {
-        count: slides.length, item: 'screen', label: 'Zonefully screens', controls: 'zf-reel-track',
-        onStep: function (step) { go((targetIndex === null ? current() : targetIndex) + step); }
+      // page dots: one per screen, the current one filled
+      var dotsRoot = reel.querySelector('.zf-reel-dial');
+      var dots = slides.map(function (s, i) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'reel-dot';
+        b.setAttribute('aria-label', 'Screen ' + (i + 1) + ' of ' + slides.length);
+        b.setAttribute('aria-controls', 'zf-reel-track');
+        b.addEventListener('click', function () { go(i); });
+        dotsRoot.appendChild(b);
+        return b;
       });
+      dotsRoot.hidden = false;
+      var dial = { render: function (phase, sel) {
+        dots.forEach(function (d, i) { d.setAttribute('aria-current', i === sel ? 'true' : 'false'); });
+      } };
       var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       function centreOf(i) {
