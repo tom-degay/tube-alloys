@@ -2357,7 +2357,7 @@
                 <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 14.5l9-9M10.5 5.5h4v4M5.5 10.5v4h4"/></svg></summary>
                 <div class="kd-more-body">
                   <p>Quantemplate applies corrections to bulk data rather than isolated cells, so we needed to make this clear. When a user selects a field, it opens a popup where they enter the correction. The UI makes it clear that corrections can apply to every matching value or use conditions, such as correcting Premium only for a specific Policy Number.</p>
-                  <p>We added a formula bar, so users could derive a value from another column. For example, if a date is missing, take the date from another column and subtract one month. Based on what we&rsquo;d observed in production pipelines, this would be a necessary addition.</p>
+                  <p>I added a formula bar, so users could derive a value from another column. For example, if a date is missing, take the date from another column and subtract one month. Based on what I&rsquo;d observed in production pipelines, this would be a necessary addition.</p>
 
                   <details class="evidence-card evidence-disclosure framing-card">
                           <summary class="framing-head">
@@ -2367,7 +2367,7 @@
                   <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
                           </summary>
                           <div class="evidence-body">
-                  <p>We had identified the need for multiple matching conditions, for example to apply one correction across several policy numbers. A walk-through of the design specification with a cohort of expert users confirmed it. Their feedback was that this would be much easier than wrangling Excel-style IF statements, opening corrections up to users with less technical skill.</p>
+                  <p>I had identified the need for multiple matching conditions, for example to apply one correction across several policy numbers. A walk-through of the design specification with a cohort of expert users confirmed it. Their feedback was that this would be much easier than wrangling Excel-style IF statements, opening corrections up to users with less technical skill.</p>
                           </div>
                         </details>
 
@@ -2387,7 +2387,7 @@
               <details class="kd-more">
                 <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 14.5l9-9M10.5 5.5h4v4M5.5 10.5v4h4"/></svg></summary>
                 <div class="kd-more-body">
-                  <p>Audit was important to our clients, who use Quantemplate as a system-of-record for financial reporting. To support this we displayed the original failed values alongside the corrected rows in the report. The full change history of each edit was displayed.</p>
+                  <p>Audit was important to our clients, who use Quantemplate as a system-of-record for financial reporting. To support this, I showed the original failed values alongside the corrected rows in the report. The full change history of each edit was displayed.</p>
 
                 </div>
               </details>
@@ -2409,7 +2409,7 @@
               <details class="kd-more">
                 <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 14.5l9-9M10.5 5.5h4v4M5.5 10.5v4h4"/></svg></summary>
                 <div class="kd-more-body">
-                  <p>Corrections are applied to the output on the next pipeline run. Rather than wait for the run to complete to find out if a correction will now pass, after a field is completed, we check that the entered value will pass the rule, and warn if it&rsquo;s still a fail.</p>
+                  <p>Corrections are applied to the output on the next pipeline run. Rather than wait for the run to complete to find out if a correction will now pass, after a field is completed, the system checks that the entered value will pass the rule, and warns if it&rsquo;s still a fail.</p>
 
                 </div>
               </details>
@@ -2426,7 +2426,7 @@
               <details class="kd-more">
                 <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 14.5l9-9M10.5 5.5h4v4M5.5 10.5v4h4"/></svg></summary>
                 <div class="kd-more-body">
-                  <p>One of the things we discovered in testing, as part of our internal QA process, was that the order in which corrections apply is important, since one correction could overwrite a prior one. We created an interface showing all corrections applied to any validation rule, allowing users to reorder or remove them.</p>
+                  <p>One of the things I discovered in testing, as part of our internal QA process, was that the order in which corrections apply is important, since one correction could overwrite a prior one. I designed an interface showing all corrections applied to any validation rule, allowing users to reorder or remove them.</p>
 
                   <details class="evidence-card evidence-disclosure framing-card">
                           <summary class="framing-head">
@@ -2614,7 +2614,7 @@
           <figcaption>Desire lines in the product: an ad hoc correction added by a user to a pipeline, modifying the Accident State for a specific policy number.</figcaption>
         </figure>
 
-        <p>We had made it easier to add validation rules and implementations had become ambitious: clients had hundreds of rules and users spent days in the report analysing the results. There were aspects of the navigation and interaction that were proving cumbersome. We set out to fix this.</p>
+        <p>We had made it easier to add validation rules and implementations had become ambitious: clients had hundreds of rules and users spent days in the report analysing the results. There were aspects of the navigation and interaction that were proving cumbersome. I set out to fix this.</p>
 
           <ul class="evidence-list">
             <li>Users making ad hoc corrections in the pipeline</li>
@@ -2644,7 +2644,7 @@
           <p class="framing-term">Client feedback</p>
           <p class="framing-quote">&lsquo;I just want to edit the failed cell&rsquo;</p>
           <p class="framing-term">Engineering constraint</p>
-          <p>Quantemplate is designed around rules-based transformations to data, so cell-level editing is not possible. Instead we need to make adding a rule as easy as editing a cell, and make its effect obvious.</p>
+          <p>Quantemplate is designed around rules-based transformations to data, so cell-level editing is not possible. Instead, I needed to make adding a rule as easy as editing a cell, and make its effect obvious.</p>
         </div>
         <div class="framing-pair">
           <p class="framing-term">Client feedback</p>
