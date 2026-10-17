@@ -1812,6 +1812,26 @@
   .kd-more > summary:active .kd-more-icon { transform: scale(0.88); }
   @media (pointer: coarse) { .kd-more > summary { height: 44px; } }
   @media (prefers-reduced-motion: reduce) { .kd-more-icon { transition: none; transform: none !important; } }
+
+  /* the dots' pill in the More button's family: 40px tall (44px on
+     touch), the same translucent fill and hairline edge */
+  .kd-dots {
+    box-sizing: border-box;
+    align-items: center;
+    height: 40px;
+    padding: 0 9px;
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  }
+  .kd-dot { width: 22px; height: 40px; border-radius: 0; }
+  .kd-dot::before { background: rgba(255, 255, 255, 0.28); }
+  .kd-dot:hover::before { background: rgba(255, 255, 255, 0.6); }
+  .kd-dot.is-current::before { background: #fff; }
+  .kd-dot:focus-visible { outline: 2px solid #00d8aa; outline-offset: -6px; border-radius: 999px; }
+  @media (pointer: coarse) {
+    .kd-dots { height: 44px; }
+    .kd-dot { height: 44px; }
+  }
 </style>
 <script>
   (function () {
