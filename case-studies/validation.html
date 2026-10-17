@@ -1419,7 +1419,7 @@
       column-gap: clamp(32px, 4vw, 64px);
       align-items: start;
     }
-    .problem-side { padding-top: clamp(4px, 0.6vw, 10px); }
+    .problem-side { padding-top: 0; }
   }
   .problem-side { display: grid; gap: 14px; margin-top: 28px; }
   @media (min-width: 1024px) {
@@ -1553,7 +1553,6 @@
       grid-template-columns: var(--span7) minmax(0, 1fr);
       column-gap: calc(var(--col) + 2 * var(--g));
     }
-    .content .problem-main > p.problem-statement { width: var(--span8); }
   }
 </style>
 <script>
@@ -1692,9 +1691,10 @@
     <section aria-labelledby="problem-heading" class="case-body">
       <h2 class="eyebrow" id="problem-heading">Problem</h2>
 
+      <p class="display problem-statement">We&rsquo;d made errors easy to spot, but fixing them was&nbsp;hard</p>
+
       <div class="problem-layout">
         <div class="problem-main">
-          <p class="display problem-statement">We&rsquo;d made errors easy to spot, but fixing them was&nbsp;hard</p>
 
           <p>Quantemplate takes data from hundreds of suppliers, harmonises them into a consistent format and flags errors. These could be simple things like an invalid date, or more complex business rules.</p>
 
@@ -1704,12 +1704,12 @@
         <button class="side-card" type="button" aria-haspopup="dialog" aria-controls="evidence-modal">
           <svg class="framing-icon" width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7.3" stroke="#00D8AA" stroke-width="1"/><path d="M8 7.1v4.4" stroke="#00D8AA" stroke-width="1.1" stroke-linecap="round"/><circle cx="8" cy="4.8" r="0.75" fill="#00D8AA"/></svg>
           <span class="framing-label">Evidence</span>
-          <span class="side-card-open" aria-hidden="true">View <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+          <span class="side-card-open" aria-hidden="true">View <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 12.5l9-9M8 3.5h4.5V8M3.5 8v4.5H8"/></svg></span>
         </button>
         <button class="side-card" type="button" aria-haspopup="dialog" aria-controls="framing-modal">
           <svg class="framing-icon" width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7.3" stroke="#00D8AA" stroke-width="1"/><path d="M8 7.1v4.4" stroke="#00D8AA" stroke-width="1.1" stroke-linecap="round"/><circle cx="8" cy="4.8" r="0.75" fill="#00D8AA"/></svg>
           <span class="framing-label">Problem framing</span>
-          <span class="side-card-open" aria-hidden="true">View <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+          <span class="side-card-open" aria-hidden="true">View <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 12.5l9-9M8 3.5h4.5V8M3.5 8v4.5H8"/></svg></span>
         </button>
         </aside>
       </div>
