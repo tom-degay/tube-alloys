@@ -36,26 +36,29 @@
 
   html { scroll-padding-top: 100px; }
 
-  /* -- Applying corrections: the five decisions as a carousel, after the
-     homepage quotes strip. Runs off both window edges (html and body clip
-     the overflow); the first card starts on the text column's edge. -- */
+  /* -- Applying corrections: the five decisions as a carousel, as
+     Image Insight's screens: a full-width strip, the current picture
+     centred on the text column with its neighbours peeking in either
+     side. Runs off both window edges (html and body clip the overflow).
+     Under each picture its headline and strapline, and the rest of the
+     text in a collapsing section. -- */
   .kd-reel {
+    --reel-peek: clamp(36px, 12vw, 240px);
     --reel-gap: clamp(12px, 2vw, 28px);
-    --reel-slide: min(36rem, 100vw - 2 * clamp(32px, 8vw, 160px));
+    --reel-slide: max(min(46rem, 100vw - 2 * clamp(24px, 5vw, 56px)),
+                      min(64.4rem, 100vw - 2 * (var(--reel-peek) + var(--reel-gap))));
     width: 100vw;
-    margin: 40px 0 0 calc(50% - 50vw);
+    margin: clamp(28px, 4vw, 44px) 0 0 calc(50% - 50vw);
   }
   .kd-reel-track {
     position: relative;
     display: flex;
-    align-items: stretch;
+    align-items: flex-start;
     gap: var(--reel-gap);
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
-    --reel-start: clamp(24px, 5vw, 56px);
-    padding: 4px var(--reel-start) 28px;
-    scroll-padding-inline: var(--reel-start);
+    padding: 4px calc((100vw - var(--reel-slide)) / 2) 28px;
     scrollbar-width: none;
     outline: none;
   }
@@ -65,60 +68,73 @@
 
   .kd-slide {
     flex: 0 0 var(--reel-slide);
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    scroll-snap-align: start;
-    border-radius: 10px;
-    overflow: hidden;
-    background: #1f1f1f;
+    scroll-snap-align: center;
   }
-  .kd-slide:not(.is-current) { cursor: pointer; }
+  .kd-slide img { -webkit-user-drag: none; }
+  .kd-slide:not(.is-current) .kd-media { cursor: pointer; }
 
-  /* the picture: one shape for every card, the screenshot fitted inside
-     on black so nothing is cropped */
+  /* every picture in the same frame -- the page's figure frame, one
+     16:10 size for all five -- with the screenshot fitted inside so
+     nothing is cropped */
   .case-body .kd-slide .kd-media {
     position: relative;
-    flex: none;
     margin: 0;
     max-width: none;
     aspect-ratio: 16 / 10;
-    background: #0b0b0b;
+    background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
+    border-radius: 10px;
   }
-  /* pinned to the box, so the screenshot's own size can't stretch it */
+  /* the picture's box fills the frame less a 5% margin all round */
   .kd-slide .kd-media > img,
   .kd-slide .kd-media .ui-video {
     position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
+    top: 5%;
+    left: 5%;
+    width: 90%;
+    height: 90%;
     max-width: none;
     margin: 0;
     border: none;
-    border-radius: 0;
-    box-shadow: none;
   }
   .kd-slide .kd-media > img,
   .kd-slide .kd-media .ui-video video {
     display: block;
-    width: 100%;
-    height: 100%;
     object-fit: contain;
   }
-  /* captions stay in the markup for the lightbox, not on the card */
+  .kd-slide .kd-media .ui-video video { width: 100%; height: 100%; }
+  /* captions stay in the markup for the lightbox, not under the picture */
   .kd-slide .kd-media figcaption { display: none; }
 
-  .kd-text { padding: clamp(20px, 2.4vw, 30px); }
-  .case-body .kd-text h4.kd-title {
-    margin: 0 0 10px;
-    font-family: "Fakt Blond SemiBold", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    font-weight: 600;
-    font-size: clamp(19px, 1.5vw, 22px);
-    line-height: 1.3;
-    color: #fff;
+  /* headline, strapline and More: only the current slide's show, as on
+     Image Insight, so the neighbours' text doesn't peek in clipped */
+  .kd-text {
+    max-width: 38rem;
+    margin-top: clamp(18px, 2vw, 28px);
+    transition: opacity 0.3s ease;
   }
-  .case-body .kd-text p { margin: 0; font-size: 17px; line-height: 1.55; }
-  .kd-text .evidence-card { margin-top: 20px; }
+  .kd-slide:not(.is-current) .kd-text { opacity: 0; pointer-events: none; }
+  .case-body .kd-text h4.kd-title { margin: 0; }
+  .case-body .kd-text p.kd-strap { margin: 6px 0 0; color: rgba(255, 255, 255, 0.55); }
+
+  .kd-more { margin-top: 14px; }
+  .kd-more > summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    list-style: none;
+    cursor: pointer;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.68);
+    transition: color 0.15s ease;
+  }
+  .kd-more > summary::-webkit-details-marker { display: none; }
+  .kd-more > summary:hover, .kd-more > summary:focus-visible { color: #fff; }
+  .kd-more-close, .kd-more[open] .kd-more-open { display: none; }
+  .kd-more[open] .kd-more-close { display: inline; }
+  .kd-more-chevron { transition: transform 0.2s ease; }
+  .kd-more[open] .kd-more-chevron { transform: rotate(180deg); }
+  .kd-more-body { padding-top: 16px; }
+  .kd-more-body > :first-child { margin-top: 0; }
 
   .kd-reel-dial { margin: 4px auto 0; }
 
@@ -1589,111 +1605,152 @@
           </div>
         </figure>
         <p>Users needed to fix failed values directly in the report, without losing the source data or the audit trail. Five principles shaped how corrections are entered, checked and recorded.</p>
-        <!-- The five decisions as a carousel, as the homepage quotes:
-             picture on top, text beneath. -->
+        <!-- The five decisions as a carousel, as Image Insight's screens:
+             each picture big, its headline and strapline beneath, the
+             rest of the text in a collapsing section. -->
         <div class="kd-reel">
           <div class="kd-reel-track" id="kd-reel-track" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Applying corrections: design decisions">
-          <article class="kd-slide is-current" id="kd-entering" role="group" aria-roledescription="slide" aria-label="1 of 5">
+          <div class="kd-slide is-current" id="kd-entering" role="group" aria-roledescription="slide" aria-label="1 of 5">
             <figure class="figure kd-media">
               <img src="media/corrections-detail.png" width="2000" height="1351" alt="The validation report with corrections: for the failed Effective and Expiry columns, each original value in red sits beside an editable correction field, one per row." loading="lazy">
             </figure>
             <div class="kd-text">
               <h4 class="kd-title">Show before and after</h4>
-              <p>Corrections are shown beside the original submitted values. I chose this side-by-side layout to preserve the source data and make it clear that users are creating a mapping, rather than editing the original cell. Corrected values stand out in bright green. If no correction has been applied, the placeholder text shows the current value. This helps the user understand exactly what the output data will be.</p>
-              <details class="evidence-card evidence-disclosure framing-card">
-            <summary class="framing-head">
-                  <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
-                  <span class="framing-label">Design validation</span>
+              <p class="kd-strap">Keep the original value beside the correction</p>
+              <details class="kd-more">
+                <summary><span class="kd-more-open">More</span><span class="kd-more-close">Less</span><svg class="kd-more-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></summary>
+                <div class="kd-more-body">
+                  <p>Corrections are shown beside the original submitted values. I chose this side-by-side layout to preserve the source data and make it clear that users are creating a mapping, rather than editing the original cell.</p>
+                  <p>Corrected values stand out in bright green. If no correction has been applied, the placeholder text shows the current value. This helps the user understand exactly what the output data will be.</p>
 
-              <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
-            </summary>
-            <div class="evidence-body">
-    <figure class="figure">
-                  <div class="figure-portrait-frame">
-                    <div class="design-pair">
-                      <figure>
-                        <img src="media/corrections-before.png" width="1150" height="885" alt="First prototype of the corrections view: correction fields that don&rsquo;t read as editable, beside adjacent failed columns." loading="lazy">
-                        <figcaption>First prototype</figcaption>
-                      </figure>
-                      <figure>
-                        <img src="media/corrections-after.png" width="1150" height="885" alt="Revised corrections view: each row has a clearly defined entry field, linked to its original value, in a refined colour palette." loading="lazy">
-                        <figcaption>Improved design</figcaption>
-                      </figure>
-                    </div>
-                  </div>
-                </figure>
-                <p>I tested the prototype with a small cohort of expert users. Testing exposed two issues: users didn&rsquo;t recognise the correction fields as editable, and adjacent failed columns made it difficult to tell which values belonged together.</p>
-                <p>I revised the design to give each row a clearly defined entry field, strengthen the link between original and corrected values, and refine the colour palette.</p>
+                  <details class="evidence-card evidence-disclosure framing-card">
+                          <summary class="framing-head">
+                      <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
+                      <span class="framing-label">Design validation</span>
+
+                  <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
+                          </summary>
+                          <div class="evidence-body">
+                  <figure class="figure">
+                      <div class="figure-portrait-frame">
+                        <div class="design-pair">
+                          <figure>
+                            <img src="media/corrections-before.png" width="1150" height="885" alt="First prototype of the corrections view: correction fields that don&rsquo;t read as editable, beside adjacent failed columns." loading="lazy">
+                            <figcaption>First prototype</figcaption>
+                          </figure>
+                          <figure>
+                            <img src="media/corrections-after.png" width="1150" height="885" alt="Revised corrections view: each row has a clearly defined entry field, linked to its original value, in a refined colour palette." loading="lazy">
+                            <figcaption>Improved design</figcaption>
+                          </figure>
+                        </div>
+                      </div>
+                    </figure>
+                    <p>I tested the prototype with a small cohort of expert users. Testing exposed two issues: users didn&rsquo;t recognise the correction fields as editable, and adjacent failed columns made it difficult to tell which values belonged together.</p>
+                    <p>I revised the design to give each row a clearly defined entry field, strengthen the link between original and corrected values, and refine the colour palette.</p>
+                          </div>
+                        </details>
+
+                </div>
+              </details>
             </div>
-          </details>
-            </div>
-          </article>
-          <article class="kd-slide" id="kd-scope" role="group" aria-roledescription="slide" aria-label="2 of 5">
+          </div>
+          <div class="kd-slide" id="kd-scope" role="group" aria-roledescription="slide" aria-label="2 of 5">
             <figure class="figure kd-media">
               <img src="media/validation-corrections-preview.png" width="1899" height="1068" alt="Quantemplate's validation report: flagged errors beside an editable corrections column, with the correction popup open on a row." loading="lazy">
               <figcaption>Entering a correction. The popup makes the scope explicit &mdash; every matching value, or only where a condition is met &mdash; with a formula bar for deriving the value from another column.</figcaption>
             </figure>
             <div class="kd-text">
               <h4 class="kd-title">Make the scope of changes obvious</h4>
-              <p>Quantemplate applies corrections to bulk data rather than isolated cells, so we needed to make this clear. When a user selects a field, it opens a popup where they enter the correction. The UI makes it clear that corrections can apply to every matching value or use conditions, such as correcting Premium only for a specific Policy Number. We added a formula bar, so users could derive a value from another column. For example, if a date is missing, take the date from another column and subtract one month. Based on what we&rsquo;d observed in production pipelines, this would be a necessary addition.</p>
-              <details class="evidence-card evidence-disclosure framing-card">
-            <summary class="framing-head">
-                  <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
-                  <span class="framing-label">Design validation</span>
+              <p class="kd-strap">Make clear which values a correction will affect</p>
+              <details class="kd-more">
+                <summary><span class="kd-more-open">More</span><span class="kd-more-close">Less</span><svg class="kd-more-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></summary>
+                <div class="kd-more-body">
+                  <p>Quantemplate applies corrections to bulk data rather than isolated cells, so we needed to make this clear. When a user selects a field, it opens a popup where they enter the correction. The UI makes it clear that corrections can apply to every matching value or use conditions, such as correcting Premium only for a specific Policy Number.</p>
+                  <p>We added a formula bar, so users could derive a value from another column. For example, if a date is missing, take the date from another column and subtract one month. Based on what we&rsquo;d observed in production pipelines, this would be a necessary addition.</p>
 
-              <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
-            </summary>
-            <div class="evidence-body">
-    <p>We had identified the need for multiple matching conditions, for example to apply one correction across several policy numbers. A walk-through of the design specification with a cohort of expert users confirmed it. Their feedback was that this would be much easier than wrangling Excel-style IF statements, opening corrections up to users with less technical skill.</p>
+                  <details class="evidence-card evidence-disclosure framing-card">
+                          <summary class="framing-head">
+                      <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
+                      <span class="framing-label">Design validation</span>
+
+                  <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
+                          </summary>
+                          <div class="evidence-body">
+                  <p>We had identified the need for multiple matching conditions, for example to apply one correction across several policy numbers. A walk-through of the design specification with a cohort of expert users confirmed it. Their feedback was that this would be much easier than wrangling Excel-style IF statements, opening corrections up to users with less technical skill.</p>
+                          </div>
+                        </details>
+
+                </div>
+              </details>
             </div>
-          </details>
-            </div>
-          </article>
-          <article class="kd-slide" id="kd-evidence" role="group" aria-roledescription="slide" aria-label="3 of 5">
+          </div>
+          <div class="kd-slide" id="kd-evidence" role="group" aria-roledescription="slide" aria-label="3 of 5">
             <figure class="figure kd-media">
               <img src="media/validation-history.png" width="1254" height="1004" alt="The correction popup with a Correction history section below the Apply button, listing successive edits to a value with the editor's name and a timestamp for each." loading="lazy">
               <figcaption>Each edit to a failed value is recorded and displayed, building trust in the change and helping our clients meet their audit goals</figcaption>
             </figure>
             <div class="kd-text">
               <h4 class="kd-title">Preserve evidence</h4>
-              <p>Audit was important to our clients, who use Quantemplate as a system-of-record for financial reporting. To support this we displayed the original failed values alongside the corrected rows in the report. The full change history of each edit was displayed.</p>
+              <p class="kd-strap">Keep a record of who changed what and when</p>
+              <details class="kd-more">
+                <summary><span class="kd-more-open">More</span><span class="kd-more-close">Less</span><svg class="kd-more-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></summary>
+                <div class="kd-more-body">
+                  <p>Audit was important to our clients, who use Quantemplate as a system-of-record for financial reporting. To support this we displayed the original failed values alongside the corrected rows in the report. The full change history of each edit was displayed.</p>
+
+                </div>
+              </details>
             </div>
-          </article>
-          <article class="kd-slide" id="kd-feedback" role="group" aria-roledescription="slide" aria-label="4 of 5">
+          </div>
+          <div class="kd-slide" id="kd-feedback" role="group" aria-roledescription="slide" aria-label="4 of 5">
             <figure class="figure kd-media">
               <div class="ui-video" data-hover-controls>
                 <video autoplay muted loop playsinline disablepictureinpicture poster="media/validation-instant-check.jpg">
-                <source src="media/validation-instant-check.mp4" type="video/mp4">
+                  <source src="media/validation-instant-check.mp4" type="video/mp4">
                 </video>
-                <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
-                </div>
+              <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+              </div>
             </figure>
             <div class="kd-text">
               <h4 class="kd-title">Give immediate feedback</h4>
-              <p>Corrections are applied to the output on the next pipeline run. Rather than wait for the run to complete to find out if a correction will now pass, after a field is completed, we check that the entered value will pass the rule, and warn if it&rsquo;s still a fail.</p>
+              <p class="kd-strap">Check the correction now, apply it on the next run</p>
+              <details class="kd-more">
+                <summary><span class="kd-more-open">More</span><span class="kd-more-close">Less</span><svg class="kd-more-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></summary>
+                <div class="kd-more-body">
+                  <p>Corrections are applied to the output on the next pipeline run. Rather than wait for the run to complete to find out if a correction will now pass, after a field is completed, we check that the entered value will pass the rule, and warn if it&rsquo;s still a fail.</p>
+
+                </div>
+              </details>
             </div>
-          </article>
-          <article class="kd-slide" id="impl-ordering" role="group" aria-roledescription="slide" aria-label="5 of 5">
+          </div>
+          <div class="kd-slide" id="impl-ordering" role="group" aria-roledescription="slide" aria-label="5 of 5">
             <figure class="figure kd-media">
               <img src="media/validation-correction-log.jpg" width="2000" height="1206" alt="A table of all corrections attached to one validation rule, with columns for order, column, the correction rule, last editor and last edit date." loading="lazy">
               <figcaption>Behind each validation is a log of all corrections applied, allowing reordering of correction rules. We uncovered the need for this in QA testing.</figcaption>
             </figure>
             <div class="kd-text">
               <h4 class="kd-title" id="implementation-heading">Ordering matters</h4>
-              <p>One of the things we discovered in testing, as part of our internal QA process, was that the order in which corrections apply is important, since one correction could overwrite a prior one. We created an interface showing all corrections applied to any validation rule, allowing users to reorder or remove them.</p>
-              <details class="evidence-card evidence-disclosure framing-card">
-            <summary class="framing-head">
-                  <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
-                  <span class="framing-label">Engineering constraint</span>
+              <p class="kd-strap">Let users review and reorder overlapping corrections</p>
+              <details class="kd-more">
+                <summary><span class="kd-more-open">More</span><span class="kd-more-close">Less</span><svg class="kd-more-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></summary>
+                <div class="kd-more-body">
+                  <p>One of the things we discovered in testing, as part of our internal QA process, was that the order in which corrections apply is important, since one correction could overwrite a prior one. We created an interface showing all corrections applied to any validation rule, allowing users to reorder or remove them.</p>
 
-              <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
-            </summary>
-            <div class="evidence-body">
-    <p>Corrections aren&rsquo;t edits to cells: they&rsquo;re rules, applied in sequence each time the pipeline runs. When two rules match the same value, the later one wins, so the system can&rsquo;t settle the conflict on its own. Order had to become something users could see and control.</p>
+                  <details class="evidence-card evidence-disclosure framing-card">
+                          <summary class="framing-head">
+                      <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
+                      <span class="framing-label">Engineering constraint</span>
+
+                  <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
+                          </summary>
+                          <div class="evidence-body">
+                  <p>Corrections aren&rsquo;t edits to cells: they&rsquo;re rules, applied in sequence each time the pipeline runs. When two rules match the same value, the later one wins, so the system can&rsquo;t settle the conflict on its own. Order had to become something users could see and control.</p>
+                          </div>
+                        </details>
+
+                </div>
+              </details>
             </div>
-          </details>
-            </div>
-          </article>
+          </div>
           </div>
           <div class="kd-reel-dial tdg-dial" hidden></div>
         </div>
@@ -2126,26 +2183,11 @@
       });
       var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      // the strip starts on the page's content edge: measure it off the
-      // text column, and keep it current as the window changes
-      var edge = document.getElementById("applying-corrections") || reel.parentElement;
-      function setStart() {
-        track.style.setProperty("--reel-start", Math.max(16, Math.round(edge.getBoundingClientRect().left)) + "px");
-      }
-      setStart();
-      window.addEventListener("resize", setStart);
-
-      function startPad() { return parseFloat(getComputedStyle(track).paddingLeft) || 0; }
-
-      // where the track scrolls to bring slide i to the content edge, held
-      // within what the track can actually scroll
       function centreOf(i) {
-        var max = track.scrollWidth - track.clientWidth;
-        return Math.max(0, Math.min(max, slides[i].offsetLeft - startPad()));
+        return slides[i].offsetLeft + slides[i].offsetWidth / 2 - track.clientWidth / 2;
       }
 
       function current() {
-        if (track.scrollLeft >= track.scrollWidth - track.clientWidth - 2) return slides.length - 1;
         var best = 0, dist = Infinity;
         slides.forEach(function (s, i) {
           var d = Math.abs(centreOf(i) - track.scrollLeft);
@@ -2248,6 +2290,7 @@
         if (i !== current()) { e.preventDefault(); e.stopPropagation(); go(i); }
       }, true);
     })();
+
   </script>
   <script data-goatcounter="https://tomdegay.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
   <script>
