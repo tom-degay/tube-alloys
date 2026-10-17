@@ -1563,6 +1563,12 @@
       column-gap: calc(var(--col) + 2 * var(--g));
     }
   }
+
+  /* More air between sections: the dividers between them (and the one
+     before Corrections in action) get a larger margin either side */
+  .content > hr.rule,
+  .content > header + hr.rule,
+  .content .case-body .subsection > hr.rule { margin: clamp(56px, 7vw, 112px) 0; }
 </style>
 <script>
   (function () {
