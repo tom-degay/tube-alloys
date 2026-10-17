@@ -1902,6 +1902,23 @@
     filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35)) drop-shadow(0 22px 44px rgba(0, 0, 0, 0.5));
     pointer-events: none;
   }
+
+  /* Outcome: the client quote and the corrections chart side by side,
+     six columns each on the 12-column grid, the same height */
+  @media (min-width: 1024px) {
+    .content .case-body > .outcome-pair {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: var(--g);
+      align-items: stretch;
+      max-width: none;
+      margin: clamp(32px, 5vw, 48px) 0;
+    }
+    .outcome-pair > blockquote.outcome-quote,
+    .outcome-pair > .corrections-chart { margin: 0; max-width: none; }
+    .outcome-pair > blockquote.outcome-quote { display: flex; flex-direction: column; }
+    .outcome-pair > blockquote.outcome-quote cite { margin-top: auto; padding-top: 20px; }
+  }
 </style>
 <script>
   (function () {
@@ -2455,47 +2472,49 @@
 
       <p>Clients using the in-product correction and report improvements reported a significant boost to their workflow, with the changes addressing their productivity bottlenecks.</p>
       <p>Being able to see who had made corrections was especially valuable to them for supporting their audit processes.</p>
-      <blockquote class="outcome-quote">The speed at which we can work now is a real step change. Everything feels much more fluid. I don&rsquo;t even need to click all the way into the validation to see what I need. The changes have helped tremendously: I know what I need to focus on.
-        <cite>Quantemplate user-client at major US insurance carrier</cite>
-      </blockquote>
       <p>In-product Validation Corrections launched on 8 July 2026. By 8 October, corrections had been applied to 23,429 cells across 27 pipeline runs.</p>
-      <figure class="corrections-chart" aria-labelledby="corrections-chart-title">
-        <h3 id="corrections-chart-title">23,429 cells corrected</h3>
-        <p class="corrections-chart-subtitle">Cumulative corrections · 8 Oct 2026</p>
-        <div class="corrections-chart-legend"><span>Cells corrected</span><span>Rules corrected</span></div>
-        <div class="corrections-chart-plot">
-          <div class="corrections-chart-y-axis" aria-hidden="true"><span style="top:10%">25k</span><span style="top:26%">20k</span><span style="top:58%">10k</span><span style="top:90%">0</span></div>
-          <div class="corrections-chart-y-axis corrections-chart-y-axis--right" aria-hidden="true"><span style="top:10%">40</span><span style="top:30%">30</span><span style="top:50%">20</span><span style="top:70%">10</span><span style="top:90%">0</span></div>
-          <svg viewBox="0 0 640 240" role="group" aria-label="Cumulative corrections through 8 October 2026. Cells, left axis: zero until 17 August, 23,418 on 21 September and 23,429 on 8 October. Rules, right axis: zero on 17 August, 29 on 21 September and 39 on 8 October.">
-            <defs><linearGradient id="corrections-area-gradient" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#00d8aa" stop-opacity="0.18"/><stop offset="100%" stop-color="#00d8aa" stop-opacity="0"/></linearGradient><linearGradient id="corrections-rules-gradient" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff" stop-opacity="0.14"/><stop offset="100%" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
-            <path class="corrections-chart-area" d="M52.121 216H304.242L524.848 39.073L632.000 36.065V216Z" fill="url(#corrections-area-gradient)"/>
-            <path d="M8 24H632 M8 62.4H632 M8 139.2H632 M8 216H632" fill="none" stroke="white" stroke-opacity="0.08" vector-effect="non-scaling-stroke"/>
-            <path class="corrections-chart-area" d="M304.242 216.000L524.848 76.800L632.000 28.800V216Z" fill="url(#corrections-rules-gradient)"/>
-            <g class="corrections-chart-series">
-              <path class="corrections-chart-line corrections-chart-line--rules" d="M304.242 216.000L524.848 76.800L632.000 28.800"/>
-              <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="17 Aug 2026 · 0 cells · 0 rules" data-tooltip="17 Aug 2026 · 0 cells · 0 rules" cx="304.242" cy="216.000" r="4" fill="#fff"><title>17/8/2026: 0 rules corrected</title></circle>
-              <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="21 Sept 2026 · 23,418 cells · 29 rules" data-tooltip="21 Sept 2026 · 23,418 cells · 29 rules" cx="524.848" cy="76.800" r="4" fill="#fff"><title>21/9/2026: 29 rules corrected</title></circle>
-              <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="8 Oct 2026 · 23,429 cells · 39 rules" data-tooltip="8 Oct 2026 · 23,429 cells · 39 rules" cx="632.000" cy="28.800" r="4" fill="#fff"><title>8/10/2026: 39 rules corrected</title></circle>
-            </g>
-            <g class="corrections-chart-series">
-              <path class="corrections-chart-line" d="M52.121 216H304.242L524.848 39.073L632.000 36.065"/>
-              <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="17 Aug 2026 · 0 cells · 0 rules" data-tooltip="17 Aug 2026 · 0 cells · 0 rules" cx="304.242" cy="216.000" r="4" fill="#00d8aa"><title>17/8/2026: 0 cells corrected</title></circle>
-              <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="21 Sept 2026 · 23,418 cells · 29 rules" data-tooltip="21 Sept 2026 · 23,418 cells · 29 rules" cx="524.848" cy="39.073" r="4" fill="#00d8aa"><title>21/9/2026: 23,418 cells corrected</title></circle>
-              <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="8 Oct 2026 · 23,429 cells · 39 rules" data-tooltip="8 Oct 2026 · 23,429 cells · 39 rules" cx="632.000" cy="36.065" r="4" fill="#00d8aa"><title>8/10/2026: 23,429 cells corrected</title></circle>
-            </g>
+      <div class="outcome-pair">
+        <blockquote class="outcome-quote">The speed at which we can work now is a real step change. Everything feels much more fluid. I don&rsquo;t even need to click all the way into the validation to see what I need. The changes have helped tremendously: I know what I need to focus on.
+          <cite>Quantemplate user-client at major US insurance carrier</cite>
+        </blockquote>
+        <figure class="corrections-chart" aria-labelledby="corrections-chart-title">
+          <h3 id="corrections-chart-title">23,429 cells corrected</h3>
+          <p class="corrections-chart-subtitle">Cumulative corrections · 8 Oct 2026</p>
+          <div class="corrections-chart-legend"><span>Cells corrected</span><span>Rules corrected</span></div>
+          <div class="corrections-chart-plot">
+            <div class="corrections-chart-y-axis" aria-hidden="true"><span style="top:10%">25k</span><span style="top:26%">20k</span><span style="top:58%">10k</span><span style="top:90%">0</span></div>
+            <div class="corrections-chart-y-axis corrections-chart-y-axis--right" aria-hidden="true"><span style="top:10%">40</span><span style="top:30%">30</span><span style="top:50%">20</span><span style="top:70%">10</span><span style="top:90%">0</span></div>
+            <svg viewBox="0 0 640 240" role="group" aria-label="Cumulative corrections through 8 October 2026. Cells, left axis: zero until 17 August, 23,418 on 21 September and 23,429 on 8 October. Rules, right axis: zero on 17 August, 29 on 21 September and 39 on 8 October.">
+              <defs><linearGradient id="corrections-area-gradient" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#00d8aa" stop-opacity="0.18"/><stop offset="100%" stop-color="#00d8aa" stop-opacity="0"/></linearGradient><linearGradient id="corrections-rules-gradient" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff" stop-opacity="0.14"/><stop offset="100%" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
+              <path class="corrections-chart-area" d="M52.121 216H304.242L524.848 39.073L632.000 36.065V216Z" fill="url(#corrections-area-gradient)"/>
+              <path d="M8 24H632 M8 62.4H632 M8 139.2H632 M8 216H632" fill="none" stroke="white" stroke-opacity="0.08" vector-effect="non-scaling-stroke"/>
+              <path class="corrections-chart-area" d="M304.242 216.000L524.848 76.800L632.000 28.800V216Z" fill="url(#corrections-rules-gradient)"/>
+              <g class="corrections-chart-series">
+                <path class="corrections-chart-line corrections-chart-line--rules" d="M304.242 216.000L524.848 76.800L632.000 28.800"/>
+                <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="17 Aug 2026 · 0 cells · 0 rules" data-tooltip="17 Aug 2026 · 0 cells · 0 rules" cx="304.242" cy="216.000" r="4" fill="#fff"><title>17/8/2026: 0 rules corrected</title></circle>
+                <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="21 Sept 2026 · 23,418 cells · 29 rules" data-tooltip="21 Sept 2026 · 23,418 cells · 29 rules" cx="524.848" cy="76.800" r="4" fill="#fff"><title>21/9/2026: 29 rules corrected</title></circle>
+                <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="8 Oct 2026 · 23,429 cells · 39 rules" data-tooltip="8 Oct 2026 · 23,429 cells · 39 rules" cx="632.000" cy="28.800" r="4" fill="#fff"><title>8/10/2026: 39 rules corrected</title></circle>
+              </g>
+              <g class="corrections-chart-series">
+                <path class="corrections-chart-line" d="M52.121 216H304.242L524.848 39.073L632.000 36.065"/>
+                <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="17 Aug 2026 · 0 cells · 0 rules" data-tooltip="17 Aug 2026 · 0 cells · 0 rules" cx="304.242" cy="216.000" r="4" fill="#00d8aa"><title>17/8/2026: 0 cells corrected</title></circle>
+                <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="21 Sept 2026 · 23,418 cells · 29 rules" data-tooltip="21 Sept 2026 · 23,418 cells · 29 rules" cx="524.848" cy="39.073" r="4" fill="#00d8aa"><title>21/9/2026: 23,418 cells corrected</title></circle>
+                <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="8 Oct 2026 · 23,429 cells · 39 rules" data-tooltip="8 Oct 2026 · 23,429 cells · 39 rules" cx="632.000" cy="36.065" r="4" fill="#00d8aa"><title>8/10/2026: 23,429 cells corrected</title></circle>
+              </g>
 
-          </svg>
-          <div class="corrections-chart-tooltip" role="tooltip" hidden></div>
-          <div class="corrections-chart-months" aria-label="July to October 2026"><span style="left:1.2500%">Jul</span><span style="left:31.7803%">Aug</span><span style="left:62.3106%">Sep</span><span style="left:91.8561%">Oct</span></div>
-        </div>
-        <div class="corrections-snapshot">
-          <dl>
-            <div><dt>Pipeline runs with corrections</dt><dd>27</dd></div>
-            <div><dt>Cells fixed</dt><dd>23,429</dd></div>
-            <div><dt>Rules corrected</dt><dd>39</dd></div>
-          </dl>
-        </div>
-      </figure>
+            </svg>
+            <div class="corrections-chart-tooltip" role="tooltip" hidden></div>
+            <div class="corrections-chart-months" aria-label="July to October 2026"><span style="left:1.2500%">Jul</span><span style="left:31.7803%">Aug</span><span style="left:62.3106%">Sep</span><span style="left:91.8561%">Oct</span></div>
+          </div>
+          <div class="corrections-snapshot">
+            <dl>
+              <div><dt>Pipeline runs with corrections</dt><dd>27</dd></div>
+              <div><dt>Cells fixed</dt><dd>23,429</dd></div>
+              <div><dt>Rules corrected</dt><dd>39</dd></div>
+            </dl>
+          </div>
+        </figure>
+      </div>
     </section>
 
     <hr class="rule">
