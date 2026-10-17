@@ -1472,13 +1472,15 @@
   }
   .card-modal[hidden] { display: none; }
   .card-modal.is-open { opacity: 1; }
+  /* the title and close button stay put at the top; only the content
+     under them scrolls */
   .card-modal-panel {
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
     width: min(46rem, 100%);
     max-height: 100%;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    padding: clamp(20px, 3vw, 36px);
+    overflow: hidden;
     border-radius: 14px;
     background: #1f1f1f;
     box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
@@ -1487,12 +1489,26 @@
   }
   .card-modal.is-open .card-modal-panel { transform: none; }
   .card-modal-head {
+    flex: none;
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: 20px;
+    padding: clamp(18px, 2.4vw, 28px) clamp(20px, 3vw, 36px) 14px;
   }
   .card-modal-head h2.framing-label { flex: 1 1 auto; margin: 0; }
+  /* the content fades out against the top strip and the panel's foot
+     when there's more of it to scroll to (the script sets the fades) */
+  .card-modal-body {
+    --fade-top: 0px;
+    --fade-bottom: 0px;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 6px clamp(20px, 3vw, 36px) clamp(20px, 3vw, 36px);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 var(--fade-top), #000 calc(100% - var(--fade-bottom)), transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 var(--fade-top), #000 calc(100% - var(--fade-bottom)), transparent 100%);
+  }
   .card-modal-close {
     appearance: none;
     width: 36px;
@@ -2558,9 +2574,24 @@
       function focusables(m) {
         return Array.prototype.slice.call(m.querySelectorAll('button, [href], video[controls], [tabindex]:not([tabindex="-1"])')).filter(function (el) { return el.offsetParent !== null; });
       }
+      function fades(m) {
+        var b = m.querySelector('.card-modal-body');
+        var rest = b.scrollHeight - b.clientHeight - b.scrollTop;
+        b.style.setProperty('--fade-top', b.scrollTop > 2 ? '48px' : '0px');
+        b.style.setProperty('--fade-bottom', rest > 2 ? '48px' : '0px');
+      }
+      document.querySelectorAll('.card-modal-body').forEach(function (b) {
+        b.addEventListener('scroll', function () { fades(b.closest('.card-modal')); }, { passive: true });
+        // pictures arriving change how far there is to scroll
+        b.querySelectorAll('img').forEach(function (el) { el.addEventListener('load', function () { if (open) fades(open); }); });
+        b.querySelectorAll('video').forEach(function (el) { el.addEventListener('loadedmetadata', function () { if (open) fades(open); }); });
+      });
+      window.addEventListener('resize', function () { if (open) fades(open); });
       function show(m, from) {
         opener = from; open = m;
         m.hidden = false;
+        m.querySelector('.card-modal-body').scrollTop = 0;
+        fades(m);
         document.documentElement.style.overflow = 'hidden';
         requestAnimationFrame(function () { m.classList.add('is-open'); });
         m.querySelector('.card-modal-close').focus();
