@@ -34,6 +34,16 @@
 
   html { scroll-padding-top: 100px; }
 
+  /* Problem: the section opens on one very large statement */
+  .case-body p.problem-statement {
+    margin: 0 0 clamp(24px, 3vw, 40px);
+    font-size: clamp(32px, 4.4vw, 56px);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: #fff;
+    text-wrap: balance;
+  }
+
   /* Supplier sharing has its own page now (validation-sharing.html), so
      the workflow diagrams stop at the data grid: the Feeds stage and the
      divider before it stay hidden whatever state the script animates. */
@@ -1277,9 +1287,11 @@
     <section aria-labelledby="problem-heading" class="case-body">
       <h2 class="eyebrow" id="problem-heading">Problem</h2>
 
-      <blockquote>You can see exactly where the data is wrong. Fixing it means leaving the report, writing a formula in a pipeline, or emailing the supplier and waiting. Now imagine working through hundreds of checks every month. That&rsquo;s just one of the challenges insurance data analysts face when collecting files from their suppliers.</blockquote>
+      <p class="display problem-statement">We&rsquo;d made errors easy to spot, but fixing them was&nbsp;hard.</p>
 
-      <p>Quantemplate&rsquo;s validation report helps users identify data problems at a row level. When we first released it, being able to see every row that had failed a validation was a breakthrough for our users, and the graphical presentation of the report helped win clients.</p>
+      <p>Quantemplate takes data from hundreds of suppliers, harmonises them into a consistent format and flags errors. These could be simple things like an invalid date, or more complex business rules.</p>
+
+      <p>Quantemplate had a validation report that gave users row-level reporting of their data. But making a correction meant writing custom rules in the upstream process. We&rsquo;d also introduced automated validation checks, and now clients had hundreds of them. The original validation report didn&rsquo;t scale well to this usage and the workflow had become inefficient.</p>
 
       <figure class="figure figure-wide">
         <div class="figure-portrait-frame">
