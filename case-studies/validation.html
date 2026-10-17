@@ -159,8 +159,8 @@
   .kd-more-body { padding-top: 16px; }
   .kd-more-body > :first-child { margin-top: 0; }
 
-  /* Outcome: the headline results as a 2x2 grid of cards under
-     "Closing the loop", one column on phones */
+  /* Outcome: the headline results as a grid of cards under "Closing
+     the loop" (columns set in the widescreen block below) */
   .outcome-cards {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1366,6 +1366,42 @@
       transform: none !important;
       transition: none !important;
     }
+  }
+
+  /* ================================================================
+     Widescreen layout. The main content area is as wide as the big
+     pictures and carousel slides (--wide, the same measure as
+     .figure-big and --reel-slide); paragraphs, cards and ordinary
+     figures keep their 46rem reading width, flush with its left edge.
+     ================================================================ */
+  .content {
+    --wide: max(min(46rem, 100vw - 2 * clamp(24px, 5vw, 56px)),
+                min(76rem, 100vw - 2 * (clamp(24px, 7vw, 160px) + clamp(12px, 2vw, 28px))));
+    max-width: var(--wide);
+  }
+  /* dividers and the project metadata run the full width */
+  .content > header > hr.rule,
+  .content > hr.rule,
+  .case-body hr.rule,
+  .meta-row { max-width: none; }
+  /* subsections open out to the full width too; their text keeps its
+     own 46rem measure */
+  .case-body .subsection { max-width: none; }
+  /* the big pictures now simply fill the content area */
+  .case-body .figure-big { width: 100%; margin-left: 0; }
+  /* the wide figure fills the content area too, rather than reaching
+     out past a narrow column */
+  @media (min-width: 1200px) {
+    .figure-wide { width: 100%; margin-left: 0; }
+  }
+  /* Outcome cards: four across the full width, two on tablets, one on
+     phones */
+  .outcome-cards { max-width: none; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  @media (max-width: 1023px) {
+    .outcome-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 640px) {
+    .outcome-cards { grid-template-columns: 1fr; }
   }
 </style>
 <script>
