@@ -1832,6 +1832,11 @@
     .kd-dots { height: 44px; }
     .kd-dot { height: 44px; }
   }
+
+  /* the expanded slide's picture sits in the page's usual frame */
+  .kd-modal-media .figure-portrait-frame { margin: 0; }
+  .kd-modal-media .figure-portrait-frame img,
+  .kd-modal-media .figure-portrait-frame video { width: 100%; height: auto; }
 </style>
 <script>
   (function () {
@@ -2905,7 +2910,11 @@
           copy.removeAttribute('role');
           if (copy.tagName === 'VIDEO') { copy.muted = true; copy.setAttribute('controls', ''); copy.addEventListener('loadedmetadata', function () { fades(kd); }); }
           else copy.addEventListener('load', function () { fades(kd); });
-          fig.appendChild(copy);
+          // framed, as the page's other figures
+          var frame = document.createElement('div');
+          frame.className = 'figure-portrait-frame';
+          frame.appendChild(copy);
+          fig.appendChild(frame);
           kdBody.appendChild(fig);
           var more = slide.querySelector('.kd-more-body');
           if (more) Array.prototype.forEach.call(more.children, function (c) { kdBody.appendChild(c.cloneNode(true)); });
