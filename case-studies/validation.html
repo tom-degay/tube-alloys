@@ -1305,24 +1305,6 @@
         <figcaption>Original validation report: the visual display of information was a success, but it left users wanting to fix the errors where they saw them.</figcaption>
       </figure>
 
-      <div class="problem-items">
-      <details class="problem-item">
-        <summary>
-          <span class="problem-item-icon" aria-hidden="true"></span>
-          <span class="problem-item-title">No easy way to fix errors in data</span>
-          <span class="problem-item-teaser">We&rsquo;d made errors easy to spot but hard to <span class="problem-item-tail">fix <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
-              <span class="problem-item-badge"><svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M12.1426 2.85254L2.82812 12.167L12.1426 21.4814V24.3096L0 12.167L12.1426 0.0244141V2.85254Z" fill="#00D8AA"/><path d="M45.832 12.167L33.665 24.334L22.916 13.585L12.168 24.333V21.5049L21.502 12.1709L21.498 12.167L21.502 12.1631L12.168 2.8291V0.000976562L22.916 10.749L33.665 0L45.832 12.167ZM24.3301 12.1631L24.334 12.167L24.3301 12.1709L33.665 21.5059L43.0039 12.167L33.665 2.82812L24.3301 12.1631Z" fill="#605F5F"/></svg><span class="framing-label">Evidence</span></span>
-        </summary>
-        <div class="problem-item-body">
-      <p>Our users could now easily find errors in their data, but fixing them was still painful. Users needed to go back into a pipeline, navigate to a specific point where the correction should be applied and insert a value mapping or Excel-style IF statement to change the failed value to a correct one. This took time, concentration and required a certain level of skill.</p>
-
-      <figure class="figure">
-        <div class="figure-portrait-frame">
-          <img src="media/ad-hoc-correction.png" width="1240" height="218" alt="A pipeline calculation step containing a hand-written IF statement that sets the Accident State to a fixed value when the policy number matches." loading="lazy">
-        </div>
-        <figcaption>Desire lines in the product: an ad hoc correction added by a user to a pipeline, modifying the Accident State for a specific policy number.</figcaption>
-      </figure>
-
       <details class="evidence-card evidence-disclosure">
         <summary class="framing-head">
           <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M12.1426 2.85254L2.82812 12.167L12.1426 21.4814V24.3096L0 12.167L12.1426 0.0244141V2.85254Z" fill="#00D8AA"/><path d="M45.832 12.167L33.665 24.334L22.916 13.585L12.168 24.333V21.5049L21.502 12.1709L21.498 12.167L21.502 12.1631L12.168 2.8291V0.000976562L22.916 10.749L33.665 0L45.832 12.167ZM24.3301 12.1631L24.334 12.167L24.3301 12.1709L33.665 21.5059L43.0039 12.167L33.665 2.82812L24.3301 12.1631Z" fill="#605F5F"/></svg>
@@ -1331,49 +1313,32 @@
           <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
         </summary>
         <div class="evidence-body">
-<ul class="evidence-list">
+        <p>Our users could now easily find errors in their data, but fixing them was still painful. Users needed to go back into a pipeline, navigate to a specific point where the correction should be applied and insert a value mapping or Excel-style IF statement to change the failed value to a correct one. This took time, concentration and required a certain level of skill.</p>
+
+        <figure class="figure">
+          <div class="figure-portrait-frame">
+            <img src="media/ad-hoc-correction.png" width="1240" height="218" alt="A pipeline calculation step containing a hand-written IF statement that sets the Accident State to a fixed value when the policy number matches." loading="lazy">
+          </div>
+          <figcaption>Desire lines in the product: an ad hoc correction added by a user to a pipeline, modifying the Accident State for a specific policy number.</figcaption>
+        </figure>
+
+        <p>We had made it easier to add validation rules and implementations had become ambitious: clients had hundreds of rules and users spent days in the report analysing the results. There were aspects of the navigation and interaction that were proving cumbersome. We set out to fix this.</p>
+
+          <ul class="evidence-list">
             <li>Users making ad hoc corrections in the pipeline</li>
             <li>Specifically mentioned in sales process loss analysis</li>
-        </ul>
-        </div>
-      </details>
-        </div>
-      </details>
-
-      <details class="problem-item">
-        <summary>
-          <span class="problem-item-icon" aria-hidden="true"></span>
-          <span class="problem-item-title">Workflow was inefficient at enterprise scale</span>
-          <span class="problem-item-teaser">Usage had outgrown original design <span class="problem-item-tail">intent <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
-              <span class="problem-item-badge"><svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M12.1426 2.85254L2.82812 12.167L12.1426 21.4814V24.3096L0 12.167L12.1426 0.0244141V2.85254Z" fill="#00D8AA"/><path d="M45.832 12.167L33.665 24.334L22.916 13.585L12.168 24.333V21.5049L21.502 12.1709L21.498 12.167L21.502 12.1631L12.168 2.8291V0.000976562L22.916 10.749L33.665 0L45.832 12.167ZM24.3301 12.1631L24.334 12.167L24.3301 12.1709L33.665 21.5059L43.0039 12.167L33.665 2.82812L24.3301 12.1631Z" fill="#605F5F"/></svg><span class="framing-label">Evidence</span></span>
-        </summary>
-        <div class="problem-item-body">
-      <p>We had made it easier to add validation rules and implementations had become ambitious: clients had hundreds of rules and users spent days in the report analysing the results. There were aspects of the navigation and interaction that were proving cumbersome. We set out to fix this.</p>
-
-      <details class="evidence-card evidence-disclosure">
-        <summary class="framing-head">
-          <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M12.1426 2.85254L2.82812 12.167L12.1426 21.4814V24.3096L0 12.167L12.1426 0.0244141V2.85254Z" fill="#00D8AA"/><path d="M45.832 12.167L33.665 24.334L22.916 13.585L12.168 24.333V21.5049L21.502 12.1709L21.498 12.167L21.502 12.1631L12.168 2.8291V0.000976562L22.916 10.749L33.665 0L45.832 12.167ZM24.3301 12.1631L24.334 12.167L24.3301 12.1709L33.665 21.5059L43.0039 12.167L33.665 2.82812L24.3301 12.1631Z" fill="#605F5F"/></svg>
-          <span class="framing-label">Evidence</span>
-
-          <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
-        </summary>
-        <div class="evidence-body">
-<ul class="evidence-list">
             <li>User feedback like &lsquo;I don&rsquo;t care about seeing the passed rules&rsquo; and &lsquo;When I go back to the report view after looking at a rule, my scroll position is lost&rsquo;.</li>
             <li>Production pipelines had hundreds of rules, we&rsquo;d planned for dozens.</li>
-        </ul>
-        </div>
-      </details>
+          </ul>
 
-      <figure class="figure">
-        <div class="figure-portrait-frame">
-          <img src="media/validation-report-passed.png" width="1416" height="1085" alt="An excerpt from a client&rsquo;s validation report: three pipeline stages of 0.9 to 2.8 million rows, each with a long list of rules that all passed." loading="lazy">
-        </div>
-        <figcaption>Validation reports had grown beyond the original design capacity. Excerpt from a client report.</figcaption>
-      </figure>
+        <figure class="figure">
+          <div class="figure-portrait-frame">
+            <img src="media/validation-report-passed.png" width="1416" height="1085" alt="An excerpt from a client&rsquo;s validation report: three pipeline stages of 0.9 to 2.8 million rows, each with a long list of rules that all passed." loading="lazy">
+          </div>
+          <figcaption>Validation reports had grown beyond the original design capacity. Excerpt from a client report.</figcaption>
+        </figure>
         </div>
       </details>
-      </div>
 
       <figure class="figure figure-wide wf-figure">
         <svg class="wf-diagram" viewBox="0 0 725 335" fill="none" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Validation workflow: original and improved">
