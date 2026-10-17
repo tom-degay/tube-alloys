@@ -86,16 +86,18 @@
     aspect-ratio: 16 / 10;
     background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
     border-radius: 10px;
+    container-type: inline-size;
   }
-  /* the picture at its own shape, as large as the frame allows less a 4%
-     margin, with the page's usual framing: rounded corners and a drop
-     shadow (as .figure-portrait-frame) */
+  /* every screenshot at one height, at its own shape, with the page's
+     usual framing: rounded corners and a drop shadow (as
+     .figure-portrait-frame). The height is the widest screenshot's
+     (the scope popup, 16:9) at 92% of the frame's width, so all four fit;
+     the video is wider still and stays at the frame's width. */
   .kd-slide .kd-media > img {
     display: block;
     width: auto;
-    height: auto;
+    height: calc(92cqw * 1068 / 1899);
     max-width: 92%;
-    max-height: 92%;
     margin: 0;
     border-radius: 6px;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
