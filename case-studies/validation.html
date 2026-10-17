@@ -1967,6 +1967,20 @@
     }
     .kd-text { padding: 0 16px; }
   }
+
+  /* Phones: no grey frame round the pictures in the pop-ups either; the
+     picture sits straight on the panel */
+  @media (max-width: 640px) {
+    .card-modal .figure-portrait-frame {
+      padding: 0;
+      background: none;
+      border-radius: 0;
+      box-shadow: none;
+    }
+    .card-modal .figure-portrait-frame img,
+    .card-modal .figure-portrait-frame > .ui-video,
+    .card-modal .figure-portrait-frame video { box-shadow: none; }
+  }
 </style>
 <script>
   (function () {
