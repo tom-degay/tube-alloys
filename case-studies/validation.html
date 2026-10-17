@@ -434,7 +434,7 @@
     max-width: 46rem;
   }
 
-  /* Six project-info fields, matching Column mapping. */
+  /* Four project-info fields: Company, Role, Team, Timeframe. */
   .meta-row { grid-template-columns: 1fr; }
   @media (min-width: 700px) {
     .meta-row { grid-template-columns: repeat(2, 1fr); }
@@ -1404,9 +1404,9 @@
     .outcome-cards { grid-template-columns: 1fr; }
   }
 
-  /* Project details: six across once the content area is wide */
+  /* Project details: four across once the content area is wide */
   @media (min-width: 1100px) {
-    .meta-row { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    .meta-row { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   }
 
   /* Problem: the text on the left at its reading width, the Evidence and
@@ -1617,6 +1617,10 @@
     <header id="case-intro">
     <div class="meta-row">
       <div class="meta-item">
+        <span class="eyebrow">Company</span>
+        <p><a href="https://quantemplate.com" target="_blank" rel="noopener noreferrer">Quantemplate</a></p>
+      </div>
+      <div class="meta-item">
         <span class="eyebrow">Role</span>
         <p>Lead product designer, end to end</p>
       </div>
@@ -1633,18 +1637,6 @@
           </svg>
           <p>3 months</p>
         </div>
-      </div>
-      <div class="meta-item">
-        <span class="eyebrow">Company</span>
-        <p><a href="https://quantemplate.com" target="_blank" rel="noopener noreferrer">Quantemplate</a></p>
-      </div>
-      <div class="meta-item">
-        <span class="eyebrow">Domain</span>
-        <p>Wholesale insurance data management</p>
-      </div>
-      <div class="meta-item">
-        <span class="eyebrow">User profile</span>
-        <p>Data analyst: domain expert<br>and Excel power user</p>
       </div>
     </div>
     </header>
