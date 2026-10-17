@@ -895,3 +895,20 @@
 @media (min-width: 1024px) {
   .case-body .subsection > p.kd-intro { max-width: var(--span7); }
 }
+
+
+/* Marker-pen highlight (option B from the hero experiment): wrap a phrase
+   in <span class="marker">. The script lays one ragged ink stroke per line
+   of the phrase, behind the words;
+   each stroke has a little seeded jitter in tilt, reach and height. The
+   ink pools where the pen lands and lifts. */
+.marker { position: relative; }
+.marker-host { position: relative; isolation: isolate; }
+.marker-ink {
+  position: absolute;
+  z-index: -1;  /* behind the words */
+  pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 40' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='m' x1='0' y1='0.35' x2='1' y2='0.65'%3E%3Cstop offset='0' stop-color='%2300d8aa' stop-opacity='0.7'/%3E%3Cstop offset='0.04' stop-color='%2300d8aa' stop-opacity='0.22'/%3E%3Cstop offset='0.35' stop-color='%2300d8aa' stop-opacity='0.3'/%3E%3Cstop offset='0.7' stop-color='%2300d8aa' stop-opacity='0.38'/%3E%3Cstop offset='0.93' stop-color='%2300d8aa' stop-opacity='0.52'/%3E%3Cstop offset='1' stop-color='%2300d8aa' stop-opacity='0.8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M3 11 C28 6 62 10 96 8 S162 4 197 9 L195 15 C196 21 194 27 196 32 C160 36 118 31 82 34 S26 35 4 31 C2 25 5 18 3 11 Z' fill='url(%23m)'/%3E%3C/svg%3E") no-repeat 0 0 / 100% 100%;
+  transform-origin: left center;
+  opacity: 0.9;
+}

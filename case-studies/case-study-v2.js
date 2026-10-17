@@ -341,3 +341,48 @@
   });
 })();
   
+
+/* Marker-pen highlights: one ink stroke per line of each .marker, placed
+   from the phrase's own line boxes relative to its paragraph; redrawn when
+   the paragraph changes size. Seeded from the words, so each stroke is
+   always the same. */
+(function () {
+  var marks = Array.prototype.slice.call(document.querySelectorAll('.marker'));
+  if (!marks.length) return;
+  function seedOf(t) { var h = 0; for (var i = 0; i < t.length; i++) h = (h * 31 + t.charCodeAt(i)) >>> 0; return h; }
+  function draw(m) {
+    var host = m.parentElement;
+    host.classList.add('marker-host');
+    host.querySelectorAll('.marker-ink[data-for="' + m.dataset.mk + '"]').forEach(function (n) { n.remove(); });
+    var hr = host.getBoundingClientRect();
+    if (!hr.width) return;
+    var seed = seedOf(m.textContent);
+    function rnd() { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; }
+    Array.prototype.forEach.call(m.getClientRects(), function (r) {
+      if (r.width < 2) return;
+      var h = r.height, padL = h * (0.06 + rnd() * 0.08), padR = h * (0.1 + rnd() * 0.16);
+      // body text's line boxes are tight, so the stroke covers the whole box and a little more
+      var top = h * (-0.2 + rnd() * 0.06), hh = h * (1.3 + rnd() * 0.1);
+      padL += h * 0.12;
+      var n = document.createElement('span');
+      n.className = 'marker-ink';
+      n.dataset.for = m.dataset.mk;
+      n.setAttribute('aria-hidden', 'true');
+      n.style.left = (r.left - hr.left - padL) + 'px';
+      n.style.top = (r.top - hr.top + top) + 'px';
+      n.style.width = (r.width + padL + padR) + 'px';
+      n.style.height = hh + 'px';
+      n.style.transform = 'rotate(' + (rnd() * 2.4 - 1.2).toFixed(2) + 'deg)';
+      host.appendChild(n);
+    });
+  }
+  marks.forEach(function (m, i) { m.dataset.mk = i; });
+  function drawAll() { marks.forEach(draw); }
+  if ('ResizeObserver' in window) {
+    var ro = new ResizeObserver(drawAll);
+    marks.forEach(function (m) { ro.observe(m.parentElement); });
+  }
+  window.addEventListener('load', drawAll);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawAll);
+  drawAll();
+})();
