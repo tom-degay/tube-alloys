@@ -152,10 +152,6 @@
   }
   .kd-more > summary::-webkit-details-marker { display: none; }
   .kd-more > summary:hover, .kd-more > summary:focus-visible { color: #fff; }
-  .kd-more-close, .kd-more[open] .kd-more-open { display: none; }
-  .kd-more[open] .kd-more-close { display: inline; }
-  .kd-more-chevron { transition: transform 0.2s ease; }
-  .kd-more[open] .kd-more-chevron { transform: rotate(180deg); }
   .kd-more-body { padding-top: 16px; }
   .kd-more-body > :first-child { margin-top: 0; }
 
@@ -1606,6 +1602,56 @@
     /* room under the picture for the dots */
     .kd-reel-track { padding-bottom: 52px; }
   }
+
+  /* Carousel slides as cards: the grey frame holds the text and the
+     picture together (text beside the picture from 1024px, under it
+     below). More opens the slide in a modal with the picture and all
+     its text. */
+  .kd-slide {
+    box-sizing: border-box;
+    border-radius: 10px;
+    background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
+    padding: clamp(16px, 2.2vw, 32px);
+  }
+  .case-body .kd-slide .kd-media { background: none; border-radius: 0; }
+  .kd-text { margin-top: clamp(16px, 2vw, 24px); }
+  .kd-more { margin-top: 16px; }
+  .kd-more > summary { gap: 7px; }
+  .kd-more-body { display: none; }
+  @media (min-width: 1024px) {
+    .kd-slide {
+      grid-template-columns: calc(var(--span4) - clamp(16px, 2.2vw, 32px)) minmax(0, 1fr);
+    }
+    .kd-text { margin-top: 0; padding-top: 4px; }
+    /* dots back in the flow, centred under the cards */
+    .kd-reel { position: static; }
+    .kd-dots { position: static; transform: none; margin: 4px auto 0; }
+    .kd-reel-track { padding-bottom: 28px; }
+  }
+
+  /* the slide modal: wider, for the picture */
+  .kd-modal .card-modal-panel { width: min(64rem, 100%); }
+  .kd-modal-title {
+    flex: 1 1 auto;
+    margin: 0;
+    font-family: "Fakt Blond SemiBold", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 600;
+    font-size: clamp(20px, 2vw, 28px);
+    line-height: 1.2;
+    color: #fff;
+  }
+  .kd-modal-num { color: rgba(255, 255, 255, 0.35); font-family: "Fakt Blond", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-weight: 400; margin-right: 6px; }
+  .kd-modal .kd-modal-strap { margin: 0 0 20px; color: rgba(255, 255, 255, 0.55); font-size: clamp(18px, 1.6vw, 22px); line-height: 1.4; }
+  .kd-modal-media { margin: 0 0 28px; }
+  .kd-modal-media img,
+  .kd-modal-media video {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  }
+  .kd-modal-media figcaption { margin-top: 12px; }
 </style>
 <script>
   (function () {
@@ -1899,7 +1945,7 @@
               <h4 class="kd-title">Filter out passes</h4>
               <p class="kd-strap">Focus on the failures and warnings</p>
               <details class="kd-more">
-                <summary><span class="kd-more-open">More</span><span class="kd-more-close">Less</span><svg class="kd-more-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></summary>
+                <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12.5l9-9M8 3.5h4.5V8M3.5 8v4.5H8"/></svg></summary>
                 <div class="kd-more-body">
                   <p>Passed rules are filtered out by default when viewing the report for the first time, helping users focus on their actionable task: reviewing the failures and warnings.</p>
 
@@ -1916,7 +1962,7 @@
               <h4 class="kd-title">Skip the input drill-down step</h4>
               <p class="kd-strap">Go straight to the first failed input</p>
               <details class="kd-more">
-                <summary><span class="kd-more-open">More</span><span class="kd-more-close">Less</span><svg class="kd-more-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></summary>
+                <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12.5l9-9M8 3.5h4.5V8M3.5 8v4.5H8"/></svg></summary>
                 <div class="kd-more-body">
                             <p>Knocking out the intermediate step for reviewing multiple input files takes the user straight to the data grid of the first failed input. Popups let them switch between inputs without leaving the grid, or jump to a specific input straight from the top-level view. The popup gives an indication of the number of failed rows within each input.</p>
 
@@ -1945,7 +1991,7 @@
               <h4 class="kd-title">Add direct rule navigation</h4>
               <p class="kd-strap">Move between rules without leaving the grid</p>
               <details class="kd-more">
-                <summary><span class="kd-more-open">More</span><span class="kd-more-close">Less</span><svg class="kd-more-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></summary>
+                <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12.5l9-9M8 3.5h4.5V8M3.5 8v4.5H8"/></svg></summary>
                 <div class="kd-more-body">
                   <p>Adding buttons to navigate between rules within the data grid view, without returning to the report, removed three fiddly steps from the user&rsquo;s workflow. Multiplied over hundreds of validation rules every month, that&rsquo;s a significant time saving.</p>
                   <p>A rule navigator also allows instant navigation between any rule.</p>
@@ -1984,7 +2030,7 @@
               <h4 class="kd-title">Show before and after</h4>
               <p class="kd-strap">Keep the original value beside the correction</p>
               <details class="kd-more">
-                <summary><span class="kd-more-open">More</span><span class="kd-more-close">Less</span><svg class="kd-more-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></summary>
+                <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12.5l9-9M8 3.5h4.5V8M3.5 8v4.5H8"/></svg></summary>
                 <div class="kd-more-body">
                   <p>Corrections are shown beside the original submitted values. I chose this side-by-side layout to preserve the source data and make it clear that users are creating a mapping, rather than editing the original cell.</p>
                   <p>Corrected values stand out in bright green. If no correction has been applied, the placeholder text shows the current value. This helps the user understand exactly what the output data will be.</p>
@@ -2030,7 +2076,7 @@
               <h4 class="kd-title">Make the scope of changes obvious</h4>
               <p class="kd-strap">Make clear which values a correction will affect</p>
               <details class="kd-more">
-                <summary><span class="kd-more-open">More</span><span class="kd-more-close">Less</span><svg class="kd-more-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></summary>
+                <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12.5l9-9M8 3.5h4.5V8M3.5 8v4.5H8"/></svg></summary>
                 <div class="kd-more-body">
                   <p>Quantemplate applies corrections to bulk data rather than isolated cells, so we needed to make this clear. When a user selects a field, it opens a popup where they enter the correction. The UI makes it clear that corrections can apply to every matching value or use conditions, such as correcting Premium only for a specific Policy Number.</p>
                   <p>We added a formula bar, so users could derive a value from another column. For example, if a date is missing, take the date from another column and subtract one month. Based on what we&rsquo;d observed in production pipelines, this would be a necessary addition.</p>
@@ -2061,7 +2107,7 @@
               <h4 class="kd-title">Preserve evidence</h4>
               <p class="kd-strap">Keep a record of who changed what and when</p>
               <details class="kd-more">
-                <summary><span class="kd-more-open">More</span><span class="kd-more-close">Less</span><svg class="kd-more-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></summary>
+                <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12.5l9-9M8 3.5h4.5V8M3.5 8v4.5H8"/></svg></summary>
                 <div class="kd-more-body">
                   <p>Audit was important to our clients, who use Quantemplate as a system-of-record for financial reporting. To support this we displayed the original failed values alongside the corrected rows in the report. The full change history of each edit was displayed.</p>
 
@@ -2083,7 +2129,7 @@
               <h4 class="kd-title">Give immediate feedback</h4>
               <p class="kd-strap">Check the correction now, apply it on the next run</p>
               <details class="kd-more">
-                <summary><span class="kd-more-open">More</span><span class="kd-more-close">Less</span><svg class="kd-more-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></summary>
+                <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12.5l9-9M8 3.5h4.5V8M3.5 8v4.5H8"/></svg></summary>
                 <div class="kd-more-body">
                   <p>Corrections are applied to the output on the next pipeline run. Rather than wait for the run to complete to find out if a correction will now pass, after a field is completed, we check that the entered value will pass the rule, and warn if it&rsquo;s still a fail.</p>
 
@@ -2101,7 +2147,7 @@
               <h4 class="kd-title" id="implementation-heading">Ordering matters</h4>
               <p class="kd-strap">Let users review and reorder overlapping corrections</p>
               <details class="kd-more">
-                <summary><span class="kd-more-open">More</span><span class="kd-more-close">Less</span><svg class="kd-more-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></summary>
+                <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12.5l9-9M8 3.5h4.5V8M3.5 8v4.5H8"/></svg></summary>
                 <div class="kd-more-body">
                   <p>One of the things we discovered in testing, as part of our internal QA process, was that the order in which corrections apply is important, since one correction could overwrite a prior one. We created an interface showing all corrections applied to any validation rule, allowing users to reorder or remove them.</p>
 
@@ -2327,6 +2373,16 @@
           <p>The root problem isn&rsquo;t just the scroll position, but having to go back to the report to navigate to the next rule.</p>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div class="card-modal kd-modal" id="kd-modal" role="dialog" aria-modal="true" aria-labelledby="kd-modal-title" hidden>
+    <div class="card-modal-panel">
+      <div class="card-modal-head">
+        <h2 class="kd-modal-title" id="kd-modal-title"><span class="kd-modal-num"></span> <span class="kd-modal-name"></span></h2>
+        <button class="card-modal-close" type="button" aria-label="Close">&times;</button>
+      </div>
+      <div class="card-modal-body case-body"></div>
     </div>
   </div>
 
@@ -2641,6 +2697,45 @@
         m.querySelector('.card-modal-close').addEventListener('click', hide);
         m.addEventListener('click', function (e) { if (e.target === m) hide(); });
       });
+      // carousel slides: More opens the slide in the shared modal, with
+      // its picture and full text
+      var kd = document.getElementById('kd-modal');
+      if (kd) {
+        var kdBody = kd.querySelector('.card-modal-body');
+        kd.querySelector('.card-modal-close').addEventListener('click', hide);
+        kd.addEventListener('click', function (e) { if (e.target === kd) hide(); });
+        document.querySelectorAll('.kd-more > summary').forEach(function (sum) {
+          sum.addEventListener('click', function (e) {
+            e.preventDefault();
+            var slide = sum.closest('.kd-slide');
+            if (!slide.classList.contains('is-current')) return;
+            kd.querySelector('.kd-modal-num').textContent = (slide.querySelector('.kd-num') || {}).textContent || '';
+            kd.querySelector('.kd-modal-name').innerHTML = slide.querySelector('.kd-title').innerHTML;
+            kdBody.innerHTML = '';
+            var strap = slide.querySelector('.kd-strap');
+            if (strap) { var sp = document.createElement('p'); sp.className = 'kd-modal-strap'; sp.innerHTML = strap.innerHTML; kdBody.appendChild(sp); }
+            var media = slide.querySelector('.kd-media');
+            var fig = document.createElement('figure');
+            fig.className = 'kd-modal-media';
+            var src = media.querySelector(':scope > img, video');
+            var copy = src.cloneNode(true);
+            copy.removeAttribute('loading');
+            copy.removeAttribute('tabindex');
+            copy.removeAttribute('role');
+            if (copy.tagName === 'VIDEO') { copy.muted = true; copy.setAttribute('controls', ''); copy.addEventListener('loadedmetadata', function () { fades(kd); }); }
+            else copy.addEventListener('load', function () { fades(kd); });
+            fig.appendChild(copy);
+            var cap = media.querySelector('figcaption');
+            if (cap) { var fc = document.createElement('figcaption'); fc.innerHTML = cap.innerHTML; fig.appendChild(fc); }
+            kdBody.appendChild(fig);
+            var more = slide.querySelector('.kd-more-body');
+            if (more) Array.prototype.forEach.call(more.children, function (c) { kdBody.appendChild(c.cloneNode(true)); });
+            kdBody.querySelectorAll('img').forEach(function (im) { im.removeAttribute('loading'); im.addEventListener('load', function () { fades(kd); }); });
+            show(kd, sum);
+            if (copy.tagName === 'VIDEO') { var pl = copy.play(); if (pl && pl.catch) pl.catch(function () {}); }
+          });
+        });
+      }
       document.addEventListener('keydown', function (e) {
         if (!open || lightboxOpen()) return;
         if (e.key === 'Escape') { e.preventDefault(); hide(); }
