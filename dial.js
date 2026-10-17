@@ -83,7 +83,8 @@
           var index = ((tick / 6) % count + count) % count;
           var angle = (tick / 6 - phase) * Math.PI / 4;
           var depth = Math.cos(angle);
-          mark.hidden = Math.abs(angle) >= Math.PI / 2 || (!options.loop && major && (tick < 0 || tick > (count - 1) * 6));
+          // a dial that doesn't loop has no marks past its first and last stop
+          mark.hidden = Math.abs(angle) >= Math.PI / 2 || (!options.loop && (tick < 0 || tick > (count - 1) * 6));
           mark.classList.toggle('is-major', major);
           mark.classList.toggle('is-current', major && index === selected);
           if (mark.hidden) return;
