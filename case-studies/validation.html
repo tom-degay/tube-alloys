@@ -1927,6 +1927,26 @@
     border-radius: 10px;
     padding: clamp(20px, 2.4vw, 32px);
   }
+
+  /* Phones: the hero grid loses its Reference column (the left 110 of its
+     695 units), so everything else can be bigger. The frame is widened
+     so the remaining columns fill the window, slid left by the cropped
+     share, and the grid image is clipped at the cut with the frame's
+     rounded corners; the popup, positioned on the frame, keeps its place
+     on the selected field. */
+  @media (max-width: 640px) {
+    .val-hero-media { --crop: calc(110 / 695); }
+    .val-hero-shot {
+      width: calc(100% / (1 - var(--crop)));
+      margin-left: calc(-100% * var(--crop) / (1 - var(--crop)));
+      background: none;
+      box-shadow: none;
+    }
+    .val-hero-shot > img:first-child {
+      border-radius: 0;
+      clip-path: inset(0 0 0 calc(var(--crop) * 100%) round 6px 0 0 6px);
+    }
+  }
 </style>
 <script>
   (function () {
