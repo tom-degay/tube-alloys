@@ -1764,6 +1764,34 @@
   /* no captions inside the expanded cards (the lightbox still shows
      them when a picture is opened full size) */
   .card-modal figcaption { display: none; }
+
+  /* More: a pill in the same family as the modal controls -- 40px tall,
+     the translucent fill and hairline edge, the icon drawn on the same
+     20px grid at the same 1.5px stroke */
+  .kd-more { margin-top: 20px; }
+  .kd-more > summary {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 40px;
+    padding: 0 12px 0 18px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 15px;
+    line-height: 1;
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+  .kd-more > summary:hover { color: #fff; background-color: rgba(255, 255, 255, 0.1); }
+  .kd-more > summary:focus-visible { color: #fff; outline: 2px solid #00d8aa; outline-offset: 2px; }
+  .kd-more > summary:focus:not(:focus-visible) { outline: none; }
+  .kd-more-icon { display: block; flex: none; transition: transform 0.18s cubic-bezier(.2, .8, .2, 1); }
+  .kd-more > summary:active .kd-more-icon { transform: scale(0.88); }
+  @media (pointer: coarse) { .kd-more > summary { height: 44px; } }
+  @media (prefers-reduced-motion: reduce) { .kd-more-icon { transition: none; transform: none !important; } }
 </style>
 <script>
   (function () {
@@ -2057,7 +2085,7 @@
               <h4 class="kd-title">Filter out passes</h4>
               <p class="kd-strap">Focus on the failures and warnings</p>
               <details class="kd-more">
-                <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12.5l9-9M8 3.5h4.5V8M3.5 8v4.5H8"/></svg></summary>
+                <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 14 14 6M10 6h4v4M6 10v4h4"/></svg></summary>
                 <div class="kd-more-body">
                   <p>Passed rules are filtered out by default when viewing the report for the first time, helping users focus on their actionable task: reviewing the failures and warnings.</p>
 
@@ -2074,7 +2102,7 @@
               <h4 class="kd-title">Skip the input drill-down step</h4>
               <p class="kd-strap">Go straight to the first failed input</p>
               <details class="kd-more">
-                <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12.5l9-9M8 3.5h4.5V8M3.5 8v4.5H8"/></svg></summary>
+                <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 14 14 6M10 6h4v4M6 10v4h4"/></svg></summary>
                 <div class="kd-more-body">
                             <p>Knocking out the intermediate step for reviewing multiple input files takes the user straight to the data grid of the first failed input. Popups let them switch between inputs without leaving the grid, or jump to a specific input straight from the top-level view. The popup gives an indication of the number of failed rows within each input.</p>
 
@@ -2103,7 +2131,7 @@
               <h4 class="kd-title">Add direct rule navigation</h4>
               <p class="kd-strap">Move between rules without leaving the grid</p>
               <details class="kd-more">
-                <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12.5l9-9M8 3.5h4.5V8M3.5 8v4.5H8"/></svg></summary>
+                <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 14 14 6M10 6h4v4M6 10v4h4"/></svg></summary>
                 <div class="kd-more-body">
                   <p>Adding buttons to navigate between rules within the data grid view, without returning to the report, removed three fiddly steps from the user&rsquo;s workflow. Multiplied over hundreds of validation rules every month, that&rsquo;s a significant time saving.</p>
                   <p>A rule navigator also allows instant navigation between any rule.</p>
@@ -2142,7 +2170,7 @@
               <h4 class="kd-title">Show before and after</h4>
               <p class="kd-strap">Keep the original value beside the correction</p>
               <details class="kd-more">
-                <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12.5l9-9M8 3.5h4.5V8M3.5 8v4.5H8"/></svg></summary>
+                <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 14 14 6M10 6h4v4M6 10v4h4"/></svg></summary>
                 <div class="kd-more-body">
                   <p>Corrections are shown beside the original submitted values. I chose this side-by-side layout to preserve the source data and make it clear that users are creating a mapping, rather than editing the original cell.</p>
                   <p>Corrected values stand out in bright green. If no correction has been applied, the placeholder text shows the current value. This helps the user understand exactly what the output data will be.</p>
@@ -2188,7 +2216,7 @@
               <h4 class="kd-title">Make the scope of changes obvious</h4>
               <p class="kd-strap">Make clear which values a correction will affect</p>
               <details class="kd-more">
-                <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12.5l9-9M8 3.5h4.5V8M3.5 8v4.5H8"/></svg></summary>
+                <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 14 14 6M10 6h4v4M6 10v4h4"/></svg></summary>
                 <div class="kd-more-body">
                   <p>Quantemplate applies corrections to bulk data rather than isolated cells, so we needed to make this clear. When a user selects a field, it opens a popup where they enter the correction. The UI makes it clear that corrections can apply to every matching value or use conditions, such as correcting Premium only for a specific Policy Number.</p>
                   <p>We added a formula bar, so users could derive a value from another column. For example, if a date is missing, take the date from another column and subtract one month. Based on what we&rsquo;d observed in production pipelines, this would be a necessary addition.</p>
@@ -2219,7 +2247,7 @@
               <h4 class="kd-title">Preserve evidence</h4>
               <p class="kd-strap">Keep a record of who changed what and when</p>
               <details class="kd-more">
-                <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12.5l9-9M8 3.5h4.5V8M3.5 8v4.5H8"/></svg></summary>
+                <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 14 14 6M10 6h4v4M6 10v4h4"/></svg></summary>
                 <div class="kd-more-body">
                   <p>Audit was important to our clients, who use Quantemplate as a system-of-record for financial reporting. To support this we displayed the original failed values alongside the corrected rows in the report. The full change history of each edit was displayed.</p>
 
@@ -2241,7 +2269,7 @@
               <h4 class="kd-title">Give immediate feedback</h4>
               <p class="kd-strap">Check the correction now, apply it on the next run</p>
               <details class="kd-more">
-                <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12.5l9-9M8 3.5h4.5V8M3.5 8v4.5H8"/></svg></summary>
+                <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 14 14 6M10 6h4v4M6 10v4h4"/></svg></summary>
                 <div class="kd-more-body">
                   <p>Corrections are applied to the output on the next pipeline run. Rather than wait for the run to complete to find out if a correction will now pass, after a field is completed, we check that the entered value will pass the rule, and warn if it&rsquo;s still a fail.</p>
 
@@ -2258,7 +2286,7 @@
               <h4 class="kd-title" id="implementation-heading">Ordering matters</h4>
               <p class="kd-strap">Let users review and reorder overlapping corrections</p>
               <details class="kd-more">
-                <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12.5l9-9M8 3.5h4.5V8M3.5 8v4.5H8"/></svg></summary>
+                <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 14 14 6M10 6h4v4M6 10v4h4"/></svg></summary>
                 <div class="kd-more-body">
                   <p>One of the things we discovered in testing, as part of our internal QA process, was that the order in which corrections apply is important, since one correction could overwrite a prior one. We created an interface showing all corrections applied to any validation rule, allowing users to reorder or remove them.</p>
 
