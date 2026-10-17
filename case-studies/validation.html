@@ -1947,6 +1947,13 @@
       clip-path: inset(0 0 0 calc(var(--crop) * 100%) round 6px 0 0 6px);
     }
   }
+
+  /* Preserve evidence: its screenshot is the squarest of the five, so at
+     the shared screenshot height it sat small in its frame; on wide
+     screens it takes the frame's full height (less the 4% margin) */
+  @media (min-width: 1024px) {
+    #kd-evidence .kd-media > img { height: calc(100cqw * 11 / 16 * 0.92); max-height: 92%; }
+  }
 </style>
 <script>
   (function () {
