@@ -2822,24 +2822,30 @@
         });
       });
 
-      // Autoplay: the first time the diagram is well in view, hold on the
-      // original workflow for a beat, then play the move to the improved
-      // one -- unless the reader has already picked a tab.
-      if (target === 0 && !reduced && 'IntersectionObserver' in window) {
-        var autoTimer = 0;
+      // Autoplay on a loop: while the diagram is well in view, swap
+      // between the original and improved workflows, holding on each for
+      // a few seconds. Stops for good once the reader picks a tab; pauses
+      // while it's off screen.
+      if (!reduced && 'IntersectionObserver' in window) {
+        var HOLD = 3200, loopTimer = 0, inView = false;
+        function schedule(delay) {
+          clearTimeout(loopTimer);
+          if (touched || !inView) return;
+          loopTimer = setTimeout(function () {
+            if (touched || !inView) return;
+            go(target === 0 ? 1 : 0);
+            schedule(DURATION + HOLD);
+          }, delay);
+        }
         var autoIO = new IntersectionObserver(function (entries) {
           var e = entries[0];
-          if (e.intersectionRatio >= 0.6) {
-            if (!autoTimer) autoTimer = setTimeout(function () {
-              autoIO.disconnect();
-              if (!touched) go(1);
-            }, 1200);
-          } else if (autoTimer) {
-            clearTimeout(autoTimer);
-            autoTimer = 0;
-          }
+          var now = e.intersectionRatio >= 0.6;
+          if (now === inView) return;
+          inView = now;
+          if (inView) schedule(1200); else clearTimeout(loopTimer);
         }, { threshold: [0, 0.6] });
         autoIO.observe(svg);
+        tabs.forEach(function (t) { t.addEventListener('click', function () { clearTimeout(loopTimer); }); });
       }
       tabs.forEach(function (t) {
         var on = +t.getAttribute('data-state') === target;
