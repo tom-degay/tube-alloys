@@ -1180,6 +1180,14 @@
   }
   /* the profile video and the Excel strip run the full width */
   .content .case-body > .figure-wide { width: 100%; max-width: none; margin-left: 0; }
+  /* Step 1's three drawings fill their frames: as tall as the frame
+     allows (96%), rather than the shared screenshot height */
+  @media (min-width: 1024px) {
+    #dd-lines .kd-media > img,
+    #dd-aligned .kd-media > img { height: calc(100cqw * 11 / 16 * 0.96); max-width: 96%; max-height: 96%; }
+    /* the wide wireframe is limited by width instead */
+    #dd-tabs .kd-media > img { width: 96%; height: auto; max-height: 96%; }
+  }
 </style>
 <script>
   (function () {
@@ -1370,7 +1378,7 @@
 
       <div class="kd-reel">
         <div class="kd-reel-track" id="dd-reel-track" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Design decisions">
-          <div class="kd-slide is-current" id="dd-lines" role="group" aria-roledescription="slide" aria-label="1 of 5">
+          <div class="kd-slide is-current" id="dd-lines" role="group" aria-roledescription="slide" aria-label="1 of 3">
             <figure class="figure kd-media">
               <img src="media/mch-traditional-poster.svg" data-scroll-animation="media/mch-traditional-animated.svg?v=20261009-lines2" width="1472" height="1280" alt="Traditional approach: Connecting lines. Two differently ordered source schemas connect to the master with crossing green lines.">
 
@@ -1387,7 +1395,7 @@
               </details>
             </div>
           </div>
-          <div class="kd-slide" id="dd-aligned" role="group" aria-roledescription="slide" aria-label="2 of 5">
+          <div class="kd-slide" id="dd-aligned" role="group" aria-roledescription="slide" aria-label="2 of 3">
             <figure class="figure kd-media">
               <img src="media/mch-alignment-animated.svg" width="1472" height="1172" alt="A better approach: Aligned schemas. Focus moves down the aligned master and source schemas, from Expiration date to New-renewal and the remaining fields.">
 
@@ -1404,7 +1412,7 @@
               </details>
             </div>
           </div>
-          <div class="kd-slide" id="dd-tabs" role="group" aria-roledescription="slide" aria-label="3 of 5">
+          <div class="kd-slide" id="dd-tabs" role="group" aria-roledescription="slide" aria-label="3 of 3">
             <figure class="figure kd-media">
               <img src="media/mch-wireframe-extended-animated.svg" width="1400" height="792" alt="Mapped and unmapped source lists merge into tabs, allowing three source schemas to fit alongside the master schema.">
               <figcaption>Collapsing the mapped and unmapped items into tabs doubled the number of schemas which could fit in the view.</figcaption>
@@ -1422,74 +1430,57 @@
               </details>
             </div>
           </div>
-          <div class="kd-slide" id="dd-progress" role="group" aria-roledescription="slide" aria-label="4 of 5">
-            <figure class="figure kd-media">
-              <figure class="figure mapping-tabs-detail" id="mapping-tabs-detail" aria-labelledby="mapping-tabs-title">
-                <div class="stage-heading">
-                  <h4 class="diagram-title" id="mapping-tabs-title">Combined tab/progress bar</h4>
-                </div>
-                <div class="mapping-demo-canvas">
-                  <object type="image/svg+xml" data="media/column-mapping-tabs.svg?v=20261009-hint3" aria-label="Interactive column mapping with Mapped and Unmapped tabs"><a href="media/column-mapping-tabs.svg">Open the interactive column mapping detail</a>.</object>
-                  <svg class="try-leader" viewBox="0 0 442 522" aria-hidden="true">
-                    <path class="try-leader-wide" d="M418 29C448 29 472 16 472-10" fill="none" stroke="#00d8aa" stroke-width="1"/>
-                    <path class="try-leader-compact" d="M418 29C438 29 440 0 418-10" fill="none" stroke="#00d8aa" stroke-width="1"/>
-                    <circle cx="418" cy="29" r="2.5" fill="#00d8aa"/>
-                  </svg>
-                  <button class="try-hint" type="button">Click to try</button>
-                </div>
-                <div class="demo-controls" role="group" aria-label="Mapping demo controls">
-                  <button class="control-button reset-button" type="button" disabled><span>Reset</span></button>
-                  <button class="control-button demo-button" type="button" aria-pressed="false" disabled>
-                    <svg class="play-icon" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1 11 6 2 11Z" fill="currentColor"/></svg>
-                    <svg class="stop-icon" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><rect x="1" y="1" width="10" height="10" rx="1" fill="currentColor"/></svg>
-                    <span>Play demo</span>
-                  </button>
-                </div>
-                <span class="visually-hidden demo-status" role="status" aria-live="polite"></span>
-              </figure>
-            </figure>
-            <div class="kd-text">
-              <p class="kd-num" aria-hidden="true">04</p>
-              <h4 class="kd-title">Combined tab and progress bar</h4>
-              <p class="kd-strap">Try it: the tabs double as a progress bar for each schema</p>
-            </div>
-          </div>
-          <div class="kd-slide" id="completed-interface-heading" role="group" aria-roledescription="slide" aria-label="5 of 5">
-            <figure class="figure kd-media">
-              <div class="ui-video" data-hover-controls>
-                <video autoplay muted loop playsinline disablepictureinpicture poster="media/concept-mapping-detail.jpg">
-                  <source src="media/concept-mapping-detail.mp4" type="video/mp4">
-                </video>
-              <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
-              </div>
-            </figure>
-            <div class="kd-text">
-              <p class="kd-num" aria-hidden="true">05</p>
-              <h4 class="kd-title">Completed interface</h4>
-              <p class="kd-strap">Mappings are kept, so next month&rsquo;s variant takes a couple of clicks</p>
-              <details class="kd-more">
-                <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 14.5l9-9M10.5 5.5h4v4M5.5 10.5v4h4"/></svg></summary>
-                <div class="kd-more-body">
-                  <p>Once source schemas were mapped in, the mappings were retained. And if a new variant came in next month, it was just a couple of clicks to get it mapped in.</p>
-
-                  <details class="evidence-card framing-card evidence-disclosure">
-                    <summary class="framing-head">
-                      <svg class="framing-icon" width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7.3" stroke="#00D8AA" stroke-width="1"/><path d="M8 7.1v4.4" stroke="#00D8AA" stroke-width="1.1" stroke-linecap="round"/><circle cx="8" cy="4.8" r="0.75" fill="#00D8AA"/></svg>
-                      <span class="framing-label">Ship and learn</span>
-
-                      <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
-                    </summary>
-                    <div class="evidence-body">
-                    <p>As the sole designer supporting 11 developers, I prioritised a working implementation: full interactive prototyping this data-heavy interaction would have taken comparable effort to building it. We tested internally, then refined it through customer use, adding search, populate cells and enforce schema functions. As the customer base shifted, I adapted the workflow from assembling a master schema field by field to using an existing dataset.</p>
-                    </div>
-                  </details>
-                </div>
-              </details>
-            </div>
-          </div>
         </div>
         <div class="kd-dots" hidden></div>
       </div>
+
+      <figure class="figure mapping-tabs-detail" id="mapping-tabs-detail" aria-labelledby="mapping-tabs-title">
+        <div class="stage-heading">
+          <h4 class="diagram-title" id="mapping-tabs-title">Combined tab/progress bar</h4>
+        </div>
+        <div class="mapping-demo-canvas">
+          <object type="image/svg+xml" data="media/column-mapping-tabs.svg?v=20261009-hint3" aria-label="Interactive column mapping with Mapped and Unmapped tabs"><a href="media/column-mapping-tabs.svg">Open the interactive column mapping detail</a>.</object>
+          <svg class="try-leader" viewBox="0 0 442 522" aria-hidden="true">
+            <path class="try-leader-wide" d="M418 29C448 29 472 16 472-10" fill="none" stroke="#00d8aa" stroke-width="1"/>
+            <path class="try-leader-compact" d="M418 29C438 29 440 0 418-10" fill="none" stroke="#00d8aa" stroke-width="1"/>
+            <circle cx="418" cy="29" r="2.5" fill="#00d8aa"/>
+          </svg>
+          <button class="try-hint" type="button">Click to try</button>
+        </div>
+        <div class="demo-controls" role="group" aria-label="Mapping demo controls">
+          <button class="control-button reset-button" type="button" disabled><span>Reset</span></button>
+          <button class="control-button demo-button" type="button" aria-pressed="false" disabled>
+            <svg class="play-icon" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1 11 6 2 11Z" fill="currentColor"/></svg>
+            <svg class="stop-icon" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><rect x="1" y="1" width="10" height="10" rx="1" fill="currentColor"/></svg>
+            <span>Play demo</span>
+          </button>
+        </div>
+        <span class="visually-hidden demo-status" role="status" aria-live="polite"></span>
+      </figure>
+
+      <h3 id="completed-interface-heading">Completed interface</h3>
+      <p>Once source schemas were mapped in, the mappings were retained. And if a new variant came in next month, it was just a couple of clicks to get it mapped in.</p>
+
+      <div class="figure-portrait-frame figure-wide">
+        <div class="ui-video" data-hover-controls>
+          <video autoplay muted loop playsinline disablepictureinpicture poster="media/concept-mapping-detail.jpg">
+            <source src="media/concept-mapping-detail.mp4" type="video/mp4">
+          </video>
+        <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+        </div>
+      </div>
+
+      <details class="evidence-card framing-card evidence-disclosure">
+        <summary class="framing-head">
+          <svg class="framing-icon" width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7.3" stroke="#00D8AA" stroke-width="1"/><path d="M8 7.1v4.4" stroke="#00D8AA" stroke-width="1.1" stroke-linecap="round"/><circle cx="8" cy="4.8" r="0.75" fill="#00D8AA"/></svg>
+          <span class="framing-label">Ship and learn</span>
+
+          <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
+        </summary>
+        <div class="evidence-body">
+        <p>As the sole designer supporting 11 developers, I prioritised a working implementation: full interactive prototyping this data-heavy interaction would have taken comparable effort to building it. We tested internally, then refined it through customer use, adding search, populate cells and enforce schema functions. As the customer base shifted, I adapted the workflow from assembling a master schema field by field to using an existing dataset.</p>
+        </div>
+      </details>
     </section>
 
     <hr class="rule">
