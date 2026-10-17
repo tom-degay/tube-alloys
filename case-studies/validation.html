@@ -1672,7 +1672,7 @@
      strokes on a 20px grid rather than font glyphs, so they sit dead
      centre. Previous / next share one segmented pill with a hairline
      between them; the close is its own circle. Hover lifts the fill
-     and whitens the icon, the chevrons lean the way they go, a press
+     and whitens the icon, a press
      sinks the button slightly, focus gets the teal ring, and the
      unavailable direction fades right back and stops responding.
      ---------------------------------------------------------------- */
@@ -1739,8 +1739,6 @@
     color: #fff;
     background-color: rgba(255, 255, 255, 0.1);
   }
-  .kd-modal-step[data-step="-1"]:hover:not(:disabled) svg { transform: translateX(-1.5px); }
-  .kd-modal-step[data-step="1"]:hover:not(:disabled) svg { transform: translateX(1.5px); }
   .card-modal-close:hover svg { transform: rotate(90deg); }
   .card-modal-close:active svg,
   .kd-modal-step:active:not(:disabled) svg { transform: scale(0.88); }
