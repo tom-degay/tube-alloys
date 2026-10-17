@@ -849,6 +849,8 @@
   @media (min-width: 1024px) { .content .case-body > .figure-bare { max-width: var(--span7); } }
   /* hero: the case-study card's artwork, looping */
   .pl-hero-media > svg { display: block; width: 100%; height: auto; }
+  /* 20px taller than the artwork, which sits centred on the black */
+  .pl-hero-media.green-pipeline { padding-block: 10px; }
   @keyframes pipeline-trace {
     0% {opacity:0;stroke-dashoffset:18;} 10% {opacity:1;} 85% {opacity:1;} 100% {opacity:0;stroke-dashoffset:-100;}
   }
