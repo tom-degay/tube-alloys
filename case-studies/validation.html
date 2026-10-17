@@ -1403,6 +1403,112 @@
   @media (max-width: 640px) {
     .outcome-cards { grid-template-columns: 1fr; }
   }
+
+  /* Project details: six across once the content area is wide */
+  @media (min-width: 1100px) {
+    .meta-row { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  }
+
+  /* Problem: the text on the left at its reading width, the Evidence and
+     Problem framing cards in a column on the right; stacked below 1024px */
+  .problem-layout { display: block; }
+  @media (min-width: 1024px) {
+    .problem-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 46rem) minmax(0, 1fr);
+      column-gap: clamp(32px, 4vw, 64px);
+      align-items: start;
+    }
+    .problem-side { padding-top: clamp(4px, 0.6vw, 10px); }
+  }
+  .problem-side { display: grid; gap: 14px; margin-top: 28px; }
+  @media (min-width: 1024px) {
+    .problem-side { margin-top: 0; }
+  }
+  .side-card {
+    appearance: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 18px 22px;
+    border: 0;
+    border-radius: 10px;
+    background: rgb(33, 33, 33);
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  .side-card:hover, .side-card:focus-visible { background: rgb(44, 44, 44); }
+  .side-card:focus-visible { outline: 2px solid #00d8aa; outline-offset: 2px; }
+  .side-card .framing-label { flex: 1 1 auto; }
+  .side-card-open {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.68);
+  }
+  .side-card:hover .side-card-open, .side-card:focus-visible .side-card-open { color: #fff; }
+
+  /* the cards' content, in a modal over the page (below the lightbox, so
+     its pictures can still open full size) */
+  .card-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(16px, 4vw, 48px);
+    background: rgba(0, 0, 0, 0.72);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .card-modal[hidden] { display: none; }
+  .card-modal.is-open { opacity: 1; }
+  .card-modal-panel {
+    box-sizing: border-box;
+    width: min(46rem, 100%);
+    max-height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: clamp(20px, 3vw, 36px);
+    border-radius: 14px;
+    background: #1f1f1f;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+    transform: translateY(8px);
+    transition: transform 0.25s cubic-bezier(.2, .8, .2, 1);
+  }
+  .card-modal.is-open .card-modal-panel { transform: none; }
+  .card-modal-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .card-modal-head h2.framing-label { flex: 1 1 auto; margin: 0; }
+  .card-modal-close {
+    appearance: none;
+    width: 36px;
+    height: 36px;
+    margin: -8px -10px -8px 0;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 30px;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .card-modal-close:hover, .card-modal-close:focus-visible { color: #fff; background: rgba(255, 255, 255, 0.08); }
+  .card-modal-body > :first-child { margin-top: 0; }
+  .card-modal-body > :last-child { margin-bottom: 0; }
 </style>
 <script>
   (function () {
@@ -1516,7 +1622,7 @@
       </div>
       <div class="meta-item">
         <span class="eyebrow">Team</span>
-        <p>Product owner, clients, engineers.</p>
+        <p>Product owner, clients, engineers</p>
       </div>
       <div class="meta-item">
         <span class="eyebrow">Timeframe</span>
@@ -1534,11 +1640,11 @@
       </div>
       <div class="meta-item">
         <span class="eyebrow">Domain</span>
-        <p>Wholesale insurance data management.</p>
+        <p>Wholesale insurance data management</p>
       </div>
       <div class="meta-item">
         <span class="eyebrow">User profile</span>
-        <p>Data analyst: domain expert<br>and Excel power user.</p>
+        <p>Data analyst: domain expert<br>and Excel power user</p>
       </div>
     </div>
     </header>
@@ -1548,81 +1654,27 @@
     <section aria-labelledby="problem-heading" class="case-body">
       <h2 class="eyebrow" id="problem-heading">Problem</h2>
 
-      <p class="display problem-statement">We&rsquo;d made errors easy to spot, but fixing them was&nbsp;hard.</p>
+      <div class="problem-layout">
+        <div class="problem-main">
+          <p class="display problem-statement">We&rsquo;d made errors easy to spot, but fixing them was&nbsp;hard.</p>
 
-      <p>Quantemplate takes data from hundreds of suppliers, harmonises them into a consistent format and flags errors. These could be simple things like an invalid date, or more complex business rules.</p>
+          <p>Quantemplate takes data from hundreds of suppliers, harmonises them into a consistent format and flags errors. These could be simple things like an invalid date, or more complex business rules.</p>
 
-      <p>Quantemplate had a validation report that gave users row-level reporting of their data. But making a correction meant writing custom rules in the upstream process. We&rsquo;d also introduced automated validation checks, and now clients had hundreds of them. The original validation report didn&rsquo;t scale well to this usage and the workflow had become inefficient.</p>
-
-      <details class="evidence-card evidence-disclosure">
-        <summary class="framing-head">
+          <p>Quantemplate had a validation report that gave users row-level reporting of their data. But making a correction meant writing custom rules in the upstream process. We&rsquo;d also introduced automated validation checks, and now clients had hundreds of them. The original validation report didn&rsquo;t scale well to this usage and the workflow had become inefficient.</p>
+        </div>
+        <aside class="problem-side" aria-label="Supporting material">
+        <button class="side-card" type="button" aria-haspopup="dialog" aria-controls="evidence-modal">
           <svg class="framing-icon" width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7.3" stroke="#00D8AA" stroke-width="1"/><path d="M8 7.1v4.4" stroke="#00D8AA" stroke-width="1.1" stroke-linecap="round"/><circle cx="8" cy="4.8" r="0.75" fill="#00D8AA"/></svg>
           <span class="framing-label">Evidence</span>
-
-          <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
-        </summary>
-        <div class="evidence-body">
-          <figure class="figure">
-            <div class="figure-portrait-frame">
-              <div class="ui-video" data-hover-controls>
-                <video id="drilldown-video" autoplay muted loop playsinline disablepictureinpicture poster="media/validations-drill-down.jpg">
-                  <source src="media/validations-drill-down.mp4" type="video/mp4">
-                </video>
-              <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
-              </div>
-            </div>
-            <figcaption>Original validation report: the visual display of information was a success, but it left users wanting to fix the errors where they saw them.</figcaption>
-          </figure>
-
-        <p>Our users could now easily find errors in their data, but fixing them was still painful. Users needed to go back into a pipeline, navigate to a specific point where the correction should be applied and insert a value mapping or Excel-style IF statement to change the failed value to a correct one. This took time, concentration and required a certain level of skill.</p>
-
-        <figure class="figure">
-          <div class="figure-portrait-frame">
-            <img src="media/ad-hoc-correction.png" width="1240" height="218" alt="A pipeline calculation step containing a hand-written IF statement that sets the Accident State to a fixed value when the policy number matches." loading="lazy">
-          </div>
-          <figcaption>Desire lines in the product: an ad hoc correction added by a user to a pipeline, modifying the Accident State for a specific policy number.</figcaption>
-        </figure>
-
-        <p>We had made it easier to add validation rules and implementations had become ambitious: clients had hundreds of rules and users spent days in the report analysing the results. There were aspects of the navigation and interaction that were proving cumbersome. We set out to fix this.</p>
-
-          <ul class="evidence-list">
-            <li>Users making ad hoc corrections in the pipeline</li>
-            <li>Specifically mentioned in sales process loss analysis</li>
-            <li>User feedback like &lsquo;I don&rsquo;t care about seeing the passed rules&rsquo; and &lsquo;When I go back to the report view after looking at a rule, my scroll position is lost&rsquo;.</li>
-            <li>Production pipelines had hundreds of rules, we&rsquo;d planned for dozens.</li>
-          </ul>
-
-        <figure class="figure">
-          <div class="figure-portrait-frame">
-            <img src="media/validation-report-passed.png" width="1416" height="1085" alt="An excerpt from a client&rsquo;s validation report: three pipeline stages of 0.9 to 2.8 million rows, each with a long list of rules that all passed." loading="lazy">
-          </div>
-          <figcaption>Validation reports had grown beyond the original design capacity. Excerpt from a client report.</figcaption>
-        </figure>
-        </div>
-      </details>
-
-      <details class="evidence-card evidence-disclosure framing-card">
-        <summary class="framing-head">
+          <span class="side-card-open" aria-hidden="true">View <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+        </button>
+        <button class="side-card" type="button" aria-haspopup="dialog" aria-controls="framing-modal">
           <svg class="framing-icon" width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7.3" stroke="#00D8AA" stroke-width="1"/><path d="M8 7.1v4.4" stroke="#00D8AA" stroke-width="1.1" stroke-linecap="round"/><circle cx="8" cy="4.8" r="0.75" fill="#00D8AA"/></svg>
           <span class="framing-label">Problem framing</span>
-
-          <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
-        </summary>
-        <div class="evidence-body">
-          <div class="framing-pair">
-            <p class="framing-term">Client feedback</p>
-            <p class="framing-quote">&lsquo;I just want to edit the failed cell&rsquo;</p>
-            <p class="framing-term">Engineering constraint</p>
-            <p>Quantemplate is designed around rules-based transformations to data, so cell-level editing is not possible. Instead we need to make adding a rule as easy as editing a cell, and make its effect obvious.</p>
-          </div>
-          <div class="framing-pair">
-            <p class="framing-term">Client feedback</p>
-            <p class="framing-quote">&lsquo;When I go back to the report view after looking at a rule, my scroll position is lost&rsquo;.</p>
-            <p class="framing-term">Workflow analysis</p>
-            <p>The root problem isn&rsquo;t just the scroll position, but having to go back to the report to navigate to the next rule.</p>
-          </div>
-        </div>
-      </details>
+          <span class="side-card-open" aria-hidden="true">View <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+        </button>
+        </aside>
+      </div>
     </section>
 
     <hr class="rule">
@@ -2117,6 +2169,77 @@
   </div>
 
 
+  <div class="card-modal" id="evidence-modal" role="dialog" aria-modal="true" aria-labelledby="evidence-modal-title" hidden>
+    <div class="card-modal-panel">
+      <div class="card-modal-head">
+        <svg class="framing-icon" width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7.3" stroke="#00D8AA" stroke-width="1"/><path d="M8 7.1v4.4" stroke="#00D8AA" stroke-width="1.1" stroke-linecap="round"/><circle cx="8" cy="4.8" r="0.75" fill="#00D8AA"/></svg>
+        <h2 class="framing-label" id="evidence-modal-title">Evidence</h2>
+        <button class="card-modal-close" type="button" aria-label="Close">&times;</button>
+      </div>
+      <div class="card-modal-body evidence-body case-body">
+          <figure class="figure">
+            <div class="figure-portrait-frame">
+              <div class="ui-video" data-hover-controls>
+                <video id="drilldown-video" autoplay muted loop playsinline disablepictureinpicture poster="media/validations-drill-down.jpg">
+                  <source src="media/validations-drill-down.mp4" type="video/mp4">
+                </video>
+              <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+              </div>
+            </div>
+            <figcaption>Original validation report: the visual display of information was a success, but it left users wanting to fix the errors where they saw them.</figcaption>
+          </figure>
+
+        <p>Our users could now easily find errors in their data, but fixing them was still painful. Users needed to go back into a pipeline, navigate to a specific point where the correction should be applied and insert a value mapping or Excel-style IF statement to change the failed value to a correct one. This took time, concentration and required a certain level of skill.</p>
+
+        <figure class="figure">
+          <div class="figure-portrait-frame">
+            <img src="media/ad-hoc-correction.png" width="1240" height="218" alt="A pipeline calculation step containing a hand-written IF statement that sets the Accident State to a fixed value when the policy number matches." loading="lazy">
+          </div>
+          <figcaption>Desire lines in the product: an ad hoc correction added by a user to a pipeline, modifying the Accident State for a specific policy number.</figcaption>
+        </figure>
+
+        <p>We had made it easier to add validation rules and implementations had become ambitious: clients had hundreds of rules and users spent days in the report analysing the results. There were aspects of the navigation and interaction that were proving cumbersome. We set out to fix this.</p>
+
+          <ul class="evidence-list">
+            <li>Users making ad hoc corrections in the pipeline</li>
+            <li>Specifically mentioned in sales process loss analysis</li>
+            <li>User feedback like &lsquo;I don&rsquo;t care about seeing the passed rules&rsquo; and &lsquo;When I go back to the report view after looking at a rule, my scroll position is lost&rsquo;.</li>
+            <li>Production pipelines had hundreds of rules, we&rsquo;d planned for dozens.</li>
+          </ul>
+
+        <figure class="figure">
+          <div class="figure-portrait-frame">
+            <img src="media/validation-report-passed.png" width="1416" height="1085" alt="An excerpt from a client&rsquo;s validation report: three pipeline stages of 0.9 to 2.8 million rows, each with a long list of rules that all passed." loading="lazy">
+          </div>
+          <figcaption>Validation reports had grown beyond the original design capacity. Excerpt from a client report.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+  <div class="card-modal" id="framing-modal" role="dialog" aria-modal="true" aria-labelledby="framing-modal-title" hidden>
+    <div class="card-modal-panel">
+      <div class="card-modal-head">
+        <svg class="framing-icon" width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7.3" stroke="#00D8AA" stroke-width="1"/><path d="M8 7.1v4.4" stroke="#00D8AA" stroke-width="1.1" stroke-linecap="round"/><circle cx="8" cy="4.8" r="0.75" fill="#00D8AA"/></svg>
+        <h2 class="framing-label" id="framing-modal-title">Problem framing</h2>
+        <button class="card-modal-close" type="button" aria-label="Close">&times;</button>
+      </div>
+      <div class="card-modal-body evidence-body case-body">
+        <div class="framing-pair">
+          <p class="framing-term">Client feedback</p>
+          <p class="framing-quote">&lsquo;I just want to edit the failed cell&rsquo;</p>
+          <p class="framing-term">Engineering constraint</p>
+          <p>Quantemplate is designed around rules-based transformations to data, so cell-level editing is not possible. Instead we need to make adding a rule as easy as editing a cell, and make its effect obvious.</p>
+        </div>
+        <div class="framing-pair">
+          <p class="framing-term">Client feedback</p>
+          <p class="framing-quote">&lsquo;When I go back to the report view after looking at a rule, my scroll position is lost&rsquo;.</p>
+          <p class="framing-term">Workflow analysis</p>
+          <p>The root problem isn&rsquo;t just the scroll position, but having to go back to the report to navigate to the next rule.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged image" tabindex="-1">
     <div class="lightbox-media">
       <img alt="">
@@ -2379,6 +2502,52 @@
       });
     })();
 
+  </script>
+  <script>
+    /* Problem's Evidence and Problem framing cards open their content in a
+       modal: Escape, the close button or a click on the backdrop closes it;
+       focus stays inside while open and returns to the card after. Leaves
+       Escape and Tab to the lightbox while one of its pictures is open. */
+    (function () {
+      var opener = null, open = null;
+      function lightboxOpen() { var lb = document.getElementById('lightbox'); return lb && lb.classList.contains('is-open'); }
+      function focusables(m) {
+        return Array.prototype.slice.call(m.querySelectorAll('button, [href], video[controls], [tabindex]:not([tabindex="-1"])')).filter(function (el) { return el.offsetParent !== null; });
+      }
+      function show(m, from) {
+        opener = from; open = m;
+        m.hidden = false;
+        document.documentElement.style.overflow = 'hidden';
+        requestAnimationFrame(function () { m.classList.add('is-open'); });
+        m.querySelector('.card-modal-close').focus();
+      }
+      function hide() {
+        if (!open) return;
+        var m = open; open = null;
+        m.classList.remove('is-open');
+        document.documentElement.style.overflow = '';
+        setTimeout(function () { if (!m.classList.contains('is-open')) m.hidden = true; }, 200);
+        if (opener) opener.focus();
+      }
+      document.querySelectorAll('.side-card[aria-controls]').forEach(function (b) {
+        var m = document.getElementById(b.getAttribute('aria-controls'));
+        if (!m) return;
+        b.addEventListener('click', function () { show(m, b); });
+        m.querySelector('.card-modal-close').addEventListener('click', hide);
+        m.addEventListener('click', function (e) { if (e.target === m) hide(); });
+      });
+      document.addEventListener('keydown', function (e) {
+        if (!open || lightboxOpen()) return;
+        if (e.key === 'Escape') { e.preventDefault(); hide(); }
+        else if (e.key === 'Tab') {
+          var f = focusables(open);
+          if (!f.length) return;
+          var first = f[0], last = f[f.length - 1];
+          if (e.shiftKey && (document.activeElement === first || !open.contains(document.activeElement))) { e.preventDefault(); last.focus(); }
+          else if (!e.shiftKey && (document.activeElement === last || !open.contains(document.activeElement))) { e.preventDefault(); first.focus(); }
+        }
+      });
+    })();
   </script>
   <script data-goatcounter="https://tomdegay.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
   <script>
