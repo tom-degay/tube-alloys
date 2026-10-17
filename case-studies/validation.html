@@ -1843,6 +1843,16 @@
   @media (min-width: 1024px) {
     .case-body .kd-slide .kd-media { aspect-ratio: 16 / 11; }
   }
+
+  /* Phones: every card in a carousel the height of its tallest; the
+     card's text fills the space under the picture with More at the foot,
+     so the buttons line up from card to card */
+  @media (max-width: 640px) {
+    .kd-reel-track { align-items: stretch; }
+    .kd-slide { display: flex; flex-direction: column; }
+    .kd-text { flex: 1 1 auto; display: flex; flex-direction: column; align-items: flex-start; }
+    .kd-more { margin-top: auto; padding-top: 16px; }
+  }
 </style>
 <script>
   (function () {
