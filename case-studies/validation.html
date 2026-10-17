@@ -138,6 +138,26 @@
 
   .kd-reel-dial { margin: 4px auto 0; }
 
+  /* the big heading over the carousel, in the Problem statement's size */
+  .case-body h3.kd-heading {
+    margin: clamp(40px, 5vw, 64px) 0 0;
+    font-size: clamp(32px, 4.4vw, 56px);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: #fff;
+  }
+  /* each decision's number, big and grey, over its headline */
+  .case-body .kd-text p.kd-num {
+    margin: 0 0 8px;
+    font-family: "Fakt Blond", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    font-size: clamp(44px, 4.4vw, 72px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: rgba(255, 255, 255, 0.3);
+    font-variant-numeric: tabular-nums;
+  }
+
   /* Approach: one Framing card holding each feedback / reframing pair,
      separated by a hairline */
   .framing-pair + .framing-pair {
@@ -1608,6 +1628,7 @@
         <!-- The five decisions as a carousel, as Image Insight's screens:
              each picture big, its headline and strapline beneath, the
              rest of the text in a collapsing section. -->
+        <h3 class="display kd-heading">Five design decisions</h3>
         <div class="kd-reel">
           <div class="kd-reel-track" id="kd-reel-track" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Applying corrections: design decisions">
           <div class="kd-slide is-current" id="kd-entering" role="group" aria-roledescription="slide" aria-label="1 of 5">
@@ -1615,6 +1636,7 @@
               <img src="media/corrections-detail.png" width="2000" height="1351" alt="The validation report with corrections: for the failed Effective and Expiry columns, each original value in red sits beside an editable correction field, one per row." loading="lazy">
             </figure>
             <div class="kd-text">
+              <p class="kd-num" aria-hidden="true">01</p>
               <h4 class="kd-title">Show before and after</h4>
               <p class="kd-strap">Keep the original value beside the correction</p>
               <details class="kd-more">
@@ -1660,6 +1682,7 @@
               <figcaption>Entering a correction. The popup makes the scope explicit &mdash; every matching value, or only where a condition is met &mdash; with a formula bar for deriving the value from another column.</figcaption>
             </figure>
             <div class="kd-text">
+              <p class="kd-num" aria-hidden="true">02</p>
               <h4 class="kd-title">Make the scope of changes obvious</h4>
               <p class="kd-strap">Make clear which values a correction will affect</p>
               <details class="kd-more">
@@ -1690,6 +1713,7 @@
               <figcaption>Each edit to a failed value is recorded and displayed, building trust in the change and helping our clients meet their audit goals</figcaption>
             </figure>
             <div class="kd-text">
+              <p class="kd-num" aria-hidden="true">03</p>
               <h4 class="kd-title">Preserve evidence</h4>
               <p class="kd-strap">Keep a record of who changed what and when</p>
               <details class="kd-more">
@@ -1711,6 +1735,7 @@
               </div>
             </figure>
             <div class="kd-text">
+              <p class="kd-num" aria-hidden="true">04</p>
               <h4 class="kd-title">Give immediate feedback</h4>
               <p class="kd-strap">Check the correction now, apply it on the next run</p>
               <details class="kd-more">
@@ -1728,6 +1753,7 @@
               <figcaption>Behind each validation is a log of all corrections applied, allowing reordering of correction rules. We uncovered the need for this in QA testing.</figcaption>
             </figure>
             <div class="kd-text">
+              <p class="kd-num" aria-hidden="true">05</p>
               <h4 class="kd-title" id="implementation-heading">Ordering matters</h4>
               <p class="kd-strap">Let users review and reorder overlapping corrections</p>
               <details class="kd-more">
