@@ -1,0 +1,897 @@
+/* ==================================================================
+   Case study, second-generation treatment.
+
+   Shared by the case studies that use the widescreen 12-column layout,
+   big statements, carousels with expandable cards, side cards that open
+   as modals, and numbered outcome cards. First built inline on
+   validation.html; this file is the shared copy (Column mapping loads
+   it). It must load AFTER the page's own <style> block, since several
+   rules here deliberately override the page's base rules (the 46rem
+   .content measure, the meta row, the section dividers).
+   ================================================================== */
+
+/* -- Applying corrections: the five decisions as a carousel, as
+   Image Insight's screens: a full-width strip, the current picture
+   centred on the text column with its neighbours peeking in either
+   side. Runs off both window edges (html and body clip the overflow).
+   Under each picture its headline and strapline, and the rest of the
+   text in a collapsing section. -- */
+.kd-reel {
+  /* bigger than Image Insight's: a narrower peek, up to 76rem */
+  --reel-peek: clamp(24px, 7vw, 160px);
+  --reel-gap: clamp(12px, 2vw, 28px);
+  --reel-slide: max(min(46rem, 100vw - 2 * clamp(24px, 5vw, 56px)),
+                    min(76rem, 100vw - 2 * (var(--reel-peek) + var(--reel-gap))));
+  width: 100vw;
+  margin: clamp(28px, 4vw, 44px) 0 0 calc(50% - 50vw);
+}
+
+.kd-reel-track {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--reel-gap);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  padding: 4px calc((100vw - var(--reel-slide)) / 2) 28px;
+  scrollbar-width: none;
+  outline: none;
+}
+
+.kd-reel-track::-webkit-scrollbar { display: none; }
+
+.kd-reel-track.is-dragging, .kd-reel-track.is-gliding { scroll-snap-type: none; }
+
+.kd-reel-track.is-dragging { cursor: grabbing; user-select: none; }
+
+.kd-slide {
+  flex: 0 0 var(--reel-slide);
+  scroll-snap-align: center;
+}
+
+.kd-slide img { -webkit-user-drag: none; }
+
+.kd-slide:not(.is-current) .kd-media { cursor: pointer; }
+
+/* every picture in the same frame -- the page's figure frame, one
+   16:10 size for all five -- with the screenshot fitted inside so
+   nothing is cropped */
+.case-body .kd-slide .kd-media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  max-width: none;
+  aspect-ratio: 16 / 10;
+  background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
+  border-radius: 10px;
+  container-type: inline-size;
+}
+
+/* every screenshot at one height, at its own shape, with the page's
+   usual framing: rounded corners and a drop shadow (as
+   .figure-portrait-frame). The height is the widest screenshot's
+   (the scope popup, 16:9) at 92% of the frame's width, so all four fit;
+   the video is wider still and stays at the frame's width. */
+.kd-slide .kd-media > img {
+  display: block;
+  width: auto;
+  height: calc(92cqw * 1068 / 1899);
+  max-width: 92%;
+  margin: 0;
+  border-radius: 6px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* a video shrinks to its own shape within the same limits as the
+   screenshots: their height at most, the frame's width less 4% */
+.kd-slide .kd-media .ui-video {
+  width: auto;
+  max-width: 92%;
+  margin: 0;
+  border-radius: 6px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+.kd-slide .kd-media .ui-video video {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: calc(92cqw * 1068 / 1899);
+}
+
+/* captions stay in the markup for the lightbox, not under the picture */
+.kd-slide .kd-media figcaption { display: none; }
+
+/* headline, strapline and More: only the current slide's show, as on
+   Image Insight, so the neighbours' text doesn't peek in clipped */
+.kd-text {
+  max-width: 38rem;
+  margin-top: clamp(18px, 2vw, 28px);
+  transition: opacity 0.3s ease;
+}
+
+.kd-slide:not(.is-current) .kd-text { opacity: 0; pointer-events: none; }
+
+.case-body .kd-text h4.kd-title {
+  margin: 0;
+  font-family: "Fakt Blond SemiBold", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 600;
+  font-size: clamp(28px, 3vw, 44px);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: #fff;
+  text-wrap: balance;
+}
+
+.case-body .kd-text p.kd-strap { margin: 10px 0 0; font-size: clamp(18px, 1.6vw, 22px); line-height: 1.4; color: rgba(255, 255, 255, 0.55); }
+
+.kd-more { margin-top: 14px; }
+
+.kd-more > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  list-style: none;
+  cursor: pointer;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.68);
+  transition: color 0.15s ease;
+}
+
+.kd-more > summary::-webkit-details-marker { display: none; }
+
+.kd-more > summary:hover, .kd-more > summary:focus-visible { color: #fff; }
+
+.kd-more-body { padding-top: 16px; }
+
+.kd-more-body > :first-child { margin-top: 0; }
+
+/* Outcome: the headline results as a grid of cards under "Closing
+   the loop" (columns set in the widescreen block below) */
+.outcome-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(12px, 1.6vw, 20px);
+  max-width: 46rem;
+  margin: 0 0 clamp(32px, 4vw, 48px);
+  padding: 0;
+  list-style: none;
+}
+
+.outcome-cards li {
+  margin: 0;
+  padding: clamp(20px, 2.4vw, 30px);
+  border-radius: 10px;
+  background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
+  color: rgba(255, 255, 255, 0.82);
+  font-size: clamp(18px, 1.6vw, 22px);
+  line-height: 1.35;
+  text-wrap: pretty;
+}
+
+/* each card's number, big and grey, as on the carousel slides */
+.outcome-num {
+  display: block;
+  margin-bottom: 6px;
+  font-family: "Fakt Blond", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-size: clamp(44px, 4.4vw, 64px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: rgba(255, 255, 255, 0.3);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 640px) {
+  .outcome-cards { grid-template-columns: 1fr; }
+}
+
+/* iOS-style page dots on a soft pill, centred under the strip */
+.kd-dots {
+  display: flex;
+  width: max-content;
+  margin: 4px auto 0;
+  padding: 4px 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.kd-dots[hidden] { display: none; }
+
+.kd-dot {
+  appearance: none;
+  display: grid;
+  place-items: center;
+  width: 19px;
+  height: 19px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+}
+
+.kd-dot::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition: background-color 0.25s ease;
+}
+
+.kd-dot:hover::before { background: rgba(255, 255, 255, 0.55); }
+
+.kd-dot.is-current::before { background: #fff; }
+
+.kd-dot:focus-visible { outline: 2px solid #00d8aa; outline-offset: -2px; }
+
+/* the Approach workflow chart, shown big: the carousel slides' width,
+   centred on the text column */
+.case-body .figure-big .ui-video { max-width: none; }
+
+.case-body .figure-big {
+  --big-w: max(min(46rem, 100vw - 2 * clamp(24px, 5vw, 56px)),
+               min(76rem, 100vw - 2 * (clamp(24px, 7vw, 160px) + clamp(12px, 2vw, 28px))));
+  width: var(--big-w);
+  max-width: none;
+  margin-left: calc((100% - var(--big-w)) / 2);
+}
+
+/* the big heading over the carousel, in the Problem statement's size */
+/* "Step 1" / "Step 2": the step number on its own line, in grey */
+.step-label { display: block; color: rgba(255, 255, 255, 0.35); }
+
+.case-body h3.kd-heading {
+  margin: 0;
+  font-size: clamp(32px, 4.4vw, 56px);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+
+/* each decision's number, big and grey, over its headline */
+.case-body .kd-text p.kd-num {
+  margin: 0 0 8px;
+  font-family: "Fakt Blond", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-size: clamp(44px, 4.4vw, 72px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: rgba(255, 255, 255, 0.3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Approach: one Framing card holding each feedback / reframing pair,
+   separated by a hairline */
+.framing-pair + .framing-pair {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Problem: the section opens on one very large statement */
+.case-body p.problem-statement {
+  margin: 0 0 clamp(24px, 3vw, 40px);
+  font-size: clamp(32px, 4.4vw, 56px);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: #fff;
+  text-wrap: balance;
+}
+
+/* ================================================================
+   Widescreen layout. The main content area is as wide as the big
+   pictures and carousel slides (--wide, the same measure as
+   .figure-big and --reel-slide); paragraphs, cards and ordinary
+   figures keep their 46rem reading width, flush with its left edge.
+   ================================================================ */
+.content {
+  --wide: max(min(46rem, 100vw - 2 * clamp(24px, 5vw, 56px)),
+              min(76rem, 100vw - 2 * (clamp(24px, 7vw, 160px) + clamp(12px, 2vw, 28px))));
+  max-width: var(--wide);
+}
+
+/* dividers and the project metadata run the full width */
+.content > header > hr.rule,
+.content > hr.rule,
+.case-body hr.rule,
+.meta-row { max-width: none; }
+
+/* subsections open out to the full width too; their text keeps its
+   own 46rem measure */
+.case-body .subsection { max-width: none; }
+
+/* the big pictures now simply fill the content area */
+.case-body .figure-big { width: 100%; margin-left: 0; }
+
+/* the wide figure fills the content area too, rather than reaching
+   out past a narrow column */
+@media (min-width: 1200px) {
+  .figure-wide { width: 100%; margin-left: 0; }
+}
+
+/* Outcome cards: four across the full width, two on tablets, one on
+   phones */
+.outcome-cards { max-width: none; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+@media (max-width: 1023px) {
+  .outcome-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  .outcome-cards { grid-template-columns: 1fr; }
+}
+
+/* Project details: four across once the content area is wide */
+@media (min-width: 1100px) {
+  .meta-row { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+/* Problem: the text on the left at its reading width, the Evidence and
+   Problem framing cards in a column on the right; stacked below 1024px */
+.problem-layout { display: block; }
+
+@media (min-width: 1024px) {
+  .problem-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 46rem) minmax(0, 1fr);
+    column-gap: clamp(32px, 4vw, 64px);
+    align-items: start;
+  }
+  .problem-side { padding-top: 0; }
+}
+
+.problem-side { display: grid; gap: 14px; margin-top: 28px; }
+
+@media (min-width: 1024px) {
+  .problem-side { margin-top: 0; }
+}
+
+.side-card {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 18px 22px;
+  border: 0;
+  border-radius: 10px;
+  background: rgb(33, 33, 33);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.side-card:hover, .side-card:focus-visible { background: rgb(44, 44, 44); }
+
+.side-card:focus-visible { outline: 2px solid #00d8aa; outline-offset: 2px; }
+
+.side-card .framing-label { flex: 1 1 auto; }
+
+/* the card's More: the carousels' label and arrow, without the pill
+   (the card itself is the button) */
+.side-card-open {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 3px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 15px;
+  line-height: 1;
+  transition: color 0.15s ease;
+}
+
+.side-card-open svg { display: block; flex: none; transition: transform 0.18s cubic-bezier(.2, .8, .2, 1); }
+
+.side-card-open-label {
+  font-family: "Fakt Blond SemiBold", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 600;
+  transform: translateY(1px);
+}
+
+/* the arrow in the label's grey, at rest and on hover */
+.side-card .side-card-open, .side-card:hover .side-card-open, .side-card:focus-visible .side-card-open { color: rgba(255, 255, 255, 0.45); }
+
+.side-card:active .side-card-open svg { transform: scale(0.88); }
+
+@media (prefers-reduced-motion: reduce) { .side-card-open svg { transition: none; transform: none !important; } }
+
+/* the cards' content, in a modal over the page (below the lightbox, so
+   its pictures can still open full size) */
+.card-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 4vw, 48px);
+  background: rgba(0, 0, 0, 0.72);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.card-modal[hidden] { display: none; }
+
+.card-modal.is-open { opacity: 1; }
+
+/* the title and close button stay put at the top; only the content
+   under them scrolls */
+.card-modal-panel {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: min(46rem, 100%);
+  max-height: 100%;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #1f1f1f;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+  transform: translateY(8px);
+  transition: transform 0.25s cubic-bezier(.2, .8, .2, 1);
+}
+
+.card-modal.is-open .card-modal-panel { transform: none; }
+
+.card-modal-head {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: clamp(18px, 2.4vw, 28px) clamp(20px, 3vw, 36px) 14px;
+}
+
+.card-modal-head h2.framing-label { flex: 1 1 auto; margin: 0; }
+
+/* the content fades out against the top strip and the panel's foot
+   when there's more of it to scroll to (the script sets the fades) */
+.card-modal-body {
+  --fade-top: 0px;
+  --fade-bottom: 0px;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 6px clamp(20px, 3vw, 36px) clamp(20px, 3vw, 36px);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 var(--fade-top), #000 calc(100% - var(--fade-bottom)), transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 var(--fade-top), #000 calc(100% - var(--fade-bottom)), transparent 100%);
+}
+
+.card-modal-body > :first-child { margin-top: 0; }
+
+.card-modal-body > :last-child { margin-bottom: 0; }
+
+/* ================================================================
+   12-column grid. From 1024px everything below the hero sits on one
+   12-column grid across the content area (--wide), with a single
+   gutter (--g); every block starts on column 1. Reading text spans
+   columns 1-7, headings and the big statements 1-8, pictures,
+   carousels, dividers and card rows all 12, and Problem's cards sit
+   on 9-12. The project details and Outcome cards are four equal
+   tracks on the same gutter, so each lands on exactly three columns.
+   Widths are set on the blocks rather than by making the sections
+   CSS grids, so their vertical margins still collapse as before.
+   Below 1024px the page stacks as before.
+   ================================================================ */
+.content {
+  --g: clamp(16px, 2vw, 28px);
+  --col: calc((var(--wide) - 11 * var(--g)) / 12);
+  --span7: calc(7 * var(--col) + 6 * var(--g));
+  --span8: calc(8 * var(--col) + 7 * var(--g));
+}
+
+.meta-row { column-gap: var(--g); }
+
+.outcome-cards { gap: var(--g); }
+
+@media (min-width: 1024px) {
+  /* reading text: seven columns */
+  .content .case-body > p:not(.problem-statement),
+  .content .case-body > ul,
+  .content .case-body > blockquote,
+  .content .case-body > .corrections-chart,
+  .content .case-body > .case-block,
+  .content .problem-main > p:not(.problem-statement),
+  .content .case-footer > .case-block,
+  .kd-text { max-width: var(--span7); }
+  /* headings and big statements: eight */
+  .content .case-body > h2,
+  .content .case-body > h3,
+  .content .case-body .subsection > h3,
+  .content .case-body p.problem-statement { max-width: var(--span8); }
+  /* full width: pictures, carousels, dividers, card rows */
+  .content .case-body .figure-wide { width: 100%; max-width: none; margin-left: 0; }
+  .content .case-body > .outcome-cards { max-width: none; }
+  /* Problem: text on columns 1-7, the cards on 9-12 */
+  .content .problem-layout {
+    grid-template-columns: var(--span7) minmax(0, 1fr);
+    column-gap: calc(var(--col) + 2 * var(--g));
+  }
+}
+
+/* More air between sections: the dividers between them (and the one
+   before Corrections in action) get a larger margin either side */
+.content > hr.rule,
+.content > header + hr.rule,
+.content .case-body .subsection > hr.rule { margin: clamp(56px, 7vw, 112px) 0; }
+
+/* Carousels on wide screens: the text on columns 1-4 and the picture
+   beside it on 5-12, so a whole slide (and the dots under it) fits a
+   laptop's shallow window. Below 1024px the text stays under the
+   picture. */
+@media (min-width: 1024px) {
+  .content {
+    --span4: calc(4 * var(--col) + 3 * var(--g));
+  }
+  .kd-slide {
+    display: grid;
+    grid-template-columns: var(--span4) minmax(0, 1fr);
+    column-gap: var(--g);
+    align-items: start;
+  }
+  .case-body .kd-slide .kd-media { grid-column: 2; grid-row: 1; }
+  .kd-text { grid-column: 1; grid-row: 1; max-width: none; margin-top: 0; padding-top: 4px; }
+  /* the dots sit directly under the picture, centred on it: the
+     strip's top padding (4px) + the 16:10 frame's height + a gap */
+  .kd-reel { position: relative; }
+  .kd-dots {
+    position: absolute;
+    top: calc(4px + var(--span8) * 10 / 16 + 14px);
+    left: calc((100vw - var(--reel-slide)) / 2 + var(--span4) + var(--g) + var(--span8) / 2);
+    transform: translateX(-50%);
+    margin: 0;
+  }
+  /* room under the picture for the dots */
+  .kd-reel-track { padding-bottom: 52px; }
+}
+
+/* Carousel slides as cards: the grey frame holds the text and the
+   picture together (text beside the picture from 1024px, under it
+   below). More opens the slide in a modal with the picture and all
+   its text. */
+.kd-slide {
+  box-sizing: border-box;
+  border-radius: 10px;
+  background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
+  padding: clamp(16px, 2.2vw, 32px);
+}
+
+.case-body .kd-slide .kd-media { background: none; border-radius: 0; }
+
+.kd-text { margin-top: clamp(16px, 2vw, 24px); }
+
+.kd-more { margin-top: 16px; }
+
+.kd-more > summary { gap: 7px; }
+
+.kd-more-body { display: none; }
+
+@media (min-width: 1024px) {
+  .kd-slide {
+    grid-template-columns: calc(var(--span4) - clamp(16px, 2.2vw, 32px)) minmax(0, 1fr);
+  }
+  .kd-text { margin-top: 0; padding-top: 4px; }
+  /* dots back in the flow, centred under the cards */
+  .kd-reel { position: static; }
+  .kd-dots { position: static; transform: none; margin: 4px auto 0; }
+  .kd-reel-track { padding-bottom: 28px; }
+}
+
+/* the slide modal: wider, for the picture */
+.kd-modal .card-modal-panel { width: min(64rem, 100%); }
+
+.kd-modal-title {
+  flex: 1 1 auto;
+  margin: 0;
+  font-family: "Fakt Blond SemiBold", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 600;
+  font-size: clamp(24px, 2.6vw, 36px);
+  line-height: 1.2;
+  color: #fff;
+}
+
+.kd-modal-num { color: rgba(255, 255, 255, 0.35); font-family: "Fakt Blond", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-weight: 400; margin-right: 6px; }
+
+.kd-modal .kd-modal-strap { margin: 0 0 20px; color: rgba(255, 255, 255, 0.55); font-size: clamp(18px, 1.6vw, 22px); line-height: 1.4; }
+
+.kd-modal-media { margin: 0 0 28px; }
+
+.kd-modal-media img,
+.kd-modal-media video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+.kd-modal-media figcaption { margin-top: 12px; }
+
+/* Phones: the card's padding mostly goes, so the picture fills the
+   card's width; only the text keeps a margin */
+@media (max-width: 640px) {
+  .kd-slide { padding: 6px 6px 18px; }
+  .case-body .kd-slide .kd-media { aspect-ratio: auto; }
+  .kd-slide .kd-media > img,
+  .kd-slide .kd-media .ui-video { max-width: 100%; }
+  .kd-slide .kd-media > img { width: 100%; height: auto; }
+  .kd-slide .kd-media .ui-video { width: 100%; }
+  .kd-slide .kd-media .ui-video video { width: 100%; max-height: none; }
+  .kd-text { padding: 0 10px; margin-top: 16px; }
+}
+
+/* cards inside a modal are always open: no More / Less, no pointer */
+.card-modal details.is-static > summary { cursor: default; pointer-events: none; }
+
+.card-modal details.is-static .evidence-toggle { display: none; }
+
+/* cards inside a modal: a lighter grey so they stand out from the
+   panel, and no hover change since they don't do anything */
+.card-modal .evidence-card,
+.card-modal .evidence-card:hover {
+  background-color: rgb(46, 46, 46);
+  border-color: rgb(46, 46, 46);
+  transform: none;
+}
+
+/* ----------------------------------------------------------------
+   Modal controls: the close (every modal) and the previous / next
+   pair (carousel modals). One family: 40px targets (44px on touch),
+   a quiet translucent fill with a hairline edge, icons drawn as 1.5px
+   strokes on a 20px grid rather than font glyphs, so they sit dead
+   centre. Previous / next share one segmented pill with a hairline
+   between them; the close is its own circle. Hover lifts the fill
+   and whitens the icon, a press
+   sinks the button slightly, focus gets the teal ring, and the
+   unavailable direction fades right back and stops responding.
+   ---------------------------------------------------------------- */
+.card-modal-head { gap: 12px; }
+
+.card-modal-close,
+.kd-modal-step {
+  --ctl: 40px;
+  appearance: none;
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: var(--ctl);
+  height: var(--ctl);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: rgba(255, 255, 255, 0.72);
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
+}
+
+.card-modal-close svg,
+.kd-modal-step svg {
+  display: block;
+  transition: transform 0.18s cubic-bezier(.2, .8, .2, 1);
+}
+
+@media (pointer: coarse) {
+  .card-modal-close, .kd-modal-step { --ctl: 44px; }
+}
+
+/* the close: its own circle */
+.card-modal-close {
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  margin-right: -4px;
+}
+
+/* previous / next: one segmented pill */
+.kd-modal-nav {
+  display: flex;
+  flex: none;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.kd-modal-step { width: calc(var(--ctl) + 4px); }
+
+.kd-modal-step:first-child { border-radius: 999px 0 0 999px; }
+
+.kd-modal-step:last-child { border-radius: 0 999px 999px 0; }
+
+.kd-modal-step + .kd-modal-step::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 11px;
+  bottom: 11px;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.card-modal-close:hover,
+.kd-modal-step:hover:not(:disabled) {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.card-modal-close:hover svg { transform: rotate(90deg); }
+
+.card-modal-close:active svg,
+.kd-modal-step:active:not(:disabled) svg { transform: scale(0.88); }
+
+.card-modal-close:focus-visible,
+.kd-modal-step:focus-visible {
+  outline: 2px solid #00d8aa;
+  outline-offset: 2px;
+  color: #fff;
+  z-index: 1;
+}
+
+.card-modal-close:focus:not(:focus-visible),
+.kd-modal-step:focus:not(:focus-visible) { outline: none; }
+
+.kd-modal-step:disabled { color: rgba(255, 255, 255, 0.22); cursor: default; }
+
+@media (prefers-reduced-motion: reduce) {
+  .card-modal-close svg, .kd-modal-step svg { transition: none; transform: none !important; }
+}
+
+.kd-modal .kd-modal-title { margin-right: 8px; }
+
+/* no captions inside the expanded cards (the lightbox still shows
+   them when a picture is opened full size) */
+.card-modal figcaption { display: none; }
+
+/* More: a pill in the same family as the modal controls -- 40px tall,
+   the translucent fill and hairline edge, the icon drawn on the same
+   20px grid at the same 1.5px stroke */
+.kd-more { margin-top: 20px; }
+
+.kd-more > summary {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  height: 40px;
+  padding: 0 11px 0 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 15px;
+  line-height: 1;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.kd-more > summary:hover { color: #fff; background-color: rgba(255, 255, 255, 0.1); }
+
+.kd-more > summary:focus-visible { color: #fff; outline: 2px solid #00d8aa; outline-offset: 2px; }
+
+.kd-more > summary:focus:not(:focus-visible) { outline: none; }
+
+.kd-more-icon { display: block; flex: none; transition: transform 0.18s cubic-bezier(.2, .8, .2, 1); }
+
+/* the label in the semibold Fakt, nudged 1px down to sit optically
+   centred in the pill (Fakt's ink rides high in its line box) */
+.kd-more-open {
+  font-family: "Fakt Blond SemiBold", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 600;
+  transform: translateY(1px);
+}
+
+.kd-more > summary:active .kd-more-icon { transform: scale(0.88); }
+
+@media (pointer: coarse) { .kd-more > summary { height: 44px; } }
+
+@media (prefers-reduced-motion: reduce) { .kd-more-icon { transition: none; transform: none !important; } }
+
+/* the dots' pill in the More button's family: 40px tall (44px on
+   touch), the same translucent fill and hairline edge */
+.kd-dots {
+  box-sizing: border-box;
+  align-items: center;
+  height: 40px;
+  padding: 0 9px;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.kd-dot { width: 22px; height: 40px; border-radius: 0; }
+
+.kd-dot::before { background: rgba(255, 255, 255, 0.28); }
+
+.kd-dot:hover::before { background: rgba(255, 255, 255, 0.6); }
+
+.kd-dot.is-current::before { background: #fff; }
+
+.kd-dot:focus-visible { outline: 2px solid #00d8aa; outline-offset: -6px; border-radius: 999px; }
+
+@media (pointer: coarse) {
+  .kd-dots { height: 44px; }
+  .kd-dot { height: 44px; }
+}
+
+/* the expanded slide's picture sits in the page's usual frame */
+.kd-modal-media .figure-portrait-frame { margin: 0; }
+
+.kd-modal-media .figure-portrait-frame img,
+.kd-modal-media .figure-portrait-frame video { width: 100%; height: auto; }
+
+/* carousel cards ~10% taller on wide screens: the picture area goes
+   from 16:10 to 16:11 */
+@media (min-width: 1024px) {
+  .case-body .kd-slide .kd-media { aspect-ratio: 16 / 11; }
+}
+
+/* Phones: every card in a carousel the height of its tallest; the
+   card's text fills the space under the picture with More at the foot,
+   so the buttons line up from card to card */
+@media (max-width: 640px) {
+  .kd-reel-track { align-items: stretch; }
+  .kd-slide { display: flex; flex-direction: column; }
+  .kd-text { flex: 1 1 auto; display: flex; flex-direction: column; align-items: flex-start; }
+  .kd-more { margin-top: auto; padding-top: 16px; }
+}
+
+/* the green overline over "Corrections in action", spaced as the
+   section labels are over their headings */
+.case-body p.eyebrow.kd-eyebrow { margin: 0 0 20px; }
+
+/* the expanded slide's title: when it won't fit on one line, the
+   number takes its own line above the headline */
+.kd-modal-title.is-stacked .kd-modal-num { display: block; margin: 0 0 2px; }
+
+/* Preserve evidence: its screenshot is the squarest of the five, so at
+   the shared screenshot height it sat small in its frame; on wide
+   screens it takes the frame's full height (less the 4% margin) */
+@media (min-width: 1024px) {
+  #kd-evidence .kd-media > img { height: calc(100cqw * 11 / 16 * 0.92); max-height: 92%; }
+}
+
+/* Phones: no frame round the carousel pictures -- each picture runs
+   to the card's edges at the top, taking the card's corners, with no
+   rounding or shadow of its own */
+@media (max-width: 640px) {
+  .kd-slide { padding: 0 0 18px; overflow: hidden; }
+  .kd-slide .kd-media > img,
+  .kd-slide .kd-media .ui-video {
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .kd-text { padding: 0 16px; }
+}
+
+/* Phones: no grey frame round the pictures in the pop-ups either; the
+   picture sits straight on the panel */
+@media (max-width: 640px) {
+  .card-modal .figure-portrait-frame {
+    padding: 0;
+    background: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .card-modal .figure-portrait-frame img,
+  .card-modal .figure-portrait-frame > .ui-video,
+  .card-modal .figure-portrait-frame video { box-shadow: none; }
+}
+
+/* the intro under "Fix errors where you find them": reading width,
+   seven columns */
+.case-body .subsection > p.kd-intro { margin: clamp(24px, 3vw, 40px) 0 0; }
+
+/* as under "Improve the workflow" */
+@media (min-width: 1024px) {
+  .case-body .subsection > p.kd-intro { max-width: var(--span7); }
+}
