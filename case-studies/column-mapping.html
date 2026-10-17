@@ -1148,10 +1148,23 @@
     58%,70% {transform:scaleX(.75);} 79% {transform:scaleX(.875);}
     88%,100% {transform:scaleX(1);}
   }
+
+  /* the study icon above the title appears drawn, without the stroke
+     animation the shared styles give it */
+  .case-icon-trace { animation: none; stroke-dasharray: none; }
 </style>
 <link rel="stylesheet" href="/case-studies/case-study-v2.css?v=20261017a">
 <style>
   /* Column mapping's own additions to the shared treatment */
+  /* Phones: no frames round the pictures; each sits straight on the
+     page with its own rounded corners */
+  @media (max-width: 640px) {
+    .figure-portrait-frame { padding: 0; background: none; border-radius: 0; box-shadow: none; }
+    .figure-portrait-frame img,
+    .figure-portrait-frame > .ui-video,
+    .figure-portrait-frame > .figure-strip-imgs { box-shadow: none; }
+    .mapping-tabs-detail { padding: 0; background: none; }
+  }
   .case-body > p.kd-intro { margin: clamp(24px, 3vw, 40px) 0 0; }
   /* text straight under a Step heading gets the same gap as kd-intro */
   .case-body > h3.kd-heading + .problem-layout,

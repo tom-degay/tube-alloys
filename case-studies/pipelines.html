@@ -676,6 +676,10 @@
     58%,70% {transform:scaleX(.75);} 79% {transform:scaleX(.875);}
     88%,100% {transform:scaleX(1);}
   }
+
+  /* the study icon above the title appears drawn, without the stroke
+     animation the shared styles give it */
+  .case-icon-trace { animation: none; stroke-dasharray: none; }
 </style>
 <script>
   (function () {
