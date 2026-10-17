@@ -29,10 +29,98 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/dial.css">
+<script src="/dial.js"></script>
 <link rel="stylesheet" href="/nav.css?v=20261016d">
 <style>
 
   html { scroll-padding-top: 100px; }
+
+  /* -- Applying corrections: the five decisions as a carousel, after the
+     homepage quotes strip. Runs off both window edges (html and body clip
+     the overflow); the first card starts on the text column's edge. -- */
+  .kd-reel {
+    --reel-gap: clamp(12px, 2vw, 28px);
+    --reel-slide: min(36rem, 100vw - 2 * clamp(32px, 8vw, 160px));
+    width: 100vw;
+    margin: 40px 0 0 calc(50% - 50vw);
+  }
+  .kd-reel-track {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    gap: var(--reel-gap);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    --reel-start: clamp(24px, 5vw, 56px);
+    padding: 4px var(--reel-start) 28px;
+    scroll-padding-inline: var(--reel-start);
+    scrollbar-width: none;
+    outline: none;
+  }
+  .kd-reel-track::-webkit-scrollbar { display: none; }
+  .kd-reel-track.is-dragging, .kd-reel-track.is-gliding { scroll-snap-type: none; }
+  .kd-reel-track.is-dragging { cursor: grabbing; user-select: none; }
+
+  .kd-slide {
+    flex: 0 0 var(--reel-slide);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    scroll-snap-align: start;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #1f1f1f;
+  }
+  .kd-slide:not(.is-current) { cursor: pointer; }
+
+  /* the picture: one shape for every card, the screenshot fitted inside
+     on black so nothing is cropped */
+  .case-body .kd-slide .kd-media {
+    position: relative;
+    flex: none;
+    margin: 0;
+    max-width: none;
+    aspect-ratio: 16 / 10;
+    background: #0b0b0b;
+  }
+  /* pinned to the box, so the screenshot's own size can't stretch it */
+  .kd-slide .kd-media > img,
+  .kd-slide .kd-media .ui-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .kd-slide .kd-media > img,
+  .kd-slide .kd-media .ui-video video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  /* captions stay in the markup for the lightbox, not on the card */
+  .kd-slide .kd-media figcaption { display: none; }
+
+  .kd-text { padding: clamp(20px, 2.4vw, 30px); }
+  .case-body .kd-text h4.kd-title {
+    margin: 0 0 10px;
+    font-family: "Fakt Blond SemiBold", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 600;
+    font-size: clamp(19px, 1.5vw, 22px);
+    line-height: 1.3;
+    color: #fff;
+  }
+  .case-body .kd-text p { margin: 0; font-size: 17px; line-height: 1.55; }
+  .kd-text .evidence-card { margin-top: 20px; }
+
+  .kd-reel-dial { margin: 4px auto 0; }
 
   /* Approach: one Framing card holding each feedback / reframing pair,
      separated by a hairline */
@@ -1501,152 +1589,113 @@
           </div>
         </figure>
         <p>Users needed to fix failed values directly in the report, without losing the source data or the audit trail. Five principles shaped how corrections are entered, checked and recorded.</p>
-        <div class="problem-items">
-          <details class="problem-item" id="kd-entering">
-            <summary>
-              <span class="problem-item-icon" aria-hidden="true"></span>
-              <span class="problem-item-title">Show before and after</span>
-              <span class="problem-item-teaser">Keep the original value beside the <span class="problem-item-tail">correction <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
-              <span class="problem-item-badge"><svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg><span class="framing-label">Design validation</span></span>
-            </summary>
-            <div class="problem-item-body">
-<figure class="figure">
-            <div class="figure-portrait-frame">
+        <!-- The five decisions as a carousel, as the homepage quotes:
+             picture on top, text beneath. -->
+        <div class="kd-reel">
+          <div class="kd-reel-track" id="kd-reel-track" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Applying corrections: design decisions">
+          <article class="kd-slide is-current" id="kd-entering" role="group" aria-roledescription="slide" aria-label="1 of 5">
+            <figure class="figure kd-media">
               <img src="media/corrections-detail.png" width="2000" height="1351" alt="The validation report with corrections: for the failed Effective and Expiry columns, each original value in red sits beside an editable correction field, one per row." loading="lazy">
-            </div>
-          </figure>
-          <p>Corrections are shown beside the original submitted values. I chose this side-by-side layout to preserve the source data and make it clear that users are creating a mapping, rather than editing the original cell.</p>
-          <p>Corrected values stand out in bright green. If no correction has been applied, the placeholder text shows the current value. This helps the user understand exactly what the output data will be.</p>
-
-          <details class="evidence-card evidence-disclosure framing-card">
-        <summary class="framing-head">
-              <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
-              <span class="framing-label">Design validation</span>
-
-          <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
-        </summary>
-        <div class="evidence-body">
-<figure class="figure">
-              <div class="figure-portrait-frame">
-                <div class="design-pair">
-                  <figure>
-                    <img src="media/corrections-before.png" width="1150" height="885" alt="First prototype of the corrections view: correction fields that don&rsquo;t read as editable, beside adjacent failed columns." loading="lazy">
-                    <figcaption>First prototype</figcaption>
-                  </figure>
-                  <figure>
-                    <img src="media/corrections-after.png" width="1150" height="885" alt="Revised corrections view: each row has a clearly defined entry field, linked to its original value, in a refined colour palette." loading="lazy">
-                    <figcaption>Improved design</figcaption>
-                  </figure>
-                </div>
-              </div>
             </figure>
-            <p>I tested the prototype with a small cohort of expert users. Testing exposed two issues: users didn&rsquo;t recognise the correction fields as editable, and adjacent failed columns made it difficult to tell which values belonged together.</p>
-            <p>I revised the design to give each row a clearly defined entry field, strengthen the link between original and corrected values, and refine the colour palette.</p>
-        </div>
-      </details>
+            <div class="kd-text">
+              <h4 class="kd-title">Show before and after</h4>
+              <p>Corrections are shown beside the original submitted values. I chose this side-by-side layout to preserve the source data and make it clear that users are creating a mapping, rather than editing the original cell. Corrected values stand out in bright green. If no correction has been applied, the placeholder text shows the current value. This helps the user understand exactly what the output data will be.</p>
+              <details class="evidence-card evidence-disclosure framing-card">
+            <summary class="framing-head">
+                  <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
+                  <span class="framing-label">Design validation</span>
+
+              <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
+            </summary>
+            <div class="evidence-body">
+    <figure class="figure">
+                  <div class="figure-portrait-frame">
+                    <div class="design-pair">
+                      <figure>
+                        <img src="media/corrections-before.png" width="1150" height="885" alt="First prototype of the corrections view: correction fields that don&rsquo;t read as editable, beside adjacent failed columns." loading="lazy">
+                        <figcaption>First prototype</figcaption>
+                      </figure>
+                      <figure>
+                        <img src="media/corrections-after.png" width="1150" height="885" alt="Revised corrections view: each row has a clearly defined entry field, linked to its original value, in a refined colour palette." loading="lazy">
+                        <figcaption>Improved design</figcaption>
+                      </figure>
+                    </div>
+                  </div>
+                </figure>
+                <p>I tested the prototype with a small cohort of expert users. Testing exposed two issues: users didn&rsquo;t recognise the correction fields as editable, and adjacent failed columns made it difficult to tell which values belonged together.</p>
+                <p>I revised the design to give each row a clearly defined entry field, strengthen the link between original and corrected values, and refine the colour palette.</p>
             </div>
           </details>
-
-          <details class="problem-item" id="kd-scope">
-            <summary>
-              <span class="problem-item-icon" aria-hidden="true"></span>
-              <span class="problem-item-title">Make the scope of changes obvious</span>
-              <span class="problem-item-teaser">Make clear which values a correction will <span class="problem-item-tail">affect <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
-              <span class="problem-item-badge"><svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg><span class="framing-label">Design validation</span></span>
-            </summary>
-            <div class="problem-item-body">
-<p>Quantemplate applies corrections to bulk data rather than isolated cells, so we needed to make this clear. When a user selects a field, it opens a popup where they enter the correction. The UI makes it clear that corrections can apply to every matching value or use conditions, such as correcting Premium only for a specific Policy Number.</p>
-          <p>We added a formula bar, so users could derive a value from another column. For example, if a date is missing, take the date from another column and subtract one month. Based on what we&rsquo;d observed in production pipelines, this would be a necessary addition.</p>
-
-          <figure class="figure figure-wide">
-            <div class="figure-portrait-frame">
+            </div>
+          </article>
+          <article class="kd-slide" id="kd-scope" role="group" aria-roledescription="slide" aria-label="2 of 5">
+            <figure class="figure kd-media">
               <img src="media/validation-corrections-preview.png" width="1899" height="1068" alt="Quantemplate's validation report: flagged errors beside an editable corrections column, with the correction popup open on a row." loading="lazy">
-            </div>
-            <figcaption>Entering a correction. The popup makes the scope explicit &mdash; every matching value, or only where a condition is met &mdash; with a formula bar for deriving the value from another column.</figcaption>
-          </figure>
+              <figcaption>Entering a correction. The popup makes the scope explicit &mdash; every matching value, or only where a condition is met &mdash; with a formula bar for deriving the value from another column.</figcaption>
+            </figure>
+            <div class="kd-text">
+              <h4 class="kd-title">Make the scope of changes obvious</h4>
+              <p>Quantemplate applies corrections to bulk data rather than isolated cells, so we needed to make this clear. When a user selects a field, it opens a popup where they enter the correction. The UI makes it clear that corrections can apply to every matching value or use conditions, such as correcting Premium only for a specific Policy Number. We added a formula bar, so users could derive a value from another column. For example, if a date is missing, take the date from another column and subtract one month. Based on what we&rsquo;d observed in production pipelines, this would be a necessary addition.</p>
+              <details class="evidence-card evidence-disclosure framing-card">
+            <summary class="framing-head">
+                  <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
+                  <span class="framing-label">Design validation</span>
 
-          <details class="evidence-card evidence-disclosure framing-card">
-        <summary class="framing-head">
-              <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
-              <span class="framing-label">Design validation</span>
-
-          <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
-        </summary>
-        <div class="evidence-body">
-<p>We had identified the need for multiple matching conditions, for example to apply one correction across several policy numbers. A walk-through of the design specification with a cohort of expert users confirmed it. Their feedback was that this would be much easier than wrangling Excel-style IF statements, opening corrections up to users with less technical skill.</p>
-        </div>
-      </details>
+              <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
+            </summary>
+            <div class="evidence-body">
+    <p>We had identified the need for multiple matching conditions, for example to apply one correction across several policy numbers. A walk-through of the design specification with a cohort of expert users confirmed it. Their feedback was that this would be much easier than wrangling Excel-style IF statements, opening corrections up to users with less technical skill.</p>
             </div>
           </details>
-
-          <details class="problem-item" id="kd-evidence">
-            <summary>
-              <span class="problem-item-icon" aria-hidden="true"></span>
-              <span class="problem-item-title">Preserve evidence</span>
-              <span class="problem-item-teaser">Keep a record of who changed what and <span class="problem-item-tail">when <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
-            </summary>
-            <div class="problem-item-body">
-<p>Audit was important to our clients, who use Quantemplate as a system-of-record for financial reporting. To support this we displayed the original failed values alongside the corrected rows in the report. The full change history of each edit was displayed.</p>
-
-          <figure class="figure">
-            <div class="figure-portrait-frame">
+            </div>
+          </article>
+          <article class="kd-slide" id="kd-evidence" role="group" aria-roledescription="slide" aria-label="3 of 5">
+            <figure class="figure kd-media">
               <img src="media/validation-history.png" width="1254" height="1004" alt="The correction popup with a Correction history section below the Apply button, listing successive edits to a value with the editor's name and a timestamp for each." loading="lazy">
+              <figcaption>Each edit to a failed value is recorded and displayed, building trust in the change and helping our clients meet their audit goals</figcaption>
+            </figure>
+            <div class="kd-text">
+              <h4 class="kd-title">Preserve evidence</h4>
+              <p>Audit was important to our clients, who use Quantemplate as a system-of-record for financial reporting. To support this we displayed the original failed values alongside the corrected rows in the report. The full change history of each edit was displayed.</p>
             </div>
-            <figcaption>Each edit to a failed value is recorded and displayed, building trust in the change and helping our clients meet their audit goals</figcaption>
-          </figure>
-            </div>
-          </details>
-
-          <details class="problem-item" id="kd-feedback">
-            <summary>
-              <span class="problem-item-icon" aria-hidden="true"></span>
-              <span class="problem-item-title">Give immediate feedback</span>
-              <span class="problem-item-teaser">Check the correction now, apply it on the next <span class="problem-item-tail">run <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
-            </summary>
-            <div class="problem-item-body">
-<p>Corrections are applied to the output on the next pipeline run. Rather than wait for the run to complete to find out if a correction will now pass, after a field is completed, we check that the entered value will pass the rule, and warn if it&rsquo;s still a fail.</p>
-
-          <div class="figure-portrait-frame">
-            <div class="ui-video" data-hover-controls>
-              <video autoplay muted loop playsinline disablepictureinpicture poster="media/validation-instant-check.jpg">
+          </article>
+          <article class="kd-slide" id="kd-feedback" role="group" aria-roledescription="slide" aria-label="4 of 5">
+            <figure class="figure kd-media">
+              <div class="ui-video" data-hover-controls>
+                <video autoplay muted loop playsinline disablepictureinpicture poster="media/validation-instant-check.jpg">
                 <source src="media/validation-instant-check.mp4" type="video/mp4">
-              </video>
-            <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+                </video>
+                <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+                </div>
+            </figure>
+            <div class="kd-text">
+              <h4 class="kd-title">Give immediate feedback</h4>
+              <p>Corrections are applied to the output on the next pipeline run. Rather than wait for the run to complete to find out if a correction will now pass, after a field is completed, we check that the entered value will pass the rule, and warn if it&rsquo;s still a fail.</p>
             </div>
-          </div>
-            </div>
-          </details>
-
-          <details class="problem-item" id="impl-ordering">
-            <summary>
-              <span class="problem-item-icon" aria-hidden="true"></span>
-              <span class="problem-item-title" id="implementation-heading">Ordering matters</span>
-              <span class="problem-item-teaser">Let users review and reorder overlapping <span class="problem-item-tail">corrections <span class="problem-item-more" aria-hidden="true"><svg width="12" height="3" viewBox="0 0 12 3" fill="currentColor"><circle cx="1.5" cy="1.5" r="1.25"/><circle cx="6" cy="1.5" r="1.25"/><circle cx="10.5" cy="1.5" r="1.25"/></svg></span></span></span>
-              <span class="problem-item-badge"><svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg><span class="framing-label">Engineering constraint</span></span>
-            </summary>
-            <div class="problem-item-body">
-<p>One of the things we discovered in testing, as part of our internal QA process, was that the order in which corrections apply is important, since one correction could overwrite a prior one. We created an interface showing all corrections applied to any validation rule, allowing users to reorder or remove them.</p>
-
-          <figure class="figure figure-wide">
-            <div class="figure-portrait-frame">
+          </article>
+          <article class="kd-slide" id="impl-ordering" role="group" aria-roledescription="slide" aria-label="5 of 5">
+            <figure class="figure kd-media">
               <img src="media/validation-correction-log.jpg" width="2000" height="1206" alt="A table of all corrections attached to one validation rule, with columns for order, column, the correction rule, last editor and last edit date." loading="lazy">
-            </div>
-            <figcaption>Behind each validation is a log of all corrections applied, allowing reordering of correction rules. We uncovered the need for this in QA testing.</figcaption>
-          </figure>
+              <figcaption>Behind each validation is a log of all corrections applied, allowing reordering of correction rules. We uncovered the need for this in QA testing.</figcaption>
+            </figure>
+            <div class="kd-text">
+              <h4 class="kd-title" id="implementation-heading">Ordering matters</h4>
+              <p>One of the things we discovered in testing, as part of our internal QA process, was that the order in which corrections apply is important, since one correction could overwrite a prior one. We created an interface showing all corrections applied to any validation rule, allowing users to reorder or remove them.</p>
+              <details class="evidence-card evidence-disclosure framing-card">
+            <summary class="framing-head">
+                  <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
+                  <span class="framing-label">Engineering constraint</span>
 
-          <details class="evidence-card evidence-disclosure framing-card">
-        <summary class="framing-head">
-              <svg class="framing-icon" width="32" height="17" viewBox="0 0 46 25" fill="none" aria-hidden="true"><path d="M33.6895 2.85254L43.0039 12.167L33.6895 21.4814V24.3096L45.832 12.167L33.6895 0.0244141V2.85254Z" fill="#605F5F"/><path d="M0 12.167L12.167 24.334L22.916 13.585L33.6641 24.333V21.5049L24.3301 12.1709L24.334 12.167L24.3301 12.1631L33.6641 2.8291V0.000976562L22.916 10.749L12.167 0L0 12.167ZM21.502 12.1631L21.498 12.167L21.502 12.1709L12.167 21.5059L2.82812 12.167L12.167 2.82812L21.502 12.1631Z" fill="#00D8AA"/></svg>
-              <span class="framing-label">Engineering constraint</span>
-
-          <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
-        </summary>
-        <div class="evidence-body">
-<p>Corrections aren&rsquo;t edits to cells: they&rsquo;re rules, applied in sequence each time the pipeline runs. When two rules match the same value, the later one wins, so the system can&rsquo;t settle the conflict on its own. Order had to become something users could see and control.</p>
-        </div>
-      </details>
+              <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
+            </summary>
+            <div class="evidence-body">
+    <p>Corrections aren&rsquo;t edits to cells: they&rsquo;re rules, applied in sequence each time the pipeline runs. When two rules match the same value, the later one wins, so the system can&rsquo;t settle the conflict on its own. Order had to become something users could see and control.</p>
             </div>
           </details>
+            </div>
+          </article>
+          </div>
+          <div class="kd-reel-dial tdg-dial" hidden></div>
         </div>
 
       </div>
@@ -2057,6 +2106,147 @@
           }
         });
       });
+    })();
+  </script>
+  <script>
+    /* Carousel: the dial follows the actual scroll position; a mouse
+       can drag the strip; clicking a screen that is not the current one
+       brings it in rather than opening it full size. Moves made here glide
+       on a gentle ease-in-out rather than the browser's brisk smooth
+       scroll, with snapping paused until they land. */
+    (function () {
+      var reel = document.querySelector(".kd-reel");
+      if (!reel) return;
+      var track = reel.querySelector(".kd-reel-track");
+      var slides = Array.prototype.slice.call(track.querySelectorAll(".kd-slide"));
+      var targetIndex = null;
+      var dial = TDGDial.create(reel.querySelector('.kd-reel-dial'), {
+        count: slides.length, item: 'decision', label: 'Applying corrections', controls: 'kd-reel-track',
+        onStep: function (step) { go((targetIndex === null ? current() : targetIndex) + step); }
+      });
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      // the strip starts on the page's content edge: measure it off the
+      // text column, and keep it current as the window changes
+      var edge = document.getElementById("applying-corrections") || reel.parentElement;
+      function setStart() {
+        track.style.setProperty("--reel-start", Math.max(16, Math.round(edge.getBoundingClientRect().left)) + "px");
+      }
+      setStart();
+      window.addEventListener("resize", setStart);
+
+      function startPad() { return parseFloat(getComputedStyle(track).paddingLeft) || 0; }
+
+      // where the track scrolls to bring slide i to the content edge, held
+      // within what the track can actually scroll
+      function centreOf(i) {
+        var max = track.scrollWidth - track.clientWidth;
+        return Math.max(0, Math.min(max, slides[i].offsetLeft - startPad()));
+      }
+
+      function current() {
+        if (track.scrollLeft >= track.scrollWidth - track.clientWidth - 2) return slides.length - 1;
+        var best = 0, dist = Infinity;
+        slides.forEach(function (s, i) {
+          var d = Math.abs(centreOf(i) - track.scrollLeft);
+          if (d < dist) { dist = d; best = i; }
+        });
+        return best;
+      }
+
+      var glide = null;
+      function stopGlide() {
+        targetIndex = null;
+        if (!glide) return;
+        cancelAnimationFrame(glide);
+        glide = null;
+        track.classList.remove("is-gliding");
+      }
+      function ease(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+
+      function go(i) {
+        i = Math.max(0, Math.min(slides.length - 1, i));
+        stopGlide();
+        targetIndex = i;
+        var from = track.scrollLeft, to = centreOf(i), dist = to - from;
+        if (reduce || Math.abs(dist) < 1) { track.scrollLeft = to; targetIndex = null; paint(); return; }
+        var dur = Math.min(1100, Math.max(650, 450 + Math.abs(dist) * 0.25)), t0 = null;
+        track.classList.add("is-gliding");
+        function step(now) {
+          if (t0 === null) t0 = now;
+          var t = Math.min(1, (now - t0) / dur);
+          track.scrollLeft = from + dist * ease(t);
+          paint();
+          if (t < 1) glide = requestAnimationFrame(step);
+          else { glide = null; targetIndex = null; track.classList.remove("is-gliding"); paint(); }
+        }
+        glide = requestAnimationFrame(step);
+      }
+
+      // a hand on the strip takes over from a glide in progress
+      ["wheel", "touchstart"].forEach(function (type) {
+        track.addEventListener(type, stopGlide, { passive: true });
+      });
+
+      var ticking = false;
+      function paint() {
+        ticking = false;
+        var i = current();
+        slides.forEach(function (s, si) { s.classList.toggle("is-current", si === i); });
+        // Fractional slide position makes the curved marks track swipes and glides exactly.
+        var phase = 0;
+        for (var n = 0; n < slides.length - 1; n++) {
+          var left = centreOf(n), right = centreOf(n + 1);
+          if (track.scrollLeft >= right) { phase = n + 1; continue; }
+          if (track.scrollLeft > left && right > left) phase = n + (track.scrollLeft - left) / (right - left);
+          break;
+        }
+        dial.render(phase, i);
+      }
+      track.addEventListener("scroll", function () {
+        if (!ticking) { ticking = true; requestAnimationFrame(paint); }
+      }, { passive: true });
+
+      window.addEventListener("resize", paint);
+      paint();
+
+      var drag = null, moved = false;
+      track.addEventListener("pointerdown", function (e) {
+        if (e.pointerType !== "mouse" || e.button !== 0) return;
+        stopGlide();
+        drag = { x: e.clientX, left: track.scrollLeft, from: current() };
+        moved = false;
+      });
+      window.addEventListener("pointermove", function (e) {
+        if (!drag) return;
+        var dx = e.clientX - drag.x;
+        if (!moved && Math.abs(dx) < 6) return;
+        if (!moved) { moved = true; track.classList.add("is-dragging"); }
+        track.scrollLeft = drag.left - dx;
+      });
+      window.addEventListener("pointerup", function (e) {
+        if (!drag) return;
+        var dx = e.clientX - drag.x, from = drag.from;
+        drag = null;
+        if (!moved) return;
+        // the click that follows a drag is swallowed below; clear the flag
+        // afterwards in case the drag ended off the strip and none comes
+        setTimeout(function () { moved = false; }, 0);
+        // a deliberate flick moves one screen even if it fell short of halfway
+        var to = current();
+        if (to === from && Math.abs(dx) > 60) to = from + (dx < 0 ? 1 : -1);
+        go(to);
+        track.classList.remove("is-dragging");
+      });
+
+      // capture phase, so it runs before the lightbox's own click handler
+      track.addEventListener("click", function (e) {
+        if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; return; }
+        var slide = e.target.closest(".kd-slide");
+        if (!slide) return;
+        var i = slides.indexOf(slide);
+        if (i !== current()) { e.preventDefault(); e.stopPropagation(); go(i); }
+      }, true);
     })();
   </script>
   <script data-goatcounter="https://tomdegay.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
