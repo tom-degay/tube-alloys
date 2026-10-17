@@ -120,8 +120,17 @@
     transition: opacity 0.3s ease;
   }
   .kd-slide:not(.is-current) .kd-text { opacity: 0; pointer-events: none; }
-  .case-body .kd-text h4.kd-title { margin: 0; }
-  .case-body .kd-text p.kd-strap { margin: 6px 0 0; color: rgba(255, 255, 255, 0.55); }
+  .case-body .kd-text h4.kd-title {
+    margin: 0;
+    font-family: "Fakt Blond SemiBold", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 600;
+    font-size: clamp(28px, 3vw, 44px);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: #fff;
+    text-wrap: balance;
+  }
+  .case-body .kd-text p.kd-strap { margin: 10px 0 0; font-size: clamp(18px, 1.6vw, 22px); line-height: 1.4; color: rgba(255, 255, 255, 0.55); }
 
   .kd-more { margin-top: 14px; }
   .kd-more > summary {
