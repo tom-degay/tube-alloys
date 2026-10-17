@@ -2569,13 +2569,34 @@
         raf = requestAnimationFrame(step);
       }
 
+      var touched = false;
       tabs.forEach(function (t) {
         var to = +t.getAttribute('data-state');
-        t.addEventListener('click', function () { go(to); });
+        t.addEventListener('click', function () { touched = true; go(to); });
         t.addEventListener('keydown', function (e) {
-          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(to); }
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); touched = true; go(to); }
         });
       });
+
+      // Autoplay: the first time the diagram is well in view, hold on the
+      // original workflow for a beat, then play the move to the improved
+      // one -- unless the reader has already picked a tab.
+      if (target === 0 && !reduced && 'IntersectionObserver' in window) {
+        var autoTimer = 0;
+        var autoIO = new IntersectionObserver(function (entries) {
+          var e = entries[0];
+          if (e.intersectionRatio >= 0.6) {
+            if (!autoTimer) autoTimer = setTimeout(function () {
+              autoIO.disconnect();
+              if (!touched) go(1);
+            }, 1200);
+          } else if (autoTimer) {
+            clearTimeout(autoTimer);
+            autoTimer = 0;
+          }
+        }, { threshold: [0, 0.6] });
+        autoIO.observe(svg);
+      }
       tabs.forEach(function (t) {
         var on = +t.getAttribute('data-state') === target;
         t.classList.toggle('is-active', on);
