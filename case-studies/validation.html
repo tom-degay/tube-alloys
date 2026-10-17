@@ -1441,24 +1441,17 @@
   .side-card:hover, .side-card:focus-visible { background: rgb(44, 44, 44); }
   .side-card:focus-visible { outline: 2px solid #00d8aa; outline-offset: 2px; }
   .side-card .framing-label { flex: 1 1 auto; }
-  /* the card's More: the same pill as the carousels' More (the whole
-     card is the button, so the pill answers to the card's hover) */
-  .side-card { padding-top: 12px; padding-bottom: 12px; }
+  /* the card's More: the carousels' label and arrow, without the pill
+     (the card itself is the button) */
   .side-card-open {
-    box-sizing: border-box;
     display: inline-flex;
     flex: none;
     align-items: center;
     gap: 3px;
-    height: 40px;
-    padding: 0 11px 0 18px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.06);
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
     color: rgba(255, 255, 255, 0.72);
     font-size: 15px;
     line-height: 1;
-    transition: background-color 0.15s ease, color 0.15s ease;
+    transition: color 0.15s ease;
   }
   .side-card-open svg { display: block; flex: none; transition: transform 0.18s cubic-bezier(.2, .8, .2, 1); }
   .side-card-open-label {
@@ -1466,7 +1459,7 @@
     font-weight: 600;
     transform: translateY(1px);
   }
-  .side-card:hover .side-card-open, .side-card:focus-visible .side-card-open { color: #fff; background-color: rgba(255, 255, 255, 0.1); }
+  .side-card:hover .side-card-open, .side-card:focus-visible .side-card-open { color: #fff; }
   .side-card:active .side-card-open svg { transform: scale(0.88); }
   @media (prefers-reduced-motion: reduce) { .side-card-open svg { transition: none; transform: none !important; } }
 
