@@ -1837,6 +1837,12 @@
   .kd-modal-media .figure-portrait-frame { margin: 0; }
   .kd-modal-media .figure-portrait-frame img,
   .kd-modal-media .figure-portrait-frame video { width: 100%; height: auto; }
+
+  /* carousel cards ~10% taller on wide screens: the picture area goes
+     from 16:10 to 16:11 */
+  @media (min-width: 1024px) {
+    .case-body .kd-slide .kd-media { aspect-ratio: 16 / 11; }
+  }
 </style>
 <script>
   (function () {
