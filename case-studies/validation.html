@@ -1652,6 +1652,19 @@
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
   }
   .kd-modal-media figcaption { margin-top: 12px; }
+
+  /* Phones: the card's padding mostly goes, so the picture fills the
+     card's width; only the text keeps a margin */
+  @media (max-width: 640px) {
+    .kd-slide { padding: 6px 6px 18px; }
+    .case-body .kd-slide .kd-media { aspect-ratio: auto; }
+    .kd-slide .kd-media > img,
+    .kd-slide .kd-media .ui-video { max-width: 100%; }
+    .kd-slide .kd-media > img { width: 100%; height: auto; }
+    .kd-slide .kd-media .ui-video { width: 100%; }
+    .kd-slide .kd-media .ui-video video { width: 100%; max-height: none; }
+    .kd-text { padding: 0 10px; margin-top: 16px; }
+  }
 </style>
 <script>
   (function () {
