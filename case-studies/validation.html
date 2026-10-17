@@ -1789,6 +1789,13 @@
   .kd-more > summary:focus-visible { color: #fff; outline: 2px solid #00d8aa; outline-offset: 2px; }
   .kd-more > summary:focus:not(:focus-visible) { outline: none; }
   .kd-more-icon { display: block; flex: none; transition: transform 0.18s cubic-bezier(.2, .8, .2, 1); }
+  /* the label in the semibold Fakt, nudged 1px down to sit optically
+     centred in the pill (Fakt's ink rides high in its line box) */
+  .kd-more-open {
+    font-family: "Fakt Blond SemiBold", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 600;
+    transform: translateY(1px);
+  }
   .kd-more > summary:active .kd-more-icon { transform: scale(0.88); }
   @media (pointer: coarse) { .kd-more > summary { height: 44px; } }
   @media (prefers-reduced-motion: reduce) { .kd-more-icon { transition: none; transform: none !important; } }
