@@ -159,6 +159,31 @@
   .kd-more-body { padding-top: 16px; }
   .kd-more-body > :first-child { margin-top: 0; }
 
+  /* Outcome: the headline results as a 2x2 grid of cards under
+     "Closing the loop", one column on phones */
+  .outcome-cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(12px, 1.6vw, 20px);
+    max-width: 46rem;
+    margin: 0 0 clamp(32px, 4vw, 48px);
+    padding: 0;
+    list-style: none;
+  }
+  .outcome-cards li {
+    margin: 0;
+    padding: clamp(20px, 2.4vw, 30px);
+    border-radius: 10px;
+    background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
+    color: #fff;
+    font-size: clamp(18px, 1.6vw, 22px);
+    line-height: 1.35;
+    text-wrap: pretty;
+  }
+  @media (max-width: 640px) {
+    .outcome-cards { grid-template-columns: 1fr; }
+  }
+
   /* iOS-style page dots on a soft pill, centred under the strip */
   .kd-dots {
     display: flex;
@@ -1919,6 +1944,13 @@
     <section aria-labelledby="outcome-heading" class="case-body">
       <h2 class="eyebrow" id="outcome-heading">Outcome</h2>
       <p class="display problem-statement">Closing the&nbsp;loop</p>
+
+      <ul class="outcome-cards">
+        <li>Turned dead-end error reports into complete correction&nbsp;workflows</li>
+        <li>Made bulk correction authorship traceable, helping clients meet audit&nbsp;goals</li>
+        <li>Achieved step change in speed at which clients could&nbsp;work</li>
+        <li>23k cells corrected in first 3&nbsp;months</li>
+      </ul>
 
       <figure class="figure figure-big hero-repeat">
         <div class="ui-video" data-hover-controls>
