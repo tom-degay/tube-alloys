@@ -1018,10 +1018,8 @@
 
       <div class="problem-layout">
         <div class="problem-main">
-          <p>We sat down with our user groups and mapped out what a process would look like for their data transformation. What operations would they need? Which ones would they need first? We mapped them all out on post-its.</p>
-          <p>The answer came back: &lsquo;Everything. We need all the post-its.&rsquo;</p>
-          <blockquote>The zero-to-one challenge was that a pipeline needed to support every transformation required to complete the job.</blockquote>
-          <p>A missing operation could leave the whole workflow unusable. We needed to get to that breadth of capability quickly, then make it easier to work with.</p>
+          <p>In client workshops, we mapped the transformations users needed onto Post-its. Asked which to prioritise, they said: &ldquo;Everything. We need all the Post-its.&rdquo;</p>
+          <p>A pipeline had to support the whole job. One missing operation could make it unusable.</p>
         </div>
         <aside class="problem-side" aria-label="Supporting material">
           <button class="side-card" type="button" aria-haspopup="dialog" aria-controls="process-evidence-modal">
@@ -1032,11 +1030,8 @@
         </aside>
       </div>
 
-      <p>We released a code editor with views for inputs, transformation code and outputs. This gave us the flexibility to support clients&rsquo; requirements and learn what was required while we developed the visual experience.</p>
-      <p>We then broke the code into understandable portions and began building dedicated interfaces for each of them. Workshops with clients helped us map out their data flows.</p>
-      <p>This approach meant that each operation could have an interface tailored to its particular task.</p>
-
-      <p>I started creating UI for each of these script operations incrementally. I worked with solutions architects to stack-rank the operations by frequency of use and difficulty of use as a script. That meant infrequently used operations where only one number needs to be changed were done later, whilst big operations like <a href="/case-studies/column-mapping">Map Column Headers</a> were done first. This delivered the most value, fastest.</p>
+      <p>We launched a code editor with input and output views, giving clients the capability they needed while we learned from their workflows and developed the visual interface.</p>
+      <p>I then designed dedicated interfaces for each operation. Working with solutions architects, I prioritised those used most often and hardest to configure in code. Complex tasks like <a href="/case-studies/column-mapping">Map Column Headers</a> came first; occasional, simple edits came later. This delivered the most value, fastest.</p>
     </section>
 
     <hr class="rule">
