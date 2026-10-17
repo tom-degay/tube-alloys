@@ -1156,6 +1156,9 @@
 <link rel="stylesheet" href="/case-studies/case-study-v2.css?v=20261017a">
 <style>
   /* Column mapping's own additions to the shared treatment */
+  /* "Shipped interface": a big heading like the Steps, with air above;
+     its paragraph gets the usual gap below it */
+  .case-body > h3.kd-heading.kd-heading-follow { margin-top: clamp(64px, 7vw, 110px); }
   /* the Step headings may use the full width, so on laptop screens
      "aligned to a common master" stays on one line rather than wrapping
      to a third */
@@ -1467,7 +1470,7 @@
         <span class="visually-hidden demo-status" role="status" aria-live="polite"></span>
       </figure>
 
-      <h3 id="completed-interface-heading">Completed interface</h3>
+      <h3 class="display kd-heading kd-heading-follow" id="completed-interface-heading">Shipped interface</h3>
       <p>Once source schemas were mapped in, the mappings were retained. And if a new variant came in next month, it was just a couple of clicks to get it mapped in.</p>
 
       <div class="figure-portrait-frame figure-wide">
