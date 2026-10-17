@@ -180,6 +180,18 @@
     line-height: 1.35;
     text-wrap: pretty;
   }
+  /* each card's number, big and grey, as on the carousel slides */
+  .outcome-num {
+    display: block;
+    margin-bottom: 14px;
+    font-family: "Fakt Blond", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    font-size: clamp(44px, 4.4vw, 64px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: rgba(255, 255, 255, 0.3);
+    font-variant-numeric: tabular-nums;
+  }
   @media (max-width: 640px) {
     .outcome-cards { grid-template-columns: 1fr; }
   }
@@ -1944,10 +1956,10 @@
       <p class="display problem-statement">Closing the&nbsp;loop</p>
 
       <ul class="outcome-cards">
-        <li>Turned dead-end error reports into complete correction&nbsp;workflows</li>
-        <li>Made bulk correction authorship traceable, helping clients meet audit&nbsp;goals</li>
-        <li>Achieved step change in speed at which clients could&nbsp;work</li>
-        <li>23k cells corrected in first 3&nbsp;months</li>
+        <li><span class="outcome-num" aria-hidden="true">01</span>Turned dead-end error reports into complete correction&nbsp;workflows</li>
+        <li><span class="outcome-num" aria-hidden="true">02</span>Made bulk correction authorship traceable, helping clients meet audit&nbsp;goals</li>
+        <li><span class="outcome-num" aria-hidden="true">03</span>Achieved step change in speed at which clients could&nbsp;work</li>
+        <li><span class="outcome-num" aria-hidden="true">04</span>23k cells corrected in first 3&nbsp;months</li>
       </ul>
 
       <figure class="figure figure-big hero-repeat">
