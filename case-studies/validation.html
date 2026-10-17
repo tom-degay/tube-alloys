@@ -1459,7 +1459,8 @@
     font-weight: 600;
     transform: translateY(1px);
   }
-  .side-card:hover .side-card-open, .side-card:focus-visible .side-card-open { color: #fff; }
+  /* the arrow in the label's grey, at rest and on hover */
+  .side-card .side-card-open, .side-card:hover .side-card-open, .side-card:focus-visible .side-card-open { color: rgba(255, 255, 255, 0.45); }
   .side-card:active .side-card-open svg { transform: scale(0.88); }
   @media (prefers-reduced-motion: reduce) { .side-card-open svg { transition: none; transform: none !important; } }
 
@@ -1857,6 +1858,10 @@
   /* the green overline over "Corrections in action", spaced as the
      section labels are over their headings */
   .case-body p.eyebrow.kd-eyebrow { margin: 0 0 20px; }
+
+  /* the expanded slide's title: when it won't fit on one line, the
+     number takes its own line above the headline */
+  .kd-modal-title.is-stacked .kd-modal-num { display: block; margin: 0 0 2px; }
 </style>
 <script>
   (function () {
@@ -2025,7 +2030,7 @@
 
       <p class="display problem-statement"><span class="step-label">Step 1</span>Improve the&nbsp;workflow</p>
 
-      <p>With hundreds of rules in a single pipeline, every extra step between finding a failure and fixing it was repeated hundreds of times. I streamlined the route through the report in three ways.</p>
+      <p>With hundreds of rules in a single pipeline, every extra step between finding a failure and fixing it was repeated hundreds of times. I streamlined the route through the report by compacting navigation steps and filtering out surplus information.</p>
 
       <figure class="figure figure-big wf-figure">
         <svg class="wf-diagram" viewBox="0 0 725 335" fill="none" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Validation workflow: original and improved">
@@ -2914,10 +2919,19 @@
         kd.querySelector('.card-modal-close').addEventListener('click', hide);
         kd.addEventListener('click', function (e) { if (e.target === kd) hide(); });
         var kdSlide = null;
+        // number above the headline only when the two won't share a line
+        function stackTitle() {
+          var t = kd.querySelector('.kd-modal-title');
+          t.classList.remove('is-stacked');
+          var lh = parseFloat(getComputedStyle(t).lineHeight) || 30;
+          if (t.getBoundingClientRect().height > lh * 1.5) t.classList.add('is-stacked');
+        }
+        window.addEventListener('resize', function () { if (open === kd) stackTitle(); });
         function fill(slide) {
           kdSlide = slide;
           kd.querySelector('.kd-modal-num').textContent = (slide.querySelector('.kd-num') || {}).textContent || '';
           kd.querySelector('.kd-modal-name').innerHTML = slide.querySelector('.kd-title').innerHTML;
+          stackTitle();
           kdBody.innerHTML = '';
           var strap = slide.querySelector('.kd-strap');
           if (strap) { var sp = document.createElement('p'); sp.className = 'kd-modal-strap'; sp.innerHTML = strap.innerHTML; kdBody.appendChild(sp); }
