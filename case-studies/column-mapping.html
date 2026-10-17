@@ -1156,6 +1156,12 @@
 <link rel="stylesheet" href="/case-studies/case-study-v2.css?v=20261017a">
 <style>
   /* Column mapping's own additions to the shared treatment */
+  /* the Step headings may use the full width, so on laptop screens
+     "aligned to a common master" stays on one line rather than wrapping
+     to a third */
+  @media (min-width: 1024px) { .content .case-body > h3.kd-heading { max-width: none; } }
+  /* ...and the Step 1 heading breaks after "fields," there, two even lines */
+  @media (max-width: 1023px) { .kd-br { display: none; } }
   /* Phones: no frames round the pictures; each sits straight on the
      page with its own rounded corners */
   @media (max-width: 640px) {
@@ -1377,7 +1383,7 @@
 
     <section aria-labelledby="keydecisions-heading" class="case-body">
       <h2 class="eyebrow" id="keydecisions-heading">Design decisions</h2>
-      <h3 class="display kd-heading"><span class="step-label">Step 1</span>Vertically stacked fields, aligned to a common&nbsp;master</h3>
+      <h3 class="display kd-heading"><span class="step-label">Step 1</span>Vertically stacked fields,<br class="kd-br"> aligned to a common&nbsp;master</h3>
 
       <div class="kd-reel">
         <div class="kd-reel-track" id="dd-reel-track" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Design decisions">
