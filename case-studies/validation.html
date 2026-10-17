@@ -29,8 +29,6 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="/styles.css">
-<link rel="stylesheet" href="/dial.css">
-<script src="/dial.js"></script>
 <link rel="stylesheet" href="/nav.css?v=20261016d">
 <style>
 
@@ -161,7 +159,39 @@
   .kd-more-body { padding-top: 16px; }
   .kd-more-body > :first-child { margin-top: 0; }
 
-  .kd-reel-dial { margin: 4px auto 0; }
+  /* iOS-style page dots on a soft pill, centred under the strip */
+  .kd-dots {
+    display: flex;
+    width: max-content;
+    margin: 4px auto 0;
+    padding: 4px 6px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+  }
+  .kd-dots[hidden] { display: none; }
+  .kd-dot {
+    appearance: none;
+    display: grid;
+    place-items: center;
+    width: 19px;
+    height: 19px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    cursor: pointer;
+  }
+  .kd-dot::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transition: background-color 0.25s ease;
+  }
+  .kd-dot:hover::before { background: rgba(255, 255, 255, 0.55); }
+  .kd-dot.is-current::before { background: #fff; }
+  .kd-dot:focus-visible { outline: 2px solid #00d8aa; outline-offset: -2px; }
 
   /* the Approach workflow chart, shown big: the carousel slides' width,
      centred on the text column */
@@ -1692,7 +1722,7 @@
           </div>
           <div class="kd-slide" id="iw-navigation" role="group" aria-roledescription="slide" aria-label="3 of 3">
             <figure class="figure kd-media">
-              <img src="media/direct-rule-navigation.png" width="924" height="580" alt="Previous rule and Next rule buttons above the data grid, for moving between validation rules without returning to the report.">
+              <img src="media/rule-navigator.png" width="1152" height="854" alt="The rule navigator dropdown over the data grid, listing every validation rule with its fail or warning icon, the current rule marked with a dot.">
             </figure>
             <div class="kd-text">
               <p class="kd-num" aria-hidden="true">03</p>
@@ -1705,7 +1735,7 @@
                   <p>A rule navigator also allows instant navigation between any rule.</p>
                   <figure class="figure">
                     <div class="figure-portrait-frame">
-                      <img src="media/rule-navigator.png" width="1152" height="854" alt="The rule navigator dropdown over the data grid, listing every validation rule with its fail or warning icon, the current rule marked with a dot." loading="lazy">
+                      <img src="media/direct-rule-navigation.png" width="924" height="580" alt="Previous rule and Next rule buttons above the data grid, for moving between validation rules without returning to the report." loading="lazy">
                     </div>
                   </figure>
 
@@ -1714,7 +1744,7 @@
             </div>
           </div>
         </div>
-        <div class="kd-reel-dial tdg-dial" hidden></div>
+        <div class="kd-dots" hidden></div>
       </div>
     </section>
 
@@ -1878,7 +1908,7 @@
             </div>
           </div>
           </div>
-          <div class="kd-reel-dial tdg-dial" hidden></div>
+          <div class="kd-dots" hidden></div>
         </div>
 
       </div>
@@ -2133,10 +2163,30 @@
       var track = reel.querySelector(".kd-reel-track");
       var slides = Array.prototype.slice.call(track.querySelectorAll(".kd-slide"));
       var targetIndex = null;
-      var dial = TDGDial.create(reel.querySelector('.kd-reel-dial'), {
-        count: slides.length, item: 'slide', label: track.getAttribute('aria-label'), controls: track.id,
-        onStep: function (step) { go((targetIndex === null ? current() : targetIndex) + step); }
+      // iOS-style page dots: one per slide, the current one lit; a dot
+      // brings its slide in
+      var dotsEl = reel.querySelector('.kd-dots');
+      dotsEl.setAttribute('role', 'group');
+      dotsEl.setAttribute('aria-label', track.getAttribute('aria-label'));
+      var dots = slides.map(function (slide, n) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'kd-dot';
+        b.setAttribute('aria-label', 'Slide ' + (n + 1) + ' of ' + slides.length);
+        b.setAttribute('aria-controls', track.id);
+        b.addEventListener('click', function () { go(n); });
+        dotsEl.appendChild(b);
+        return b;
       });
+      dotsEl.hidden = false;
+      var dial = {
+        render: function (phase, i) {
+          dots.forEach(function (d, n) {
+            d.classList.toggle('is-current', n === i);
+            if (n === i) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current');
+          });
+        }
+      };
       var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       function centreOf(i) {
@@ -2191,7 +2241,6 @@
         ticking = false;
         var i = current();
         slides.forEach(function (s, si) { s.classList.toggle("is-current", si === i); });
-        // Fractional slide position makes the curved marks track swipes and glides exactly.
         var phase = 0;
         for (var n = 0; n < slides.length - 1; n++) {
           var left = centreOf(n), right = centreOf(n + 1);
