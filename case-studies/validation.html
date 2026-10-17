@@ -1665,6 +1665,10 @@
     .kd-slide .kd-media .ui-video video { width: 100%; max-height: none; }
     .kd-text { padding: 0 10px; margin-top: 16px; }
   }
+
+  /* cards inside a modal are always open: no More / Less, no pointer */
+  .card-modal details.is-static > summary { cursor: default; pointer-events: none; }
+  .card-modal details.is-static .evidence-toggle { display: none; }
 </style>
 <script>
   (function () {
@@ -2743,6 +2747,13 @@
             kdBody.appendChild(fig);
             var more = slide.querySelector('.kd-more-body');
             if (more) Array.prototype.forEach.call(more.children, function (c) { kdBody.appendChild(c.cloneNode(true)); });
+            // cards inside the modal are shown open, with no toggle
+            kdBody.querySelectorAll('details').forEach(function (d) {
+              d.open = true;
+              d.classList.add('is-static');
+              var sm = d.querySelector(':scope > summary');
+              if (sm) { sm.setAttribute('tabindex', '-1'); sm.addEventListener('click', function (ev) { ev.preventDefault(); }); }
+            });
             kdBody.querySelectorAll('img').forEach(function (im) { im.removeAttribute('loading'); im.addEventListener('load', function () { fades(kd); }); });
             show(kd, sum);
             if (copy.tagName === 'VIDEO') { var pl = copy.play(); if (pl && pl.catch) pl.catch(function () {}); }
