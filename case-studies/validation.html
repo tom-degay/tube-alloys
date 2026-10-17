@@ -1577,8 +1577,8 @@
   .content > header + hr.rule,
   .content .case-body .subsection > hr.rule { margin: clamp(56px, 7vw, 112px) 0; }
 
-  /* Carousels on wide screens: the picture on columns 1-8 and its text
-     beside it on 9-12, so a whole slide (and the dots under it) fits a
+  /* Carousels on wide screens: the text on columns 1-4 and the picture
+     beside it on 5-12, so a whole slide (and the dots under it) fits a
      laptop's shallow window. Below 1024px the text stays under the
      picture. */
   @media (min-width: 1024px) {
@@ -1587,21 +1587,24 @@
     }
     .kd-slide {
       display: grid;
-      grid-template-columns: var(--span8) minmax(0, 1fr);
+      grid-template-columns: var(--span4) minmax(0, 1fr);
       column-gap: var(--g);
       align-items: start;
     }
-    .kd-text { max-width: none; margin-top: 0; padding-top: 4px; }
-    /* the dots sit in the text column, level with the foot of the
-       picture (the strip's bottom padding is 28px), so they never fall
-       below the slide; with More open they ride down with the text */
+    .case-body .kd-slide .kd-media { grid-column: 2; grid-row: 1; }
+    .kd-text { grid-column: 1; grid-row: 1; max-width: none; margin-top: 0; padding-top: 4px; }
+    /* the dots sit directly under the picture, centred on it: the
+       strip's top padding (4px) + the 16:10 frame's height + a gap */
     .kd-reel { position: relative; }
     .kd-dots {
       position: absolute;
-      left: calc((100vw - var(--reel-slide)) / 2 + var(--span8) + var(--g));
-      bottom: 28px;
+      top: calc(4px + var(--span8) * 10 / 16 + 14px);
+      left: calc((100vw - var(--reel-slide)) / 2 + var(--span4) + var(--g) + var(--span8) / 2);
+      transform: translateX(-50%);
       margin: 0;
     }
+    /* room under the picture for the dots */
+    .kd-reel-track { padding-bottom: 52px; }
   }
 </style>
 <script>
