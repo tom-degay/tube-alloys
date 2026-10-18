@@ -1,0 +1,82 @@
+<svg width="370" height="370" viewBox="0 0 370 370" fill="none" xmlns="http://www.w3.org/2000/svg" role="button" aria-labelledby="motif-title" aria-describedby="motif-description" tabindex="0">
+  <title id="motif-title">Image Insight motif</title>
+  <desc id="motif-description">Nine rounded squares ripple gently out from the centre. Hover, tap, or press Enter to replay.</desc>
+  <style>
+    :root { display: block; width: 100%; height: 100%; cursor: pointer; outline: none; }
+    .tile { transform-box: view-box; transform-origin: 185px 185px; }
+    .is-playing .tile-centre { animation: centre-draw 1800ms ease-out both; }
+    .is-playing .tile-inner { animation: tile-ripple 1500ms 180ms cubic-bezier(.22, 1, .36, 1) both; }
+    .is-playing .tile-outer { animation: tile-ripple 1500ms 390ms cubic-bezier(.22, 1, .36, 1) both; }
+    .focus-ring { opacity: 0; }
+    :root:focus-visible .focus-ring { opacity: 1; }
+    @keyframes centre-draw {
+      0% { stroke-dasharray: 1; stroke-dashoffset: 1; opacity: 0; transform: scale(.9); }
+      10% { opacity: 1; }
+      42% { stroke-dasharray: 1; stroke-dashoffset: 0; transform: scale(1.04); }
+      100% { stroke-dasharray: 1; stroke-dashoffset: 0; opacity: 1; transform: scale(1); }
+    }
+    @keyframes tile-ripple {
+      0% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(.86); }
+      55% { opacity: 1; transform: translate(calc(var(--dx) * -.035), calc(var(--dy) * -.035)) scale(1.015); }
+      100% { opacity: 1; transform: translate(0, 0) scale(1); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .is-playing .tile { animation: none; }
+    }
+  </style>
+  <rect width="370" height="370" fill="#FFFFFF"/>
+  <rect x="147.237" y="237.474" width="75.5282" height="75.5282" rx="17.8783" stroke="#4BC6E5" stroke-opacity="0.3" stroke-width="2" class="tile tile-outer" style="--dx:-0.001px;--dy:-64.971px"/>
+  <rect x="198.348" y="198.345" width="75.5282" height="75.5282" rx="17.8783" stroke="#4BC6E5" stroke-opacity="0.7" stroke-width="2" class="tile tile-inner" style="--dx:-36.801px;--dy:-36.799px"/>
+  <rect x="95.8843" y="198.345" width="75.5282" height="75.5282" rx="17.8783" stroke="#4BC6E5" stroke-opacity="0.7" stroke-width="2" class="tile tile-inner" style="--dx:36.973px;--dy:-36.799px"/>
+  <rect x="237.472" y="147.236" width="75.5282" height="75.5282" rx="17.8783" stroke="#4BC6E5" stroke-opacity="0.3" stroke-width="2" class="tile tile-outer" style="--dx:-64.970px;--dy:-0.000px"/>
+  <rect x="57" y="147.236" width="75.5282" height="75.5282" rx="17.8783" stroke="#4BC6E5" stroke-opacity="0.3" stroke-width="2" class="tile tile-outer" style="--dx:64.970px;--dy:-0.000px"/>
+  <rect x="147.237" y="56.9981" width="75.5282" height="75.5282" rx="17.8783" stroke="#4BC6E5" stroke-opacity="0.3" stroke-width="2" class="tile tile-outer" style="--dx:-0.001px;--dy:64.971px"/>
+  <rect x="198.348" y="95.8838" width="75.5282" height="75.5282" rx="17.8783" stroke="#4BC6E5" stroke-opacity="0.7" stroke-width="2" class="tile tile-inner" style="--dx:-36.801px;--dy:36.974px"/>
+  <rect x="95.8843" y="95.8838" width="75.5282" height="75.5282" rx="17.8783" stroke="#4BC6E5" stroke-opacity="0.7" stroke-width="2" class="tile tile-inner" style="--dx:36.973px;--dy:36.974px"/>
+  <path d="M165.116 147.236H204.887C214.761 147.236 222.765 155.24 222.765 165.114V204.886C222.765 214.76 214.761 222.764 204.887 222.764H165.116C155.242 222.764 147.237 214.76 147.237 204.886V165.114C147.237 155.24 155.242 147.236 165.116 147.236Z" stroke-width="2" stroke="#4BC6E5" class="tile tile-centre" pathLength="1"/>
+  <rect class="focus-ring" x="5" y="5" width="360" height="360" rx="7" stroke="#0e76aa" stroke-width="2" pointer-events="none"/>
+  <script><![CDATA[
+    (function () {
+      'use strict';
+      var root = document.documentElement;
+      var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+      var playing = false;
+      var timer;
+      function finish() {
+        clearTimeout(timer);
+        root.classList.remove('is-playing');
+        playing = false;
+      }
+      function play() {
+        if (reduced.matches || playing) return;
+        playing = true;
+        root.classList.add('is-playing');
+        timer = setTimeout(finish, 1950);
+      }
+      root.addEventListener('pointerenter', function (event) {
+        if (event.pointerType !== 'touch') play();
+      });
+      root.addEventListener('click', play);
+      root.addEventListener('focus', play);
+      root.addEventListener('keydown', function (event) {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        play();
+      });
+      reduced.addEventListener('change', function () {
+        if (reduced.matches) finish();
+      });
+      if ('IntersectionObserver' in window) {
+        var visible = false;
+        new IntersectionObserver(function (entries) {
+          var entry = entries[0];
+          var inView = entry.isIntersecting && entry.intersectionRatio >= .35;
+          if (inView && !visible) play();
+          visible = inView;
+        }, { threshold: [0, .35] }).observe(root);
+      } else {
+        play();
+      }
+    })();
+  ]]></script>
+</svg>

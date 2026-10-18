@@ -1287,6 +1287,9 @@ not top-anchored UI screenshots -- override the default top crop. */
 .case-block.is-light .case-block-subtitle { color: rgba(19, 19, 19, 0.68); }
 .case-block.is-light .case-block-kicker { color: #00cb9f; }
 
+/* Next-study cards use the current page's theme accent. */
+.case-footer .case-block .case-block-kicker { color: var(--accent, #00d8aa); }
+
 .case-block.is-light .case-block-keyword {
   background: rgba(19, 19, 19, 0.08);
   color: rgba(19, 19, 19, 0.72);

@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Image Insight — interactive image grid</title>
+<style>
+@font-face { font-family: 'Open Sans'; src: url('fonts/zonefully-open-sans-semibold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+@font-face { font-family: 'Fakt Blond'; src: url('../../FaktProBlond.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+* { box-sizing: border-box; }
+html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #efefef; color: #354856; color-scheme: light; }
+body, button, input, output { font-family: 'Open Sans', system-ui, sans-serif; font-weight: 600; }
+button { color: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+button, input { -webkit-appearance: none; appearance: none; }
+button:focus-visible, input:focus-visible { outline: 2px solid #18768b; outline-offset: 3px; }
+[hidden] { display: none !important; }
+.scene { --toolbar-bottom: max(72px, 5.095vw); position: relative; width: 100%; height: 100%; overflow: clip; isolation: isolate; }
+/* The SVG is a 1059 × 495 window into the larger image grid. */
+.canvas { position: absolute; width: 1059px; height: 495px; transform-origin: top left; }
+.viewport { position: absolute; inset: 0; overflow: visible; }
+.photos { position: absolute; left: 50%; top: 0; transform: translateX(-50%); transition: width 180ms ease; }
+.photo { position: absolute; margin: 0; overflow: hidden; background: #e3e7e7; border-radius: 13%; transition: width 180ms ease, height 180ms ease, transform 180ms ease; }
+.photo img { display: block; width: 100%; height: 100%; object-fit: cover; user-select: none; -webkit-user-drag: none; }
+.try-bubble { position: absolute; z-index: 1; top: 22px; left: 50%; transform: translateX(-50%); min-height: 44px; padding: 10px 18px; border: 0; border-radius: 10px; background: #fff; box-shadow: 0 3px 16px #18252d30; font-family: 'Fakt Blond', system-ui, sans-serif; font-weight: 400; font-size: 16px; line-height: 24px; letter-spacing: 0; color: #0e76aa; white-space: nowrap; }
+.undo-notice { position: absolute; z-index: 1; bottom: calc(var(--toolbar-bottom) - 53px); left: 50%; transform: translateX(-50%); display: flex; align-items: center; min-height: 44px; border-radius: 999px; box-shadow: 0 3px 18px #18252d20; font-size: 14px; white-space: nowrap; }
+.undo-notice.is-entering { animation: undo-drop 320ms cubic-bezier(.2,.75,.25,1) both; }
+.undo-notice.is-hiding { animation: undo-fade-out 220ms ease both; }
+@keyframes undo-drop { from { opacity: 0; transform: translate(-50%, -52px); } to { opacity: 1; transform: translate(-50%, 0); } }
+@keyframes undo-fade-out { from { opacity: 1; } to { opacity: 0; } }
+.undo-notice > span { padding: 0 16px; }
+.undo-button { align-self: stretch; min-width: 64px; min-height: 44px; padding: 0 16px; border: 0; border-left: 2px solid #d7d7d7; border-radius: 0 999px 999px 0; background: transparent; font-size: 14px; text-decoration: none; transition: background 150ms ease; }
+.undo-button:hover, .undo-button:focus-visible { background: #fff; }
+.toolbar { position: absolute; z-index: 2; left: 50%; bottom: var(--toolbar-bottom); transform: translateX(-50%); display: flex; align-items: center; width: 579px; max-width: calc(100% - 32px); height: 52px; border-radius: 28px; box-shadow: 0 3px 18px #18252d20; }
+/* Put the frost on a separate layer, so it never clips the popup. */
+.toolbar::before, .undo-notice::before { content: ''; position: absolute; inset: 0; z-index: -1; border-radius: inherit; background: rgb(255 255 255 / 80%); -webkit-backdrop-filter: blur(15px); backdrop-filter: blur(15px); }
+.control { display: flex; align-items: center; justify-content: center; gap: 3px; height: 52px; padding: 0 12px; border: 0; background: transparent; font-size: 16px; line-height: 1; transition: background 150ms ease; white-space: nowrap; }
+.control:hover, .control:focus-visible, .control[aria-expanded="true"] { background: #fff; }
+.refresh { width: 126px; flex: 0 0 126px; border-radius: 28px 0 0 28px; border-right: 1px solid #d7d7d7; padding-left: 10px; }
+.collection { position: relative; flex: 0 0 154px; min-width: 0; }
+.collection-toggle { width: 100%; border-right: 1px solid #d7d7d7; padding: 0 9px; gap: 3px; }
+.control svg { display: block; flex: none; width: 32px; height: 32px; overflow: visible; pointer-events: none; }
+.control .chevron { width: 14px; height: 14px; margin-left: 3px; transition: transform 180ms ease; }
+.collection-toggle[aria-expanded="true"] .chevron { transform: rotate(180deg); }
+.refresh-art { transform-origin: 149.029px 50.505px; transition: transform 280ms cubic-bezier(.2,.75,.25,1); }
+.refresh:is(:hover,:focus-visible) .refresh-art { transform: rotate(18deg); }
+.refresh.is-playing .refresh-art { animation: spin 650ms cubic-bezier(.25,.1,.2,1); }
+@keyframes spin { from { transform: rotate(18deg); } to { transform: rotate(378deg); } }
+.square-front, .square-back { transition: transform 280ms cubic-bezier(.2,.75,.25,1); }
+.collection-toggle:is(:hover,:focus-visible) .square-front { transform: translate(-1px,1px); }
+.collection-toggle:is(:hover,:focus-visible) .square-back { transform: translate(1px,-1px); }
+.collection-toggle[aria-expanded="true"] .square-front { transform: translate(-2px,2px); }
+.collection-toggle[aria-expanded="true"] .square-back { transform: translate(2px,-2px); }
+.density { display: flex; flex: 1; min-width: 0; align-items: center; gap: 12px; padding: 0 23px 0 14px; }
+.density-icon { width: 18px; height: 18px; flex: none; }
+input[type="range"] { display: block; width: 100%; min-width: 36px; height: 36px; margin: 0; border: 0; background: transparent; cursor: ew-resize; touch-action: pan-y; }
+input[type="range"]::-webkit-slider-runnable-track { box-sizing: border-box; height: 8px; border: 0; border-radius: 8px; background: #fff; box-shadow: inset 0 2px 5px #0003; }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; box-sizing: border-box; width: 25px; height: 25px; margin-top: -8.5px; border: 1px solid #b9c3ca; border-radius: 50%; background: #fff; box-shadow: 0 2px 4px #0003; }
+input[type="range"]::-moz-range-track { box-sizing: border-box; height: 8px; border: 0; border-radius: 8px; background: #fff; box-shadow: inset 0 2px 5px #0003; }
+input[type="range"]::-moz-range-thumb { box-sizing: border-box; width: 25px; height: 25px; border: 1px solid #b9c3ca; border-radius: 50%; background: #fff; box-shadow: 0 2px 4px #0003; }
+input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 0 0 0 4px #fff6; }
+.count-input { width: 42px; height: 32px; flex: none; padding: 0 2px; color: inherit; background: #f6f6f6; border: 1px solid #d7d7d7; border-radius: 8px; font-size: 16px; font-variant-numeric: tabular-nums; text-align: center; -moz-appearance: textfield; appearance: textfield; }
+.count-input::-webkit-inner-spin-button, .count-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.menu { position: absolute; bottom: calc(100% + 10px); left: 0; width: 178px; padding: 6px; border: 1px solid #fff; border-radius: 16px; background: rgb(255 255 255 / 96%); box-shadow: 0 5px 24px #18252d25; -webkit-backdrop-filter: blur(15px); backdrop-filter: blur(15px); animation: open-menu 180ms ease both; }
+.menu { max-height: calc(100vh - var(--toolbar-bottom) - 72px); overflow-y: auto; overscroll-behavior: contain; }
+@keyframes open-menu { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+.option { display: flex; align-items: center; justify-content: space-between; width: 100%; height: 44px; padding: 0 13px; border: 0; border-radius: 10px; background: transparent; text-align: left; font-size: 16px; }
+.option:hover, .option:focus-visible { background: #edf3f5; }
+.option[aria-checked="true"]::after { content: ''; width: 11px; height: 6px; margin-top: -3px; border-left: 2px solid; border-bottom: 2px solid; transform: rotate(-45deg); }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+@media (max-width: 620px) {
+ .scene { --toolbar-bottom: 72px; }
+ .toolbar { left: 50%; width: 350px; height: auto; flex-wrap: wrap; border-radius: 24px; }
+ .refresh { width: 45%; flex-basis: 45%; border-radius: 24px 0 0 0; }
+ .collection { flex-basis: 55%; }
+ .collection-toggle { border-right: 0; border-radius: 0 24px 0 0; }
+ .density { flex-basis: 100%; height: 48px; padding: 0 16px; border-top: 1px solid #d7d7d7; }
+ .menu { left: auto; right: 0; width: 178px; max-height: calc(100vh - var(--toolbar-bottom) - 120px); }
+}
+@media (max-width: 360px) {
+ .control { gap: 2px; font-size: 14px; }
+ .control svg { width: 28px; height: 28px; }
+ .collection-toggle { padding: 0 6px; }
+ .control .chevron { width: 12px; height: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+ *, *::before, *::after { animation: none !important; transition: none !important; }
+ .refresh-art, .square-front, .square-back { transform: none !important; }
+}
+@media (prefers-contrast: more) {
+ .toolbar::before, .undo-notice::before, .menu { background: #fff; }
+ input[type="range"]::-webkit-slider-runnable-track { border: 1px solid #5f6f7a; }
+ input[type="range"]::-webkit-slider-thumb { margin-top: -9.5px; border: 2px solid #5f6f7a; }
+ input[type="range"]::-moz-range-track { border: 1px solid #5f6f7a; }
+ input[type="range"]::-moz-range-thumb, .count-input { border: 2px solid #5f6f7a; }
+}
+@media (forced-colors: active) {
+ .toolbar::before, .undo-notice::before, .menu, .try-bubble { background: Canvas; border: 1px solid CanvasText; }
+ input[type="range"]::-webkit-slider-runnable-track { background: Canvas; border: 1px solid CanvasText; box-shadow: none; }
+ input[type="range"]::-webkit-slider-thumb { background: ButtonFace; border: 2px solid ButtonText; margin-top: -9.5px; box-shadow: none; }
+ input[type="range"]::-moz-range-track { background: Canvas; border: 1px solid CanvasText; box-shadow: none; }
+ input[type="range"]::-moz-range-thumb { background: ButtonFace; border: 2px solid ButtonText; box-shadow: none; }
+ button:focus-visible, input:focus-visible { outline-color: Highlight; }
+}
+</style>
+</head>
+<body>
+<main class="scene" aria-label="Try the Image Insight grid controls">
+ <button class="try-bubble" type="button" aria-label="Click to try: refresh the images">Click to try</button>
+ <div class="toolbar" role="group" aria-label="Image grid controls">
+  <button class="control refresh" type="button" aria-label="Refresh images" title="Show a fresh selection of images">
+   <!-- Reuses the artwork and motion from image-insight-icons-interactive.svg. -->
+   <svg viewBox="132 33.5 36 34" aria-hidden="true"><g class="refresh-art"><path d="M149.029 40C154.459 40.0002 158.927 44.1225 159.475 49.4082L161.097 47.6074C161.391 47.282 161.892 47.2558 162.218 47.5488C162.544 47.8423 162.571 48.3449 162.278 48.6709L158.564 52.7949L154.44 49.082C154.114 48.7884 154.089 48.2859 154.382 47.96C154.676 47.6343 155.177 47.6081 155.503 47.9014L157.505 49.7041C157.101 45.377 153.461 41.9895 149.029 41.9893C144.326 41.9893 140.513 45.8021 140.513 50.5049C140.513 55.2077 144.326 59.0205 149.029 59.0205C149.578 59.0207 150.023 59.4658 150.023 60.0146C150.023 60.5636 149.578 61.0086 149.029 61.0088C143.228 61.0088 138.524 56.3061 138.524 50.5049C138.524 44.7037 143.228 40 149.029 40ZM149.623 60.0146L149.613 59.9102C149.613 59.9092 149.612 59.9082 149.612 59.9072C149.618 59.9421 149.623 59.9779 149.623 60.0146ZM148.671 59.4111C148.79 59.4169 148.909 59.4209 149.029 59.4209C149.109 59.421 149.185 59.4362 149.254 59.4648C149.22 59.4508 149.185 59.4392 149.148 59.4316L149.029 59.4199C148.909 59.4199 148.79 59.4166 148.671 59.4111ZM140.125 50.9639C140.132 51.1126 140.143 51.2605 140.158 51.4072C140.143 51.2601 140.132 51.1119 140.125 50.9629V50.9639ZM149.548 40.4141C149.804 40.427 150.057 40.4487 150.307 40.4805C150.057 40.4485 149.804 40.426 149.548 40.4131L149.029 40.4004L149.548 40.4141Z" fill="currentColor" />
+</g></svg><span>Refresh</span>
+  </button>
+  <div class="collection">
+   <button class="control collection-toggle" type="button" aria-label="Image collection: Standard" aria-haspopup="menu" aria-expanded="false" aria-controls="collections">
+    <svg viewBox="182.5 33.5 36 34" aria-hidden="true"><path d="M207.915 40.004C209.548 40.0868 210.847 41.4371 210.847 43.0908V51.3331C210.847 52.4767 210.225 53.4738 209.301 54.0084V43.0908C209.301 42.2373 208.609 41.5454 207.756 41.5454H196.84C197.375 40.6225 198.37 40 199.514 40H207.756L207.915 40.004Z" class="square-back" fill="currentColor" stroke="currentColor" stroke-width=".4" />
+<path d="M204.824 43.0949C206.457 43.1776 207.756 44.528 207.756 46.1817V54.4239C207.756 55.5676 207.134 56.5647 206.211 57.0992V46.1817C206.211 45.3282 205.519 44.6363 204.665 44.6363H193.75C194.284 43.7134 195.28 43.0908 196.423 43.0908H204.665L204.824 43.0949Z" class="square-middle" fill="currentColor" stroke="currentColor" stroke-width=".4" />
+<path d="M201.733 46.1857C203.366 46.2684 204.665 47.6188 204.665 49.2725V57.5147C204.665 59.1684 203.366 60.5188 201.733 60.6015L201.574 60.6056H193.332C191.678 60.6056 190.328 59.3068 190.245 57.6737L190.241 57.5147V49.2725C190.241 47.5655 191.625 46.1817 193.332 46.1817H201.574L201.733 46.1857ZM193.332 47.7271C192.479 47.7271 191.787 48.419 191.787 49.2725V57.5147C191.787 58.3682 192.479 59.0601 193.332 59.0601H201.574C202.428 59.0601 203.12 58.3682 203.12 57.5147V49.2725C203.12 48.419 202.428 47.7271 201.574 47.7271H193.332Z" fill-rule="evenodd" clip-rule="evenodd" class="square-front" fill="currentColor" stroke="currentColor" stroke-width=".4" />
+</svg><span class="collection-label">Standard</span>
+    <svg class="chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m2 5 6 6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+   </button>
+   <div class="menu" id="collections" role="menu" aria-label="Image collection" hidden>
+    <button class="option" type="button" role="menuitemradio" aria-checked="true" data-collection="Standard" tabindex="-1">Standard</button>
+    <button class="option" type="button" role="menuitemradio" aria-checked="false" data-collection="Nature" tabindex="-1">Nature</button>
+    <button class="option" type="button" role="menuitemradio" aria-checked="false" data-collection="Leisure" tabindex="-1">Leisure</button>
+    <button class="option" type="button" role="menuitemradio" aria-checked="false" data-collection="Urban" tabindex="-1">Urban</button>
+   </div>
+  </div>
+  <div class="density">
+   <svg class="density-icon" viewBox="0 0 18 18" fill="currentColor" aria-hidden="true"><rect width="4" height="4" rx="1"/><rect y="6" width="4" height="4" rx="1"/><rect y="12" width="4" height="4" rx="1"/><rect x="6" width="4" height="4" rx="1"/><rect x="6" y="6" width="4" height="4" rx="1"/><rect x="6" y="12" width="4" height="4" rx="1"/><rect x="12" width="4" height="4" rx="1"/><rect x="12" y="6" width="4" height="4" rx="1"/><rect x="12" y="12" width="4" height="4" rx="1"/></svg>
+   <label class="sr-only" for="image-count">Number of images</label>
+   <input id="image-count" type="range" min="1" max="30" step="1" value="25" aria-valuetext="25 images">
+   <input class="count-input" id="image-count-value" type="number" inputmode="numeric" min="1" max="30" step="1" value="25" aria-label="Image count" aria-describedby="count-help">
+   <span class="sr-only" id="count-help">Enter a whole number from 1 to 30. Press Enter or leave the field to apply. Press Escape to cancel.</span>
+  </div>
+ </div>
+ <div class="undo-notice" hidden>
+  <span aria-hidden="true">Images refreshed</span>
+  <button class="undo-button" type="button" aria-label="Undo refresh">Undo</button>
+ </div>
+ <div class="canvas"><div class="viewport"><div class="photos" id="image-gallery" role="list" aria-label="Visible images in the Standard collection"></div></div></div>
+ <p class="sr-only" role="status" aria-live="polite" aria-atomic="true">25 images in the Standard collection.</p>
+</main>
+<script>
+(() => {
+ 'use strict';
+ const scene = document.querySelector('.scene');
+ const canvas = document.querySelector('.canvas');
+ const grid = document.querySelector('.photos');
+ const toolbar = document.querySelector('.toolbar');
+ const tryBubble = document.querySelector('.try-bubble');
+ const undoNotice = document.querySelector('.undo-notice');
+ const undo = document.querySelector('.undo-button');
+ const refresh = document.querySelector('.refresh');
+ const picker = document.querySelector('.collection-toggle');
+ const menu = document.querySelector('.menu');
+ const options = [...menu.querySelectorAll('.option')];
+ const range = document.querySelector('#image-count');
+ const countInput = document.querySelector('#image-count-value');
+ const status = document.querySelector('[role="status"]');
+ const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+ const images = {
+  library: 'Curved bookshelves in a library', glacier: 'A blue glacier meeting the sea', signpost: 'A signpost against a pink sunset',
+  snow: 'A snowy mountain forest', mushrooms: 'Mushrooms growing on a mossy log', adventure: 'A camper van parked in a forest',
+  salad: 'A colourful fresh salad', market: 'An evening street market', balloons: 'Hot-air balloons over a valley', cave: 'Sunlight reaching into a cave',
+  shopping: 'Colourful shopping bags', money: 'Hands counting banknotes', home: 'A model house and keys', cafe: 'Friends talking in a café',
+  ostrich: 'An ostrich with green foliage behind it', lake: 'Small boats on an alpine lake', forest: 'A moss-covered forest floor', construction: 'Cranes at a construction site',
+  'city-street': 'A street between tall city buildings', 'city-crossing': 'A sunlit city crossing', canal: 'Bicycles beside an Amsterdam canal', towers: 'Modern white and blue towers', 'city-taxis': 'Yellow taxis on a city avenue', 'city-avenue': 'Pedestrians crossing a busy avenue'
+ };
+ const collections = {
+  Standard: ['library','glacier','snow','mushrooms','adventure','signpost','ostrich','lake','salad','market','balloons','cave','forest','shopping','money','home','cafe','construction','canal','towers','city-street','city-crossing','city-taxis','city-avenue'],
+  Nature: ['snow','mushrooms','glacier','forest','lake','ostrich','cave','signpost'],
+  Leisure: ['library','salad','balloons','cafe','shopping','adventure','lake'],
+  Urban: ['market','city-street','canal','towers','city-crossing','city-taxis','construction','city-avenue']
+ };
+ const external = new Set(['city-street','city-crossing','canal','towers','city-taxis','city-avenue']);
+ const source = name => `image-insight-grid/${name}.${external.has(name) ? 'jpg' : 'webp'}?v=2`;
+ let collection = 'Standard';
+ let deck = [...collections.Standard];
+ let count = Number(range.value);
+ let revision = 0;
+ let refreshTimer;
+ let undoTimer;
+ let undoFadeTimer;
+ let previousDeck = null;
+ let editingCount = false;
+ let countDirty = false;
+ let cropWidth = 1059;
+ let cropHeight = 495;
+ const cells = [];
+
+ function fit() {
+  const scale = Math.max(scene.clientWidth / 1059, scene.clientHeight / 495);
+  canvas.style.transform = `scale(${scale})`;
+  canvas.style.left = `${(scene.clientWidth - 1059 * scale) / 2}px`;
+  // Keep the bottom of the original composition when the card gets shorter.
+  canvas.style.top = `${scene.clientHeight - 495 * scale}px`;
+  cropWidth = scene.clientWidth / scale;
+  cropHeight = scene.clientHeight / scale;
+  render();
+ }
+ new ResizeObserver(fit).observe(scene);
+ fit();
+
+ function render(animate = false) {
+  const columns = Math.ceil(Math.sqrt(count));
+  // Keep the larger working area centred behind the crop and toolbar.
+  // Six images use three columns: their 478px tiles are the size ceiling.
+  const size = Math.min((1494 - 2 * 30) / 3, (1494 - (columns - 1) * 30) / columns);
+  const width = columns * size + (columns - 1) * 30;
+  const rows = Math.ceil(count / columns);
+  const height = rows * size + (rows - 1) * 30;
+  const offset = Math.max(-size * .365, 475 - height);
+  grid.style.width = `${width}px`;
+  const positions = Array.from({ length: count }, (_, i) => {
+   const row = Math.floor(i / columns);
+   const rowCount = Math.min(columns, count - row * columns);
+   return {
+    x: (i % columns) * (size + 30) + (columns - rowCount) * (size + 30) / 2,
+    y: row * (size + 30) + offset
+   };
+  });
+  grid.setAttribute('aria-label', `Visible images in the ${collection} collection`);
+  for (let i = 0; i < count; i++) {
+   let cell = cells[i];
+   if (!cell) {
+    cell = document.createElement('div');
+    cell.className = 'photo';
+    cell.setAttribute('role', 'listitem');
+    const img = document.createElement('img');
+    img.alt = ''; img.draggable = false; img.decoding = 'async';
+    cell.append(img); cells.push(cell); grid.append(cell);
+   }
+   cell.hidden = false;
+   // A tile keeps its photograph through count and viewport changes.
+   // Only Refresh, Undo or a collection change can replace its image.
+   const name = deck[i % deck.length];
+   const img = cell.firstElementChild;
+   if (cell.dataset.image !== name) {
+    cell.dataset.image = name;
+    img.src = source(name);
+    img.alt = images[name];
+    img.getAnimations().forEach(animation => animation.cancel());
+    if (animate && !reduced.matches) img.animate([{ opacity: 0, transform: 'scale(1.025)' }, { opacity: 1, transform: 'none' }], { duration: 300, easing: 'ease' });
+   }
+   cell.style.width = cell.style.height = `${size}px`;
+   cell.style.transform = `translate(${positions[i].x}px,${positions[i].y}px)`;
+   const x = positions[i].x + (cropWidth - width) / 2;
+   const y = positions[i].y + cropHeight - 495;
+   const visible = x < cropWidth && x + size > 0 && y < cropHeight && y + size > 0;
+   cell.setAttribute('aria-hidden', String(!visible));
+  }
+  cells.slice(count).forEach(cell => { cell.hidden = true; });
+  range.value = String(count);
+  if (!editingCount) countInput.value = String(count);
+  range.setAttribute('aria-valuetext', `${count} ${count === 1 ? 'image' : 'images'}`);
+ }
+ function announce(fresh = false, message = '') {
+  status.textContent = `${message}${fresh ? 'Refreshed. ' : ''}${count} ${count === 1 ? 'image' : 'images'} in the ${collection} collection.${fresh ? ` Selection ${revision}. Undo refresh is available.` : ''}`;
+ }
+ function shuffle() {
+  const before = [...deck];
+  for (let attempt = 0; attempt < 20; attempt++) {
+   deck = [...before];
+   for (let i = deck.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [deck[i], deck[j]] = [deck[j], deck[i]];
+   }
+   if (deck.every((image, i) => image !== before[i])) return;
+  }
+  deck = [...before.slice(1), before[0]];
+ }
+ function closeMenu(returnFocus = false) {
+  menu.hidden = true;
+  picker.setAttribute('aria-expanded', 'false');
+  if (returnFocus) picker.focus({ preventScroll: true });
+ }
+ function openMenu(last = false, focusOption = true) {
+  dismissHint();
+  menu.hidden = false;
+  picker.setAttribute('aria-expanded', 'true');
+  const selected = options.find(option => option.getAttribute('aria-checked') === 'true');
+  if (focusOption) (last ? options.at(-1) : selected || options[0]).focus({ preventScroll: true });
+ }
+ function dismissHint() { tryBubble.hidden = true; }
+ function pauseUndoDismiss() {
+  clearTimeout(undoTimer);
+  clearTimeout(undoFadeTimer);
+  undoNotice.classList.remove('is-hiding');
+ }
+ function hideUndo() {
+  pauseUndoDismiss();
+  undoNotice.hidden = true;
+  undoNotice.classList.remove('is-entering');
+  previousDeck = null;
+ }
+ function scheduleUndoDismiss() {
+  pauseUndoDismiss();
+  if (undoNotice.hidden || undoNotice.matches(':hover, :focus-within')) return;
+  undoTimer = setTimeout(() => {
+   undoNotice.classList.remove('is-entering');
+   undoNotice.classList.add('is-hiding');
+   undoFadeTimer = setTimeout(hideUndo, reduced.matches ? 0 : 220);
+  }, 5000);
+ }
+ function showUndo() {
+  const wasHidden = undoNotice.hidden;
+  pauseUndoDismiss();
+  undoNotice.hidden = false;
+  if (wasHidden) undoNotice.classList.add('is-entering');
+  scheduleUndoDismiss();
+ }
+ undoNotice.addEventListener('animationend', event => {
+  if (event.animationName === 'undo-drop') undoNotice.classList.remove('is-entering');
+ });
+ undoNotice.addEventListener('pointerenter', pauseUndoDismiss);
+ undoNotice.addEventListener('pointerleave', scheduleUndoDismiss);
+ undoNotice.addEventListener('focusin', pauseUndoDismiss);
+ undoNotice.addEventListener('focusout', () => setTimeout(scheduleUndoDismiss, 0));
+ toolbar.addEventListener('click', dismissHint, { once: true });
+ toolbar.addEventListener('input', dismissHint, { once: true });
+ tryBubble.addEventListener('click', () => {
+  refresh.focus({ preventScroll: true });
+  refresh.click();
+ });
+ refresh.addEventListener('click', () => {
+  closeMenu();
+  previousDeck = [...deck];
+  shuffle(); revision++; render(true); announce(true);
+  showUndo();
+  clearTimeout(refreshTimer);
+  refresh.classList.remove('is-playing');
+  void refresh.offsetWidth;
+  refresh.classList.add('is-playing');
+  refreshTimer = setTimeout(() => refresh.classList.remove('is-playing'), 680);
+ });
+ undo.addEventListener('click', () => {
+  if (!previousDeck) return;
+  deck = [...previousDeck];
+  clearTimeout(refreshTimer);
+  refresh.classList.remove('is-playing');
+  refresh.focus({ preventScroll: true });
+  hideUndo();
+  render(true); announce(false, 'Refresh undone. ');
+ });
+ picker.addEventListener('click', event => menu.hidden ? openMenu(false, event.detail === 0) : closeMenu(true));
+ picker.addEventListener('keydown', event => {
+  if (!['ArrowDown','ArrowUp'].includes(event.key)) return;
+  event.preventDefault(); openMenu(event.key === 'ArrowUp');
+ });
+ menu.addEventListener('keydown', event => {
+  const index = options.indexOf(document.activeElement);
+  let next;
+  if (event.key === 'ArrowDown') next = (index + 1) % options.length;
+  if (event.key === 'ArrowUp') next = (index + options.length - 1) % options.length;
+  if (event.key === 'Home') next = 0;
+  if (event.key === 'End') next = options.length - 1;
+  if (next !== undefined) { event.preventDefault(); options[next].focus(); }
+  if (event.key === 'Tab') { event.preventDefault(); closeMenu(); (event.shiftKey ? picker : range).focus(); }
+ });
+ options.forEach(option => option.addEventListener('click', () => {
+  if (option.dataset.collection === collection) { closeMenu(true); return; }
+  hideUndo();
+  collection = option.dataset.collection;
+  deck = [...collections[collection]];
+  shuffle();
+  document.querySelector('.collection-label').textContent = collection;
+  picker.setAttribute('aria-label', `Image collection: ${collection}`);
+  options.forEach(item => item.setAttribute('aria-checked', String(item === option)));
+  closeMenu(true); render(true); announce();
+ }));
+ document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && !menu.hidden) { event.preventDefault(); closeMenu(true); }
+ });
+ document.addEventListener('pointerdown', event => {
+  if (!event.target.closest('.collection')) closeMenu();
+ });
+ document.addEventListener('focusin', event => {
+  if (!event.target.closest('.collection')) closeMenu();
+ });
+ window.addEventListener('blur', () => closeMenu());
+ range.addEventListener('input', () => { count = Number(range.value); closeMenu(); render(); });
+ range.addEventListener('change', () => announce());
+ countInput.addEventListener('focus', () => { editingCount = true; countInput.select(); });
+ countInput.addEventListener('input', () => { countDirty = true; });
+ function commitCount() {
+  if (!countDirty) return;
+  const value = countInput.valueAsNumber;
+  const corrected = !Number.isInteger(value) || value < 1 || value > 30;
+  if (Number.isFinite(value)) count = Math.min(30, Math.max(1, Math.round(value)));
+  countDirty = false;
+  countInput.value = String(count);
+  render(); announce(false, corrected ? 'Use a whole number from 1 to 30. ' : '');
+ }
+ countInput.addEventListener('blur', () => { editingCount = false; commitCount(); });
+ countInput.addEventListener('keydown', event => {
+  if (event.key === 'Enter') { event.preventDefault(); commitCount(); countInput.select(); }
+  if (event.key === 'Escape') { event.preventDefault(); countDirty = false; countInput.value = String(count); countInput.select(); announce(false, 'Edit cancelled. '); }
+ });
+ render();
+ // Only small local files are used, so a theme change never depends on a
+ // third-party image service. Warm the cache after the initial grid paints.
+ window.addEventListener('load', () => Object.keys(images).forEach(name => { const img = new Image(); img.src = source(name); }));
+})();
+</script>
+</body>
+</html>

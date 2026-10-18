@@ -536,16 +536,14 @@
     }
   }
 
-  /* -- hero: the app screenshot runs in from the left edge of the window
-     (rounded on the right only), title and strapline beside it. Columns
-     follow the Zonefully page: picture 53.4vw, a 6.4vw gap, text to 7.6vw
-     short of the right edge. -- */
+  /* Hero follows Zonefully: text on the left, screenshot running off
+     the right edge. Below 1024px the text sits above the picture. */
   .ii-hero {
     display: grid;
-    grid-template-columns: 53.4vw minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) 53.4vw;
     align-items: center;
     column-gap: 6.4vw;
-    padding: clamp(40px, 9vw, 180px) 7.6vw clamp(56px, 10vw, 200px) 0;
+    padding: clamp(40px, 9vw, 180px) 0 clamp(56px, 10vw, 200px) 7.6vw;
     background: linear-gradient(180deg, #131313 0%, #222121 100%);
   }
 
@@ -553,8 +551,13 @@
     display: block;
     width: 100%;
     height: auto;
-    border-radius: 0 clamp(12px, 1.4vw, 28px) clamp(12px, 1.4vw, 28px) 0;
+    border-radius: clamp(6px, 0.7vw, 14px) 0 0 clamp(6px, 0.7vw, 14px);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08), 0 18px 48px rgba(0, 0, 0, 0.14);
+  }
+
+  @media (min-width: 1024px) {
+    .ii-hero-text { grid-column: 1; grid-row: 1; }
+    .ii-hero-media { grid-column: 2; grid-row: 1; }
   }
 
   .ii-hero h1 {
@@ -570,8 +573,8 @@
   .ii-hero p.subtitle { text-wrap: pretty; }
 
   /* "Watch the demo": styled as the nav bar (nav.css .identity-bar), set
-     in the bar's bold Fakt like "Tom de Gay", jumping to the demo video at the foot of the page */
-  .ii-watch-row { margin: clamp(20px, 2.4vw, 32px) 0 0; }
+     in the bar's bold Fakt like "Tom de Gay", jumping to the demo video in the introduction */
+  .ii-watch-row { display: flex; flex-wrap: wrap; gap: 12px; margin: clamp(20px, 2.4vw, 32px) 0 0; }
 
   a.ii-watch {
     display: inline-flex;
@@ -590,6 +593,7 @@
     transition: background-color 0.15s ease, color 0.15s ease;
   }
 
+  a.ii-watch[href="#developing-heading"] { padding-inline: 22px; }
   a.ii-watch svg { flex: 0 0 auto; width: 14px; height: 14px; }
 
   a.ii-watch:hover, a.ii-watch:focus-visible { color: #fff; }
@@ -631,10 +635,9 @@
 
     .ii-hero-text { grid-row: 1; }
 
-    /* the picture still runs off the window's left edge, rounded on the
-       right only, as on desktop and phones */
-    .ii-hero-media { margin-left: calc(-1 * var(--hero-inset)); }
-    .ii-hero-media img { border-radius: 0 clamp(12px, 2.6vw, 26px) clamp(12px, 2.6vw, 26px) 0; }
+    /* Keep the picture flush with the right edge as the hero stacks. */
+    .ii-hero-media { margin-right: calc(-1 * var(--hero-inset)); }
+    .ii-hero-media img { border-radius: clamp(6px, 1.3vw, 13px) 0 0 clamp(6px, 1.3vw, 13px); }
 
     .ii-hero h1 { font-size: clamp(32px, 5vw, 56px); line-height: 1.1; max-width: 13.5em; }
 
@@ -669,34 +672,8 @@
     .ii-hero h1 { font-size: clamp(34px, 10vw, 46px); line-height: 1.06; }
     .ii-hero p.subtitle { font-size: clamp(19px, 5.4vw, 23px); line-height: 1.4; }
 
-    /* the picture slides up as it comes into view (after jamesfinch.co.uk,
-       but further): a 300px rise with a fade, on a springy ease that
-       settles a hair past its mark. The script below arms it only on phones, without reduced
-       motion, so with no JS the picture is simply there. */
-    .ii-hero-media.is-armed {
-      opacity: 0;
-      transform: translateY(300px);
-    }
-    /* the transition only on the way in, so arming jumps straight to the
-       start position rather than animating down to it */
-    /* the way back down, once it has played: back to the top of the page
-       reverses it, on a plain ease with no overshoot */
-    .ii-hero-media.is-armed.is-played {
-      transition: transform 0.6s cubic-bezier(0.55, 0, 0.45, 1),
-                  margin-top 0.6s cubic-bezier(0.55, 0, 0.45, 1),
-                  opacity 0.4s linear 0.2s;
-    }
-    /* ... and it comes to rest higher than it started, closing the empty
-       space under the button to 56px: the script measures that space into
-       --close, and the margin pulls the picture and the page below it up */
-    .ii-hero-media.is-armed.is-in {
-      opacity: 1;
-      transform: none;
-      margin-top: calc(-1 * var(--close, 0px));
-      transition: transform 0.75s cubic-bezier(0.22, 1.25, 0.36, 1),
-                  margin-top 0.75s cubic-bezier(0.22, 1, 0.36, 1),
-                  opacity 0.4s linear;
-    }
+    /* Match Zonefully's static mobile hero and measured button gap. */
+    .ii-hero-media { margin-top: calc(-1 * var(--hero-close, 0px)); }
   }
 
   /* -- carousel: the screens run in a full-width horizontal strip, the
@@ -776,7 +753,7 @@
     --grid-w: min(64.4rem, 100vw - 2 * clamp(24px, 5vw, 56px));
     display: flex;
     flex-direction: column;
-    gap: clamp(24px, 3vw, 40px);
+    gap: clamp(24px, 3vw, 40px) clamp(16px, 2vw, 28px);
     width: var(--grid-w);
     margin: clamp(20px, 3vw, 32px) 0 0 calc((100% - var(--grid-w)) / 2);
   }
@@ -784,7 +761,7 @@
   .ii-grid-row {
     display: flex;
     align-items: flex-start;
-    gap: clamp(16px, 2vw, 28px);
+    gap: inherit;
   }
 
   .ii-grid .figure {
@@ -798,18 +775,37 @@
      picture beside it */
   .ii-grid .ui-video { max-width: none; margin: 0; }
 
-  .ii-grid figcaption { max-width: 38rem; }
+  .ii-grid .ii-icons { position: relative; flex: none; width: min(100%, 640px); margin-inline: auto; }
+  .ii-icons object { display: block; width: 100%; height: auto; aspect-ratio: 253 / 141; border-radius: 10px; overflow: hidden; }
+  .ii-motif object { display: block; width: 100%; height: auto; aspect-ratio: 1; border-radius: 10px; overflow: hidden; }
+  .ii-grid-demo iframe { display: block; width: 100%; height: auto; aspect-ratio: 1059 / 495; border: 0; border-radius: 10px; clip-path: inset(0 round 10px); overflow: hidden; }
+  @media (min-width: 820px) { .ii-grid-demo iframe { aspect-ratio: 1059 / 396; } }
+  @media (max-width: 640px) { .ii-grid-demo iframe { aspect-ratio: 1; } }
+  @media (min-width: 641px) {
+    .ii-grid .ii-brand-row .ii-icons { flex: var(--ar) 1 0; width: auto; margin: 0; }
+  }
+  .ii-try-hint {
+    position: absolute; z-index: 1; top: 22px; right: 24px;
+    width: max-content; margin: 0; padding: 0; border: 0; background: none;
+    color: var(--accent, #0e76aa); font-family: inherit; font-weight: 700;
+    font-size: 16px; line-height: 24px; letter-spacing: 0; cursor: pointer;
+  }
+  .ii-try-hint:hover, .ii-try-hint:focus-visible { color: var(--accent, #0e76aa); }
+  .ii-try-hint:focus-visible { outline: 2px solid var(--accent-mark, #0f9cb8); outline-offset: 4px; border-radius: 2px; }
+  .ii-try-leader { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; color: var(--accent-mark, #0f9cb8); }
+  .ii-try-leader:not(.is-ready) { visibility: hidden; }
+  .ii-try-hint, .ii-try-leader { opacity: 1; transition: opacity .3s ease, visibility 0s linear; }
+  .ii-icons.is-interacted .ii-try-hint,
+  .ii-icons.is-interacted .ii-try-leader { opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .3s ease, visibility 0s linear .3s; }
+  @media (max-width: 480px) { .ii-try-hint { top: 10px; right: 14px; font-size: 14px; } }
+  @media (prefers-reduced-motion: reduce) { .ii-try-hint, .ii-try-leader { transition: none !important; } }
+
+
 
   @media (max-width: 640px) {
-    .ii-grid-row { flex-direction: column; gap: clamp(24px, 3vw, 40px); }
+    .ii-grid-row { flex-direction: column; }
     .ii-grid .figure { flex: none; width: 100%; }
   }
-
-  /* the screens in the strip are not all one shape: the expanded session
-     is 2000x1356 against the others' 2000x1300, so it is cut to match
-     (28px off top and bottom, clear of its card); full size in the
-     lightbox */
-  .ii-reel-slide img { aspect-ratio: 20 / 13; object-fit: cover; }
 
   /* only the current screen's caption shows; the neighbours' would peek
      in as clipped fragments of text */
@@ -822,6 +818,9 @@
 
   .ii-reel-dial { margin: 4px auto 0; }
 
+</style>
+<link rel="stylesheet" href="/case-studies/case-study-v2.css?v=20261017f">
+<style>
   /* ================================================================
      EXPERIMENT: light theme for this page only, switched on by
      <body class="theme-light">. Remove the class to return to dark.
@@ -976,20 +975,15 @@
   body.theme-light .menu-subsection-divider { border-top-color: rgba(var(--ink), 0.14); }
   body.theme-light .menu-subsection-title, body.theme-light .menu-subsection-copy { color: inherit; }
 
-  /* On phones the picture runs in from the window's left edge, cut about
-     halfway through the hot-air-balloon column of the grid (x=623 of the
-     1630px picture; that column spans 472-774), and stops at the page's
-     right margin, rounded on the right. What is left, 1007x1212, is a tall
-     crop: the session panel whole and the grid giving way on the left.
-     Last in the block so it beats the stacked layout's all-round radius. */
+  /* A tall mobile crop keeps the whole session panel visible alongside
+     part of the image grid; the picture meets the page's right edge. */
   @media (max-width: 640px) {
     .ii-hero { padding-bottom: 48px; }
-    .ii-hero-media { margin-left: calc(-1 * var(--hero-inset)); }
     .ii-hero-media img {
       aspect-ratio: 1007 / 1212;
       object-fit: cover;
       object-position: right center;
-      border-radius: 0 12px 12px 0;
+      border-radius: 6px 0 0 6px;
     }
   }
 
@@ -1133,6 +1127,76 @@
   .reel-dot[aria-current="true"]::before { background: rgb(var(--ink, 28, 28, 30)); }
   .reel-dot:focus-visible { outline: 2px solid rgba(var(--ink, 28, 28, 30), 0.8); outline-offset: -6px; border-radius: 999px; }
   @media (pointer: coarse) { .reel-dots, .reel-dot { height: 44px; } }
+
+  /* Full-content-width cards, with every complete screen fitted inside. */
+  .content .ii-reel { --reel-slide: var(--wide); }
+  .ii-reel-card {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 16 / 10;
+    padding: 5%;
+    background: #f7fcfc;
+    border-radius: 10px;
+    container-type: inline-size;
+  }
+  .ii-reel .ii-reel-card img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 58.3cqw;
+    object-fit: contain;
+    border-radius: 6px;
+  }
+
+  @media (max-width: 999px) {
+    .ii-reel-card {
+      display: block;
+      aspect-ratio: auto;
+      padding: 0;
+      background: none;
+      border-radius: 0;
+    }
+    .ii-reel .ii-reel-card img {
+      width: 100%;
+      height: auto;
+      max-height: none;
+    }
+  }
+
+  /* The shared grid sets the reading measure, section spacing and large
+     headings; media and details span the full content width. */
+  .theme-light .case-body p.problem-statement,
+  .theme-light .case-body h3.kd-heading { color: rgb(var(--ink)); }
+  .content .case-body .ii-grid { --grid-w: 100%; margin-left: 0; }
+  .content .case-body .ii-big { --video-w: 100%; margin-left: 0; }
+  .content > header + hr.rule { margin-block: clamp(28px, 3.5vw, 56px); }
+  #demo-heading { margin-top: clamp(36px, 4vw, 48px); }
+  .case-body > h3.kd-heading + p,
+  .case-body > h3.kd-heading + blockquote { margin-top: clamp(24px, 3vw, 40px); }
+  .case-body .ii-interactions-subheading { font-family: "Fakt Blond", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 12px 0 0; font-size: 20px; line-height: 1.4; font-weight: 400; }
+  .ii-outcome-intro { display: grid; gap: var(--g); margin: clamp(24px, 3vw, 40px) 0; align-items: start; }
+  .case-body .ii-outcome-intro > p { margin: 0; }
+  .ii-feedback-card { max-width: 46rem; margin: 0; }
+  .ii-feedback-card .framing-icon { flex: none; color: var(--accent); }
+  .ii-outcome-quotes { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--g); }
+  .content .case-body .ii-outcome-quotes > blockquote.outcome-quote { max-width: none; margin: 0; }
+  @media (min-width: 1024px) {
+    .ii-outcome-intro { grid-template-columns: minmax(0, 1fr) var(--span4); }
+    .ii-outcome-intro > p { grid-column: 1; grid-row: 1; }
+    .ii-outcome-intro > .ii-feedback-card { grid-column: 2; grid-row: 1; }
+    .ii-outcome-quotes { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  .framing-label { font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace; font-size: 14px; font-weight: 500; letter-spacing: 2px; word-spacing: -3px; text-transform: uppercase; color: var(--accent); }
+  .theme-light .ii-feedback-card { background: #fff; }
+  .theme-light .ii-feedback-card:hover, .theme-light .ii-feedback-card:focus-visible { background: #f7fcfc; }
+  .theme-light .ii-feedback-card .side-card-open { color: rgba(var(--ink), .6); }
+  .theme-light .ii-feedback-card:focus-visible, .theme-light #feedback-modal .card-modal-close:focus-visible { outline-color: var(--accent); }
+  .theme-light #feedback-modal .card-modal-panel { background: #f7fcfc; }
+  .theme-light #feedback-modal .card-modal-close { color: rgb(var(--ink)); background: rgba(var(--ink), .06); box-shadow: inset 0 0 0 1px rgba(var(--ink), .08); }
+  .theme-light #feedback-modal .card-modal-close:hover { background: rgba(var(--ink), .12); }
+  #feedback-modal .card-modal-body > h3 { font-size: clamp(24px, 3vw, 32px); line-height: 1.15; }
 </style>
 <script>
   (function () {
@@ -1150,7 +1214,9 @@
   </style>
 </noscript>
   <script src="/lightbox.js" defer></script>
+  <script src="/case-studies/case-study-v2.js" defer></script>
   <script src="/nav.js?v=20261016d" defer></script>
+  <script src="/hero-spacing.js?v=20261017a" defer></script>
   <script src="/footer.js" defer></script>
 </head>
 <body class="theme-light">
@@ -1217,14 +1283,17 @@
     </div>
   </nav>
   <div class="ii-hero">
-    <div class="ii-hero-media">
+    <div class="ii-hero-media" data-hero-spacing data-spacing-button=".ii-watch-row">
       <img src="media/image-insight-hero-ui.jpg" width="1630" height="1212" alt="Image Insight&rsquo;s main screen: a scrolling grid of photographs with a floating toolbar, alongside a &lsquo;My session&rsquo; panel holding the coach&rsquo;s question and the participant&rsquo;s chosen images.">
     </div>
     <div class="ii-hero-text">
       <img class="ii-hero-logo" src="media/image-insight-logo.svg" width="226" height="226" alt="Image Insight">
       <h1 class="display">Making space for deeper&nbsp;reflection</h1>
       <p class="subtitle">A coaching tool that uses images to help people talk things through, online or face&nbsp;to&nbsp;face.</p>
-      <p class="ii-watch-row"><a class="ii-watch" href="#video"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 2.8v10.4a.6.6 0 0 0 .9.5l8.2-5.2a.6.6 0 0 0 0-1L5.4 2.3a.6.6 0 0 0-.9.5z" fill="currentColor"/></svg>Watch the demo</a></p>
+      <p class="ii-watch-row">
+        <a class="ii-watch" href="#video"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 2.8v10.4a.6.6 0 0 0 .9.5l8.2-5.2a.6.6 0 0 0 0-1L5.4 2.3a.6.6 0 0 0-.9.5z" fill="currentColor"/></svg>Watch the demo</a>
+        <a class="ii-watch" href="#developing-heading">Try some interactions</a>
+      </p>
     </div>
   </div>
   <main>
@@ -1257,18 +1326,29 @@
 
     <section aria-labelledby="problem-heading" class="case-body">
       <h2 class="eyebrow" id="problem-heading">About</h2>
-      <h3>Bringing coaching cards&nbsp;online</h3>
+      <p class="display problem-statement">Bringing coaching cards&nbsp;online</p>
       <p>Sometimes it&rsquo;s easier to start with a picture than find the words. Image Insight brings physical coaching cards into a digital session for coaches and therapists working with adults and children.</p>
       <p id="centre-heading">The coach asks a question and the participant picks images to talk about. Reflections and next steps are saved in a downloadable PDF.</p>
-      <p>The co-founder brought me in with a working prototype. My role was to simplify the interface and make it easier to use.</p>
+      <p>The co-founder brought me in with a working prototype. My role was to bring some finesse to the interface and improve the workflow.</p>
 
+      <h3 class="eyebrow" id="demo-heading">1 minute demo</h3>
+
+      <figure class="figure ii-big" id="video">
+        <div class="ui-video">
+          <video controls playsinline preload="metadata" disablepictureinpicture controlslist="nofullscreen nodownload" width="1600" height="900" poster="media/image-insight-login.jpg">
+            <source src="media/image-insight-hero.mp4" type="video/mp4">
+          </video>
+          <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+        </div>
+        <figcaption>1-minute demo: choosing a question, picking images together, then reviewing the session and exporting its summary.</figcaption>
+      </figure>
     </section>
 
     <hr class="rule">
 
     <section aria-labelledby="approach-heading" class="case-body">
       <h2 class="eyebrow" id="approach-heading">Approach</h2>
-      <h3>A calm environment for reflection</h3>
+      <h3 class="display kd-heading">A calm environment for&nbsp;reflection</h3>
       <p>I kept the original concept, adding more breathing room, softer colours and clearer actions. The aim was to help people focus on the images and feelings.</p>
 
       <!-- The screens in the order you meet them in the app: signing in,
@@ -1276,19 +1356,27 @@
       <div class="ii-reel">
         <div class="ii-reel-track" id="ii-reel-track" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Image Insight screens">
           <figure class="figure ii-reel-slide is-current" role="group" aria-roledescription="slide" aria-label="1 of 4">
-            <img src="media/image-insight-login.jpg" width="2000" height="1300" alt="Image Insight&rsquo;s sign-in page: a soft card on a pale teal background patterned with the app&rsquo;s rounded image-grid motif, with email and password fields and Google or Azure options." loading="lazy" draggable="false">
+            <div class="ii-reel-card">
+              <img src="media/image-insight-login.jpg" width="2000" height="1300" alt="Image Insight&rsquo;s sign-in page: a soft card on a pale teal background patterned with the app&rsquo;s rounded image-grid motif, with email and password fields and Google or Azure options." loading="lazy" draggable="false">
+            </div>
             <figcaption>The sign-in page: the same calm palette and generous whitespace as the rest of the app, and a logo built from the signature image grid.</figcaption>
           </figure>
           <figure class="figure ii-reel-slide" role="group" aria-roledescription="slide" aria-label="2 of 4">
-            <img src="media/image-insight-landing.jpg" width="2000" height="1300" alt="Image Insight&rsquo;s dashboard: cards for a new session and past sessions, a count of completed and active sessions, and panels for referrals, tutorials and support." loading="lazy" draggable="false">
+            <div class="ii-reel-card">
+              <img src="media/image-insight-landing.jpg" width="2000" height="1300" alt="Image Insight&rsquo;s dashboard: cards for a new session and past sessions, a count of completed and active sessions, and panels for referrals, tutorials and support." loading="lazy" draggable="false">
+            </div>
             <figcaption>The dashboard applies the same calm treatment across the app: one clear primary action, a light summary of activity, and help within reach.</figcaption>
           </figure>
           <figure class="figure ii-reel-slide" role="group" aria-roledescription="slide" aria-label="3 of 4">
-            <img src="media/image-insight-session-expanded.jpg" width="2000" height="1356" alt="The session opened to full screen: a large &lsquo;What cards represent your weaknesses?&rsquo; heading above three chosen images, with &lsquo;Review session&rsquo; and &lsquo;Add question&rsquo; below." loading="lazy" draggable="false">
+            <div class="ii-reel-card">
+              <img src="media/image-insight-session-expanded.jpg" width="2000" height="1356" alt="The session opened to full screen: a large &lsquo;What cards represent your weaknesses?&rsquo; heading above three chosen images, with &lsquo;Review session&rsquo; and &lsquo;Add question&rsquo; below." loading="lazy" draggable="false">
+            </div>
             <figcaption>The redesign in one view: the question and the chosen images hold the centre, and the rest of the interface steps back.</figcaption>
           </figure>
           <figure class="figure ii-reel-slide" role="group" aria-roledescription="slide" aria-label="4 of 4">
-            <img src="media/image-insight-session-review.jpg" width="2000" height="1300" alt="Image Insight&rsquo;s session review screen: each chosen image paired with the participant&rsquo;s reflection, and an Actions panel listing next steps to carry forward." loading="lazy" draggable="false">
+            <div class="ii-reel-card">
+              <img src="media/image-insight-session-review.jpg" width="2000" height="1300" alt="Image Insight&rsquo;s session review screen: each chosen image paired with the participant&rsquo;s reflection, and an Actions panel listing next steps to carry forward." loading="lazy" draggable="false">
+            </div>
             <figcaption>The session review pairs each image with its reflection and foregrounds the actions to take forward, ready to export as a PDF.</figcaption>
           </figure>
         </div>
@@ -1298,39 +1386,44 @@
 
     <hr class="rule">
 
-    <section aria-labelledby="refining-heading" class="case-body">
-      <h3 id="refining-heading">Refining around real&nbsp;sessions</h3>
-      <p>A beta with two schools helped us see what worked and what needed adjusting.</p>
-      <blockquote class="outcome-quote">It gave a focus to answering the question, without distracting from the question.
-        <cite>Helen, Client &middot; <a href="https://imageinsight.app/" target="_blank" rel="noopener noreferrer">Source</a></cite>
-      </blockquote>
-      <blockquote class="outcome-quote">I love the simplicity.
-        <cite>Ed, Head Teacher / Coach &middot; <a href="https://imageinsight.app/" target="_blank" rel="noopener noreferrer">Source</a></cite>
-      </blockquote>
-
-      <h4>Starting a session</h4>
-      <p>Coaches wanted to start a session straight away. The app&rsquo;s developer suggested a separate instant-session button; I suggested one entry point where coaches could start now or schedule for later.</p>
-
-      <h4>Controlling the image grid</h4>
-      <p>A large grid could feel overwhelming, including for some neurodivergent children and young people. I added a slider to adjust the number of images and placed it over the grid so coaches could see the effect as they adjusted it.</p>
-
-      <p>A gallery selector and refresh button let coaches switch collections or try a fresh batch.</p>
+    <section aria-labelledby="developing-heading" class="case-body">
+      <h3 class="display kd-heading" id="developing-heading">Design&nbsp;details</h3>
+      <h4 class="ii-interactions-subheading">Try some interactions</h4>
 
       <div class="ii-grid">
+        <div class="ii-grid-row ii-brand-row">
+          <figure class="figure ii-icons" id="icon-details" style="--ar: 1.7943">
+            <object data="media/image-insight-icons-interactive.svg" type="image/svg+xml" width="253" height="141" aria-label="Interactive Image Insight icons" title="Hover or click each icon to try its animation">
+              <a href="media/image-insight-icons-interactive.svg">Try the interactive icons</a>
+            </object>
+            <svg class="ii-try-leader" aria-hidden="true">
+              <path fill="none" stroke="currentColor" stroke-width="1"/>
+              <circle r="2.5" fill="currentColor"/>
+            </svg>
+            <button class="ii-try-hint" type="button">Click to try</button>
+          </figure>
+          <figure class="figure ii-motif" id="brand-motif" style="--ar: 1">
+            <object data="media/image-insight-motif-animated.svg" type="image/svg+xml" width="370" height="370" aria-label="Animated Image Insight brand motif" title="Hover or tap to replay the motif animation">
+              <a href="media/image-insight-motif-animated.svg">View the animated brand motif</a>
+            </object>
+          </figure>
+        </div>
+        <div class="ii-grid-row">
+          <figure class="figure ii-grid-demo" id="image-grid-controls" style="--ar: 2.1394">
+            <iframe src="media/image-insight-grid-interactive.html" width="1059" height="495" title="Interactive image grid: refresh the photos, choose Standard, Nature, Leisure or Urban, and adjust the number of images from 1 to 30" loading="lazy"></iframe>
+          </figure>
+        </div>
         <div class="ii-grid-row">
           <figure class="figure" style="--ar: 1.759">
             <img src="media/image-insight-new-session.jpg" width="2146" height="1220" alt="A menu opening from the sidebar&rsquo;s add button: &lsquo;New session &mdash; start a session using your default settings&rsquo; above &lsquo;Schedule a session &mdash; schedule and customise a session&rsquo;." loading="lazy">
-            <figcaption>Start now or schedule for later</figcaption>
           </figure>
           <figure class="figure" style="--ar: 0.7066">
             <img src="media/image-insight-pdf-report.jpg" width="1050" height="1486" alt="A one-page PDF session summary: an Image Insight header, a narrative summary, a list of actions, and the session review questions with their images and reflections." loading="lazy">
-            <figcaption>Downloadable session summary</figcaption>
           </figure>
         </div>
         <div class="ii-grid-row">
           <figure class="figure" style="--ar: 2.064">
             <img src="media/image-insight-session-sidebar.jpg" width="2000" height="969" alt="Two panels side by side: a &lsquo;My session&rsquo; panel with the coach&rsquo;s question and the participant&rsquo;s chosen images, and a &lsquo;Session settings&rsquo; panel with a session name, a Junior/Teen/Adult profile, and optional client name and notes." loading="lazy">
-            <figcaption>Session settings</figcaption>
           </figure>
           <figure class="figure" style="--ar: 1.7973">
             <div class="ui-video" data-hover-controls>
@@ -1339,13 +1432,6 @@
               </video>
               <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
             </div>
-            <figcaption>Light and dark modes using Figma modes and variables</figcaption>
-          </figure>
-        </div>
-        <div class="ii-grid-row">
-          <figure class="figure" style="--ar: 4.337">
-            <img src="media/image-insight-toolbar.jpg" width="1800" height="415" alt="A toolbar floating over the bottom of the image grid: a Refresh button, a gallery selector reading &lsquo;Standard&rsquo;, and a slider set to 25 images." loading="lazy">
-            <figcaption>Image grid controls</figcaption>
           </figure>
         </div>
       </div>
@@ -1355,21 +1441,28 @@
 
     <section aria-labelledby="outcome-heading" class="case-body">
       <h2 class="eyebrow" id="outcome-heading">Outcome</h2>
-      <h3>Early&nbsp;results</h3>
+      <h3 class="display kd-heading">Early&nbsp;results</h3>
+      <div class="ii-outcome-intro">
       <p>The beta reached 120 active users in two schools, with a 71% session completion rate: a baseline for testing the latest improvements.</p>
+      <button class="side-card ii-feedback-card" type="button" aria-haspopup="dialog" aria-controls="feedback-modal">
+        <svg class="framing-icon" width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7.3" stroke="currentColor" stroke-width="1"/><path d="M8 7.1v4.4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><circle cx="8" cy="4.8" r="0.75" fill="currentColor"/></svg>
+        <span class="framing-label">User feedback</span>
+        <span class="side-card-open" aria-hidden="true"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 14.5l9-9M10.5 5.5h4v4M5.5 10.5v4h4"/></svg></span>
+      </button>
+
+      </div>
+
+      <div class="ii-outcome-quotes">
+      <blockquote class="outcome-quote">It gave a focus to answering the question, without distracting from the question.
+        <cite>Helen, Client &middot; <a href="https://imageinsight.app/" target="_blank" rel="noopener noreferrer">Source</a></cite>
+      </blockquote>
+      <blockquote class="outcome-quote">I love the simplicity.
+        <cite>Ed, Head Teacher / Coach &middot; <a href="https://imageinsight.app/" target="_blank" rel="noopener noreferrer">Source</a></cite>
+      </blockquote>
       <blockquote class="outcome-quote">Tom has been crucial in transforming Image Insight from a clunky MVP to an intuitive, easy-to-use product that I&rsquo;m really proud of.
         <cite><a href="https://www.linkedin.com/in/tom-dg/details/recommendations/?detailScreenTabIndex=0" target="_blank" rel="noopener noreferrer">Anna Malone</a>, Co-founder, Image Insight</cite>
       </blockquote>
-
-      <figure class="figure ii-big" id="video">
-        <div class="ui-video">
-          <video controls playsinline preload="metadata" disablepictureinpicture controlslist="nofullscreen nodownload" width="1600" height="900" poster="media/image-insight-hero-poster.jpg">
-            <source src="media/image-insight-hero.mp4" type="video/mp4">
-          </video>
-          <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
-        </div>
-        <figcaption>1-minute demo: choosing a question, picking images together, then reviewing the session and exporting its summary.</figcaption>
-      </figure>
+      </div>
     </section>
 
     <hr class="rule">
@@ -1390,6 +1483,37 @@
 
 
 
+  </div>
+
+  <div class="card-modal" id="feedback-modal" role="dialog" aria-modal="true" aria-labelledby="feedback-modal-title" hidden>
+    <div class="card-modal-panel">
+      <div class="card-modal-head">
+        <h2 class="framing-label" id="feedback-modal-title">User feedback</h2>
+        <button class="card-modal-close" type="button" aria-label="Close user feedback"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M5.5 5.5l9 9M14.5 5.5l-9 9"/></svg></button>
+      </div>
+      <div class="card-modal-body case-body">
+      <h3 class="display" id="refining-heading">Refining around real&nbsp;sessions</h3>
+      <p>A beta with two schools helped us see what worked and what needed adjusting.</p>
+
+
+
+      <h4>Starting a session</h4>
+      <p>Coaches wanted to start a session straight away. The app&rsquo;s developer suggested a separate instant-session button; I suggested one entry point where coaches could start now or schedule for later.</p>
+
+      <figure class="figure">
+        <img src="media/image-insight-new-session.jpg" width="2146" height="1220" alt="A menu opening from the sidebar&rsquo;s add button: &lsquo;New session &mdash; start a session using your default settings&rsquo; above &lsquo;Schedule a session &mdash; schedule and customise a session&rsquo;." loading="lazy">
+      </figure>
+
+      <h4>Controlling the image grid</h4>
+      <p>A large grid could feel overwhelming, including for some neurodivergent children and young people. I added a slider to adjust the number of images and placed it over the grid so coaches could see the effect as they adjusted it.</p>
+
+      <p>A gallery selector and refresh button let coaches switch collections or try a fresh batch.</p>
+
+      <figure class="figure">
+        <img src="media/image-insight-toolbar.jpg" width="1800" height="415" alt="The original floating image-grid toolbar, with refresh, a gallery selector and a slider controlling the number of images." loading="lazy">
+      </figure>
+      </div>
+    </div>
   </div>
 
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged image" tabindex="-1">
@@ -1423,41 +1547,6 @@
         window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
         link.blur();
       });
-    })();
-
-    /* Phone hero: arm the picture's slide-up, and play it once 40px of
-       its resting place has scrolled into view. The observer sees the
-       picture where the transform has put it, 300px lower, so the root
-       margin reaches 260px below the window to make up the difference. */
-    (function () {
-      var media = document.querySelector(".ii-hero-media");
-      if (!media || !("IntersectionObserver" in window)) return;
-      if (!window.matchMedia("(max-width: 640px)").matches) return;
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      if (media.getBoundingClientRect().top < window.innerHeight - 40) return;
-      media.classList.add("is-armed");
-      var button = document.querySelector(".ii-watch");
-      if (button) {
-        var gap = media.getBoundingClientRect().top - 300 - button.getBoundingClientRect().bottom;
-        media.style.setProperty("--close", Math.max(0, Math.round(gap - 56)) + "px");
-      }
-      var io = new IntersectionObserver(function (entries) {
-        if (!entries[0].isIntersecting) return;
-        media.classList.add("is-in", "is-played");
-      }, { rootMargin: "0px 0px 260px 0px" });
-      io.observe(media);
-
-      // back at the top of the page the slide-up runs in reverse, and
-      // plays again on the way down
-      var ticking = false;
-      window.addEventListener("scroll", function () {
-        if (ticking) return;
-        ticking = true;
-        requestAnimationFrame(function () {
-          ticking = false;
-          if (window.scrollY <= 0 && media.classList.contains("is-in")) media.classList.remove("is-in");
-        });
-      }, { passive: true });
     })();
 
     /* Carousel: the dial follows the actual scroll position; a mouse
@@ -1639,5 +1728,52 @@
     })();
   </script>
   <script data-goatcounter="https://tomdegay.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
-  </body>
+  <script>
+(function () {
+  const mount = document.querySelector('.ii-icons');
+  const frame = mount.querySelector('object');
+  const hint = mount.querySelector('.ii-try-hint');
+  const leader = mount.querySelector('.ii-try-leader');
+  let connectedDocument, target;
+  function dismiss() { mount.classList.add('is-interacted'); }
+  function draw() {
+    if (!target) return;
+    const box = mount.getBoundingClientRect();
+    const frameBox = frame.getBoundingClientRect();
+    const targetBox = target.querySelector('.tile').getBoundingClientRect();
+    const hintBox = hint.getBoundingClientRect();
+    const x = frameBox.left - box.left + targetBox.right + 4;
+    const y = frameBox.top - box.top + targetBox.top + targetBox.height / 2;
+    const endX = hintBox.right - box.left - 6;
+    const endY = hintBox.bottom - box.top + 3;
+    const bend = Math.min(box.width - 6, Math.max(x, endX) + 16);
+    leader.setAttribute('viewBox', `0 0 ${box.width} ${box.height}`);
+    leader.querySelector('path').setAttribute('d', `M${x} ${y}C${bend} ${y} ${bend} ${endY + 20} ${endX} ${endY}`);
+    leader.querySelector('circle').setAttribute('cx', x);
+    leader.querySelector('circle').setAttribute('cy', y);
+    leader.classList.add('is-ready');
+  }
+  function connect() {
+    const doc = frame.contentDocument;
+    target = doc && doc.querySelector('.squares');
+    if (!target) return;
+    if (doc !== connectedDocument) {
+      connectedDocument = doc;
+      ['pointerdown', 'keydown'].forEach(name => doc.addEventListener(name, dismiss, { once: true, capture: true }));
+    }
+    draw();
+  }
+  frame.addEventListener('load', connect);
+  hint.addEventListener('click', () => {
+    if (!target) return;
+    dismiss();
+    target.focus({ preventScroll: true });
+    target.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+  });
+  if ('ResizeObserver' in window) new ResizeObserver(draw).observe(mount);
+  document.fonts.ready.then(draw);
+  connect();
+}());
+</script>
+</body>
 </html>

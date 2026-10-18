@@ -1,0 +1,206 @@
+{
+  "license": "https://unsplash.com/license",
+  "note": "High-resolution replacements sourced from the original photograph where found, otherwise from a similar photograph in the same theme. All active widget images are 1200 \u00d7 1200.",
+  "images": [
+    {
+      "name": "library",
+      "file": "library.webp",
+      "source": "https://unsplash.com/photos/assorted-books-ZtI4l8EvyUw",
+      "download": "https://images.unsplash.com/photo-1568667256531-7d5ac92eaa7a?fm=webp&fit=crop&w=1200&h=1200&q=88",
+      "width": 1200,
+      "height": 1200
+    },
+    {
+      "name": "glacier",
+      "file": "glacier.webp",
+      "source": "https://unsplash.com/photos/snow-blocks-breaks-during-daytime-PtthxYbhYao",
+      "download": "https://images.unsplash.com/photo-1550695319-209e0e343dc9?fm=webp&fit=crop&w=1200&h=1200&q=88",
+      "width": 1200,
+      "height": 1200
+    },
+    {
+      "name": "snow",
+      "file": "snow.webp",
+      "source": "https://unsplash.com/photos/a-snow-covered-forest-with-a-mountain-in-the-background-SXEx8ui1jZk",
+      "download": "https://images.unsplash.com/photo-1649099619125-550ef67d1827?fm=webp&fit=crop&w=1200&h=1200&q=88",
+      "width": 1200,
+      "height": 1200
+    },
+    {
+      "name": "mushrooms",
+      "file": "mushrooms.webp",
+      "source": "https://unsplash.com/photos/a-group-of-mushrooms-sitting-on-top-of-a-moss-covered-log-h0TrIrUQC5Y",
+      "download": "https://images.unsplash.com/photo-1727660463317-910e75731dfa?fm=webp&fit=crop&w=1200&h=1200&q=88",
+      "width": 1200,
+      "height": 1200
+    },
+    {
+      "name": "adventure",
+      "file": "adventure.webp",
+      "source": "https://unsplash.com/photos/an-orange-and-white-van-parked-in-the-woods-hvaWRB79tXM",
+      "download": "https://images.unsplash.com/photo-1700610614764-a498ce1360e7?fm=webp&fit=crop&w=1200&h=1200&q=88",
+      "width": 1200,
+      "height": 1200
+    },
+    {
+      "name": "signpost",
+      "file": "signpost.webp",
+      "source": "https://unsplash.com/photos/a-sign-post-with-different-street-signs-75EcEMrXgtg",
+      "download": "https://images.unsplash.com/photo-1609625741732-b25285c5bfa8?fm=webp&fit=crop&w=1200&h=1200&q=88",
+      "width": 1200,
+      "height": 1200
+    },
+    {
+      "name": "ostrich",
+      "file": "ostrich.webp",
+      "source": "https://unsplash.com/photos/an-ostrich-is-standing-in-a-grassy-field-IAF_aiNuMSM",
+      "download": "https://images.unsplash.com/photo-1698861242083-e0eb2ef3558c?fm=webp&fit=crop&w=1200&h=1200&q=88",
+      "width": 1200,
+      "height": 1200
+    },
+    {
+      "name": "football",
+      "file": "football.webp",
+      "source": "https://unsplash.com/photos/two-soccer-players-in-blue-uniforms-are-talking-2soRqDCxW2c",
+      "download": "https://images.unsplash.com/photo-1748112442584-b298253216fe?fm=webp&fit=crop&w=1200&h=1200&q=88",
+      "width": 1200,
+      "height": 1200
+    },
+    {
+      "name": "lake",
+      "file": "lake.webp",
+      "source": "https://unsplash.com/photos/a-group-of-boats-floating-on-top-of-a-lake-Tf1BHLb6pPk",
+      "download": "https://images.unsplash.com/photo-1727713144442-69f31f0510ba?fm=webp&fit=crop&w=1200&h=1200&q=88",
+      "width": 1200,
+      "height": 1200
+    },
+    {
+      "name": "salad",
+      "file": "salad.webp",
+      "source": "https://unsplash.com/photos/bowl-of-salad-den9Bgi6W4Q",
+      "download": "https://images.unsplash.com/photo-1564185722618-ae3ffa1ac5aa?fm=webp&fit=crop&w=1200&h=1200&q=88",
+      "width": 1200,
+      "height": 1200
+    },
+    {
+      "name": "market",
+      "file": "market.webp",
+      "source": "https://unsplash.com/photos/architectural-photography-of-brown-monument-GZ11eIJy7ZU",
+      "download": "https://images.unsplash.com/photo-1560237606-f82b6cb1ebbf?fm=webp&fit=crop&w=1200&h=1200&q=88",
+      "width": 1200,
+      "height": 1200
+    },
+    {
+      "name": "balloons",
+      "file": "balloons.webp",
+      "source": "https://unsplash.com/photos/a-bunch-of-hot-air-balloons-flying-in-the-sky-2IRmvGcS7oo",
+      "download": "https://images.unsplash.com/photo-1733035992715-86bb7d8adc73?fm=webp&fit=crop&w=1200&h=1200&q=88",
+      "width": 1200,
+      "height": 1200
+    },
+    {
+      "name": "cave",
+      "file": "cave.webp",
+      "source": "https://unsplash.com/es/fotos/una-persona-parada-en-una-cueva-con-una-linterna-TnUO1FWVcgU",
+      "download": "https://images.unsplash.com/photo-1587623896311-9ff56996ba2d?fm=webp&fit=crop&w=1200&h=1200&q=88",
+      "width": 1200,
+      "height": 1200
+    },
+    {
+      "name": "forest",
+      "file": "forest.webp",
+      "source": "https://unsplash.com/photos/moss-covered-forest-floor-with-tall-trees-y0VQWlV71os",
+      "download": "https://images.unsplash.com/photo-1757137910309-f7c8c668650d?fm=webp&fit=crop&w=1200&h=1200&q=88",
+      "width": 1200,
+      "height": 1200
+    },
+    {
+      "name": "shopping",
+      "file": "shopping.webp",
+      "source": "https://unsplash.com/photos/hand-holding-colorful-shopping-bags-against-a-light-wall-6ZgtlGd4RQE",
+      "download": "https://images.unsplash.com/photo-1760565030282-8fb986077e0d?fm=webp&fit=crop&w=1200&h=1200&q=88",
+      "width": 1200,
+      "height": 1200
+    },
+    {
+      "name": "money",
+      "file": "money.webp",
+      "source": "https://unsplash.com/it/foto/fotografia-di-messa-a-fuoco-della-persona-che-conta-le-banconote-da-un-dollaro--8a5eJ1-mmQ",
+      "download": "https://images.unsplash.com/photo-1518458028785-8fbcd101ebb9?fm=webp&fit=crop&w=1200&h=1200&q=88",
+      "width": 1200,
+      "height": 1200
+    },
+    {
+      "name": "home",
+      "file": "home.webp",
+      "source": "https://unsplash.com/fr/photos/miniature-de-maison-en-bois-blanc-et-rouge-sur-table-marron-rgJ1J8SDEAY",
+      "download": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?fm=webp&fit=crop&w=1200&h=1200&q=88",
+      "width": 1200,
+      "height": 1200
+    },
+    {
+      "name": "cafe",
+      "file": "cafe.webp",
+      "source": "https://unsplash.com/photos/man-wearing-black-collared-top-sitting-on-chair-in-front-of-table-and-woman-wearing-multicolored-top-TLT9imTO3Vg",
+      "download": "https://images.unsplash.com/photo-1553478124-633048459a83?fm=webp&fit=crop&w=1200&h=1200&q=88",
+      "width": 1200,
+      "height": 1200
+    },
+    {
+      "name": "construction",
+      "file": "construction.webp",
+      "source": "https://unsplash.com/photos/gray-and-black-metal-posts-at-daytime-itgxCM17U5A",
+      "download": "https://images.unsplash.com/photo-1562925180-332d9da51800?fm=webp&fit=crop&w=1200&h=1200&q=88",
+      "width": 1200,
+      "height": 1200
+    },
+    {
+      "name": "city-street",
+      "file": "city-street.jpg",
+      "source": "https://unsplash.com/photos/black-vehicles-at-road-during-daytime-FCbG56FDiKo",
+      "download": "https://images.unsplash.com/photo-1559269903-16478edcd2c7?fm=jpg&fit=crop&w=1200&h=1200&q=88",
+      "width": 1200,
+      "height": 1200
+    },
+    {
+      "name": "city-crossing",
+      "file": "city-crossing.jpg",
+      "source": "https://unsplash.com/photos/a-street-with-buildings-on-either-side-KNpUOs8tjzA",
+      "download": "https://images.unsplash.com/photo-1662369797830-6accba8b2804?fm=jpg&fit=crop&w=1200&h=1200&q=88",
+      "width": 1200,
+      "height": 1200
+    },
+    {
+      "name": "canal",
+      "file": "canal.jpg",
+      "source": "https://unsplash.com/photos/a-couple-of-bikes-parked-next-to-each-other-on-a-sidewalk-A8RUK79UwPU",
+      "download": "https://images.unsplash.com/photo-1682418976482-66e34bc0cc94?fm=jpg&fit=crop&w=1200&h=1200&q=88",
+      "width": 1200,
+      "height": 1200
+    },
+    {
+      "name": "towers",
+      "file": "towers.jpg",
+      "source": "https://unsplash.com/photos/white-and-blue-high-rise-buildings-uHhmLD1y8D4",
+      "download": "https://images.unsplash.com/photo-1615308679128-1aed044c5d8a?fm=jpg&fit=crop&w=1200&h=1200&q=88",
+      "width": 1200,
+      "height": 1200
+    },
+    {
+      "name": "city-taxis",
+      "file": "city-taxis.jpg",
+      "source": "https://unsplash.com/photos/car-on-road-near-high-rise-buildings-WtarGx7oqNQ",
+      "download": "https://images.unsplash.com/photo-1550837725-7998bc8efdb0?fm=jpg&fit=crop&w=1200&h=1200&q=88",
+      "width": 1200,
+      "height": 1200
+    },
+    {
+      "name": "city-avenue",
+      "file": "city-avenue.jpg",
+      "source": "https://unsplash.com/photos/a-city-street-with-tall-buildings-in-the-background-WO8WJVBPX0U",
+      "download": "https://images.unsplash.com/photo-1495777938638-9afeb081a42e?fm=jpg&fit=crop&w=1200&h=1200&q=88",
+      "width": 1200,
+      "height": 1200
+    }
+  ]
+}

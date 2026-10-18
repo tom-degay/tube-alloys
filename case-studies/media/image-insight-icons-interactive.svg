@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="253" height="141" style="width:100%;height:100%;display:block" viewBox="0 0 253 141" fill="none" role="group" aria-labelledby="title description">
+<title id="title">Image Insight interactive icons</title>
+<desc id="description">Hover, tap or click each icon to animate it. Use Tab to choose an icon and Enter or Space to activate. Click the four arrows again to reverse their direction.</desc>
+<style>
+.icon { color:#334857; cursor:pointer; outline:none; -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+.art { pointer-events:none; }
+.tile { fill:#f1f3f4; fill-opacity:0; transition:fill-opacity 180ms ease; }
+.focus { fill:none; stroke:#567888; stroke-width:1; opacity:0; pointer-events:none; }
+.icon:focus-visible .focus { opacity:1; }
+.icon:is(.is-hover,:focus-visible,.is-playing) .tile { fill-opacity:1; }
+.arrow-offset,.arrow-turn,.handle,.refresh-art,.square-front,.square-middle,.square-back,.plus-art,.folder-front { transition:transform 280ms cubic-bezier(.2,.75,.25,1); }
+.icon:is(.is-hover,:focus-visible,.is-playing) .arrow-offset { transform:translate(var(--dx),var(--dy)); }
+.arrows[aria-pressed="true"] .arrow-turn { transform:rotate(180deg); }
+.handle { fill:#fff; transition:transform 300ms ease,fill 180ms ease; }
+.icon:is(.is-hover,:focus-visible,.is-playing) .handle { fill:#f1f3f4; }
+.sliders:is(.is-hover,:focus-visible,.is-playing) .handle-low { transform:translateY(-7px); }
+.sliders:is(.is-hover,:focus-visible,.is-playing) .handle-high { transform:translateY(7px); }
+.sliders.is-reset .handle { transform:translateY(0); }
+.refresh-art { transform-origin:149.029px 50.505px; }
+.refresh:is(.is-hover,:focus-visible) .refresh-art { transform:rotate(18deg); }
+.refresh.is-playing .refresh-art { animation:spin 650ms cubic-bezier(.25,.1,.2,1); }
+@keyframes spin { from { transform:rotate(18deg); } to { transform:rotate(378deg); } }
+.squares:is(.is-hover,:focus-visible) .square-front { transform:translate(-1px,1px); }
+.squares:is(.is-hover,:focus-visible) .square-back { transform:translate(1px,-1px); }
+.squares.is-playing .square-front { transform:translate(-2px,2px); }
+.squares.is-playing .square-back { transform:translate(2px,-2px); }
+.trash { transition:color 180ms ease; }
+.trash:is(.is-hover,:focus-visible,.is-playing) { color:#ff3030; }
+.trash-lid { transform-origin:48.8px 82px; }
+.trash.is-playing .trash-lid { animation:lid 700ms ease-in-out; }
+@keyframes lid { 0%,100% { transform:none; } 35%,55% { transform:translateY(-3px) rotate( -18deg); } }
+.plus-art { transform-origin:95px 89.5px; }
+.plus.is-playing .plus-art { --wobble:5deg; animation:plus-wobble 600ms ease-in-out; }
+@keyframes plus-wobble {
+  0%,100% { transform:rotate(0deg); }
+  25% { transform:rotate(calc(-1 * var(--wobble))); }
+  65% { transform:rotate(var(--wobble)); }
+}
+.folder-front { transform-origin:149px 99.0586px; }
+.folder:is(.is-hover,:focus-visible,.is-playing) .folder-front { transform:skewX(-12deg) scaleY(.82); }
+.folder.is-playing .art { animation:folder-bounce 600ms cubic-bezier(.25,.6,.35,1); }
+@keyframes folder-bounce {
+  0%,100% { transform:translateY(0); }
+  30% { transform:translateY(-3px); }
+  55% { transform:translateY(0); }
+  75% { transform:translateY(-1px); }
+}
+.headphones { transform-origin:200.7px 89.5px; }
+.headset:is(.is-hover,:focus-visible,.is-playing) .headphones { animation:wiggle 650ms ease-in-out; }
+.headset.is-playing .headphones { animation-name:wiggle-click; }
+@keyframes wiggle-click { 0%,100% { transform:rotate(0); } 25% { transform:rotate(-8deg); } 65% { transform:rotate(7deg); } }
+@keyframes wiggle { 0%,100% { transform:rotate(0); } 25% { transform:rotate(-8deg); } 65% { transform:rotate(7deg); } }
+@media (prefers-reduced-motion:reduce) {
+ .icon,.icon * { transition:none !important; animation:none !important; }
+ .icon .arrow-offset,.icon .handle,.icon .refresh-art,.icon .square-front,.icon .square-back,.icon .plus-arm,.icon .folder-front { transform:none !important; }
+}
+</style>
+<rect width="253" height="141" fill="#fff"/>
+<g class="icon arrows" role="button" tabindex="0" aria-label="Toggle outward arrows" aria-pressed="false">
+<rect class="tile" x="26.5" y="33.5" width="36" height="34" rx="5"/>
+<rect class="focus" x="26.5" y="33.5" width="36" height="34" rx="5"/>
+<g class="art" aria-hidden="true"><g class="arrow-offset" style="--dx:-1.6px;--dy:-1.6px"><g class="arrow-turn" style="transform-origin:39px 45px"><path d="M42 48L36 42" stroke-width="2" stroke-linecap="round" stroke="currentColor" />
+<path d="M42 43L42 48L37 48" stroke-width="2" stroke-linecap="round" stroke="currentColor" />
+</g></g><g class="arrow-offset" style="--dx:1.6px;--dy:1.6px"><g class="arrow-turn" style="transform-origin:50px 56px"><path d="M47 53.001L53 59.001" stroke-width="2" stroke-linecap="round" stroke="currentColor" />
+<path d="M52 53.001L47 53.001L47 58.001" stroke-width="2" stroke-linecap="round" stroke="currentColor" />
+</g></g><g class="arrow-offset" style="--dx:-1.6px;--dy:1.6px"><g class="arrow-turn" style="transform-origin:39px 56px"><path d="M42 53.0005L36 59.0005" stroke-width="2" stroke-linecap="round" stroke="currentColor" />
+<path d="M37 53.0005L42 53.0005L42 58.0005" stroke-width="2" stroke-linecap="round" stroke="currentColor" />
+</g></g><g class="arrow-offset" style="--dx:1.6px;--dy:-1.6px"><g class="arrow-turn" style="transform-origin:50px 45px"><path d="M47 48.0007L53 42.0007" stroke-width="2" stroke-linecap="round" stroke="currentColor" />
+<path d="M47 43.0007V48.0007H52" stroke-width="2" stroke-linecap="round" stroke="currentColor" />
+</g></g></g></g><g class="icon sliders" role="button" tabindex="0" aria-label="Move slider handles">
+<rect class="tile" x="77" y="33.5" width="36" height="34" rx="5"/>
+<rect class="focus" x="77" y="33.5" width="36" height="34" rx="5"/>
+<g class="art" aria-hidden="true"><path d="M86 41C86 40.4477 86.4477 40 87 40V40C87.5523 40 88 40.4477 88 41V60C88 60.5523 87.5523 61 87 61V61C86.4477 61 86 60.5523 86 60V41Z" fill="currentColor" />
+<path d="M94 41C94 40.4477 94.4477 40 95 40V40C95.5523 40 96 40.4477 96 41V60C96 60.5523 95.5523 61 95 61V61C94.4477 61 94 60.5523 94 60V41Z" fill="currentColor" />
+<rect x="102" y="40" width="2" height="21" rx="1" fill="currentColor"/><path d="M90 54C90 55.6569 88.6569 57 87 57C85.3431 57 84 55.6569 84 54C84 52.3431 85.3431 51 87 51C88.6569 51 90 52.3431 90 54Z" fill="#EFEFEF" stroke-width="2" stroke="currentColor" class="handle handle-low" />
+<path d="M106 54C106 55.6569 104.657 57 103 57C101.343 57 100 55.6569 100 54C100 52.3431 101.343 51 103 51C104.657 51 106 52.3431 106 54Z" fill="#EFEFEF" stroke-width="2" stroke="currentColor" class="handle handle-low" />
+<path d="M98 47C98 48.6569 96.6569 50 95 50C93.3431 50 92 48.6569 92 47C92 45.3431 93.3431 44 95 44C96.6569 44 98 45.3431 98 47Z" fill="#EFEFEF" stroke-width="2" stroke="currentColor" class="handle handle-high" />
+</g></g><g class="icon refresh" role="button" tabindex="0" aria-label="Rotate refresh arrow">
+<rect class="tile" x="132" y="33.5" width="36" height="34" rx="5"/>
+<rect class="focus" x="132" y="33.5" width="36" height="34" rx="5"/>
+<g class="art" aria-hidden="true"><g class="refresh-art"><path d="M149.029 40C154.459 40.0002 158.927 44.1225 159.475 49.4082L161.097 47.6074C161.391 47.282 161.892 47.2558 162.218 47.5488C162.544 47.8423 162.571 48.3449 162.278 48.6709L158.564 52.7949L154.44 49.082C154.114 48.7884 154.089 48.2859 154.382 47.96C154.676 47.6343 155.177 47.6081 155.503 47.9014L157.505 49.7041C157.101 45.377 153.461 41.9895 149.029 41.9893C144.326 41.9893 140.513 45.8021 140.513 50.5049C140.513 55.2077 144.326 59.0205 149.029 59.0205C149.578 59.0207 150.023 59.4658 150.023 60.0146C150.023 60.5636 149.578 61.0086 149.029 61.0088C143.228 61.0088 138.524 56.3061 138.524 50.5049C138.524 44.7037 143.228 40 149.029 40ZM149.623 60.0146L149.613 59.9102C149.613 59.9092 149.612 59.9082 149.612 59.9072C149.618 59.9421 149.623 59.9779 149.623 60.0146ZM148.671 59.4111C148.79 59.4169 148.909 59.4209 149.029 59.4209C149.109 59.421 149.185 59.4362 149.254 59.4648C149.22 59.4508 149.185 59.4392 149.148 59.4316L149.029 59.4199C148.909 59.4199 148.79 59.4166 148.671 59.4111ZM140.125 50.9639C140.132 51.1126 140.143 51.2605 140.158 51.4072C140.143 51.2601 140.132 51.1119 140.125 50.9629V50.9639ZM149.548 40.4141C149.804 40.427 150.057 40.4487 150.307 40.4805C150.057 40.4485 149.804 40.426 149.548 40.4131L149.029 40.4004L149.548 40.4141Z" fill="currentColor" />
+</g></g></g><g class="icon squares" role="button" tabindex="0" aria-label="Expand stacked squares">
+<rect class="tile" x="182.5" y="33.5" width="36" height="34" rx="5"/>
+<rect class="focus" x="182.5" y="33.5" width="36" height="34" rx="5"/>
+<g class="art" aria-hidden="true"><path d="M207.915 40.004C209.548 40.0868 210.847 41.4371 210.847 43.0908V51.3331C210.847 52.4767 210.225 53.4738 209.301 54.0084V43.0908C209.301 42.2373 208.609 41.5454 207.756 41.5454H196.84C197.375 40.6225 198.37 40 199.514 40H207.756L207.915 40.004Z" class="square-back" fill="currentColor" stroke="currentColor" stroke-width=".4" />
+<path d="M204.824 43.0949C206.457 43.1776 207.756 44.528 207.756 46.1817V54.4239C207.756 55.5676 207.134 56.5647 206.211 57.0992V46.1817C206.211 45.3282 205.519 44.6363 204.665 44.6363H193.75C194.284 43.7134 195.28 43.0908 196.423 43.0908H204.665L204.824 43.0949Z" class="square-middle" fill="currentColor" stroke="currentColor" stroke-width=".4" />
+<path d="M201.733 46.1857C203.366 46.2684 204.665 47.6188 204.665 49.2725V57.5147C204.665 59.1684 203.366 60.5188 201.733 60.6015L201.574 60.6056H193.332C191.678 60.6056 190.328 59.3068 190.245 57.6737L190.241 57.5147V49.2725C190.241 47.5655 191.625 46.1817 193.332 46.1817H201.574L201.733 46.1857ZM193.332 47.7271C192.479 47.7271 191.787 48.419 191.787 49.2725V57.5147C191.787 58.3682 192.479 59.0601 193.332 59.0601H201.574C202.428 59.0601 203.12 58.3682 203.12 57.5147V49.2725C203.12 48.419 202.428 47.7271 201.574 47.7271H193.332Z" fill-rule="evenodd" clip-rule="evenodd" class="square-front" fill="currentColor" stroke="currentColor" stroke-width=".4" />
+</g></g><g class="icon trash" role="button" tabindex="0" aria-label="Lift and close bin lid">
+<rect class="tile" x="26.5" y="72.5" width="36" height="34" rx="5"/>
+<rect class="focus" x="26.5" y="72.5" width="36" height="34" rx="5"/>
+<g class="art" aria-hidden="true"><path d="M38 86.0492L39.1327 98.2797C39.1709 98.6911 39.5161 99.0059 39.9293 99.0059H48.0707C48.4839 99.0059 48.8292 98.6911 48.8673 98.2797L50 86.0492" stroke-width="2" stroke-linecap="round" stroke="currentColor" />
+<path d="M44 86.0492L44 95.0378" stroke-width="2" stroke-linecap="round" stroke="currentColor" />
+<g class="trash-lid"><path d="M44 80.0089V82.0248" stroke-width="2" stroke-linecap="round" stroke="currentColor" />
+<path d="M39.2002 82.0248H48.8002" stroke-width="2" stroke-linecap="round" stroke="currentColor" />
+</g></g></g><g class="icon plus" role="button" tabindex="0" aria-label="Wobble plus">
+<rect class="tile" x="77" y="72.5" width="36" height="34" rx="5"/>
+<rect class="focus" x="77" y="72.5" width="36" height="34" rx="5"/>
+<g class="art" aria-hidden="true"><g class="plus-art"><path d="M95 80.0089V84.5074C95 87.2688 92.7614 89.5074 90 89.5074H85.5015" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M95 92.357V99.0059" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M97.8495 89.5074H104.498" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></g></g></g><g class="icon folder" role="button" tabindex="0" aria-label="Open folder">
+<rect class="tile" x="132" y="72.5" width="36" height="34" rx="5"/>
+<rect class="focus" x="132" y="72.5" width="36" height="34" rx="5"/>
+<g class="art" aria-hidden="true"><path d="M150.018 81.6211V81.3913C150.018 80.6229 149.401 80 148.641 80H140.377C139.617 80 139 80.6229 139 81.3913L139 97.6673C139 98.4357 139.617 99.0586 140.377 99.0586H158.278" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path class="folder-front" d="M158.278 99.0586C159.039 99.0586 159.743 98.4923 159.855 97.6673L161.449 86.7512C161.731 84.7779 160.11 84.5023 159.617 84.5023H145.367C144.4 84.5023 143.572 85.1939 143.399 86.1452L142.335 92.0104" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></g></g><g class="icon headset" role="button" tabindex="0" aria-label="Wiggle headphones">
+<rect class="tile" x="182.5" y="72.5" width="36" height="34" rx="5"/>
+<rect class="focus" x="182.5" y="72.5" width="36" height="34" rx="5"/>
+<g class="art" aria-hidden="true"><path d="M200.606 84.1538C201.997 84.1538 203.26 84.6659 204.172 85.502C205.06 86.3151 205.615 87.4366 205.615 88.679C205.615 90.6203 205.153 92.1537 204.514 94.3608C204.157 95.5937 203.744 97.0216 203.311 98.8065C203.237 98.8246 203.157 98.8414 203.072 98.8583C202.388 98.9937 201.46 99.0586 200.538 99.0586C199.651 99.0586 198.769 98.9992 198.122 98.8656C197.629 97.6781 197.328 96.5852 197.043 95.5509C196.269 92.7416 195.597 90.3902 195.597 88.679C195.597 87.4366 196.153 86.3151 197.04 85.502C197.953 84.6659 199.215 84.1538 200.606 84.1538Z" stroke-width="2" stroke="currentColor" />
+<g class="headphones"><path d="M192.118 92.762C191.683 91.6872 191.443 90.5123 191.443 89.2814C191.443 84.1554 195.6 80 200.728 80C205.856 80 210.013 84.1554 210.013 89.2814C210.013 91.9912 208.852 94.4297 206.999 96.1265" stroke-width="2" stroke-linecap="round" stroke="currentColor" />
+<path d="M189 89.1498C189 88.5975 189.448 88.1498 190 88.1498H190.731C191.214 88.1498 191.628 88.4954 191.715 88.9709L192.508 93.3354C192.53 93.4543 192.492 93.5763 192.406 93.6617C192.337 93.7308 192.244 93.7696 192.146 93.7696H190C189.448 93.7696 189 93.3219 189 92.7696V89.1498Z" fill="currentColor" />
+<path d="M212.457 89.1498C212.457 88.5975 212.009 88.1498 211.457 88.1498H209.524V93.7696H211.457C212.009 93.7696 212.457 93.3219 212.457 92.7696V89.1498Z" fill="currentColor" />
+</g></g></g>
+<script><![CDATA[
+(function () {
+  var timers = new WeakMap();
+  function activate(icon, hover) {
+    if (icon.classList.contains('sliders')) icon.classList.add('is-reset');
+    if (icon.classList.contains('arrows')) {
+      icon.setAttribute('aria-pressed', icon.getAttribute('aria-pressed') !== 'true');
+    }
+    clearTimeout(timers.get(icon));
+    icon.classList.remove('is-playing', 'is-hover-playing');
+    void icon.getBoundingClientRect();
+    icon.classList.add(hover ? 'is-hover-playing' : 'is-playing');
+    timers.set(icon, setTimeout(function () { icon.classList.remove('is-playing', 'is-hover-playing'); }, 720));
+  }
+  document.querySelectorAll('.icon').forEach(function (icon) {
+    icon.addEventListener('pointerenter', function (event) {
+      if (event.pointerType !== 'touch') {
+        icon.classList.remove('is-reset');
+        icon.classList.add('is-hover');
+        if (icon.classList.contains('plus')) activate(icon);
+      }
+    });
+    icon.addEventListener('pointerleave', function () { icon.classList.remove('is-hover'); });
+    icon.addEventListener('click', function () { activate(icon); });
+    icon.addEventListener('keydown', function (event) {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      if (!event.repeat) activate(icon);
+    });
+  });
+}());
+]]></script>
+</svg>
