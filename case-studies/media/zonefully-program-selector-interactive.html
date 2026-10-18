@@ -18,6 +18,13 @@ main{width:min(100%,667px);min-height:691px;margin:0 auto;padding:52px clamp(24p
 .label{display:flex;align-items:center;gap:6px;margin:0 0 12px;font-size:13px;font-weight:600;letter-spacing:.8px;color:#707070}
 .label svg{display:block;width:17px;height:17px;flex:none;overflow:visible}
 .selector{position:relative}
+.trigger-wrap{position:relative}
+.trigger-row .current{padding-right:44px}
+.clear-active{position:absolute;right:44px;top:50%;transform:translateY(-50%);width:40px;height:40px;display:grid;place-items:center;padding:10px;border:0;border-radius:6px;background:transparent;color:#777;opacity:0;pointer-events:none;transition:opacity .16s,background-color .16s}
+.clear-active svg{width:20px;height:20px}
+.trigger-wrap:hover .clear-active,.trigger-wrap:focus-within .clear-active,.trigger-wrap.is-touched .clear-active{opacity:1;pointer-events:auto}
+.clear-active:hover{background:#e5e5e5;color:#4d4d4d}
+.clear-active[hidden]{display:none}
 .trigger-row{display:flex;align-items:stretch;gap:0;width:100%;padding:0;border:0;border-radius:8px;background:#fff;text-align:left;color:inherit;transition:background-color .18s}
 .trigger-row:hover{background:#f0f0f0}
 .current{flex:1;min-width:0;min-height:69px;border:0;border-radius:8px;background:transparent;padding:9px 15px;display:flex;gap:10px;align-items:flex-start}
@@ -62,13 +69,8 @@ main{width:min(100%,667px);min-height:691px;margin:0 auto;padding:52px clamp(24p
 .option:hover .activate,.option:has(:focus-visible) .activate,.option.is-active .activate,.option.is-selected .activate{opacity:1}
 .option:not(.is-active) .activate:hover,.option:not(.is-active) .activate:focus-visible{background:transparent;border-color:#777;color:#4d4d4d}
 .option.is-active .activate{background:#00fca1;border-color:#00fca1;color:#0d6f30}
-.action-label,.deactivate-label{transition:opacity .12s}
-.deactivate-label{position:absolute;inset:0;display:grid;place-items:center;opacity:0;pointer-events:none}
+.action-label{transition:opacity .12s}
 .activation-check{position:absolute;left:9px;top:50%;width:12px;height:12px;transform:translateY(-50%);fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:0;pointer-events:none}
-.option.is-active .activate:not(.is-action-feedback):hover,.option.is-active .activate:not(.is-action-feedback):focus-visible{background:#d52a52;border-color:#d52a52;color:#fff}
-.option.is-active .activate:not(.is-action-feedback):hover .action-label,.option.is-active .activate:not(.is-action-feedback):focus-visible .action-label{opacity:0}
-.option.is-active .activate:not(.is-action-feedback):hover .deactivate-label,.option.is-active .activate:not(.is-action-feedback):focus-visible .deactivate-label{opacity:1}
-.option.is-active .activate:not(.is-action-feedback):hover .activation-check,.option.is-active .activate:not(.is-action-feedback):focus-visible .activation-check{visibility:hidden}
 .option:not(.is-active) .activate:active{transform:scale(.96)}
 mark{background:rgb(0 252 161 / .5);color:inherit;border-radius:2px}
 .empty{padding:24px 0 32px;margin:0;font-size:16px;color:#707070}
@@ -96,10 +98,13 @@ mark{background:rgb(0 252 161 / .5);color:inherit;border-radius:2px}
 <main aria-label="Programme selector demo">
 <h1 class="label"><svg viewBox="70 54 17 17" aria-hidden="true"><path d="M74 56H81C82.1046 56 83 56.8954 83 58V59H85V58C85 55.7909 83.2091 54 81 54H74C71.7909 54 70 55.7909 70 58V65C70 67.2091 71.7909 69 74 69H75V67H74C72.8954 67 72 66.1046 72 65V58C72 56.8954 72.8954 56 74 56Z" fill="#777777"/><path d="M78 61C77.4477 61 77 61.4477 77 62C77 62.5523 77.4477 63 78 63H86C86.5523 63 87 62.5523 87 62C87 61.4477 86.5523 61 86 61H78Z" fill="#777777"/><path d="M78 65C77.4477 65 77 65.4477 77 66C77 66.5523 77.4477 67 78 67H86C86.5523 67 87 66.5523 87 66C87 65.4477 86.5523 65 86 65H78Z" fill="#777777"/><path d="M77 70C77 69.4477 77.4477 69 78 69H86C86.5523 69 87 69.4477 87 70C87 70.5523 86.5523 71 86 71H78C77.4477 71 77 70.5523 77 70Z" fill="#777777"/></svg>PROGRAM</h1>
 <div class="selector">
+<div class="trigger-wrap">
 <button class="trigger-row" type="button" aria-label="Choose programme" aria-describedby="current-title" aria-expanded="true" aria-controls="programme-menu">
-<span class="current"><span class="dot" aria-hidden="true"></span><span class="current-copy"><span class="current-text"><span class="current-title" id="current-title">Phase I: aerobic foundation</span><span class="current-count">7 Routines</span></span></span></span>
+<span class="current"><span class="dot" aria-hidden="true"></span><span class="current-copy"><span class="current-text"><span class="current-title" id="current-title">Carb loading breakfast</span><span class="current-count">3 Routines</span></span></span></span>
 <span class="chevron" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 6 5 4 5-4"/></svg></span>
 </button>
+<button class="clear-active" type="button" aria-label="Clear active programme" title="Clear active programme"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15"/></svg></button>
+</div>
 <section class="menu is-open" id="programme-menu" aria-label="Choose a programme">
 <div class="search-row"><svg class="search-icon" viewBox="0 0 22 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="9" cy="9" r="7"/><path d="m14 14 7 8"/></svg><input class="search" type="search" placeholder="Search programs" aria-label="Search programmes" aria-describedby="keyboard-help" autocomplete="off"><button class="clear-search" type="button" aria-label="Clear search" title="Clear search" hidden><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15"/></svg></button></div>
 <div class="items" aria-label="Programmes"></div>
@@ -120,8 +125,10 @@ const programmes=[
 {id:'foundation',title:'Phase I: aerobic foundation',description:'Build endurance',routines:7}
 ];
 const selector=document.querySelector('.selector'),trigger=document.querySelector('.trigger-row'),menu=document.querySelector('.menu'),search=document.querySelector('.search'),items=document.querySelector('.items'),clearSearch=document.querySelector('.clear-search'),status=document.querySelector('#status');
+const clearActive=document.querySelector('.clear-active');
+clearActive.addEventListener('click',()=>{activeId=null;updateSelection(true);trigger.focus({preventScroll:true});status.textContent='Programme cleared. Select a program.';});
 const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)');
-let previewed='foundation',activeId='foundation',open=true;
+let previewed=programmes[0].id,activeId=programmes[0].id,open=true;
 const rows=new Map(),rowAnimations=new Map(),confirmationAnimations=new Set();
 const current=document.querySelector('.current'),currentText=document.querySelector('.current-text');
 let displayedPreview,previewAnimation=null;
@@ -163,8 +170,9 @@ function highlight(element,text,query){
  element.append(document.createTextNode(text.slice(from)));
 }
 function updatePreview(animate){
- if(displayedPreview===previewed)return;
- const programme=programmes.find(p=>p.id===previewed);
+ clearActive.hidden=!activeId;
+ if(displayedPreview===activeId)return;
+ const programme=programmes.find(p=>p.id===activeId);
  if(animate&&!reduceMotion.matches){
   const outgoing=currentText.cloneNode(true),opacity=getComputedStyle(currentText).opacity;
   outgoing.className='current-text-outgoing';outgoing.setAttribute('aria-hidden','true');
@@ -180,7 +188,7 @@ function updatePreview(animate){
  currentText.querySelector('.current-title').textContent=programme?programme.title:'Select a program';
  currentText.querySelector('.current-count').textContent=programme?`${programme.routines} Routines`:'';
  if(animate&&!reduceMotion.matches)previewAnimation=currentText.animate([{opacity:0},{opacity:1}],{duration:180,easing:'ease-out'});
- displayedPreview=previewed;
+ displayedPreview=activeId;
 }
 function confirmActivation(action){
  for(const animation of confirmationAnimations)animation.cancel();
@@ -207,7 +215,7 @@ function updateSelection(animate=false,moveHighlight=true){
    if(action.isConnected&&!reduceMotion.matches)text.animate([{opacity:0},{opacity:1}],{duration:180,easing:'ease-out'});
   }
   const programme=programmes.find(p=>p.id===row.dataset.id);
-  action.setAttribute('aria-label',`${active?'Deactivate':'Activate'} ${programme.title}`);
+  action.setAttribute('aria-label',`${active?'Active programme:':'Activate'} ${programme.title}`);
  }
  if(moveHighlight)positionSelection(animate);
 }
@@ -216,7 +224,7 @@ function createRow(p){
   const copy=document.createElement('button');copy.type='button';copy.className='option-copy';copy.setAttribute('aria-label',`Preview ${p.title}`);
   for(const cls of ['option-title','option-description']){const span=document.createElement('span');span.className=cls;copy.append(span);}
   const action=document.createElement('button');action.type='button';action.className='activate';
-  for(const [cls,text] of [['action-label','ACTIVATE'],['deactivate-label','DEACTIVATE']]){
+  for(const [cls,text] of [['action-label','ACTIVATE']]){
    const label=document.createElement('span');label.className=cls;label.setAttribute('aria-hidden','true');
    if(cls==='action-label'){const content=document.createElement('span');content.className='action-text';content.textContent=text;label.append(content);}else label.textContent=text;
    action.append(label);
@@ -236,11 +244,10 @@ function createRow(p){
   action.addEventListener('click',event=>{
    event.stopPropagation();
    action.classList.add('is-action-feedback');
-   const deactivate=activeId===p.id;
-   if(deactivate){activeId=null;previewed=null;}
-   else{activeId=p.id;if(!previewed)previewed=p.id;}
-   updateSelection(true);status.textContent=deactivate?`${p.title} deactivated. Select a program.`:`${p.title} activated. ${p.routines} routines.`;
-   confirmActivation(deactivate?null:action);
+   if(activeId===p.id)return;
+   activeId=p.id;previewed=p.id;
+   updateSelection(true);status.textContent=`${p.title} activated. ${p.routines} routines.`;
+   confirmActivation(action);
   });
   return row;
 }
@@ -288,6 +295,8 @@ function setOpen(show,restoreFocus=false,focusSearch=false){
  if(show){revealPreview();if(focusSearch)search.focus({preventScroll:true});}
  else if(restoreFocus)trigger.focus({preventScroll:true});
 }
+trigger.addEventListener('pointerdown',e=>{if(e.pointerType==='touch')trigger.parentElement.classList.add('is-touched');});
+document.addEventListener('pointerdown',e=>{if(!trigger.parentElement.contains(e.target))trigger.parentElement.classList.remove('is-touched');});
 trigger.addEventListener('click',e=>setOpen(!open,false,e.detail===0));
 trigger.addEventListener('keydown',e=>{if(e.key==='ArrowDown'||e.key==='ArrowUp'){
  e.preventDefault();if(!open)setOpen(true);
