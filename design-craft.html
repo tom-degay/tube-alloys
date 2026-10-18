@@ -456,14 +456,16 @@
     -webkit-box-decoration-break: clone; box-decoration-break: clone;
   }
   .p-statement:hover .craft-word,
-  .p-statement:focus-within .craft-word {
+  .p-statement:focus-within .craft-word,
+  .p-statement.is-scroll-playing .craft-word {
     animation: hl-agent-in 120ms linear forwards, hl-agent-turn 1450ms linear infinite;
   }
   @keyframes hl-agent-in { from { --hl-i: 0; } to { --hl-i: 1; } }
   @keyframes hl-agent-turn { from { --hl-a: 90deg; } to { --hl-a: -270deg; } }
   @media (prefers-reduced-motion: reduce) {
     .p-statement:hover .craft-word,
-    .p-statement:focus-within .craft-word { animation: none; }
+    .p-statement:focus-within .craft-word,
+  .p-statement.is-scroll-playing .craft-word { animation: none; }
   }
 
   .craft-widget { position: relative; container-type: inline-size; }
@@ -721,7 +723,7 @@
         <a href="#isokon-heading">Physical media</a>
       </nav>
 
-      <div class="p-item p-card p-statement" style="--c:7 / 13;--r:2"><h2 class="principle-title display" id="move-fast-heading">Move fast<br>and <span class="craft-word">craft</span><br>things</h2></div>
+      <div id="craft-statement" class="p-item p-card p-statement" style="--c:7 / 13;--r:2"><h2 class="principle-title display" id="move-fast-heading">Move fast<br>and <span class="craft-word">craft</span><br>things</h2></div>
 
       <figure class="craft-left p-item figure craft-widget craft-square" id="craft-image-insight-motif" style="--c:1 / 7;--r:2">
         <object data="/case-studies/media/image-insight-motif-animated.svg?theme=dark" type="image/svg+xml" width="370" height="370" aria-label="Hover or tap to replay the Image Insight brand motif" title="Hover or tap to replay the Image Insight brand motif"><a href="/case-studies/media/image-insight-motif-animated.svg">Hover or tap to replay the Image Insight brand motif</a></object>

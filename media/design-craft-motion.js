@@ -9,6 +9,7 @@
     state.timers = [];
     state.animations.forEach(animation => animation.cancel());
     state.animations = [];
+    state.card.classList.remove('is-scroll-playing');
     const root = state.embed?.contentDocument?.documentElement;
     if (root && state.started && state.kind === 'mapping') root.dispatchEvent(new Event('mapping-demo-stop'));
     if (root && state.started && state.kind === 'date') root.dispatchEvent(new Event('zf-demo-stop'));
@@ -29,6 +30,7 @@
     if (state.embed && (!root || !doc.querySelector(state.ready))) return;
     state.started = true;
     state.card.dataset.scrollAnimation = 'played';
+    if (state.kind === 'statement') state.card.classList.add('is-scroll-playing');
     if (state.kind === 'mapping') root.dispatchEvent(new Event('mapping-demo-play'));
     if (state.kind === 'date') root.dispatchEvent(new Event('zf-demo-start'));
     if (state.kind === 'brand') {
@@ -52,10 +54,23 @@
       const state = states.find(item => item.card === entry.target);
       state.visible = entry.isIntersecting && entry.intersectionRatio >= .3;
       if (state.visible) play(state);
-      else stop(state);
+      else {
+        stop(state);
+        state.started = false;
+        // Re-arm on the next pass without interrupting someone using a card.
+        if (!entry.isIntersecting) {
+          state.used = false;
+          if (state.kind === 'brand') {
+            const mark = state.card.querySelector('.zf-brand-mark');
+            mark.classList.remove('is-colour');
+            mark.setAttribute('aria-pressed', 'false');
+          }
+        }
+      }
     });
   }, { threshold: [0, .3], rootMargin: '0px 0px -5% 0px' });
   [
+    ['craft-statement', 'statement', null],
     ['mapping-tabs-detail', 'mapping', '#mapped-tab'],
     ['craft-zonefully-date-picker', 'date', '#zf-calendar'],
     ['craft-zonefully-brand', 'brand', null],
