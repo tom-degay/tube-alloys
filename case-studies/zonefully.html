@@ -820,7 +820,7 @@
     position: absolute;
     z-index: 1;
     top: calc(-24px - 1.91571%);
-    right: -75px;
+    right: -105px;
     width: max-content;
     margin: 0;
     padding: 0;
@@ -845,7 +845,7 @@
     .zf-try-hint, .zf-try-leader { transition: none !important; }
   }
   @media (max-width: 1100px) {
-    .zf-try-hint { right: -4px; }
+    .zf-try-hint { right: -20px; top: calc(-36px - 1.91571%); }
     .zf-try-leader-wide { display: none; }
     .zf-try-leader-compact { display: block; }
   }
@@ -1108,13 +1108,49 @@
   .reel-dot:focus-visible { outline: 2px solid rgba(var(--ink, 28, 28, 30), 0.8); outline-offset: -6px; border-radius: 999px; }
   @media (pointer: coarse) { .reel-dots, .reel-dot { height: 44px; } }
 
+  /* Full-content-width cards, with every complete screen fitted inside. */
+  .content .zf-reel { --reel-slide: var(--wide); }
+  .zf-reel-card {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 16 / 10;
+    padding: 5%;
+    background: #f7f7f7;
+    border-radius: 10px;
+    container-type: inline-size;
+  }
+  .zf-reel .zf-reel-card img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 58.3cqw;
+    object-fit: contain;
+    border-radius: 6px;
+  }
+
+  @media (max-width: 999px) {
+    .zf-reel-card {
+      display: block;
+      aspect-ratio: auto;
+      padding: 0;
+      background: none;
+      border-radius: 0;
+    }
+    .zf-reel .zf-reel-card img {
+      width: 100%;
+      height: auto;
+      max-height: none;
+    }
+  }
+
   /* the shared case-study headings, in ink */
   .theme-light .case-body p.problem-statement,
   .theme-light .case-body h3.kd-heading { color: rgb(var(--ink)); }
-  .theme-light .step-label { color: rgba(var(--ink), 0.4); }
 
   /* on the shared grid: the screen grid and the demo span the content
-     width; Step 3's text keeps the reading width, as the other steps */
+     width; introductory text keeps the reading width */
   .content .case-body .zf-grid { --grid-w: 100%; margin-left: 0; }
   .content .case-body .zf-big { --video-w: 100%; margin-left: 0; }
   .case-body > h3.kd-heading + p,
@@ -1244,14 +1280,12 @@
     <hr class="rule">
 
     <section aria-labelledby="problem-heading" class="case-body">
-      <h2 class="eyebrow" id="problem-heading">Problem</h2>
+      <h2 class="eyebrow" id="problem-heading">About</h2>
       <p class="display problem-statement">Connecting the bigger goal to the next&nbsp;action</p>
       <p>Zonefully&rsquo;s founder had developed a conceptual model for connecting long-term goals with recurring activities. He brought me in to turn that model into a usable interface.</p>
-      <p>Activities represented the things people wanted to plan and track. Programmes grouped Routines into sequences, which could then be applied to a calendar.</p>
-
-      <figure class="figure" id="activity-programme-routine">
-        <img src="media/zonefully-activity-programme-routine.png" width="1572" height="274" alt="The relationship between Activity, Programme and Routine: Cycling, Ride the Tourmalet and a 100 mile ride." loading="lazy">
-      </figure>
+      <p><strong>Activities</strong> represented the things people wanted to plan and track.</p>
+      <p><strong>Programmes</strong> grouped <strong>Routines</strong> into sequences.</p>
+      <p><strong>Routines</strong> could then be applied to a calendar view, called the <strong>Planner</strong>.</p>
 
       <p>For a cycling goal, that could mean training and recovery programmes containing individual rides and rest days. The design challenge was to make that hierarchy usable: people needed to work on an individual routine, understand how it fitted into a programme, and see where it belonged in their calendar.</p>
     </section>
@@ -1260,9 +1294,8 @@
 
     <section aria-labelledby="approach-heading" class="case-body">
       <h2 class="eyebrow" id="approach-heading">Design decisions</h2>
-      <h3 class="display kd-heading"><span class="step-label">Step 1</span>Making the structure&nbsp;visible</h3>
-      <p>I worked within the founder&rsquo;s conceptual model, focusing on how people would navigate between its different levels. Programme lists, routine lists and detail views followed a consistent visual structure.</p>
-      <p>A spacious layout separated the main areas of the interface. Activity colours, selection highlights and breadcrumb labels reinforced the connections between goals, programmes and routines.</p>
+      <h3 class="display kd-heading" id="context-heading">Expanding cards and&nbsp;layers</h3>
+      <p>Connected, expanding cards kept routines alongside their parent programme. Activity colours and breadcrumbs showed where each item belonged, while prompts guided people through creating a programme.</p>
 
       <!-- The screens in the order you meet them in the app: the programme
            list, a programme's controls, a new programme, one of its routines,
@@ -1270,23 +1303,33 @@
       <div class="zf-reel">
         <div class="zf-reel-track" id="zf-reel-track" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Zonefully screens">
           <figure class="figure zf-reel-slide is-current" role="group" aria-roledescription="slide" aria-label="1 of 5">
-            <img src="media/zonefully-programs.jpg" width="1440" height="964" alt="Zonefully&rsquo;s Programs screen: a searchable list of programmes on the left, and the selected programme&rsquo;s detail &mdash; cover image, activity and ordered routines &mdash; on the right." loading="lazy" draggable="false">
+            <div class="zf-reel-card">
+              <img src="media/zonefully-programs.jpg" width="1440" height="964" alt="Zonefully&rsquo;s Programs screen: a searchable list of programmes on the left, and the selected programme&rsquo;s detail &mdash; cover image, activity and ordered routines &mdash; on the right." loading="lazy" draggable="false">
+            </div>
             <figcaption>Programme list and detail share one spacious structure; the activity colour and selection highlight tie a programme to its routines.</figcaption>
           </figure>
           <figure class="figure zf-reel-slide" role="group" aria-roledescription="slide" aria-label="2 of 5">
-            <img src="media/zonefully-actions.jpg" width="1440" height="964" alt="A variant of the programme detail without a cover image, with the contextual action controls placed in a row at the top of the panel." loading="lazy" draggable="false">
+            <div class="zf-reel-card">
+              <img src="media/zonefully-actions.jpg" width="1440" height="964" alt="A variant of the programme detail without a cover image, with the contextual action controls placed in a row at the top of the panel." loading="lazy" draggable="false">
+            </div>
             <figcaption>One of the explorations of where the programme&rsquo;s controls sit, keeping them reachable without crowding the layout.</figcaption>
           </figure>
           <figure class="figure zf-reel-slide" role="group" aria-roledescription="slide" aria-label="3 of 5">
-            <img src="media/zonefully-new-program.jpg" width="2000" height="1339" alt="A newly created &lsquo;Untitled Program&rsquo; selected in the list and open in the detail panel, with an empty description, an &lsquo;Assign to an Activity&rsquo; button and a first untitled routine ready to edit." loading="lazy" draggable="false">
+            <div class="zf-reel-card">
+              <img src="media/zonefully-new-program.jpg" width="2000" height="1339" alt="A newly created &lsquo;Untitled Program&rsquo; selected in the list and open in the detail panel, with an empty description, an &lsquo;Assign to an Activity&rsquo; button and a first untitled routine ready to edit." loading="lazy" draggable="false">
+            </div>
             <figcaption>A new programme starts with the next steps spelled out: assign it to an activity, then add some routines.</figcaption>
           </figure>
           <figure class="figure zf-reel-slide" role="group" aria-roledescription="slide" aria-label="4 of 5">
-            <img src="media/zonefully-routine-context.jpg" width="1440" height="964" alt="A routine opened for editing alongside the programme it sits in, with a breadcrumb reading Activities &rsaquo; Ride the Tourmalet &rsaquo; Programs." loading="lazy" draggable="false">
+            <div class="zf-reel-card">
+              <img src="media/zonefully-routine-context.jpg" width="1440" height="964" alt="A routine opened for editing alongside the programme it sits in, with a breadcrumb reading Activities &rsaquo; Ride the Tourmalet &rsaquo; Programs." loading="lazy" draggable="false">
+            </div>
             <figcaption>Opening a routine brings its detail into focus without losing the programme it belongs to; the breadcrumb holds the path back.</figcaption>
           </figure>
           <figure class="figure zf-reel-slide" role="group" aria-roledescription="slide" aria-label="5 of 5">
-            <img src="media/zonefully-planner.png" width="1440" height="964" alt="Zonefully&rsquo;s Planner: a programme&rsquo;s routines laid across a week, with a side panel naming the Activity, Programme and Routine for the selected slot." loading="lazy" draggable="false">
+            <div class="zf-reel-card">
+              <img src="media/zonefully-planner.png" width="1440" height="964" alt="Zonefully&rsquo;s Planner: a programme&rsquo;s routines laid across a week, with a side panel naming the Activity, Programme and Routine for the selected slot." loading="lazy" draggable="false">
+            </div>
             <figcaption>A programme&rsquo;s routines placed on the calendar, with the chain from activity to programme to routine kept in view.</figcaption>
           </figure>
         </div>
@@ -1296,19 +1339,9 @@
 
     <hr class="rule">
 
-    <section aria-labelledby="context-heading" class="case-body">
-      <h3 class="display kd-heading" id="context-heading"><span class="step-label">Step 2</span>Keeping context alongside the&nbsp;detail</h3>
-      <p>I used connected, expanding cards to keep programmes and routines visible together. Selecting a programme revealed its routines; opening a routine showed its details alongside the programme it belonged to.</p>
-      <p>This prioritised context: each step into the detail retained a visible connection to the wider plan. Activity colours, selection highlights and breadcrumbs reinforced that relationship.</p>
-      <p>Creation states made the next steps explicit. Prompts such as &ldquo;Assign to an Activity&rdquo; and &ldquo;Add some Routines&rdquo; guided the setup of a new programme. Contextual controls grouped actions such as setting a cover image, duplicating and deleting.</p>
-    </section>
-
-    <hr class="rule">
-
     <section aria-labelledby="developing-heading" class="case-body">
       <div class="subsection" id="impl-developing">
-        <h3 class="display kd-heading" id="developing-heading"><span class="step-label">Step 3</span>Developing the&nbsp;interface</h3>
-        <p>I developed designs for programme browsing, routine details and new-programme creation, including selection and hover states. I also explored variations in cover imagery and action placement to balance functionality with a spacious layout.</p>
+        <h3 class="display kd-heading" id="developing-heading">Interface&nbsp;details</h3>
 
         <div class="zf-grid">
           <figure class="figure zf-grid-full">
@@ -1321,8 +1354,8 @@
                   <a href="media/zonefully-date-picker-interactive.svg">Try the interactive date picker</a>
                 </object>
                 <svg class="zf-try-leader" viewBox="0 0 375 375" aria-hidden="true">
-                  <path class="zf-try-leader-wide" d="M335 65C385 65 405 20 405-10" fill="none" stroke="currentColor" stroke-width="1"/>
-                  <path class="zf-try-leader-compact" d="M335 65C365 65 373 0 348-10" fill="none" stroke="currentColor" stroke-width="1"/>
+                  <path class="zf-try-leader-wide" d="M335 65C400 65 430 20 430-10" fill="none" stroke="currentColor" stroke-width="1"/>
+                  <path class="zf-try-leader-compact" d="M335 65C378 65 390 0 365-22" fill="none" stroke="currentColor" stroke-width="1"/>
                   <circle cx="335" cy="65" r="2.5" fill="currentColor"/>
                 </svg>
                 <button class="zf-try-hint" type="button">Click to try</button>
@@ -1360,10 +1393,7 @@
     <hr class="rule">
 
     <section aria-labelledby="outcome-heading" class="case-body">
-      <h2 class="eyebrow" id="outcome-heading">Outcome</h2>
-      <p class="display problem-statement">From a conceptual model to a working&nbsp;interface</p>
-      <p>Across roughly ten days of design work, I translated the founder&rsquo;s model into the navigation, editing states and visual language for a functioning first version. The result connected programme planning, routine editing and calendar scheduling through a consistent interface.</p>
-      <p>The central design contribution was making the relationships between those levels visible. A routine could be edited alongside its programme, while the planner kept its activity and programme in view. These connections addressed the original challenge: working on the next action without losing the larger plan.</p>
+      <h2 class="eyebrow" id="outcome-heading">1 minute demo</h2>
 
       <figure class="figure zf-big" id="video">
         <div class="ui-video">
@@ -1372,7 +1402,6 @@
           </video>
           <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
         </div>
-        <figcaption>1-minute demo: setting up an activity and a programme, then scheduling its routines on the calendar.</figcaption>
       </figure>
     </section>
 
@@ -1681,15 +1710,44 @@
   const mount = document.querySelector('.zf-date-picker-mount');
   const demo = mount.querySelector('object');
   const hint = mount.querySelector('.zf-try-hint');
-  const dismiss = () => mount.classList.add('is-interacted');
+  let inView = false;
+  let started = false;
+  let interacted = false;
+  function signal(name) {
+    const doc = demo.contentDocument;
+    if (doc?.documentElement.dataset.demoReady !== 'true') return false;
+    doc.documentElement.dispatchEvent(new doc.defaultView.CustomEvent(name));
+    return true;
+  }
+  function begin() {
+    if (inView && !started && !interacted) started = signal('zf-demo-start');
+  }
+  function dismiss() {
+    interacted = true;
+    mount.classList.add('is-interacted');
+    signal('zf-demo-stop');
+  }
+  let connectedDocument = null;
   function connect() {
     const doc = demo.contentDocument;
     if (!doc) return;
-    doc.addEventListener('pointerdown', dismiss, { once: true });
-    doc.addEventListener('keydown', dismiss, { once: true });
+    if (doc === connectedDocument) { begin(); return; }
+    connectedDocument = doc;
+    doc.addEventListener('pointerdown', dismiss, { once: true, capture: true });
+    doc.addEventListener('keydown', dismiss, { once: true, capture: true });
+    doc.addEventListener('click', dismiss, { once: true, capture: true });
+    begin();
   }
   demo.addEventListener('load', connect);
   connect();
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      inView = entries[0].intersectionRatio >= 0.5;
+      begin();
+      if (started || interacted) observer.disconnect();
+    }, { threshold: [0, 0.5] });
+    observer.observe(mount.querySelector('.zf-picker-canvas'));
+  }
   hint.addEventListener('click', () => {
     dismiss();
     demo.contentDocument?.querySelector('[aria-checked="true"]')?.focus();

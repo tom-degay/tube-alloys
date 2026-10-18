@@ -333,6 +333,62 @@
     drawCalendar(focusDay);
   }
 
+  let demoTimer = null;
+  let demoStarted = false;
+  let userInteracted = false;
+  function stopDemo() {
+    clearTimeout(demoTimer);
+    demoTimer = null;
+    clearMonthMotion();
+    selectionAnimation?.cancel();
+    root.dataset.demoState = 'stopped';
+  }
+  function takeControl() {
+    userInteracted = true;
+    stopDemo();
+  }
+  function startDemo() {
+    if (demoStarted || userInteracted || reducedMotion.matches) return;
+    demoStarted = true;
+    root.dataset.demoState = 'playing';
+    if (!opened) setOpen(true, false, false);
+    const choose = (month, day) => {
+      selected = date(2021, month, day);
+      focused = new Date(selected);
+      displayed = date(2021, month, 1);
+      updateHeading();
+      drawCalendar(false, true);
+    };
+    const steps = [
+      () => choose(1, 12),
+      () => choose(1, 24),
+      () => moveMonth(1),
+      () => choose(2, 10),
+      () => choose(2, 19),
+      () => moveMonth(1),
+      () => choose(3, 7),
+      () => choose(3, 22),
+      () => moveMonth(-1),
+      () => choose(2, 16)
+    ];
+    let index = 0;
+    function advance() {
+      if (userInteracted || reducedMotion.matches) return;
+      steps[index++]();
+      if (index < steps.length) demoTimer = setTimeout(advance, 1100);
+      else { demoTimer = null; root.dataset.demoState = 'complete'; }
+    }
+    demoTimer = setTimeout(advance, 750);
+  }
+  root.addEventListener('zf-demo-start', startDemo);
+  root.addEventListener('zf-demo-stop', takeControl);
+  document.addEventListener('pointerdown', takeControl, true);
+  document.addEventListener('keydown', takeControl, true);
+  document.addEventListener('click', takeControl, true);
+  reducedMotion.addEventListener('change', () => {
+    if (reducedMotion.matches) stopDemo();
+  });
+
   function activate(button) {
     const action = button.getAttribute('data-action');
     if (action === 'toggle') setOpen(!opened, opened);
@@ -399,6 +455,7 @@
     if (opened && !root.contains(event.target)) setOpen(false);
   });
   root.addEventListener('zf-reset', () => {
+    takeControl();
     selected = date(2021, 1, 9);
     displayed = date(2021, 1, 1);
     focused = new Date(selected);
@@ -408,6 +465,7 @@
   updateHeading();
   if (location.hash === '#open') setOpen(true, false, false);
   else drawCalendar();
+  root.dataset.demoReady = 'true';
   document.fonts?.ready.then(() => { updateHeading(); drawCalendar(); });
 })();
 
