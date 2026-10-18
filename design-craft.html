@@ -455,17 +455,14 @@
     -webkit-text-fill-color: transparent;
     -webkit-box-decoration-break: clone; box-decoration-break: clone;
   }
-  .p-statement:hover .craft-word,
-  .p-statement:focus-within .craft-word,
+  /* the colour fill plays on scroll only, while the card is in view */
   .p-statement.is-scroll-playing .craft-word {
     animation: hl-agent-in 120ms linear forwards, hl-agent-turn 1450ms linear infinite;
   }
   @keyframes hl-agent-in { from { --hl-i: 0; } to { --hl-i: 1; } }
   @keyframes hl-agent-turn { from { --hl-a: 90deg; } to { --hl-a: -270deg; } }
   @media (prefers-reduced-motion: reduce) {
-    .p-statement:hover .craft-word,
-    .p-statement:focus-within .craft-word,
-  .p-statement.is-scroll-playing .craft-word { animation: none; }
+    .p-statement.is-scroll-playing .craft-word { animation: none; }
   }
 
   .craft-widget { position: relative; container-type: inline-size; }
@@ -3184,6 +3181,6 @@
 <script src="/media/agent-cube-studies.js"></script>
 <script src="/media/white-rainbow-shimmer.js"></script>
 <script src="/media/profile-page-animation.js"></script>
-<script src="/media/design-craft-motion.js"></script>
+<script src="/media/design-craft-motion.js?v=20261018"></script>
 </body>
 </html>

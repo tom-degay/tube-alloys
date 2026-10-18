@@ -4,6 +4,14 @@
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   if (!('IntersectionObserver' in window)) return;
   const states = [];
+  // the statement's colour fill waits for the reader to scroll, even when
+  // the card is already in view on load
+  let scrolled = false;
+  addEventListener('scroll', () => {
+    if (scrolled) return;
+    scrolled = true;
+    states.forEach(state => { if (state.kind === 'statement') play(state); });
+  }, { passive: true });
   function stop(state) {
     state.timers.forEach(clearTimeout);
     state.timers = [];
@@ -25,6 +33,7 @@
   }
   function play(state) {
     if (!state.visible || state.started || state.used || reduced.matches) return;
+    if (state.kind === 'statement' && !scrolled) return;
     const doc = state.embed?.contentDocument;
     const root = doc?.documentElement;
     if (state.embed && (!root || !doc.querySelector(state.ready))) return;
@@ -84,6 +93,8 @@
     states.push(state);
     const takeControl = event => {
       if (!event.isTrusted) return;
+      // the statement's fill answers to scrolling only
+      if (state.kind === 'statement') return;
       state.used = true;
       // Playback buttons own their toggle; stopping on pointerdown would
       // turn a Stop click into Play before its click handler runs.
