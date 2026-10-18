@@ -117,7 +117,7 @@
     border-radius: 6px;
   }
 
-  /* Content image/video floats on this same grey-gradient backdrop card,
+  /* Content image/video floats on this same solid grey backdrop card,
      rather than sitting straight on the page's black background -- matches
      the case-study pages. Not applied inside .example-card, which has its
      own deliberate edge-to-edge video-bleed design. */
@@ -127,7 +127,7 @@
     justify-content: center;
     padding: 5%;
     margin-bottom: clamp(24px, 3.5vw, 36px);
-    background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
+    background: #212121;
     border-radius: 10px;
   }
 
@@ -601,7 +601,7 @@
 
   .p-card {
     box-sizing: border-box;
-    background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
+    background: #212121;
     border-radius: 10px;
     padding: clamp(20px, 2.4vw, 32px);
   }
@@ -659,15 +659,15 @@
   /* wide screens: captions run to half the picture's width, not its full width */
   @media (min-width: 1280px) { .p-pic figcaption { max-width: 50%; } }
 
-  /* link cards take the same gradient as the text cards */
+  /* link cards take the same solid fill as the text cards */
   .poster .case-block.has-thumb {
     max-width: none;
-    background-color: transparent;
-    background-image: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
+    background-color: #212121;
+    background-image: none;
     border-color: transparent;
   }
   .poster .case-block.has-thumb:hover, .poster .case-block.has-thumb:focus-visible {
-    background-image: linear-gradient(to bottom, #222, #363636);
+    background-color: #2a2a2a;
     border-color: transparent;
     transform: none;
   }
