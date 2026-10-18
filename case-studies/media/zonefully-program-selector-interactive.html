@@ -65,8 +65,9 @@ main{width:min(100%,667px);min-height:691px;margin:0 auto;padding:52px clamp(24p
 .option-copy{min-width:0;flex:1;border:0;background:none;color:inherit;font:inherit;text-align:left;padding:0;border-radius:3px}
 .option-title{display:block;font-size:20px;line-height:28px}
 .option-description{display:block;font-size:16px;line-height:23px;color:#616161}
-.activate{position:relative;flex:none;min-width:110px;text-align:center;background:transparent;border:1px solid #bfbfbf;color:#616161;font-size:12px;font-weight:700;letter-spacing:1px;line-height:24px;padding:0 12px;border-radius:13px;opacity:0;transition:opacity .16s,background-color .16s,border-color .16s,color .16s}
-.option:hover .activate,.option:has(:focus-visible) .activate,.option.is-active .activate,.option.is-selected .activate{opacity:1}
+.activate{position:relative;flex:none;min-width:110px;text-align:center;background:transparent;border:1px solid #bfbfbf;color:#616161;font-size:12px;font-weight:700;letter-spacing:1px;line-height:24px;padding:0 12px;border-radius:13px;opacity:0;pointer-events:none;transition:opacity .16s,background-color .16s,border-color .16s,color .16s}
+.option:has(:focus-visible) .activate,.option.is-selected .activate{opacity:1;pointer-events:auto}
+@media(hover:hover){.option:hover .activate{opacity:1;pointer-events:auto}}
 .option:not(.is-active) .activate:hover,.option:not(.is-active) .activate:focus-visible{background:transparent;border-color:#777;color:#4d4d4d}
 .option.is-active .activate{background:#00fca1;border-color:#00fca1;color:#0d6f30}
 .action-label{transition:opacity .12s}
@@ -85,10 +86,9 @@ mark{background:rgb(0 252 161 / .5);color:inherit;border-radius:2px}
  .items{padding-left:16px;padding-right:12px}
  .option{padding-right:44px;display:block}
  .option-copy{display:block}
- .activate{display:table;margin-top:6px;font-size:10px;line-height:24px;min-width:94px;opacity:1;transform:none}
+ .activate{display:table;margin-top:6px;font-size:10px;line-height:24px;min-width:94px;transform:none}
  .menu{border-radius:10px}
 }
-@media(hover:none){.activate{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){*,*::before{transition:none!important}}
 .is-embedded main{width:min(100%,575px);min-height:0;margin:0 auto;padding:64px 24px 36px}
 @media(max-width:360px){.is-embedded main{padding-left:16px;padding-right:16px}}
