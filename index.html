@@ -994,6 +994,42 @@
   .q-reel-slide cite a[target="_blank"]::after { content: none; }
 
   .q-reel-dial { margin: 4px auto 0; }
+  /* the quotes' page dots: the case studies' dot bar */
+  .reel-dots {
+    display: flex;
+    box-sizing: border-box;
+    align-items: center;
+    width: max-content;
+    height: 40px;
+    padding: 0 9px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  }
+  .reel-dots[hidden] { display: none; }
+  .reel-dot {
+    appearance: none;
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 40px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+  .reel-dot::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.28);
+    transition: background-color 0.25s ease;
+  }
+  .reel-dot:hover::before { background: rgba(255, 255, 255, 0.6); }
+  .reel-dot[aria-current="true"]::before { background: #fff; }
+  .reel-dot:focus-visible { outline: 2px solid #00d8aa; outline-offset: -6px; border-radius: 999px; }
+  @media (pointer: coarse) { .reel-dots, .reel-dot { height: 44px; } }
 
 
   /* Smaller projects: two image cards, in the Approach cards' style. */
@@ -1600,7 +1636,7 @@
             <cite><a href="https://www.linkedin.com/in/tom-dg/details/recommendations/?detailScreenTabIndex=0" target="_blank" rel="noopener noreferrer">Anna Malone</a>, Co-founder, Image Insight</cite>
           </blockquote>
         </div>
-        <div class="q-reel-dial tdg-dial" hidden></div>
+        <div class="q-reel-dial reel-dots" role="group" aria-label="Choose a quote" hidden></div>
       </div>
     </section>
 
@@ -1994,10 +2030,22 @@
       var track = reel.querySelector(".q-reel-track");
       var slides = Array.prototype.slice.call(track.querySelectorAll(".q-reel-slide"));
       var targetIndex = null;
-      var dial = TDGDial.create(reel.querySelector('.q-reel-dial'), {
-        count: slides.length, item: 'quote', label: 'What people say', controls: 'q-reel-track',
-        onStep: function (step) { go((targetIndex === null ? current() : targetIndex) + step); }
+      // page dots: one per quote, the current one filled
+      var dotsRoot = reel.querySelector('.q-reel-dial');
+      var dots = slides.map(function (s, i) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'reel-dot';
+        b.setAttribute('aria-label', 'Quote ' + (i + 1) + ' of ' + slides.length);
+        b.setAttribute('aria-controls', 'q-reel-track');
+        b.addEventListener('click', function () { go(i); });
+        dotsRoot.appendChild(b);
+        return b;
       });
+      dotsRoot.hidden = false;
+      var dial = { render: function (phase, sel) {
+        dots.forEach(function (d, i) { d.setAttribute('aria-current', i === sel ? 'true' : 'false'); });
+      } };
       var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       // the strip starts on the page's content edge: measure it off the
