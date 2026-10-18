@@ -605,7 +605,7 @@
     .drawback-label { font-family: "Fakt Title", Arial, sans-serif; font-size: 32px; font-weight: 400; fill: #ddd; }
     .connector, .endpoint, .source-label, .master-label { animation-play-state: paused; }
   </style>
-  <rect width="1472" height="1280" fill="url(#background)"/>
+  <rect width="1472" height="1280" fill="#2a2a2a"/>
   <text class="diagram-title" x="52" y="112">Traditional approach <tspan fill="#999" dx="12">Connecting lines</tspan></text>
   <g transform="translate(0 48)">
   <g id="source-1" aria-label="Source 1">

@@ -33,7 +33,7 @@
       <rect x="204.3" y="85.6" width="202.1" height="15.2" fill="#5883ff" fill-opacity=".5"/>
     </g>
   </defs>
-  <rect width="1400" height="792" fill="url(#background)"/>
+  <rect width="1400" height="792" fill="#2a2a2a"/>
   <!-- The master schema remains fixed throughout the original clip. -->
   <text x="36.5" y="141.2" fill="#fff">Master schema</text>
   <g transform="translate(36.5 0)">

@@ -64,7 +64,7 @@
   margin: 0;
   max-width: none;
   aspect-ratio: 16 / 10;
-  background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
+  background: #212121;
   border-radius: 10px;
   container-type: inline-size;
 }
@@ -165,7 +165,7 @@
   margin: 0;
   padding: clamp(20px, 2.4vw, 30px);
   border-radius: 10px;
-  background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
+  background: #212121;
   color: rgba(255, 255, 255, 0.82);
   font-size: clamp(18px, 1.6vw, 22px);
   line-height: 1.35;
@@ -561,7 +561,7 @@
 .kd-slide {
   box-sizing: border-box;
   border-radius: 10px;
-  background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
+  background: #212121;
   padding: clamp(16px, 2.2vw, 32px);
 }
 
