@@ -76,7 +76,7 @@
   /* -- text cards -- */
   .p-card {
     box-sizing: border-box;
-    background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
+    background: #212121;
     border-radius: 10px;
     padding: clamp(20px, 2.4vw, 32px);
   }
@@ -145,7 +145,7 @@
     flex-direction: column;
     align-items: center;
     padding: 32px;
-    background: linear-gradient(#1a1a1a, #2c2c2c);
+    background: #212121;
     border-radius: 10px;
     font-family: "Fakt Blond", Arial, sans-serif;
   }
@@ -432,7 +432,10 @@
     align-content: center;
     aspect-ratio: 1;
     container-type: inline-size;
+    padding-left: clamp(36px, 4.5vw, 64px);
   }
+  /* the statement card keeps the gradient; every other card is solid */
+  .p-card.p-statement { background: linear-gradient(to bottom, #1a1a1a, #2c2c2c); }
   .p-statement .principle-title {
     margin: 0;
     font-size: clamp(28px, 15cqw, 88px);
