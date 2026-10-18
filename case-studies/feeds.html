@@ -344,23 +344,11 @@
     .figure-strip-imgs { grid-template-columns: 1fr; }
   }
 
-  @media (min-width: 1100px) {
-    main {
-      display: grid;
-      grid-template-columns: 230px minmax(0, 1fr);
-      column-gap: 96px;
-      align-items: start;
-    }
-
-    .toc {
-      display: flex;
-      flex-direction: column;
-      grid-column: 1;
-      grid-row: 1;
-      position: sticky;
-      top: 100px;
-    }
-  }
+  /* No section rail: one content area, centred on the page. */
+  main { max-width: none; }
+  main { padding-top: calc((clamp(24px, 6vw, 72px) + 40px) / 2); }
+  .content > header .meta-row { margin-top: 0; }
+  .content { max-width: 46rem; margin-inline: auto; }
 
   /* -- .figure-wide: an opt-in modifier for large videos/images. 140%
      of the 46rem text column, centred on it (expanding out of both
@@ -381,7 +369,6 @@
      this. Below 1500px .figure-wide is inert; each instance just keeps
      whatever width its base class already gives it. */
   @media (min-width: 1500px) {
-    main { column-gap: 200px; }
 
     .figure-wide {
       width: 64.4rem;
@@ -740,6 +727,193 @@
   /* the study icon above the title appears drawn, without the stroke
      animation the shared styles give it */
   .case-icon-trace { animation: none; stroke-dasharray: none; }
+
+  /* -- hero: as on Zonefully and Image Insight. Desktop: the study icon,
+     title and strapline on the left; the data chain animation on the right
+     running off the window's right edge
+     (rounded on the left only). The markup keeps the picture first, so the
+     columns are placed explicitly. -- */
+  .fd-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 53.4vw;
+    align-items: center;
+    column-gap: 6.4vw;
+    padding: clamp(40px, 9vw, 180px) 0 clamp(56px, 10vw, 200px) 7.6vw;
+    background: linear-gradient(180deg, #131313 0%, #222121 100%);
+  }
+
+  .fd-hero-media {
+    box-sizing: border-box;
+    padding: 0;
+    overflow: hidden;
+    background: #000;
+    border-radius: clamp(6px, 0.7vw, 14px) 0 0 clamp(6px, 0.7vw, 14px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08), 0 18px 48px rgba(0, 0, 0, 0.14);
+  }
+
+  .fd-hero-media object,
+  .fd-hero-media object > img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2048 / 1164;
+  }
+
+  @media (min-width: 1024px) {
+    .fd-hero-text { grid-column: 1; grid-row: 1; }
+    .fd-hero-media { grid-column: 2; grid-row: 1; }
+  }
+
+  .fd-hero h1 {
+    font-size: clamp(32px, 3.75vw, 76px);
+    line-height: 1.04;
+    letter-spacing: -0.01em;
+    max-width: none;
+  }
+
+  /* no orphans: a non-breaking space glues each line's last two words,
+     and balanced wrapping evens out the title's lines */
+  .fd-hero h1 { text-wrap: balance; }
+  .fd-hero p.subtitle { text-wrap: pretty; }
+
+  /* View slides: styled as the nav bar (nav.css .identity-bar), set
+     in the bar's bold Fakt like "Tom de Gay". */
+  .fd-watch-row { display: flex; flex-wrap: wrap; gap: 10px; margin: clamp(20px, 2.4vw, 32px) 0 0; }
+
+  a.fd-watch {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 44px;
+    padding: 9px 22px 9px 18px;
+    border: 1px solid #ffffff09;
+    border-radius: 16px;
+    background: #131313;
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    color: #eee;
+    font: 600 17px/24px "Fakt", sans-serif;
+    white-space: nowrap;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  a.fd-watch svg { flex: 0 0 auto; width: 14px; height: 14px; }
+
+  a.fd-watch:hover, a.fd-watch:focus-visible { background: #000; color: #fff; }
+
+  @media (max-width: 640px) {
+    a.fd-watch { border-radius: 13px; }
+  }
+
+  /* the study's icon (the drawn one from the old header) above the title,
+     at the size of the Image Insight and Zonefully logos */
+  .fd-hero .case-icon.fd-hero-logo {
+    display: block;
+    width: auto;
+    height: clamp(53px, 4.8vw, 86px);
+    margin-bottom: clamp(20px, 2.4vw, 36px);
+  }
+
+  .fd-hero p.subtitle {
+    margin-top: clamp(16px, 1.8vw, 36px);
+    font-size: clamp(18px, 1.7vw, 32px);
+    line-height: 1.35;
+    max-width: 24em;
+  }
+
+  /* Below 1024px the hero stacks, title first: the text and the picture
+     both line up with the content edges of the nav bar above them (the
+     bar is min(820px, 100% - 48px) wide with 22px padding; at 640px and
+     under, 100% - 28px with 16px), and the picture is rounded all round
+     instead of running off the edge. */
+  @media (max-width: 1023.98px) {
+    .fd-hero {
+      --hero-inset: calc(max(24px, (100% - 820px) / 2) + 22px);
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: clamp(40px, 11vw, 110px);
+      padding: clamp(32px, 8.8vw, 88px) var(--hero-inset) clamp(48px, 10vw, 100px);
+    }
+
+    .fd-hero-text { grid-row: 1; }
+
+    /* On tablets the picture runs off the right edge, as on desktop.
+       Phones reverse the bleed below. */
+    .fd-hero-media { margin-right: calc(-1 * var(--hero-inset)); }
+    .fd-hero-media { border-radius: clamp(6px, 1.3vw, 13px) 0 0 clamp(6px, 1.3vw, 13px); }
+
+    .fd-hero h1 { font-size: clamp(32px, 5vw, 56px); line-height: 1.1; max-width: 13.5em; }
+
+    .fd-hero p.subtitle {
+      margin-top: clamp(14px, 2vw, 22px);
+      font-size: clamp(18px, 2.25vw, 24px);
+      line-height: 1.42;
+      max-width: 27.5em;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .fd-hero { --hero-inset: 30px; }
+
+    /* the logo, title, strapline and button fill the first screen below
+       the nav bar (whose spacer is 86px tall here), centred in it; the
+       picture waits just below the fold and scrolls up into view */
+    .fd-hero { padding-top: 0; }
+    .fd-hero-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: calc(100vh - 86px);
+      min-height: calc(100svh - 86px);
+      /* weighted a little above centre */
+      padding-bottom: 12svh;
+      box-sizing: border-box;
+    }
+
+    /* bigger type to fill more of the width */
+    .fd-hero .case-icon.fd-hero-logo { height: 64px; align-self: flex-start; }
+    .fd-hero h1 { font-size: clamp(32px, 9.2vw, 44px); line-height: 1.06; }
+    .fd-hero p.subtitle { font-size: clamp(19px, 5.4vw, 23px); line-height: 1.4; }
+
+    /* Static image, keeping the established gap beneath the button. */
+    .fd-hero-media {
+      margin-top: calc(-1 * var(--hero-close, 0px));
+    }
+  }
+
+
+  /* On phones the video fills the column and bleeds off the right. */
+  @media (max-width: 640px) {
+    .fd-hero { padding-bottom: 48px; }
+    .fd-hero-media {
+      width: calc(100vw - var(--hero-inset));
+      max-width: none;
+      justify-self: start;
+      margin-left: 0;
+      margin-right: 0;
+      border-radius: 6px 0 0 6px;
+    }
+  }
+
+  /* the hero picture runs off the window's edge, and html and body clip
+     the overflow so the page never scrolls sideways */
+  html, body { overflow-x: clip; }
+
+  /* the demo, embedded from YouTube at 16/9 */
+  .video-embed { position: relative; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden; background: #111; }
+  .video-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+</style>
+<link rel="stylesheet" href="/case-studies/case-study-v2.css?v=20261018a">
+<style>
+  /* Feeds' own additions to the shared treatment */
+  .case-body > h3.kd-heading + .problem-layout { margin-top: clamp(24px, 3vw, 40px); }
+  @media (min-width: 1024px) { .content .case-body > h3.kd-heading { max-width: none; } }
+  /* Phones: no frames round the pictures */
+  @media (max-width: 640px) {
+    .figure-portrait-frame { padding: 0; background: none; border-radius: 0; box-shadow: none; }
+    .figure-portrait-frame img,
+    .figure-portrait-frame > .ui-video,
+    .figure-portrait-frame > .figure-strip-imgs { box-shadow: none; }
+  }
 </style>
 <script>
   (function () {
@@ -756,7 +930,9 @@
     .head-armed .key-points li { opacity: 1 !important; transform: none !important; }
   </style>
 </noscript>
+  <script src="/case-studies/case-study-v2.js?v=20261017d" defer></script>
   <script src="/lightbox.js" defer></script>
+  <script src="/hero-spacing.js?v=20261017a" defer></script>
   <script src="/nav.js?v=20261016d" defer></script>
   <script src="/footer.js" defer></script>
 </head>
@@ -823,34 +999,37 @@
       </div>
     </div>
   </nav>
-  <div class="case-hero-video">
-    <div class="case-hero-video-frame">
+  <div class="fd-hero">
+    <div class="fd-hero-media" data-hero-spacing data-spacing-button=".fd-watch-row">
       <object type="image/svg+xml" data="media/data-chain-of-custody-animated.svg" width="2048" height="1164" aria-label="Animated data chain of custody, from insurers through a broker to reinsurers.">
-        <img src="media/data-chain-of-custody-animated.svg" width="2048" height="1164" alt="Data chain of custody from Alderwick and TDG TPA through Example Insurance and Placefield Brokers to three reinsurers.">
-      </object>
+              <img src="media/data-chain-of-custody-animated.svg" width="2048" height="1164" alt="Data chain of custody from Alderwick and TDG TPA through Example Insurance and Placefield Brokers to three reinsurers.">
+            </object>
+    </div>
+    <div class="fd-hero-text">
+      <svg class="case-icon fd-hero-logo" viewBox="0 0 17 16" fill="none" stroke="#00d8aa" stroke-width="0.762" aria-hidden="true" focusable="false">
+              <g transform="translate(-501, -474)">
+                <g transform="translate(501.9625, 474)">
+                  <path d="M3.51406343,2.34315245 C4.6929511,5.87981546 7.15789805,8.02324759 11.7662771,8.02324759" stroke-linecap="round" stroke-linejoin="round" pathLength="100" class="case-icon-trace" style="animation-delay:0.12s;animation-timing-function:ease-in-out"/>
+                  <path d="M3.51406343,13.7033427 C4.6929511,10.1666797 7.15789805,8.02324759 11.7662771,8.02324759" stroke-linecap="round" stroke-linejoin="round" pathLength="100" class="case-icon-trace" style="animation-delay:0.12s;animation-timing-function:ease-in-out"/>
+                  <path d="M8.55112893,4.8080994 L11.7662771,8.02324759" stroke-linecap="round" stroke-linejoin="round" pathLength="100" class="case-icon-trace" style="animation-delay:0.40s;animation-duration:.6s;animation-timing-function:ease-in-out"/>
+                  <path d="M8.55112893,11.2383958 L11.7662771,8.02324759" stroke-linecap="round" stroke-linejoin="round" pathLength="100" class="case-icon-trace" style="animation-delay:0.40s;animation-duration:.6s;animation-timing-function:ease-in-out"/>
+                  <circle cx="8" cy="8" r="7.5" pathLength="100" class="case-icon-trace" style="animation-delay:0.22s"/>
+                </g>
+              </g>
+            </svg>
+      <h1 class="display">Connecting organisations through&nbsp;data</h1>
+      <p class="subtitle">Automated cross-organisation data exchange, removing an estimated 16,200 manual steps a&nbsp;year.</p>
+      <p class="fd-watch-row"><a class="fd-watch" href="#video"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 2.8v10.4a.6.6 0 0 0 .9.5l8.2-5.2a.6.6 0 0 0 0-1L5.4 2.3a.6.6 0 0 0-.9.5z" fill="currentColor"/></svg>Watch the demo</a></p>
     </div>
   </div>
   <main>
   <div class="content">
     <header>
-      <svg class="case-icon" viewBox="0 0 17 16" fill="none" stroke="#00d8aa" stroke-width="0.762" aria-hidden="true" focusable="false">
-        <g transform="translate(-501, -474)">
-          <g transform="translate(501.9625, 474)">
-            <path d="M3.51406343,2.34315245 C4.6929511,5.87981546 7.15789805,8.02324759 11.7662771,8.02324759" stroke-linecap="round" stroke-linejoin="round" pathLength="100" class="case-icon-trace" style="animation-delay:0.12s;animation-timing-function:ease-in-out"/>
-            <path d="M3.51406343,13.7033427 C4.6929511,10.1666797 7.15789805,8.02324759 11.7662771,8.02324759" stroke-linecap="round" stroke-linejoin="round" pathLength="100" class="case-icon-trace" style="animation-delay:0.12s;animation-timing-function:ease-in-out"/>
-            <path d="M8.55112893,4.8080994 L11.7662771,8.02324759" stroke-linecap="round" stroke-linejoin="round" pathLength="100" class="case-icon-trace" style="animation-delay:0.40s;animation-duration:.6s;animation-timing-function:ease-in-out"/>
-            <path d="M8.55112893,11.2383958 L11.7662771,8.02324759" stroke-linecap="round" stroke-linejoin="round" pathLength="100" class="case-icon-trace" style="animation-delay:0.40s;animation-duration:.6s;animation-timing-function:ease-in-out"/>
-            <circle cx="8" cy="8" r="7.5" pathLength="100" class="case-icon-trace" style="animation-delay:0.22s"/>
-          </g>
-        </g>
-      </svg>
-      <span class="kicker head-fade">Case Study | <a href="https://help.quantemplate.com/about-feeds" target="_blank" rel="noopener noreferrer">Quantemplate Feeds</a></span>
-      <h1 class="display head-fade">Connecting organisations through data</h1>
-      <p class="subtitle head-fade">Automated cross-organisation data exchange, removing an estimated 16,200 manual steps a year.</p>
-
-      <hr class="rule">
-
       <div class="meta-row">
+        <div class="meta-item">
+          <span class="eyebrow">Company</span>
+          <p><a href="https://quantemplate.com" target="_blank" rel="noopener noreferrer">Quantemplate</a><br>Insurance data automation</p>
+        </div>
         <div class="meta-item">
           <span class="eyebrow">Role</span>
           <p>Lead product designer, end to end</p>
@@ -874,241 +1053,253 @@
 
     <hr class="rule">
 
-    <section aria-labelledby="keypoints-heading">
-      <h2 class="eyebrow" id="keypoints-heading">Key points</h2>
-      <div class="key-points-grid">
-        <ul class="key-points">
-          <li>Reframed an upload portal as a cross-company network</li>
-          <li>Automated data sharing, eliminating an estimated 16,200 manual steps a year</li>
-          <li>Simplified complex submission setup to under a minute</li>
-          <li>Made data integrity verifiable through lineage and version history</li>
-        </ul>
+    <section aria-labelledby="problem-heading" class="case-body">
+      <h2 class="eyebrow" id="problem-heading">Problem</h2>
+      <p class="display problem-statement">We&rsquo;d automated the data processing, but not the&nbsp;process</p>
+
+      <div class="problem-layout">
+        <div class="problem-main">
+          <p>Insurance companies depend on regular submissions from brokers, managing general agents, third-party administrators and other partners. Our data transformation pipelines did a good job of <a href="/case-studies/column-mapping">mapping and harmonising</a> this data, but the parts outside Quantemplate were process bottlenecks.</p>
+          <p>Email was manual and difficult to audit, while FTP and API integrations were unwieldy. Moreover, keeping track of what was in or overdue every month was a significant timesink.</p>
+          <p>Even on the happy path, we identified five manual steps to request data and another five to bring it into and out of Quantemplate.</p>
+          <blockquote>Across an average of 150 trading partners, repeated monthly, that amounted to 18,000 manual steps a year. We aimed to eliminate all steps after the original file upload.</blockquote>
+        </div>
+        <aside class="problem-side" aria-label="Supporting material">
+          <button class="side-card" type="button" aria-haspopup="dialog" aria-controls="analysis-modal">
+            <svg class="framing-icon" width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7.3" stroke="#00D8AA" stroke-width="1"/><path d="M8 7.1v4.4" stroke="#00D8AA" stroke-width="1.1" stroke-linecap="round"/><circle cx="8" cy="4.8" r="0.75" fill="#00D8AA"/></svg>
+            <span class="framing-label">Analysis</span>
+            <span class="side-card-open" aria-hidden="true"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 14.5l9-9M10.5 5.5h4v4M5.5 10.5v4h4"/></svg></span>
+          </button>
+        </aside>
       </div>
     </section>
 
     <hr class="rule">
 
-    <section aria-labelledby="problem-heading" class="case-body">
-      <h2 class="eyebrow" id="problem-heading">Problem</h2>
-      <h3>We&rsquo;d automated the data processing, but not the process</h3>
-      <p>Insurance companies depend on regular submissions from brokers, managing general agents, third-party administrators and other partners. Our data transformation pipelines did a good job of <a href="/case-studies/column-mapping">mapping and harmonising</a> this data, but the parts outside Quantemplate were process bottlenecks.</p>
-      <p>Email was manual and difficult to audit, while FTP and API integrations were unwieldy. Moreover, keeping track of what was in or overdue every month was a significant timesink.</p>
-      <p>Even on the happy path, we identified five manual steps to request data and another five to bring it into and out of Quantemplate.</p>
+    <section aria-labelledby="design-heading" class="case-body">
+      <h2 class="eyebrow" id="design-heading">Design decisions</h2>
+      <h3 class="display kd-heading" id="approach-heading"><span class="step-label">Step 1</span>Modelling the whole&nbsp;workflow</h3>
 
-      <blockquote>Across an average of 150 trading partners, repeated monthly, that amounted to 18,000 manual steps a year. We aimed to eliminate all steps after the original file upload.</blockquote>
-
-      <figure class="figure figure-strip">
-        <div class="figure-portrait-frame">
-          <div class="figure-strip-imgs">
-            <img src="media/workflow-bottlenecks-diagram.png" width="1600" height="795" alt="Diagram of a typical MGA data pipeline: manual upload to network storage, an automated import-to-output pipeline including Map Column Headers, then a manual step to push output to the client database via API." loading="lazy">
-            <img src="media/feeds-problem-postits.png" width="1800" height="1206" alt="Annotated version of the Data Repo and pipeline diagram, with yellow sticky notes flagging open questions and trade-offs at each stage: partner data visibility and permissions, input selector categorisation, additive versus replacing submissions, and notification requirements." loading="lazy">
-          </div>
+      <div class="problem-layout">
+        <div class="problem-main">
+          <p>I mapped every touchpoint from the initial request through submission, processing, validation, correction and onward distribution. For each stage we considered the unhappy paths and dead ends: late or incomplete submissions, incorrect files, resubmissions and validation failures.</p>
+          <blockquote>The map identified every manual step that could be automated, every notification that needed to be sent and every point where human judgement was still required.</blockquote>
+          <p>It became the basis for the submission lifecycle, schedules, statuses, reminders, version history and pipeline triggers.</p>
         </div>
-        <figcaption>2022 analysis of the typical Quantemplate workflow, identifying the manual bottlenecks &mdash; then an annotated version flagging the trade-offs and open questions on the way to straight-through processing.</figcaption>
-      </figure>
+        <aside class="problem-side" aria-label="Supporting material">
+          <button class="side-card" type="button" aria-haspopup="dialog" aria-controls="journey-modal">
+            <svg class="framing-icon" width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7.3" stroke="#00D8AA" stroke-width="1"/><path d="M8 7.1v4.4" stroke="#00D8AA" stroke-width="1.1" stroke-linecap="round"/><circle cx="8" cy="4.8" r="0.75" fill="#00D8AA"/></svg>
+            <span class="framing-label">Journey mapping</span>
+            <span class="side-card-open" aria-hidden="true"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 14.5l9-9M10.5 5.5h4v4M5.5 10.5v4h4"/></svg></span>
+          </button>
+        </aside>
+      </div>
     </section>
 
     <hr class="rule">
 
-    <section aria-labelledby="approach-heading" class="case-body">
-      <h2 class="eyebrow" id="approach-heading">Approach</h2>
-      <h3>Modelling the whole workflow</h3>
-      <p>I mapped every touchpoint from the initial request through submission, processing, validation, correction and onward distribution. For each stage we considered the unhappy paths and dead ends: late or incomplete submissions, incorrect files, resubmissions and validation failures.</p>
-      <blockquote>The map identified every manual step that could be automated, every notification that needed to be sent and every point where human judgement was still required.</blockquote>
+    <section aria-labelledby="concept-heading" class="case-body">
+      <h3 class="display kd-heading" id="concept-heading"><span class="step-label">Step 2</span>From Data Drop to Data&nbsp;Network</h3>
 
-      <p>It became the basis for the submission lifecycle, schedules, statuses, reminders, version history and pipeline triggers.</p>
-
-      <figure class="figure figure-wide">
-        <div class="figure-portrait-frame">
-          <img src="media/feeds-research-lifecycle.png" width="1800" height="567" alt="Swimlane diagram of the submission lifecycle spanning Carrier and MGA roles, from period open through upload, parsing, validation and carrier pipeline review, to period close, with pink notification steps, grey decision points and yellow manual touchpoints." loading="lazy">
+      <div class="problem-layout">
+        <div class="problem-main">
+          <p>My initial concept, Data Drop, was a lightweight portal with an unauthenticated, one-time upload link. It would have been a quick win, but mapping its workflow revealed that it would move the email problem further down the chain: links buried in inboxes, no persistent activity record and resubmissions still needing coordination.</p>
+          <blockquote>The Data Drop would have been a quick win but an incomplete solution. I proposed Feeds instead.</blockquote>
+          <figure class="figure">
+            <div class="figure-portrait-frame">
+              <img src="media/data-drop-concept.png" width="1600" height="1000" alt="Mockup of the Data Drop secure data transfer concept: a card showing transfer from and to organisations, submission type, period, due date, a worksheet selector with checkboxes, and a submit button." loading="lazy">
+            </div>
+            <figcaption>The data drop concept we never shipped.</figcaption>
+          </figure>
+          <p>Feeds would be a whole new area in the product with authenticated users, separate organisations and persistent relationships between partners. This was a larger product increment, but one that addressed the whole workflow, making persistent connections between organisations and opening a path to a broader network strategy.</p>
+          <p>I used the journey maps to make the case for the broader scope, showing how onboarding, scheduling and administration were necessary parts of a complete submission workflow. Connecting each capability to a concrete user need helped explain why improving the upload experience alone wouldn’t solve the whole problem.</p>
         </div>
-        <figcaption>Submission lifecycle analysis showing notification steps (pink), automated decision points and manual touchpoints (yellow).</figcaption>
-      </figure>
+        <aside class="problem-side" aria-label="Supporting material">
+          <button class="side-card" type="button" aria-haspopup="dialog" aria-controls="architecture-modal">
+            <svg class="framing-icon" width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7.3" stroke="#00D8AA" stroke-width="1"/><path d="M8 7.1v4.4" stroke="#00D8AA" stroke-width="1.1" stroke-linecap="round"/><circle cx="8" cy="4.8" r="0.75" fill="#00D8AA"/></svg>
+            <span class="framing-label">Architecture</span>
+            <span class="side-card-open" aria-hidden="true"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 14.5l9-9M10.5 5.5h4v4M5.5 10.5v4h4"/></svg></span>
+          </button>
+        </aside>
+      </div>
     </section>
 
     <hr class="rule">
 
     <section aria-labelledby="keydecisions-heading" class="case-body">
-      <h2 class="eyebrow" id="keydecisions-heading">Key decisions</h2>
+      <h3 class="display kd-heading" id="keydecisions-heading"><span class="step-label">Step 3</span>Simple to submit, flexible to&nbsp;manage</h3>
 
-      <div class="subsection" id="concept-heading">
-        <h3>From Data Drop to Data Network</h3>
-        <p>My initial concept, Data Drop, was a lightweight portal with an unauthenticated, one-time upload link. It would have been a quick win, but mapping its workflow revealed that it would move the email problem further down the chain: links buried in inboxes, no persistent activity record and resubmissions still needing coordination.</p>
-
-        <blockquote>The Data Drop would have been a quick win but an incomplete solution. I proposed Feeds instead.</blockquote>
-
-        <figure class="figure figure-wide">
-          <div class="figure-portrait-frame">
-            <img src="media/data-drop-concept.png" width="1600" height="1000" alt="Mockup of the Data Drop secure data transfer concept: a card showing transfer from and to organisations, submission type, period, due date, a worksheet selector with checkboxes, and a submit button." loading="lazy">
-          </div>
-          <figcaption>The data drop concept we never shipped.</figcaption>
-        </figure>
-
-        <p>Feeds would be a whole new area in the product with authenticated users, separate organisations and persistent relationships between partners. This was a larger product increment, but one that addressed the whole workflow, making persistent connections between organisations and opening a path to a broader network strategy.</p>
-      </div>
-
-      <div class="subsection" id="scope-heading">
-        <h3>Selling the wider scope</h3>
-        <p>I used the journey maps to make the case for the broader scope, showing how onboarding, scheduling and administration were necessary parts of a complete submission workflow. Connecting each capability to a concrete user need helped explain why improving the upload experience alone wouldn’t solve the whole problem.</p>
-
-        <figure class="figure figure-wide">
-          <div class="figure-portrait-frame">
-            <img src="media/feeds-org-relationship-diagram.jpg" width="2000" height="1093" alt="Diagram showing a Data originator org with a Feed Out mirroring data to a Data consumer org's Feed In, fed by API, pipeline and manual upload sources on each side, with an upload portal shown as a separate concept still under consideration." loading="lazy">
-          </div>
-          <figcaption>Architecting the relationship between organisation feeds. Every Feed In corresponds to a Feed Out in the partner org. At this point I was still considering the &lsquo;upload portal&rsquo; as a layer in the workflow. It was descoped when the walkthrough revealed it to be superfluous.</figcaption>
-        </figure>
-
-        <figure class="figure">
-          <div class="figure-portrait-frame">
-            <img src="media/in-out-diagram.png" width="1346" height="852" alt="Diagram of the four Feed roles: Feed Out Leader (pushing out) and Feed In Follower (receiving pushes) connected by one arrow, Feed Out Follower (responding to requests) and Feed In Leader (pulling/requesting) connected by another." loading="lazy">
-          </div>
-          <figcaption>A conceptual model that users could understand: each Feed In is mirrored by a Feed Out in the partner organisation. Leaders control all Feed configuration, whilst followers simply respond. This reflected real-world market relationships.</figcaption>
-        </figure>
-      </div>
-
-      <div class="subsection" id="portal-drop-heading">
-        <h3>Dropping the portal layer</h3>
-        <p>I initially favoured retaining a separate, stripped-back portal. My product partner challenged that assumption, and working through the journey together changed my view. If we could preserve the simplicity of the upload process within feeds, whilst introducing users to key Quantemplate behaviours, that would make for a more coherent user experience, and a more efficient and maintainable build.</p>
-
-        <figure class="figure figure-wide">
-          <div class="figure-portrait-frame">
-            <div class="ui-video" data-hover-controls>
-              <video autoplay muted loop playsinline disablepictureinpicture poster="media/feeds-submissions.jpg">
-                <source src="media/feeds-submissions.mp4" type="video/mp4">
-              </video>
-              <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+      <div class="kd-reel">
+        <div class="kd-reel-track" id="kd-reel-track" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Key decisions">
+          <div class="kd-slide is-current" id="portal-drop-heading" role="group" aria-roledescription="slide" aria-label="1 of 2">
+            <figure class="figure kd-media">
+              <div class="ui-video" data-hover-controls>
+                    <video autoplay muted loop playsinline disablepictureinpicture poster="media/feeds-submissions.jpg">
+                      <source src="media/feeds-submissions.mp4" type="video/mp4">
+                    </video>
+                    <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+                  </div>
+            </figure>
+            <div class="kd-text">
+              <p class="kd-num" aria-hidden="true">01</p>
+              <h4 class="kd-title">Dropping the portal layer</h4>
+              <p class="kd-strap">Uploads as simple as a portal, with subsections for complex submissions</p>
+              <details class="kd-more">
+                <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 14.5l9-9M10.5 5.5h4v4M5.5 10.5v4h4"/></svg></summary>
+                <div class="kd-more-body">
+                  <p>I initially favoured retaining a separate, stripped-back portal. My product partner challenged that assumption, and working through the journey together changed my view. If we could preserve the simplicity of the upload process within feeds, whilst introducing users to key Quantemplate behaviours, that would make for a more coherent user experience, and a more efficient and maintainable build.</p>
+                  <p>To drop the portal layer, I needed to make the upload design equally intuitive and simple, whilst introducing key behaviours. Here we see a user submitting batches of Premium and Claims data which need to be assigned to separate subsections.</p>
+                  <h3>Flexibility for complex submissions</h3>
+                  <p>When we spoke with users and looked at their existing Quantemplate workflows, we could see that a submission was rarely uniform: Premium and Claims might arrive as separate tabs, files, or from different organisations, each needing different pipeline logic.</p>
+                  <p>I introduced subsections to represent these distinct streams within one submission. Feed owners define subsections, and submitters assign uploads to the appropriate one. Using the <a href="/wayfinding#information-heading">wayfinding principle of progressive disclosure</a>, the interface walks them through the process, step-by-step.</p>
+                  <blockquote>Using wayfinding principles, I navigated users through the process of assigning their data to the right subsection.</blockquote>
+                </div>
+              </details>
             </div>
           </div>
-          <figcaption>To drop the portal layer, I needed to make the upload design equally intuitive and simple, whilst introducing key behaviours. Here we see a user submitting batches of Premium and Claims data which need to be assigned to separate subsections.</figcaption>
-        </figure>
-      </div>
-
-      <div class="subsection" id="datamodel-heading">
-        <h3>Flexibility for complex submissions</h3>
-        <p>When we spoke with users and looked at their existing Quantemplate workflows, we could see that a submission was rarely uniform: Premium and Claims might arrive as separate tabs, files, or from different organisations, each needing different pipeline logic.</p>
-        <p>I introduced subsections to represent these distinct streams within one submission. Feed owners define subsections, and submitters assign uploads to the appropriate one. Using the <a href="/wayfinding#information-heading">wayfinding principle of progressive disclosure</a>, the interface walks them through the process, step-by-step.</p>
-        <blockquote>Using wayfinding principles, I navigated users through the process of assigning their data to the right subsection.</blockquote>
-      </div>
-
-      <div class="subsection" id="permissions-heading">
-        <h3>Roles for humans and robots alike</h3>
-        <p>I modelled permission levels around the way our clients divided responsibility. Owners and managers needed to configure Feeds, connect with partners and oversee the process. Submitters only needed access when it was time to upload data, while read-only users needed visibility to use Feeds data in pipelines.</p>
-
-        <blockquote>I introduced the concept of a &lsquo;Robot User&rsquo; to surface automation capabilities across the platform and make them auditable.</blockquote>
-
-        <p>Looking at our permissions model, I realised that we needed a way to run automations without a user present, and have those runs tracked in the history. When the Robot User has access to a Feed, they can take the data from it, run a pipeline they have access to and output it to a dataset they&rsquo;ve been given write permission on.</p>
-
-        <figure class="figure">
-          <div class="figure-portrait-frame">
-            <img src="media/feeds-permissions-share-panel.png" width="1270" height="866" alt="Feed sharing panel listing who has access: TDG TPA with 9 members as Submitter, Robot User as Can view, Martina Brito as Manager, and Tom de Gay as Owner." loading="lazy">
+          <div class="kd-slide" id="permissions-heading" role="group" aria-roledescription="slide" aria-label="2 of 2">
+            <figure class="figure kd-media">
+              <img src="media/feeds-permissions-share-panel.png" width="1270" height="866" alt="Feed sharing panel listing who has access: TDG TPA with 9 members as Submitter, Robot User as Can view, Martina Brito as Manager, and Tom de Gay as Owner.">
+            </figure>
+            <div class="kd-text">
+              <p class="kd-num" aria-hidden="true">02</p>
+              <h4 class="kd-title">Roles for humans and robots alike</h4>
+              <p class="kd-strap">A Robot User makes automation visible and auditable</p>
+              <details class="kd-more">
+                <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 14.5l9-9M10.5 5.5h4v4M5.5 10.5v4h4"/></svg></summary>
+                <div class="kd-more-body">
+                  <p>I modelled permission levels around the way our clients divided responsibility. Owners and managers needed to configure Feeds, connect with partners and oversee the process. Submitters only needed access when it was time to upload data, while read-only users needed visibility to use Feeds data in pipelines.</p>
+                  <p>Sharing a Feed. Owner, Manager, Submitter and view-only roles sit alongside the Robot User, enabling automations across the platform.</p>
+                  <blockquote>I introduced the concept of a &lsquo;Robot User&rsquo; to surface automation capabilities across the platform and make them auditable.</blockquote>
+                  <p>Looking at our permissions model, I realised that we needed a way to run automations without a user present, and have those runs tracked in the history. When the Robot User has access to a Feed, they can take the data from it, run a pipeline they have access to and output it to a dataset they&rsquo;ve been given write permission on.</p>
+                  <p>Enabling automation surfaces a clear ‘Share with Robot User’ button, with prompts to share any dependent documents too. If users lack sharing rights, they can ask the document owner to grant access. This makes the permissions model visible at the point it matters, reduces setup friction and anticipates the next action users need to take.</p>
+                  <figure class="figure">
+                    <div class="figure-portrait-frame">
+                      <img src="media/robot-user-reminder.png" width="1228" height="564" alt="A 'Set up automation' reminder prompting the user to share the pipeline with the Robot User, listing Auto Run and Auto Export options alongside an Add button next to the Robot User row." loading="lazy">
+                    </div>
+                    <figcaption>A reminder to share with the Robot User, surfaced right where automation features are set up.</figcaption>
+                  </figure>
+                </div>
+              </details>
+            </div>
           </div>
-          <figcaption>Sharing a Feed. Owner, Manager, Submitter and view-only roles sit alongside the Robot User, enabling automations across the platform.</figcaption>
-        </figure>
-
-        <p>Enabling automation surfaces a clear ‘Share with Robot User’ button, with prompts to share any dependent documents too. If users lack sharing rights, they can ask the document owner to grant access. This makes the permissions model visible at the point it matters, reduces setup friction and anticipates the next action users need to take.</p>
-
-        <figure class="figure">
-          <div class="figure-portrait-frame">
-            <img src="media/robot-user-reminder.png" width="1228" height="564" alt="A 'Set up automation' reminder prompting the user to share the pipeline with the Robot User, listing Auto Run and Auto Export options alongside an Add button next to the Robot User row." loading="lazy">
-          </div>
-          <figcaption>A reminder to share with the Robot User, surfaced right where automation features are set up.</figcaption>
-        </figure>
-
+        </div>
+        <div class="kd-dots" hidden></div>
       </div>
     </section>
 
     <hr class="rule">
 
     <section aria-labelledby="implementation-heading" class="case-body">
-      <h2 class="eyebrow" id="implementation-heading">Implementation</h2>
+      <h3 class="display kd-heading" id="implementation-heading"><span class="step-label">Step 4</span>Automate everything after the&nbsp;upload</h3>
 
-      <div class="subsection" id="connected-heading">
-        <h3>Trusted setup in under a minute</h3>
-        <p>Initiating a partner connection required just their contact&rsquo;s email. We used the domain to find their organisation or begin creating it. I researched and proposed a <a href="https://www.logo.dev" target="_blank" rel="noopener noreferrer">logo.dev</a> integration to populate organisation names and logos automatically, reducing setup effort and making requests more recognisable. Admins on each side approve the connection, with all events tracked in a new admin panel.</p>
-
-        <div class="figure-portrait-frame">
-          <div class="ui-video" data-hover-controls>
-            <video autoplay muted loop playsinline disablepictureinpicture poster="media/feeds-partners.jpg">
-              <source src="media/feeds-partners.mp4" type="video/mp4">
-            </video>
-            <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+      <div class="kd-reel">
+        <div class="kd-reel-track" id="impl-reel-track" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Implementation">
+          <div class="kd-slide is-current" id="connected-heading" role="group" aria-roledescription="slide" aria-label="1 of 3">
+            <figure class="figure kd-media">
+              <div class="ui-video" data-hover-controls>
+                  <video autoplay muted loop playsinline disablepictureinpicture poster="media/feeds-partners.jpg">
+                    <source src="media/feeds-partners.mp4" type="video/mp4">
+                  </video>
+                  <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+                </div>
+            </figure>
+            <div class="kd-text">
+              <p class="kd-num" aria-hidden="true">01</p>
+              <h4 class="kd-title">Trusted setup in under a minute</h4>
+              <p class="kd-strap">A partner connection starts with just their contact&rsquo;s email</p>
+              <details class="kd-more">
+                <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 14.5l9-9M10.5 5.5h4v4M5.5 10.5v4h4"/></svg></summary>
+                <div class="kd-more-body">
+                  <p>Initiating a partner connection required just their contact&rsquo;s email. We used the domain to find their organisation or begin creating it. I researched and proposed a <a href="https://www.logo.dev" target="_blank" rel="noopener noreferrer">logo.dev</a> integration to populate organisation names and logos automatically, reducing setup effort and making requests more recognisable. Admins on each side approve the connection, with all events tracked in a new admin panel.</p>
+                  <blockquote>What if the organisation was already on Quantemplate? What if they were already a partner? Working through every scenario meant some complexity behind the scenes, but ensured simplicity in the user experience.</blockquote>
+                  <figure class="figure">
+                    <div class="figure-portrait-frame">
+                      <img src="media/feeds-add-partners-spec.jpg" width="2000" height="1102" alt="Design specification board mapping every path through the add-partners workflow: adding internal submitters, connecting to an existing partner, adding a new partner, setup via a Feed In or Feed Out, setup statuses and review settings." loading="lazy">
+                    </div>
+                    <figcaption>Design specification for the &lsquo;Add partners&rsquo; workflow. Did the partner already exist on the system? Were they already connected? Was the user an admin?</figcaption>
+                  </figure>
+                  <p>Admins can also create reusable schedules to centrally manage request frequency. Research revealed that feeds often shared a cadence but followed different contract dates. I made start and end dates properties of a Feed, rather than a schedule, allowing requests to stop at contract end without affecting other feeds using the same schedule.</p>
+                  <figure class="figure">
+                    <div class="figure-portrait-frame">
+                      <img src="media/schedules.png" width="1002" height="1060" alt="A Scheduling modal for a Feed: schedule name 'Monthly BDX', start and end date fields (end date optional), and frequency, request, deadline and reminder settings." loading="lazy">
+                    </div>
+                    <figcaption>We needed a scheduling feature to automate submission request creation. Keeping schedules across hundreds of feeds in sync would be a challenge, so I proposed they were centrally managed by Org Admins. An insight from the user research phase was that schedules would need an end date, as contracts might only run for a set number of years.</figcaption>
+                  </figure>
+                  <p>All that&rsquo;s required to set up a new Feed is to add subsections, search for a partner and connect an existing schedule. In under one minute you can be requesting data from your trading partners.</p>
+                </div>
+              </details>
+            </div>
+          </div>
+          <div class="kd-slide" id="audit-heading" role="group" aria-roledescription="slide" aria-label="2 of 3">
+            <figure class="figure kd-media">
+              <img src="media/feeds-repo-dashboard.png" width="2000" height="1251" alt="Your Feeds dashboard listing partner feeds with status badges (Draft, Overdue, Resubmission, Complete), owners, submission counts and a filterable sidebar for feed status, type and tags.">
+            </figure>
+            <div class="kd-text">
+              <p class="kd-num" aria-hidden="true">02</p>
+              <h4 class="kd-title">The full picture, at a glance</h4>
+              <p class="kd-strap">A live dashboard of every Feed replaces tracking in spreadsheets</p>
+              <details class="kd-more">
+                <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 14.5l9-9M10.5 5.5h4v4M5.5 10.5v4h4"/></svg></summary>
+                <div class="kd-more-body">
+                  <p>Both parties retain an immutable, versioned record of submitted data. User avatars and organisation domains identify the people and companies behind submissions, building trust.</p>
+                  <figure class="figure">
+                    <div class="figure-portrait-frame">
+                      <img src="media/submission-record.png" width="2278" height="616" alt="A submission record showing Premium and versioned Claims files with row counts, submitter avatars and dates, and a 'Submitted by / Submitted date' tooltip for one file." loading="lazy">
+                    </div>
+                  </figure>
+                  <p>I redesigned the Feed repository as a management dashboard, showing which Feeds are complete, waiting for data or overdue; this real-time view of inventory replaces manual tracking in spreadsheets. Configurable reminders chase outstanding submissions automatically.</p>
+                  <p>Visible connections between Feeds and pipelines help managers understand what each submission will trigger and what the automation is still waiting for.</p>
+                  <p>Feeds repo: I reimagined the document storage as a management dashboard.</p>
+                </div>
+              </details>
+            </div>
+          </div>
+          <div class="kd-slide" id="network-heading" role="group" aria-roledescription="slide" aria-label="3 of 3">
+            <figure class="figure kd-media">
+              <div class="ui-video" data-hover-controls>
+                  <video autoplay muted loop playsinline disablepictureinpicture poster="media/chain-of-custody.jpg">
+                    <source src="media/chain-of-custody.mp4" type="video/mp4">
+                  </video>
+                  <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+                </div>
+            </figure>
+            <div class="kd-text">
+              <p class="kd-num" aria-hidden="true">03</p>
+              <h4 class="kd-title">Connecting the whole data chain</h4>
+              <p class="kd-strap">Data passes on from one organisation to the next, with one shared record</p>
+              <details class="kd-more">
+                <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 14.5l9-9M10.5 5.5h4v4M5.5 10.5v4h4"/></svg></summary>
+                <div class="kd-more-body">
+                  <p>Feeds support incoming data, outgoing distribution and onward sharing. An insurer can distribute data to reinsurers, while a broker can receive and pass on the original submission. Each organisation can connect its own processing pipelines while retaining a shared, auditable source record. This uniquely allows us to surface the full data Chain of Custody.</p>
+                  <blockquote>The Feeds lay the architectural groundwork for the big vision: automated data flows across the industry.</blockquote>
+                  <p>We mapped out further <a href="https://help.quantemplate.com/feed-use-cases" target="_blank" rel="noopener noreferrer">Use Cases</a> on this support page.</p>
+                </div>
+              </details>
+            </div>
           </div>
         </div>
-
-        <blockquote>What if the organisation was already on Quantemplate? What if they were already a partner? Working through every scenario meant some complexity behind the scenes, but ensured simplicity in the user experience.</blockquote>
-
-        <figure class="figure figure-wide">
-          <div class="figure-portrait-frame">
-            <img src="media/feeds-add-partners-spec.jpg" width="2000" height="1102" alt="Design specification board mapping every path through the add-partners workflow: adding internal submitters, connecting to an existing partner, adding a new partner, setup via a Feed In or Feed Out, setup statuses and review settings." loading="lazy">
-          </div>
-          <figcaption>Design specification for the &lsquo;Add partners&rsquo; workflow. Did the partner already exist on the system? Were they already connected? Was the user an admin?</figcaption>
-        </figure>
-
-        <p>Admins can also create reusable schedules to centrally manage request frequency. Research revealed that feeds often shared a cadence but followed different contract dates. I made start and end dates properties of a Feed, rather than a schedule, allowing requests to stop at contract end without affecting other feeds using the same schedule.</p>
-
-        <figure class="figure">
-          <div class="figure-portrait-frame">
-            <img src="media/schedules.png" width="1002" height="1060" alt="A Scheduling modal for a Feed: schedule name 'Monthly BDX', start and end date fields (end date optional), and frequency, request, deadline and reminder settings." loading="lazy">
-          </div>
-          <figcaption>We needed a scheduling feature to automate submission request creation. Keeping schedules across hundreds of feeds in sync would be a challenge, so I proposed they were centrally managed by Org Admins. An insight from the user research phase was that schedules would need an end date, as contracts might only run for a set number of years.</figcaption>
-        </figure>
-
-        <p>All that&rsquo;s required to set up a new Feed is to add subsections, search for a partner and connect an existing schedule. In under one minute you can be requesting data from your trading partners.</p>
+        <div class="kd-dots" hidden></div>
       </div>
+    </section>
 
-      <div class="subsection" id="audit-heading">
-        <h3>The full picture, at a glance</h3>
-        <p>Both parties retain an immutable, versioned record of submitted data. User avatars and organisation domains identify the people and companies behind submissions, building trust.</p>
+    <hr class="rule">
 
-        <figure class="figure figure-wide">
-          <div class="figure-portrait-frame">
-            <img src="media/submission-record.png" width="2278" height="616" alt="A submission record showing Premium and versioned Claims files with row counts, submitter avatars and dates, and a 'Submitted by / Submitted date' tooltip for one file." loading="lazy">
-          </div>
-        </figure>
-
-        <p>I redesigned the Feed repository as a management dashboard, showing which Feeds are complete, waiting for data or overdue; this real-time view of inventory replaces manual tracking in spreadsheets. Configurable reminders chase outstanding submissions automatically.</p>
-        <p>Visible connections between Feeds and pipelines help managers understand what each submission will trigger and what the automation is still waiting for.</p>
-
-        <figure class="figure figure-wide">
-          <div class="figure-portrait-frame">
-            <img src="media/feeds-repo-dashboard.png" width="2000" height="1251" alt="Your Feeds dashboard listing partner feeds with status badges (Draft, Overdue, Resubmission, Complete), owners, submission counts and a filterable sidebar for feed status, type and tags." loading="lazy">
-          </div>
-          <figcaption>Feeds repo: I reimagined the document storage as a management dashboard.</figcaption>
-        </figure>
-
-      </div>
-
-      <div class="subsection" id="network-heading">
-        <h3>Connecting the whole data chain</h3>
-        <p>Feeds support incoming data, outgoing distribution and onward sharing. An insurer can distribute data to reinsurers, while a broker can receive and pass on the original submission. Each organisation can connect its own processing pipelines while retaining a shared, auditable source record. This uniquely allows us to surface the full data Chain of Custody.</p>
-
-        <div class="figure-portrait-frame figure-wide">
-          <div class="ui-video" data-hover-controls>
-            <video autoplay muted loop playsinline disablepictureinpicture poster="media/chain-of-custody.jpg">
-              <source src="media/chain-of-custody.mp4" type="video/mp4">
-            </video>
-            <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
-          </div>
+    <section aria-labelledby="video" class="case-body">
+      <p class="eyebrow kd-eyebrow" id="video">Watch the demo</p>
+      <figure class="figure figure-big">
+        <div class="video-embed">
+          <iframe src="https://www.youtube-nocookie.com/embed/IgmrfcrYOOk?rel=0" title="Learn how to automate data exchange with Quantemplate Feeds" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
-
-        <blockquote>The Feeds lay the architectural groundwork for the big vision: automated data flows across the industry.</blockquote>
-
-        <p>We mapped out further <a href="https://help.quantemplate.com/feed-use-cases" target="_blank" rel="noopener noreferrer">Use Cases</a> on this support page.</p>
-
-        <figure class="figure">
-          <div class="figure-portrait-frame">
-            <img src="media/feeds-network-potential-diagram.png" width="1414" height="756" alt="Diagram showing data flowing from MGAs and Carriers who are Quantemplate clients, through to free-user Carriers and Reinsurers, illustrating how submissions and pushes propagate across the network regardless of client status." loading="lazy">
-          </div>
-          <figcaption>Potential to flow data seamlessly across the insurance industry.</figcaption>
-        </figure>
-      </div>
+      </figure>
     </section>
 
     <hr class="rule">
 
     <section aria-labelledby="outcome-heading" class="case-body">
       <h2 class="eyebrow" id="outcome-heading">Outcome</h2>
-      <h3>A foundation for networked data</h3>
+      <p class="display problem-statement">A foundation for networked&nbsp;data</p>
+
       <p>Feeds have been running production data for approximately 18 months, processing recurring monthly submissions and 3.4 million rows to date. This removes nearly all of the manual steps identified in the original workflow mapping, for true &lsquo;straight-through processing&rsquo;. The one step that remains, the initial upload, is performed directly by the data supplier.</p>
       <figure class="feeds-chart" aria-labelledby="feeds-chart-title" aria-describedby="feeds-chart-caption">
         <h3 class="feeds-chart-title" id="feeds-chart-title">90% fewer manual steps</h3>
@@ -1146,15 +1337,6 @@
         <li><a href="https://youtube.com/playlist?list=PL08wd7p2fBAm4KWg1JRAsKwGgxsGlRHto&si=VIPEF11wnDgHINdJ" target="_blank" rel="noopener noreferrer">Feeds tutorials</a></li>
         <li><a href="https://help.quantemplate.com/about-feeds" target="_blank" rel="noopener noreferrer">Feeds support docs</a></li>
       </ul>
-
-      <a class="case-block has-thumb" href="https://www.youtube.com/watch?v=IgmrfcrYOOk" target="_blank" rel="noopener noreferrer">
-        <img class="case-block-thumb" src="media/youtube-feeds-overview.jpg" width="800" height="450" alt="Thumbnail for the YouTube video &lsquo;Learn how to automate data exchange with Quantemplate Feeds&rsquo;" loading="lazy">
-        <span class="case-block-text">
-          <span class="case-block-title">Learn how to automate data exchange with Quantemplate Feeds</span>
-          <span class="case-block-subtitle">A quick guide to Feeds concepts and an overview of the interface.</span>
-          <span class="case-block-watch">Watch on YouTube</span>
-        </span>
-      </a>
     </section>
 
     <hr class="rule">
@@ -1177,16 +1359,83 @@
 
   </div>
 
-  <nav class="toc" aria-label="Section navigation">
-    <span class="toc-indicator" aria-hidden="true"></span>
-    <span class="eyebrow toc-heading">On this page</span>
-    <a href="#keypoints-heading">Key points</a>
-    <a href="#problem-heading">Problem</a>
-    <a href="#approach-heading">Approach</a>
-    <a href="#keydecisions-heading">Key decisions</a>
-    <a href="#implementation-heading">Implementation</a>
-    <a href="#outcome-heading">Outcome</a>
-  </nav>
+
+  <div class="card-modal" id="analysis-modal" role="dialog" aria-modal="true" aria-labelledby="analysis-modal-title" hidden>
+    <div class="card-modal-panel">
+      <div class="card-modal-head">
+        <svg class="framing-icon" width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7.3" stroke="#00D8AA" stroke-width="1"/><path d="M8 7.1v4.4" stroke="#00D8AA" stroke-width="1.1" stroke-linecap="round"/><circle cx="8" cy="4.8" r="0.75" fill="#00D8AA"/></svg>
+        <h2 class="framing-label" id="analysis-modal-title">Analysis</h2>
+        <button class="card-modal-close" type="button" aria-label="Close"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M5.5 5.5l9 9M14.5 5.5l-9 9"/></svg></button>
+      </div>
+      <div class="card-modal-body evidence-body case-body">
+        <figure class="figure figure-strip">
+          <div class="figure-portrait-frame">
+            <div class="figure-strip-imgs">
+              <img src="media/workflow-bottlenecks-diagram.png" width="1600" height="795" alt="Diagram of a typical MGA data pipeline: manual upload to network storage, an automated import-to-output pipeline including Map Column Headers, then a manual step to push output to the client database via API." loading="lazy">
+              <img src="media/feeds-problem-postits.png" width="1800" height="1206" alt="Annotated version of the Data Repo and pipeline diagram, with yellow sticky notes flagging open questions and trade-offs at each stage: partner data visibility and permissions, input selector categorisation, additive versus replacing submissions, and notification requirements." loading="lazy">
+            </div>
+          </div>
+          <figcaption>2022 analysis of the typical Quantemplate workflow, identifying the manual bottlenecks &mdash; then an annotated version flagging the trade-offs and open questions on the way to straight-through processing.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-modal" id="journey-modal" role="dialog" aria-modal="true" aria-labelledby="journey-modal-title" hidden>
+    <div class="card-modal-panel">
+      <div class="card-modal-head">
+        <svg class="framing-icon" width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7.3" stroke="#00D8AA" stroke-width="1"/><path d="M8 7.1v4.4" stroke="#00D8AA" stroke-width="1.1" stroke-linecap="round"/><circle cx="8" cy="4.8" r="0.75" fill="#00D8AA"/></svg>
+        <h2 class="framing-label" id="journey-modal-title">Journey mapping</h2>
+        <button class="card-modal-close" type="button" aria-label="Close"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M5.5 5.5l9 9M14.5 5.5l-9 9"/></svg></button>
+      </div>
+      <div class="card-modal-body evidence-body case-body">
+        <figure class="figure">
+          <div class="figure-portrait-frame">
+            <img src="media/feeds-research-lifecycle.png" width="1800" height="567" alt="Swimlane diagram of the submission lifecycle spanning Carrier and MGA roles, from period open through upload, parsing, validation and carrier pipeline review, to period close, with pink notification steps, grey decision points and yellow manual touchpoints." loading="lazy">
+          </div>
+          <figcaption>Submission lifecycle analysis showing notification steps (pink), automated decision points and manual touchpoints (yellow).</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-modal" id="architecture-modal" role="dialog" aria-modal="true" aria-labelledby="architecture-modal-title" hidden>
+    <div class="card-modal-panel">
+      <div class="card-modal-head">
+        <svg class="framing-icon" width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7.3" stroke="#00D8AA" stroke-width="1"/><path d="M8 7.1v4.4" stroke="#00D8AA" stroke-width="1.1" stroke-linecap="round"/><circle cx="8" cy="4.8" r="0.75" fill="#00D8AA"/></svg>
+        <h2 class="framing-label" id="architecture-modal-title">Architecture</h2>
+        <button class="card-modal-close" type="button" aria-label="Close"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M5.5 5.5l9 9M14.5 5.5l-9 9"/></svg></button>
+      </div>
+      <div class="card-modal-body evidence-body case-body">
+        <figure class="figure">
+          <div class="figure-portrait-frame">
+            <img src="media/feeds-org-relationship-diagram.jpg" width="2000" height="1093" alt="Diagram showing a Data originator org with a Feed Out mirroring data to a Data consumer org's Feed In, fed by API, pipeline and manual upload sources on each side, with an upload portal shown as a separate concept still under consideration." loading="lazy">
+          </div>
+          <figcaption>Architecting the relationship between organisation feeds. Every Feed In corresponds to a Feed Out in the partner org. At this point I was still considering the &lsquo;upload portal&rsquo; as a layer in the workflow. It was descoped when the walkthrough revealed it to be superfluous.</figcaption>
+        </figure>
+        <figure class="figure">
+          <div class="figure-portrait-frame">
+            <img src="media/in-out-diagram.png" width="1346" height="852" alt="Diagram of the four Feed roles: Feed Out Leader (pushing out) and Feed In Follower (receiving pushes) connected by one arrow, Feed Out Follower (responding to requests) and Feed In Leader (pulling/requesting) connected by another." loading="lazy">
+          </div>
+          <figcaption>A conceptual model that users could understand: each Feed In is mirrored by a Feed Out in the partner organisation. Leaders control all Feed configuration, whilst followers simply respond. This reflected real-world market relationships.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-modal kd-modal" id="kd-modal" role="dialog" aria-modal="true" aria-labelledby="kd-modal-title" hidden>
+    <div class="card-modal-panel">
+      <div class="card-modal-head">
+        <h2 class="kd-modal-title" id="kd-modal-title"><span class="kd-modal-num"></span> <span class="kd-modal-name"></span></h2>
+        <div class="kd-modal-nav" role="group" aria-label="Move between slides">
+          <button class="kd-modal-step" type="button" data-step="-1" aria-label="Previous slide" aria-keyshortcuts="ArrowLeft"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.75 5.5 7.25 10l4.5 4.5"/></svg></button>
+          <button class="kd-modal-step" type="button" data-step="1" aria-label="Next slide" aria-keyshortcuts="ArrowRight"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.25 5.5 12.75 10l-4.5 4.5"/></svg></button>
+        </div>
+        <button class="card-modal-close" type="button" aria-label="Close"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M5.5 5.5l9 9M14.5 5.5l-9 9"/></svg></button>
+      </div>
+      <div class="card-modal-body case-body"></div>
+    </div>
+  </div>
 
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged image" tabindex="-1">
     <div class="lightbox-media">
