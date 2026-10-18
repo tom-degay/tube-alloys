@@ -15,7 +15,7 @@
 .icon:is(.is-hover,:focus-visible,.is-playing) .handle { fill:#f1f3f4; }
 .sliders:is(.is-hover,:focus-visible,.is-playing) .handle-low { transform:translateY(-7px); }
 .sliders:is(.is-hover,:focus-visible,.is-playing) .handle-high { transform:translateY(7px); }
-.sliders.is-reset .handle { transform:translateY(0); }
+.sliders.is-reset .handle { transform:translateY(0); transition:none; }
 .refresh-art { transform-origin:149.029px 50.505px; }
 .refresh:is(.is-hover,:focus-visible) .refresh-art { transform:rotate(18deg); }
 .refresh.is-playing .refresh-art { animation:spin 650ms cubic-bezier(.25,.1,.2,1); }
@@ -117,6 +117,7 @@
     clearTimeout(timers.get(icon));
     icon.classList.remove('is-playing', 'is-hover-playing');
     void icon.getBoundingClientRect();
+    icon.classList.remove('is-reset');
     icon.classList.add(hover ? 'is-hover-playing' : 'is-playing');
     timers.set(icon, setTimeout(function () { icon.classList.remove('is-playing', 'is-hover-playing'); }, 720));
   }
