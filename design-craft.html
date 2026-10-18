@@ -432,13 +432,14 @@
     align-content: center;
     aspect-ratio: 1;
     container-type: inline-size;
-    padding-left: clamp(44px, 6.5vw, 96px);
+    padding-left: clamp(40px, 5.5vw, 80px);
+    padding-bottom: clamp(48px, 5vw, 72px);  /* lifts the centred text a little */
   }
   /* the statement card keeps the gradient; every other card is solid */
   .p-card.p-statement { background: linear-gradient(to bottom, #1a1a1a, #2c2c2c); }
   .p-statement .principle-title {
     margin: 0;
-    font-size: clamp(32px, 19cqw, 112px);
+    font-size: clamp(28px, 15cqw, 88px);
     line-height: 1.04;
   }
   @property --hl-a { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
