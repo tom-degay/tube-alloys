@@ -429,11 +429,11 @@
   .poster-digital > figure { max-width: none; }
   .p-statement {
     display: grid;
-    align-content: center;
+    align-content: start;  /* the text sits in the top-left corner */
     aspect-ratio: 1;
     container-type: inline-size;
+    padding-top: clamp(40px, 5.5vw, 80px);
     padding-left: clamp(40px, 5.5vw, 80px);
-    padding-bottom: clamp(48px, 5vw, 72px);  /* lifts the centred text a little */
   }
   /* the statement card keeps the gradient; every other card is solid */
   .p-card.p-statement { background: linear-gradient(to bottom, #1a1a1a, #2c2c2c); }
