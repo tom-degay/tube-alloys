@@ -17,7 +17,7 @@
     state.timers = [];
     state.animations.forEach(animation => animation.cancel());
     state.animations = [];
-    state.card.classList.remove('is-scroll-playing');
+    state.card.classList.remove('is-scroll-playing', 'is-scroll-ending');
     const root = state.embed?.contentDocument?.documentElement;
     if (root && state.started && state.kind === 'mapping') root.dispatchEvent(new Event('mapping-demo-stop'));
     if (root && state.started && state.kind === 'date') root.dispatchEvent(new Event('zf-demo-stop'));
@@ -39,7 +39,14 @@
     if (state.embed && (!root || !doc.querySelector(state.ready))) return;
     state.started = true;
     state.card.dataset.scrollAnimation = 'played';
-    if (state.kind === 'statement') state.card.classList.add('is-scroll-playing');
+    if (state.kind === 'statement') {
+      state.card.classList.add('is-scroll-playing');
+      // the highlight runs for 3s, then fades back to white
+      state.timers.push(setTimeout(() => {
+        state.card.classList.add('is-scroll-ending');
+        state.timers.push(setTimeout(() => state.card.classList.remove('is-scroll-playing', 'is-scroll-ending'), 400));
+      }, 3000));
+    }
     if (state.kind === 'mapping') root.dispatchEvent(new Event('mapping-demo-play'));
     if (state.kind === 'date') root.dispatchEvent(new Event('zf-demo-start'));
     if (state.kind === 'brand') {

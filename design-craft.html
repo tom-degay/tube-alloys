@@ -463,6 +463,10 @@
     animation: hl-agent-in 120ms linear forwards, hl-agent-turn 1450ms linear infinite;
   }
   @keyframes hl-agent-in { from { --hl-i: 0; } to { --hl-i: 1; } }
+  .p-statement.is-scroll-playing.is-scroll-ending .craft-word {
+    animation: hl-agent-out 400ms ease-out forwards, hl-agent-turn 1450ms linear infinite;
+  }
+  @keyframes hl-agent-out { from { --hl-i: 1; } to { --hl-i: 0; } }
   @keyframes hl-agent-turn { from { --hl-a: 90deg; } to { --hl-a: -270deg; } }
   @media (prefers-reduced-motion: reduce) {
     .p-statement.is-scroll-playing .craft-word { animation: none; }
@@ -3184,6 +3188,6 @@
 <script src="/media/agent-cube-studies.js"></script>
 <script src="/media/white-rainbow-shimmer.js"></script>
 <script src="/media/profile-page-animation.js"></script>
-<script src="/media/design-craft-motion.js?v=20261018"></script>
+<script src="/media/design-craft-motion.js?v=20261018b"></script>
 </body>
 </html>
