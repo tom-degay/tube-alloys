@@ -65,7 +65,7 @@
 .reveal .contents-detail .contents-list{grid-template-rows:repeat(3,auto);row-gap:32px}
 .reveal .contents-detail .contents-list a{font-size:36px;min-height:103px}
 .reveal .sharing-contents h2{font-size:52px}.reveal .sharing-contents .contents-list a{font-size:37px;line-height:1.25}
-.reveal .outcome-quote-slide .slide-layout{gap:34px;padding-top:104px}.reveal .outcome-quote-slide blockquote{background:linear-gradient(to bottom,#1a1a1a,#2c2c2c);border:0;border-radius:10px;padding:30px 38px;color:rgba(255,255,255,.82);font-size:38px;line-height:1.3;font-weight:400}
+.reveal .outcome-quote-slide .slide-layout{gap:34px;padding-top:104px}.reveal .outcome-quote-slide blockquote{background:#212121;border:0;border-radius:10px;padding:30px 38px;color:rgba(255,255,255,.82);font-size:38px;line-height:1.3;font-weight:400}
 .reveal .outcome-quote::before{content:"\201C";display:block;font-family:Fakt,sans-serif;font-weight:600;font-size:140px;line-height:.95;margin-bottom:-.52em;margin-left:-.066em;color:rgba(255,255,255,.22)}
 .reveal .outcome-quote cite{display:block;font-size:21px;line-height:1.4;font-weight:400;font-style:normal;color:#aaa;margin-top:25px}
 .reveal .reflection-slide h2{font-size:64px}.reveal .reflection-copy p{font-size:37px;line-height:1.3}.reflection-copy{max-width:1120px;color:#aaa}.reveal .reflection-copy p+p{margin-top:24px}

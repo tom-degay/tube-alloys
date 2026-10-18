@@ -64,7 +64,7 @@
     .diagram-title { font-family: "Fakt Alignment", Arial, sans-serif; font-size: 40px; font-weight: 600; fill: #fff; }
     .benefit-label { font-family: "Fakt Title", Arial, sans-serif; font-size: 32px; font-weight: 400; fill: #ddd; }
   </style>
-  <rect width="1472" height="1172" fill="url(#background)"/>
+  <rect width="1472" height="1172" fill="#212121"/>
   <text class="diagram-title" x="52" y="112">A better approach <tspan fill="#999" dx="12">Aligned schemas</tspan></text>
   <g transform="translate(0 132)">
   <g fill="#fff">
