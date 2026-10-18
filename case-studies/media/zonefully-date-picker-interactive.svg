@@ -382,6 +382,12 @@
   }
   root.addEventListener('zf-demo-start', startDemo);
   root.addEventListener('zf-demo-stop', takeControl);
+  root.addEventListener('zf-next-month', () => {
+    takeControl();
+    if (!opened) setOpen(true, false, false);
+    moveMonth(1);
+    root.querySelector('[data-action="next"]').focus();
+  });
   document.addEventListener('pointerdown', takeControl, true);
   document.addEventListener('keydown', takeControl, true);
   document.addEventListener('click', takeControl, true);

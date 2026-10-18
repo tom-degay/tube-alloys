@@ -75,6 +75,8 @@
     margin: 0 0 20px;
   }
 
+  #outcome-heading { padding-top: 16px; }
+
   h1 {
     margin: 0;
     color: #fff;
@@ -590,9 +592,8 @@
   .zf-hero h1 { text-wrap: balance; }
   .zf-hero p.subtitle { text-wrap: pretty; }
 
-  /* "Watch the demo": styled as the nav bar (nav.css .identity-bar), set
-     in the bar's bold Fakt like "Tom de Gay", jumping to the demo video at the foot of the page */
-  .zf-watch-row { margin: clamp(20px, 2.4vw, 32px) 0 0; }
+  /* Hero actions share the nav bar's bold Fakt and rounded treatment. */
+  .zf-watch-row { display: flex; flex-wrap: wrap; gap: 12px; margin: clamp(20px, 2.4vw, 32px) 0 0; }
 
   a.zf-watch {
     display: inline-flex;
@@ -611,6 +612,7 @@
     transition: background-color 0.15s ease, color 0.15s ease;
   }
 
+  a.zf-watch[href="#developing-heading"] { padding-inline: 22px; }
   a.zf-watch svg { flex: 0 0 auto; width: 14px; height: 14px; }
 
   a.zf-watch:hover, a.zf-watch:focus-visible { color: #fff; }
@@ -773,6 +775,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
+    container-type: inline-size;
     gap: clamp(24px, 3vw, 40px) clamp(16px, 2vw, 28px);
     width: var(--grid-w);
     margin: clamp(20px, 3vw, 32px) 0 0 calc((100% - var(--grid-w)) / 2);
@@ -793,6 +796,82 @@
     gap: inherit;
     flex: 0 0 100%;
     min-width: 0;
+  }
+
+  .zf-toolbar-row { align-items: stretch; }
+  .zf-toolbar-row .figure {
+    position: relative;
+    min-height: 240px;
+    display: grid;
+    align-items: center;
+    background: #f7f7f7;
+    border-radius: 6px;
+  }
+  #formatting-toolbar { min-height: 280px; }
+  .zf-routines-row { display: grid; grid-template-columns: minmax(0, 480px) minmax(0, 1fr); align-items: stretch; }
+  #routines-widget { min-height: 456px; }
+  .zf-navigation-card { position: relative; aspect-ratio: 1; }
+  .zf-routines-frame {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    border-radius: 6px;
+    background: #f7f7f7;
+  }
+  .zf-toolbar-frame {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    border-radius: 6px;
+    background: #f7f7f7;
+  }
+
+  .zf-programme-row { display: grid; grid-template-columns: minmax(0, 1fr) 575px; align-items: stretch; }
+  .zf-swatches-card { display: grid; place-items: center; background: #f7f7f7; border-radius: 6px; }
+  .zf-grid .zf-swatches-card img { width: min(100%, 650px); height: auto; }
+  #programme-selector { min-height: 688px; background: #f7f7f7; border-radius: 6px; }
+  .zf-programme-frame { position: absolute; inset: 0; display: block; width: 100%; height: 100%; border: 0; border-radius: inherit; background: #f7f7f7; }
+  @container (max-width: 950px) {
+    .zf-programme-row { grid-template-columns: minmax(0, 1fr); }
+    .zf-swatches-card { padding: 24px 0; }
+  }
+  @container (max-width: 480px) {
+    #programme-selector { min-height: 736px; }
+  }
+
+  .zf-brand-mark {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: inherit;
+    background: #f7f7f7;
+    cursor: pointer;
+    overflow: hidden;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .zf-brand-mark svg { display: block; width: 100%; height: auto; }
+  .zf-brand-mark:focus-visible {
+    outline: 2px solid #ed496e;
+    outline-offset: 4px;
+  }
+  .zf-logo-colour > path { opacity: 0; transition: opacity 320ms ease; }
+  .zf-logo-wireframe { opacity: 1; transition: opacity 540ms ease; }
+  .zf-brand-mark.is-colour .zf-logo-colour > path { opacity: 1; }
+  /* SVG paint order is top, bottom, middle; reveal in visual order. */
+  .zf-brand-mark.is-colour .zf-logo-colour > path:nth-child(3) { transition-delay: 140ms; }
+  .zf-brand-mark.is-colour .zf-logo-colour > path:nth-child(2) { transition-delay: 280ms; }
+  .zf-brand-mark.is-colour .zf-logo-wireframe { opacity: 0; }
+  @media (prefers-reduced-motion: reduce) {
+    .zf-logo-colour > path, .zf-logo-wireframe { transition: none !important; }
   }
 
   .zf-date-picker-mount {
@@ -839,6 +918,8 @@
   .zf-try-leader { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; color: var(--accent-mark, #ed496e); }
   .zf-try-leader-compact { display: none; }
   .zf-try-hint, .zf-try-leader { opacity: 1; transition: opacity 0.3s ease, visibility 0s linear; }
+  .zf-prompted-demo.is-interacted .zf-try-hint,
+  .zf-prompted-demo.is-interacted .zf-try-leader,
   .zf-date-picker-mount.is-interacted .zf-try-hint,
   .zf-date-picker-mount.is-interacted .zf-try-leader { opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.3s ease, visibility 0s linear 0.3s; }
   @media (prefers-reduced-motion: reduce) {
@@ -848,6 +929,18 @@
     .zf-try-hint { right: -20px; top: calc(-36px - 1.91571%); }
     .zf-try-leader-wide { display: none; }
     .zf-try-leader-compact { display: block; }
+  }
+
+  .zf-prompted-demo { position: relative; }
+  .zf-prompted-demo .zf-try-hint { top: 22px; right: 24px; }
+  #routines-widget .zf-try-hint { top: 14px; left: 24px; right: auto; }
+  .zf-prompted-demo .zf-try-leader { z-index: 1; }
+  .zf-prompted-demo .zf-try-leader:not(.is-ready) { visibility: hidden; }
+  .zf-navigation-demo { position: absolute; inset: 0; display: block; width: 100%; height: 100%; aspect-ratio: 1; border-radius: 6px; background: #272727; }
+
+  @media (max-width: 1040px) {
+    .zf-routines-row { grid-template-columns: minmax(0, 1fr); }
+    .zf-routines-row .zf-navigation-card { width: min(100%, 456px); justify-self: start; }
   }
 
   @media (max-width: 640px) {
@@ -956,6 +1049,8 @@
 
   /* Watch the demo: black at 82%, with white type and play mark; full
      black on hover */
+  .zf-grid img.zf-planner-image { background: transparent; }
+
   .theme-light a.zf-watch {
     background: rgba(0, 0, 0, 0.82);
     border-color: transparent;
@@ -1152,7 +1247,9 @@
   /* on the shared grid: the screen grid and the demo span the content
      width; introductory text keeps the reading width */
   .content .case-body .zf-grid { --grid-w: 100%; margin-left: 0; }
+  .case-body .zf-interactions-subheading { margin: 12px 0 0; font-size: 20px; line-height: 1.4; font-weight: 400; }
   .content .case-body .zf-big { --video-w: 100%; margin-left: 0; }
+  .content > header + hr.rule { margin-block: clamp(28px, 3.5vw, 56px); }
   .case-body > h3.kd-heading + p,
   .case-body .subsection > h3.kd-heading + p { margin-top: clamp(24px, 3vw, 40px); }
   @media (min-width: 1024px) { .content .case-body .subsection > p { max-width: var(--span7); } }
@@ -1241,14 +1338,17 @@
     </div>
   </nav>
   <div class="zf-hero">
-    <div class="zf-hero-media" data-hero-spacing data-spacing-button=".zf-watch">
+    <div class="zf-hero-media" data-hero-spacing data-spacing-button=".zf-watch-row">
       <img src="media/planner-with-thin-sidebar.png" width="2662" height="1854" alt="Zonefully&rsquo;s Planner: a week of cycling rides and weekend breakfasts laid out on the calendar, with a side panel naming the activity, programme and routine for the selected ride.">
     </div>
     <div class="zf-hero-text">
       <img class="zf-hero-logo" src="media/zonefully-logo.svg" width="133" height="228" alt="Zonefully">
       <h1 class="display">Connecting <span class="nowrap">long-term</span> goals to everyday&nbsp;routines</h1>
       <p class="subtitle">A planning app that connects personal goals with recurring routines and a calendar to put them into&nbsp;practice.</p>
-      <p class="zf-watch-row"><a class="zf-watch" href="#video"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 2.8v10.4a.6.6 0 0 0 .9.5l8.2-5.2a.6.6 0 0 0 0-1L5.4 2.3a.6.6 0 0 0-.9.5z" fill="currentColor"/></svg>Watch the demo</a></p>
+      <p class="zf-watch-row">
+        <a class="zf-watch" href="#video"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 2.8v10.4a.6.6 0 0 0 .9.5l8.2-5.2a.6.6 0 0 0 0-1L5.4 2.3a.6.6 0 0 0-.9.5z" fill="currentColor"/></svg>Watch the demo</a>
+        <a class="zf-watch" href="#developing-heading">Try some interactions</a>
+      </p>
     </div>
   </div>
   <main>
@@ -1288,6 +1388,17 @@
       <p><strong>Routines</strong> could then be applied to a calendar view, called the <strong>Planner</strong>.</p>
 
       <p>For a cycling goal, that could mean training and recovery programmes containing individual rides and rest days. The design challenge was to make that hierarchy usable: people needed to work on an individual routine, understand how it fitted into a programme, and see where it belonged in their calendar.</p>
+
+      <h3 class="eyebrow" id="outcome-heading">1 minute demo</h3>
+
+      <figure class="figure zf-big" id="video">
+        <div class="ui-video">
+          <video controls playsinline preload="metadata" disablepictureinpicture controlslist="nofullscreen nodownload" width="1920" height="1080" poster="media/zonefully-demo-poster.jpg">
+            <source src="media/zonefully-hero.mp4?v=20261015" type="video/mp4">
+          </video>
+          <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+        </div>
+      </figure>
     </section>
 
     <hr class="rule">
@@ -1341,16 +1452,17 @@
 
     <section aria-labelledby="developing-heading" class="case-body">
       <div class="subsection" id="impl-developing">
-        <h3 class="display kd-heading" id="developing-heading">Interface&nbsp;details</h3>
+        <h3 class="display kd-heading" id="developing-heading">Design&nbsp;details</h3>
+        <h4 class="zf-interactions-subheading">Try some interactions</h4>
 
         <div class="zf-grid">
           <figure class="figure zf-grid-full">
-            <img src="media/zonefully-planner-week.jpg" width="2000" height="1001" alt="The Planner&rsquo;s week view: rides from the Ride the Tourmalet Recovery programme and weekend breakfasts placed across the days, with the week picker and an activity filter above." loading="lazy">
+            <img class="zf-planner-image" src="media/zonefully-planner-week.svg" width="979" height="293" alt="The Planner&rsquo;s week view: rides from the Ride the Tourmalet Recovery programme and weekend breakfasts placed across the days, with the week picker and an activity filter above." loading="lazy">
           </figure>
           <figure class="figure zf-grid-full" id="date-picker">
             <div class="zf-date-picker-mount">
               <div class="zf-picker-canvas">
-                <object data="media/zonefully-date-picker-interactive.svg#open" type="image/svg+xml" width="375" height="375" title="Interactive Zonefully date picker">
+                <object data="media/zonefully-date-picker-interactive.svg?v=20261018-next-month#open" type="image/svg+xml" width="375" height="375" title="Interactive Zonefully date picker">
                   <a href="media/zonefully-date-picker-interactive.svg">Try the interactive date picker</a>
                 </object>
                 <svg class="zf-try-leader" viewBox="0 0 375 375" aria-hidden="true">
@@ -1362,47 +1474,133 @@
               </div>
             </div>
           </figure>
-          <div class="zf-grid-row">
-            <figure class="figure" style="--ar: 2.6121">
-              <img src="media/zonefully-formatting-toolbar.png" width="1212" height="464" alt="A floating text-formatting toolbar with emphasis, heading, list and quotation controls." loading="lazy">
+          <div class="zf-grid-row zf-toolbar-row">
+            <figure class="figure zf-prompted-demo" data-demo-target=".toolbar" data-demo-focus=".editor" id="formatting-toolbar" style="--ar: 2.6121">
+              <iframe class="zf-toolbar-frame" src="media/zonefully-toolbar-interactive.html?embed" title="Try Zonefully’s interactive text-formatting toolbar" loading="lazy"></iframe>
+              <svg class="zf-try-leader" aria-hidden="true">
+                <path fill="none" stroke="currentColor" stroke-width="1"/>
+                <circle r="2.5" fill="currentColor"/>
+              </svg>
+              <button class="zf-try-hint" type="button">Click to try</button>
             </figure>
             <figure class="figure">
-              <img src="media/zonefully-brand-mark.png" width="532" height="532" alt="Zonefully&rsquo;s pink ribbon mark, folded into a Z." loading="lazy">
+              <button class="zf-brand-mark" type="button" aria-label="Show full-colour Zonefully logo" aria-pressed="false">
+                <svg xmlns="http://www.w3.org/2000/svg" width="532" height="532" viewBox="0 0 266 266" fill="none" aria-hidden="true" focusable="false">
+                <rect width="266" height="266" fill="#F7F7F7"/>
+                <g class="zf-logo-colour">
+                <path d="M90.390600 51.744700 L167.281000 77.202500 C171.692267 78.663035 175.913251 81.611428 178.458000 86.955400 C178.765020 87.600142 182.444198 99.176623 167.589000 106.686000 C165.408000 105.615000 163.323263 104.730357 161.478000 104.129000 L88.237500 80.260500 C86.300583 79.629274 85.000000 77.833100 85.000000 75.820300 L85.000000 55.614800 C85.000000 52.392600 87.301671 50.721980 90.390600 51.744700 Z" fill="#FF406E"/>
+                <path d="M85.000000 145.646000 C85.000000 154.059000 96.811911 161.482189 104.492000 163.985000 L177.733000 187.853000 C179.669890 188.484200 180.945000 190.281000 180.945000 192.294000 L180.945000 212.499000 C180.945000 215.721000 178.676747 217.394062 175.580000 216.369000 L98.697700 190.920000 C91.617286 188.576295 85.000000 182.567000 85.000000 168.581000 L85.000000 145.646000 Z" fill="#FF406E"/>
+                <path d="M178.458000 86.955400 C178.765020 87.600142 182.444198 99.176623 167.589000 106.686000 C141.340000 119.955000 85.000000 124.352000 85.000000 145.646000 C85.000000 151.834166 91.390609 157.486813 97.826951 161.039756 C124.185000 147.935000 180.945000 141.205000 180.945000 122.477000 C180.945000 96.120900 181.676522 93.714296 178.458000 86.955400 Z" fill="#972843"/>
+                </g>
+                <g class="zf-logo-wireframe">
+                <g stroke="#737F8B" stroke-width="0.7" stroke-linejoin="round">
+                <path d="M90.390600 51.744700 L167.281000 77.202500 C171.692267 78.663035 175.913251 81.611428 178.458000 86.955400 C178.765020 87.600142 182.444198 99.176623 167.589000 106.686000 C165.408000 105.615000 163.323263 104.730357 161.478000 104.129000 L88.237500 80.260500 C86.300583 79.629274 85.000000 77.833100 85.000000 75.820300 L85.000000 55.614800 C85.000000 52.392600 87.301671 50.721980 90.390600 51.744700 Z"/>
+                <path d="M85.000000 145.646000 C85.000000 154.059000 96.811911 161.482189 104.492000 163.985000 L177.733000 187.853000 C179.669890 188.484200 180.945000 190.281000 180.945000 192.294000 L180.945000 212.499000 C180.945000 215.721000 178.676747 217.394062 175.580000 216.369000 L98.697700 190.920000 C91.617286 188.576295 85.000000 182.567000 85.000000 168.581000 L85.000000 145.646000 Z"/>
+                <path d="M178.458000 86.955400 C178.765020 87.600142 182.444198 99.176623 167.589000 106.686000 C141.340000 119.955000 85.000000 124.352000 85.000000 145.646000 C85.000000 151.834166 91.390609 157.486813 97.826951 161.039756 C124.185000 147.935000 180.945000 141.205000 180.945000 122.477000 C180.945000 96.120900 181.676522 93.714296 178.458000 86.955400 Z"/>
+                </g>
+                <g stroke="#159BFA" stroke-width="0.6" opacity="0.85">
+                <path d="M167.281000 77.202500 L171.692267 78.663035"/>
+                <path d="M178.458000 86.955400 L175.913251 81.611428"/>
+                <path d="M167.589000 106.686000 L182.444198 99.176623"/>
+                <path d="M167.589000 106.686000 L165.408000 105.615000"/>
+                <path d="M161.478000 104.129000 L163.323263 104.730357"/>
+                <path d="M88.237500 80.260500 L86.300583 79.629274"/>
+                <path d="M85.000000 75.820300 L85.000000 77.833100"/>
+                <path d="M85.000000 55.614800 L85.000000 52.392600"/>
+                <path d="M90.390600 51.744700 L87.301671 50.721980"/>
+                <path d="M85.000000 145.646000 L85.000000 154.059000"/>
+                <path d="M104.492000 163.985000 L96.811911 161.482189"/>
+                <path d="M177.733000 187.853000 L179.669890 188.484200"/>
+                <path d="M180.945000 192.294000 L180.945000 190.281000"/>
+                <path d="M180.945000 212.499000 L180.945000 215.721000"/>
+                <path d="M175.580000 216.369000 L178.676747 217.394062"/>
+                <path d="M98.697700 190.920000 L91.617286 188.576295"/>
+                <path d="M85.000000 168.581000 L85.000000 182.567000"/>
+                <path d="M167.589000 106.686000 L141.340000 119.955000"/>
+                <path d="M85.000000 145.646000 L85.000000 124.352000"/>
+                <path d="M97.826951 161.039756 L124.185000 147.935000"/>
+                <path d="M180.945000 122.477000 L180.945000 141.205000"/>
+                <path d="M180.945000 122.477000 L180.945000 96.120900"/>
+                <path d="M178.458000 86.955400 L181.676522 93.714296"/>
+                </g>
+                <g stroke="#159BFA" stroke-width="0.7" fill="#fff">
+                <path d="M171.692267 77.813035 L172.542267 78.663035 L171.692267 79.513035 L170.842267 78.663035 Z"/>
+                <path d="M175.913251 80.761428 L176.763251 81.611428 L175.913251 82.461428 L175.063251 81.611428 Z"/>
+                <path d="M182.444198 98.326623 L183.294198 99.176623 L182.444198 100.026623 L181.594198 99.176623 Z"/>
+                <path d="M165.408000 104.765000 L166.258000 105.615000 L165.408000 106.465000 L164.558000 105.615000 Z"/>
+                <path d="M163.323263 103.880357 L164.173263 104.730357 L163.323263 105.580357 L162.473263 104.730357 Z"/>
+                <path d="M86.300583 78.779274 L87.150583 79.629274 L86.300583 80.479274 L85.450583 79.629274 Z"/>
+                <path d="M85.000000 76.983100 L85.850000 77.833100 L85.000000 78.683100 L84.150000 77.833100 Z"/>
+                <path d="M85.000000 51.542600 L85.850000 52.392600 L85.000000 53.242600 L84.150000 52.392600 Z"/>
+                <path d="M87.301671 49.871980 L88.151671 50.721980 L87.301671 51.571980 L86.451671 50.721980 Z"/>
+                <path d="M85.000000 153.209000 L85.850000 154.059000 L85.000000 154.909000 L84.150000 154.059000 Z"/>
+                <path d="M96.811911 160.632189 L97.661911 161.482189 L96.811911 162.332189 L95.961911 161.482189 Z"/>
+                <path d="M179.669890 187.634200 L180.519890 188.484200 L179.669890 189.334200 L178.819890 188.484200 Z"/>
+                <path d="M180.945000 189.431000 L181.795000 190.281000 L180.945000 191.131000 L180.095000 190.281000 Z"/>
+                <path d="M180.945000 214.871000 L181.795000 215.721000 L180.945000 216.571000 L180.095000 215.721000 Z"/>
+                <path d="M178.676747 216.544062 L179.526747 217.394062 L178.676747 218.244062 L177.826747 217.394062 Z"/>
+                <path d="M91.617286 187.726295 L92.467286 188.576295 L91.617286 189.426295 L90.767286 188.576295 Z"/>
+                <path d="M85.000000 181.717000 L85.850000 182.567000 L85.000000 183.417000 L84.150000 182.567000 Z"/>
+                <path d="M141.340000 119.105000 L142.190000 119.955000 L141.340000 120.805000 L140.490000 119.955000 Z"/>
+                <path d="M85.000000 123.502000 L85.850000 124.352000 L85.000000 125.202000 L84.150000 124.352000 Z"/>
+                <path d="M124.185000 147.085000 L125.035000 147.935000 L124.185000 148.785000 L123.335000 147.935000 Z"/>
+                <path d="M180.945000 140.355000 L181.795000 141.205000 L180.945000 142.055000 L180.095000 141.205000 Z"/>
+                <path d="M180.945000 95.270900 L181.795000 96.120900 L180.945000 96.970900 L180.095000 96.120900 Z"/>
+                <path d="M181.676522 92.864296 L182.526522 93.714296 L181.676522 94.564296 L180.826522 93.714296 Z"/>
+                </g>
+                <g stroke="#159BFA" stroke-width="0.75" fill="#fff">
+                <circle cx="90.390600" cy="51.744700" r="1.05"/>
+                <circle cx="167.281000" cy="77.202500" r="1.05"/>
+                <circle cx="178.458000" cy="86.955400" r="1.05"/>
+                <circle cx="167.589000" cy="106.686000" r="1.05"/>
+                <circle cx="161.478000" cy="104.129000" r="1.05"/>
+                <circle cx="88.237500" cy="80.260500" r="1.05"/>
+                <circle cx="85.000000" cy="75.820300" r="1.05"/>
+                <circle cx="85.000000" cy="55.614800" r="1.05"/>
+                <circle cx="85.000000" cy="145.646000" r="1.05"/>
+                <circle cx="104.492000" cy="163.985000" r="1.05"/>
+                <circle cx="177.733000" cy="187.853000" r="1.05"/>
+                <circle cx="180.945000" cy="192.294000" r="1.05"/>
+                <circle cx="180.945000" cy="212.499000" r="1.05"/>
+                <circle cx="175.580000" cy="216.369000" r="1.05"/>
+                <circle cx="98.697700" cy="190.920000" r="1.05"/>
+                <circle cx="85.000000" cy="168.581000" r="1.05"/>
+                <circle cx="97.826951" cy="161.039756" r="1.05"/>
+                <circle cx="180.945000" cy="122.477000" r="1.05"/>
+                </g>
+                </g>
+                </svg>
+              </button>
             </figure>
           </div>
-          <div class="zf-grid-row">
-            <figure class="figure" style="--ar: 1.1285">
+          <div class="zf-grid-row zf-routines-row">
+            <figure class="figure zf-navigation-card">
+              <object class="zf-navigation-demo" data="media/zonefully-navigation-interactive.svg" type="image/svg+xml" width="532" height="532" title="Try Zonefully’s navigation: Activities, Programs and Planner">Interactive Zonefully navigation</object>
+            </figure>
+            <figure class="figure zf-prompted-demo" data-demo-target=".grip" data-demo-focus=".select-routine" data-demo-side="left" id="routines-widget" style="--ar: 1.5163">
+              <iframe class="zf-routines-frame" src="media/zonefully-routines-interactive.html?embed" title="Try Zonefully’s interactive routine selection and reordering" loading="lazy"></iframe>
+              <svg class="zf-try-leader" aria-hidden="true">
+                <path fill="none" stroke="currentColor" stroke-width="1"/>
+                <circle r="2.5" fill="currentColor"/>
+              </svg>
+              <button class="zf-try-hint" type="button">Click to try</button>
+            </figure>
+          </div>
+          <div class="zf-grid-row zf-programme-row">
+            <figure class="figure zf-swatches-card">
               <img src="media/zonefully-colour-type.png" width="1212" height="1074" alt="Zonefully&rsquo;s colour palette, with cyan, green, blue and pink accents and their pale tints, alongside the typography hierarchy." loading="lazy">
             </figure>
-            <figure class="figure" style="--ar: 0.7614">
-              <img src="media/zonefully-program-selector.png" width="1308" height="1718" alt="The programme selector. Clicking the programme previews it; the arrow beside it opens a searchable list of programmes, where hovering one offers Activate." loading="lazy">
-            </figure>
-          </div>
-          <div class="zf-grid-row">
-            <figure class="figure" style="--ar: 1.5163">
-              <img src="media/zonefully-routines-order.jpg" width="2000" height="1319" alt="A programme&rsquo;s routines in order &mdash; a 10 mile ride, two rest days and a 20 mile ride &mdash; with drag handles and the note &lsquo;Routines follow this order. Drag to reorder.&rsquo;" loading="lazy">
-            </figure>
-            <figure class="figure">
-              <img src="media/zonefully-navigation-icons.png" width="532" height="532" alt="Grey line icons and labels for Activities, Programs and Planner on a light grey background." loading="lazy">
+            <figure class="figure zf-prompted-demo" data-demo-target=".chevron" data-demo-focus=".search" id="programme-selector">
+              <iframe class="zf-programme-frame" src="media/zonefully-program-selector-interactive.html?embed" title="Try Zonefully’s interactive programme preview, search and activation" loading="lazy"></iframe>
+              <svg class="zf-try-leader" aria-hidden="true">
+                <path fill="none" stroke="currentColor" stroke-width="1"/>
+                <circle r="2.5" fill="currentColor"/>
+              </svg>
+              <button class="zf-try-hint" type="button">Click to try</button>
             </figure>
           </div>
         </div>
       </div>
-    </section>
-
-    <hr class="rule">
-
-    <section aria-labelledby="outcome-heading" class="case-body">
-      <h2 class="eyebrow" id="outcome-heading">1 minute demo</h2>
-
-      <figure class="figure zf-big" id="video">
-        <div class="ui-video">
-          <video controls playsinline preload="metadata" disablepictureinpicture controlslist="nofullscreen nodownload" width="1920" height="1080" poster="media/zonefully-demo-poster.jpg">
-            <source src="media/zonefully-hero.mp4?v=20261015" type="video/mp4">
-          </video>
-          <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
-        </div>
-      </figure>
     </section>
 
     <hr class="rule">
@@ -1438,6 +1636,30 @@
   </main>
 
   <script>
+    /* Hover previews the finished mark; tap or keyboard toggles it. */
+    (function () {
+      var mark = document.querySelector('.zf-brand-mark');
+      if (!mark) return;
+      var pointerType = '';
+      function showColour(show) {
+        mark.classList.toggle('is-colour', show);
+        mark.setAttribute('aria-pressed', String(show));
+      }
+      mark.addEventListener('pointerenter', function (event) {
+        if (event.pointerType === 'mouse') showColour(true);
+      });
+      mark.addEventListener('pointerleave', function (event) {
+        if (event.pointerType === 'mouse') showColour(false);
+      });
+      mark.addEventListener('pointerdown', function (event) {
+        pointerType = event.pointerType;
+      });
+      mark.addEventListener('click', function (event) {
+        if (event.detail && pointerType === 'mouse') return;
+        showColour(mark.getAttribute('aria-pressed') !== 'true');
+      });
+    })();
+
     (function () {
       if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         document.querySelectorAll(".ui-video video").forEach(function (v) {
@@ -1750,7 +1972,62 @@
   }
   hint.addEventListener('click', () => {
     dismiss();
-    demo.contentDocument?.querySelector('[aria-checked="true"]')?.focus();
+    signal('zf-next-month');
+  });
+})();
+</script>
+<script>
+(function () {
+  document.querySelectorAll('.zf-prompted-demo').forEach(mount => {
+    const frame = mount.querySelector('iframe');
+    const hint = mount.querySelector('.zf-try-hint');
+    const leader = mount.querySelector('.zf-try-leader');
+    const path = leader.querySelector('path');
+    const dot = leader.querySelector('circle');
+    let connectedDocument, target, observer;
+    function dismiss() { mount.classList.add('is-interacted'); }
+    function draw() {
+      if (!target) return;
+      const box = mount.getBoundingClientRect();
+      const frameBox = frame.getBoundingClientRect();
+      const targetBox = target.getBoundingClientRect();
+      const hintBox = hint.getBoundingClientRect();
+      const left = mount.dataset.demoSide === 'left';
+      const x = frameBox.left - box.left + (left ? targetBox.left - 4 : targetBox.right + 4);
+      const y = frameBox.top - box.top + targetBox.top + Math.min(targetBox.height / 2, 29);
+      const endX = (left ? hintBox.left + 6 : hintBox.right - 6) - box.left;
+      const endY = hintBox.bottom - box.top + 3;
+      const bend = left ? Math.max(6, Math.min(x, endX) - 16) : Math.min(box.width - 6, Math.max(x, endX) + 16);
+      leader.setAttribute('viewBox', `0 0 ${box.width} ${box.height}`);
+      path.setAttribute('d', `M${x} ${y}C${bend} ${y} ${bend} ${endY + 20} ${endX} ${endY}`);
+      dot.setAttribute('cx', x);
+      dot.setAttribute('cy', y);
+      leader.classList.add('is-ready');
+    }
+    function connect() {
+      const doc = frame.contentDocument;
+      target = doc?.querySelector(mount.dataset.demoTarget);
+      if (!target) return;
+      if (doc !== connectedDocument) {
+        connectedDocument = doc;
+        ['pointerdown', 'keydown', 'focusin'].forEach(name => {
+          doc.addEventListener(name, dismiss, { once: true, capture: true });
+        });
+        if (observer) observer.disconnect();
+        observer = new ResizeObserver(draw);
+        observer.observe(target);
+        observer.observe(mount);
+        doc.fonts.ready.then(draw);
+      }
+      draw();
+    }
+    frame.addEventListener('load', connect);
+    hint.addEventListener('click', () => {
+      dismiss();
+      frame.contentDocument?.querySelector(mount.dataset.demoFocus)?.focus({ preventScroll: true });
+    });
+    document.fonts.ready.then(draw);
+    connect();
   });
 })();
 </script>

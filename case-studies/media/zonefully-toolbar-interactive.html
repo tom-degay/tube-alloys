@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Zonefully — interactive formatting toolbar</title>
+<script>if(new URLSearchParams(location.search).has('embed'))document.documentElement.classList.add('is-embedded');</script>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f7f7f7;color:#444;font-family:"Open Sans",system-ui,sans-serif}main{max-width:900px;margin:auto;padding:clamp(48px,10vw,100px) clamp(16px,6vw,80px)}
+.is-embedded main{height:100vh;display:flex;align-items:center;padding:24px}
+.toolbar-demo{padding-top:36px;width:100%;max-width:564px;margin-inline:auto;container-type:inline-size}
+.toolbar{--button-size:44px;--button-gap:6px;position:relative;display:flex;align-items:center;justify-content:flex-start;gap:var(--button-gap);width:100%;margin-inline:auto;padding:10px;background:white;border-radius:12px;box-shadow:0 8px 16px #0002;max-width:100%;overflow:visible}
+button{border:0;background:transparent;color:#888;border-radius:6px;padding:0;flex:0 0 44px;width:44px;height:44px;min-width:44px;cursor:pointer;transition:background .18s,color .18s,transform .18s}button svg{display:block;width:40px;height:40px;margin:auto}button:hover{background:#f1f1f1;color:#777}button[aria-pressed=true]{background:#e5e5e5;color:#444}button:active{transform:scale(.92)}button:focus-visible{outline:2px solid #ff3871;outline-offset:2px}
+.hint{font-size:13px;color:#707070;margin:24px 0 12px}.editor{background:white;border:1px solid transparent;border-radius:10px;padding:12px 16px;height:calc(4.8em + 26px);min-height:0;overflow-y:auto;line-height:1.6;overflow-wrap:anywhere;outline:none;transition:border-color .3s ease}.editor:focus{border-color:#888}.editor[data-empty="true"]::before{content:attr(data-placeholder);color:#aaa;pointer-events:none;float:left;height:0}.editor p,.editor h1,.editor h2,.editor h3,.editor blockquote{margin:0 0 12px}.editor h1{font-size:28px}.editor h2{font-size:23px}.editor h3{font-size:19px}.editor blockquote{border-left:3px solid #ff3871;padding-left:16px;color:#777}.editor hr{border:0;border-top:1px solid #ccc;margin:20px 0}.editor ul,.editor ol{padding-left:24px}.editor>:last-child{margin-bottom:0}.status{font-size:12px;color:#707070}::selection{background:#ffdce7}@media(prefers-reduced-motion:reduce){button,.editor{transition:none}}
+
+.heading-styles{display:flex;position:relative;flex:none;gap:var(--button-gap);isolation:isolate}
+.heading-highlight{position:absolute;left:0;top:0;width:var(--button-size);height:var(--button-size);border-radius:6px;background:#e5e5e5;pointer-events:none;opacity:0;transition:transform .3s cubic-bezier(.22,.8,.25,1),opacity .15s ease}
+.toolbar button{flex:0 0 var(--button-size);width:var(--button-size);height:var(--button-size);min-width:0}
+.toolbar button svg{width:calc(var(--button-size) * 40 / 44);height:calc(var(--button-size) * 40 / 44)}
+.heading-styles button{position:relative;z-index:1}
+.heading-styles button[aria-pressed=true]{background:transparent}
+@media(prefers-reduced-motion:reduce){.heading-highlight{transition:none}}
+
+.toolbar [hidden]{display:none!important}
+.overflow-toggle{margin-left:auto}
+.overflow-toggle[aria-expanded=true]{background:#e5e5e5;color:#444}
+.overflow-panel{position:absolute;z-index:5;top:calc(100% + 8px);right:0;display:flex;flex-wrap:wrap;align-items:center;gap:6px;width:max-content;max-width:100%;padding:10px;background:white;border-radius:12px;box-shadow:0 8px 20px #0002}
+
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip-path:inset(50%);white-space:nowrap;border:0!important}
+.editor{margin-top:24px}
+.toolbar button[aria-pressed=mixed]{background:#f1f1f1;position:relative}
+.toolbar button[aria-pressed=mixed]::after{content:"";position:absolute;bottom:4px;left:calc(50% - 5px);width:10px;height:2px;border-radius:1px;background:currentColor}
+::highlight(toolbar-selection){background:#ffdce7;color:#444}
+.toolbar-tooltip{position:fixed;z-index:20;pointer-events:none;padding:7px 10px;background:#444;color:white;border-radius:6px;font-size:12px;line-height:1.4;box-shadow:0 3px 10px #0002;white-space:nowrap}
+.toolbar-tooltip kbd{font:inherit;color:#ddd;margin-left:10px}
+
+
+</style></head><body><main><div class="toolbar-demo">
+<div class="toolbar" role="toolbar" aria-label="Text formatting"><button type="button" data-command="bold" aria-label="Bold" title="Bold" aria-pressed="false"><svg viewBox="90 101 30 30" aria-hidden="true"><path xmlns="http://www.w3.org/2000/svg" d="M101.062 109.578H104.617C106.237 109.578 107.411 109.81 108.141 110.273C108.875 110.732 109.242 111.464 109.242 112.469C109.242 113.151 109.081 113.711 108.758 114.148C108.44 114.586 108.016 114.849 107.484 114.938V115.016C108.208 115.177 108.729 115.479 109.047 115.922C109.37 116.365 109.531 116.953 109.531 117.688C109.531 118.729 109.154 119.542 108.398 120.125C107.648 120.708 106.628 121 105.336 121H101.062V109.578ZM103.484 114.102H104.891C105.547 114.102 106.021 114 106.312 113.797C106.609 113.594 106.758 113.258 106.758 112.789C106.758 112.352 106.596 112.039 106.273 111.852C105.956 111.659 105.451 111.562 104.758 111.562H103.484V114.102ZM103.484 116.023V119H105.062C105.729 119 106.221 118.872 106.539 118.617C106.857 118.362 107.016 117.971 107.016 117.445C107.016 116.497 106.339 116.023 104.984 116.023H103.484Z" fill="currentColor" /></svg></button>
+<button type="button" data-command="italic" aria-label="Italic" title="Italic" aria-pressed="false"><svg viewBox="126 101 30 30" aria-hidden="true"><path xmlns="http://www.w3.org/2000/svg" d="M139.172 121L141.602 109.578H143.438L141.008 121H139.172Z" fill="currentColor" /></svg></button>
+<button type="button" data-command="underline" aria-label="Underline" title="Underline" aria-pressed="false"><svg viewBox="162 101 30 30" aria-hidden="true"><path xmlns="http://www.w3.org/2000/svg" d="M181.523 109.578V116.969C181.523 117.812 181.341 118.552 180.977 119.188C180.617 119.818 180.094 120.305 179.406 120.648C178.724 120.987 177.906 121.156 176.953 121.156C175.536 121.156 174.435 120.781 173.648 120.031C172.862 119.281 172.469 118.25 172.469 116.938V109.578H174.344V116.805C174.344 117.747 174.562 118.443 175 118.891C175.438 119.339 176.109 119.562 177.016 119.562C178.776 119.562 179.656 118.638 179.656 116.789V109.578H181.523Z" fill="currentColor" /><rect xmlns="http://www.w3.org/2000/svg" x="172" y="123" width="10" height="1" rx="0.5" fill="currentColor" /></svg></button>
+<div class="heading-styles" role="group" aria-label="Heading styles"><span class="heading-highlight" aria-hidden="true"></span>
+<button type="button" data-command="h1" aria-label="Heading 1" title="Heading 1" aria-pressed="false"><svg viewBox="234 101 30 30" aria-hidden="true"><path xmlns="http://www.w3.org/2000/svg" d="M248.649 111.048V120.6C248.649 120.936 248.569 121 248.217 121H247.065C246.713 121 246.633 120.936 246.633 120.6V116.568H242.729V120.6C242.729 120.936 242.649 121 242.297 121H241.145C240.793 121 240.713 120.936 240.713 120.6V111.048C240.713 110.712 240.793 110.648 241.145 110.648H242.297C242.649 110.648 242.729 110.712 242.729 111.048V114.92H246.633V111.048C246.633 110.712 246.713 110.648 247.065 110.648H248.217C248.569 110.648 248.649 110.712 248.649 111.048ZM257.062 121H251.446C251.062 121 250.95 120.872 250.95 120.488V119.912C250.95 119.512 251.014 119.432 251.446 119.432H253.334V112.632H253.238L251.75 113.4C251.526 113.528 251.35 113.512 251.222 113.304L250.838 112.584C250.694 112.344 250.71 112.152 250.966 112.008L253.19 110.824C253.51 110.648 253.654 110.648 253.974 110.648H254.774C255.222 110.648 255.35 110.76 255.35 111.16V119.432H257.062C257.446 119.432 257.558 119.56 257.558 119.944V120.52C257.558 120.92 257.494 121 257.062 121Z" fill="currentColor" /></svg></button>
+<button type="button" data-command="h2" aria-label="Heading 2" title="Heading 2" aria-pressed="false"><svg viewBox="270 101 30 30" aria-hidden="true"><path xmlns="http://www.w3.org/2000/svg" d="M284.671 111.67V120.625C284.671 120.94 284.596 121 284.266 121H283.186C282.856 121 282.781 120.94 282.781 120.625V116.845H279.121V120.625C279.121 120.94 279.046 121 278.716 121H277.636C277.306 121 277.231 120.94 277.231 120.625V111.67C277.231 111.355 277.306 111.295 277.636 111.295H278.716C279.046 111.295 279.121 111.355 279.121 111.67V115.3H282.781V111.67C282.781 111.355 282.856 111.295 283.186 111.295H284.266C284.596 111.295 284.671 111.355 284.671 111.67ZM289.618 112.69C288.973 112.69 288.208 112.87 287.533 113.14C287.293 113.23 287.143 113.185 287.083 112.96L286.888 112.18C286.843 111.955 286.873 111.835 287.113 111.73C287.878 111.4 288.943 111.16 289.843 111.16C291.583 111.16 292.873 111.895 292.873 113.68V113.89C292.873 115.42 292.273 116.215 290.863 116.86L289.753 117.37C288.763 117.82 288.343 118.3 288.343 119.26V119.53H292.318C292.633 119.53 292.753 119.605 292.753 119.95V120.61C292.753 120.94 292.618 121 292.318 121H287.083C286.678 121 286.543 120.91 286.543 120.565V119.68C286.543 117.895 287.248 116.8 288.508 116.23L289.693 115.69C290.728 115.225 290.968 114.88 290.968 113.95V113.845C290.968 113.05 290.578 112.69 289.618 112.69Z" fill="currentColor" /></svg></button>
+<button type="button" data-command="h3" aria-label="Heading 3" title="Heading 3" aria-pressed="false"><svg viewBox="306 101 30 30" aria-hidden="true"><path xmlns="http://www.w3.org/2000/svg" d="M321.083 121H319.121V116.995H315.446V121H313.478V111.72H315.446V115.357H319.121V111.72H321.083V121ZM328.909 113.795C328.909 114.375 328.734 114.868 328.382 115.274C328.031 115.681 327.538 115.96 326.903 116.112V116.15C327.652 116.243 328.219 116.472 328.604 116.836C328.99 117.196 329.182 117.682 329.182 118.296C329.182 119.189 328.858 119.885 328.211 120.384C327.563 120.879 326.639 121.127 325.437 121.127C324.43 121.127 323.537 120.96 322.758 120.625V118.956C323.118 119.138 323.514 119.286 323.945 119.4C324.377 119.515 324.804 119.572 325.228 119.572C325.875 119.572 326.353 119.462 326.662 119.242C326.971 119.022 327.125 118.668 327.125 118.182C327.125 117.746 326.948 117.437 326.592 117.255C326.237 117.073 325.67 116.982 324.891 116.982H324.187V115.478H324.904C325.623 115.478 326.148 115.384 326.478 115.198C326.812 115.008 326.979 114.684 326.979 114.227C326.979 113.525 326.539 113.173 325.659 113.173C325.354 113.173 325.043 113.224 324.726 113.326C324.413 113.427 324.064 113.603 323.679 113.853L322.771 112.5C323.617 111.891 324.627 111.586 325.799 111.586C326.759 111.586 327.517 111.781 328.071 112.17C328.63 112.56 328.909 113.101 328.909 113.795Z" fill="currentColor" /></svg></button>
+</div>
+<button type="button" data-command="insertOrderedList" aria-label="Numbered list" title="Numbered list" aria-pressed="false"><svg viewBox="342 101 30 30" aria-hidden="true"><rect xmlns="http://www.w3.org/2000/svg" x="353" y="110" width="13" height="2" rx="1" fill="currentColor" /><rect xmlns="http://www.w3.org/2000/svg" x="353" y="115" width="13" height="2" rx="1" fill="currentColor" /><rect xmlns="http://www.w3.org/2000/svg" x="353" y="120" width="13" height="2" rx="1" fill="currentColor" /><path xmlns="http://www.w3.org/2000/svg" d="M350.244 112H349.069V109.732C349.069 109.457 349.075 109.205 349.087 108.977C349.015 109.064 348.925 109.156 348.817 109.252L348.331 109.653L347.73 108.915L349.201 107.717H350.244V112Z" fill="currentColor" /><path xmlns="http://www.w3.org/2000/svg" d="M350.771 118H347.663V117.238L348.709 116.181C349.008 115.868 349.203 115.655 349.295 115.542C349.387 115.427 349.45 115.328 349.485 115.246C349.522 115.164 349.541 115.078 349.541 114.988C349.541 114.877 349.505 114.789 349.433 114.725C349.36 114.66 349.259 114.628 349.128 114.628C348.993 114.628 348.856 114.667 348.718 114.745C348.581 114.821 348.426 114.935 348.252 115.085L347.616 114.341C347.837 114.144 348.022 114.003 348.173 113.919C348.323 113.833 348.486 113.768 348.662 113.723C348.84 113.678 349.039 113.655 349.26 113.655C349.537 113.655 349.784 113.704 350.001 113.802C350.22 113.899 350.389 114.039 350.508 114.221C350.629 114.4 350.689 114.603 350.689 114.827C350.689 114.995 350.668 115.15 350.625 115.293C350.584 115.436 350.52 115.576 350.432 115.715C350.344 115.852 350.227 115.996 350.08 116.148C349.936 116.301 349.626 116.59 349.151 117.016V117.045H350.771V118Z" fill="currentColor" /><path xmlns="http://www.w3.org/2000/svg" d="M350.628 120.646C350.628 120.911 350.547 121.14 350.385 121.331C350.223 121.521 349.988 121.658 349.682 121.744V121.762C350.396 121.852 350.754 122.189 350.754 122.775C350.754 123.174 350.596 123.487 350.279 123.716C349.965 123.944 349.527 124.059 348.967 124.059C348.736 124.059 348.522 124.042 348.325 124.009C348.13 123.976 347.918 123.915 347.689 123.827V122.866C347.877 122.962 348.067 123.033 348.261 123.08C348.456 123.125 348.636 123.147 348.8 123.147C349.054 123.147 349.238 123.112 349.354 123.042C349.471 122.97 349.529 122.857 349.529 122.705C349.529 122.588 349.499 122.498 349.438 122.436C349.378 122.371 349.28 122.323 349.146 122.292C349.011 122.259 348.835 122.242 348.618 122.242H348.354V121.372H348.624C349.212 121.372 349.506 121.222 349.506 120.921C349.506 120.808 349.462 120.724 349.374 120.669C349.288 120.614 349.172 120.587 349.025 120.587C348.752 120.587 348.469 120.679 348.176 120.862L347.695 120.089C347.922 119.933 348.153 119.821 348.39 119.755C348.628 119.688 348.9 119.655 349.207 119.655C349.65 119.655 349.998 119.743 350.25 119.919C350.502 120.095 350.628 120.337 350.628 120.646Z" fill="currentColor" /></svg></button>
+<button type="button" data-command="insertUnorderedList" aria-label="Bulleted list" title="Bulleted list" aria-pressed="false"><svg viewBox="378 101 30 30" aria-hidden="true"><rect xmlns="http://www.w3.org/2000/svg" x="383" y="109" width="4" height="4" rx="2" fill="currentColor" /><rect xmlns="http://www.w3.org/2000/svg" x="383" y="114" width="4" height="4" rx="2" fill="currentColor" /><rect xmlns="http://www.w3.org/2000/svg" x="383" y="119" width="4" height="4" rx="2" fill="currentColor" /><rect xmlns="http://www.w3.org/2000/svg" x="389" y="110" width="13" height="2" rx="1" fill="currentColor" /><rect xmlns="http://www.w3.org/2000/svg" x="389" y="115" width="13" height="2" rx="1" fill="currentColor" /><rect xmlns="http://www.w3.org/2000/svg" x="389" y="120" width="13" height="2" rx="1" fill="currentColor" /></svg></button>
+<button type="button" data-command="blockquote" aria-label="Quote" title="Quote" aria-pressed="false"><svg viewBox="414 101 30 30" aria-hidden="true"><circle xmlns="http://www.w3.org/2000/svg" cx="432" cy="118" r="3" fill="currentColor" /><path xmlns="http://www.w3.org/2000/svg" d="M430 118C430 118 430 118 430 117C430 116 430.833 112 433.5 112" stroke="currentColor" stroke-width="2" stroke-linecap="round" /><circle xmlns="http://www.w3.org/2000/svg" cx="425" cy="118" r="3" fill="currentColor" /><path xmlns="http://www.w3.org/2000/svg" d="M423 118C423 118 423 118 423 117C423 116 423.833 112 426.5 112" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg></button>
+<button type="button" data-command="clear" aria-label="Clear formatting" title="Clear formatting"><svg viewBox="450 101 30 30" aria-hidden="true"><path xmlns="http://www.w3.org/2000/svg" d="M463.711 121H461.328L463.312 111.594H460.562L460.992 109.578H468.883L468.453 111.594H465.695L463.711 121Z" fill="currentColor" /><rect xmlns="http://www.w3.org/2000/svg" x="473.192" y="122.778" width="2" height="8" rx="1" transform="rotate(135 473.192 122.778)" fill="currentColor" /><rect xmlns="http://www.w3.org/2000/svg" x="471.778" y="117.121" width="2" height="8" rx="1" transform="rotate(45 471.778 117.121)" fill="currentColor" /></svg></button>
+<button type="button" data-command="insertHorizontalRule" aria-label="Divider" title="Divider"><svg viewBox="486 101 30 30" aria-hidden="true"><rect x="493" y="107" width="16" height="6" rx="2" fill="#000" fill-opacity=".1"/><rect x="493" y="119" width="16" height="6" rx="2" fill="#000" fill-opacity=".1"/><rect xmlns="http://www.w3.org/2000/svg" x="493" y="115" width="16" height="2" rx="1" fill="currentColor" /></svg></button>
+<button type="button" class="overflow-toggle" aria-label="More formatting" aria-expanded="false" aria-controls="overflow-formatting" hidden><svg viewBox="0 0 30 30" aria-hidden="true"><circle cx="9" cy="15" r="1.5" fill="currentColor"/><circle cx="15" cy="15" r="1.5" fill="currentColor"/><circle cx="21" cy="15" r="1.5" fill="currentColor"/></svg></button>
+<div class="overflow-panel" id="overflow-formatting" role="group" aria-label="More formatting options" hidden></div>
+</div>
+<p class="hint sr-only" id="editor-hint">Select some text to format it, or click a style and start typing.</p>
+<div class="editor" id="formatting-editor" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Try the formatting toolbar" aria-describedby="editor-hint" aria-placeholder="Type something" data-placeholder="Type something" spellcheck="true"></div>
+<span class="status sr-only" role="status" aria-live="polite"></span>
+</div></main><script>
+const editor=document.querySelector('.editor'),toolbar=document.querySelector('.toolbar'),status=document.querySelector('.status'),buttons=[...toolbar.querySelectorAll('button[data-command]')];
+const headingGroup=toolbar.querySelector('.heading-styles'),headingHighlight=headingGroup.querySelector('.heading-highlight');
+let highlightedHeading=null;
+function syncHeadingHighlight(){
+ const active=headingGroup.querySelector('[aria-pressed="true"]');
+ if(!active){headingHighlight.style.opacity='0';highlightedHeading=null;return;}
+ if(!highlightedHeading){
+  headingHighlight.style.transition='none';
+  headingHighlight.style.transform=`translateX(${active.offsetLeft}px)`;
+  void headingHighlight.offsetWidth;
+  headingHighlight.style.removeProperty('transition');
+ }else headingHighlight.style.transform=`translateX(${active.offsetLeft}px)`;
+ headingHighlight.style.opacity='1';
+ highlightedHeading=active;
+}
+const more=toolbar.querySelector('.overflow-toggle'),overflow=toolbar.querySelector('.overflow-panel');
+const tooltip=document.createElement('div');tooltip.className='toolbar-tooltip';tooltip.id='formatting-tooltip';tooltip.role='tooltip';tooltip.hidden=true;document.body.append(tooltip);
+const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)');
+let tooltipTimer=null,tooltipButton=null,tooltipMotion=null,tooltipWarmUntil=0,overflowMotion=null;
+const mac=/Mac|iPhone|iPad/.test(navigator.platform),shortcutLabel=mac?'⌘':'Ctrl+';
+const shortcuts={bold:'B',italic:'I',underline:'U'};
+[...buttons,more].forEach(b=>{b.removeAttribute('title');if(shortcuts[b.dataset.command])b.setAttribute('aria-keyshortcuts',(mac?'Meta+':'Control+')+shortcuts[b.dataset.command]);});
+function hideTooltip(keepWarm=false){
+ clearTimeout(tooltipTimer);
+ if(keepWarm===true){if(!tooltip.hidden)tooltipWarmUntil=Date.now()+600;}else tooltipWarmUntil=0;
+ tooltipMotion?.cancel();tooltipMotion=null;tooltip.hidden=true;
+ if(tooltipButton)tooltipButton.removeAttribute('aria-describedby');tooltipButton=null;
+}
+function showTooltip(button,delay=0){
+ const warm=!tooltip.hidden||Date.now()<tooltipWarmUntil;
+ hideTooltip(true);tooltipButton=button;
+ tooltipTimer=setTimeout(()=>{
+  if(!button.isConnected||!button.getClientRects().length)return;
+  tooltip.replaceChildren(document.createTextNode(button.getAttribute('aria-label')+(button.getAttribute('aria-pressed')==='mixed'?' (mixed)':'')));
+  const key=shortcuts[button.dataset.command];if(key){const kbd=document.createElement('kbd');kbd.textContent=shortcutLabel+key;tooltip.append(kbd);}
+  tooltip.hidden=false;button.setAttribute('aria-describedby',tooltip.id);
+  const rect=button.getBoundingClientRect();
+  tooltip.style.left=Math.max(8,Math.min(innerWidth-tooltip.offsetWidth-8,rect.left+rect.width/2-tooltip.offsetWidth/2))+'px';
+  tooltip.style.top=(rect.bottom+8+tooltip.offsetHeight>innerHeight?rect.top-tooltip.offsetHeight-8:rect.bottom+8)+'px';
+  if(!warm&&!reduceMotion.matches)tooltipMotion=tooltip.animate([{opacity:0,transform:'translateY(2px)'},{opacity:1,transform:'translateY(0)'}],{duration:120,easing:'ease-out'});
+ },warm?0:delay);
+}
+toolbar.addEventListener('pointerover',e=>{const b=e.target.closest('button');if(b&&!b.contains(e.relatedTarget))showTooltip(b,400);});
+toolbar.addEventListener('pointerout',e=>{if(e.target.closest('button')&&!e.target.closest('button').contains(e.relatedTarget))hideTooltip(true);});
+toolbar.addEventListener('focusin',e=>{if(e.target.matches('button:focus-visible'))showTooltip(e.target);});
+toolbar.addEventListener('focusout',hideTooltip);
+toolbar.addEventListener('pointerdown',hideTooltip);
+window.addEventListener('resize',hideTooltip);window.addEventListener('scroll',hideTooltip,true);
+document.addEventListener('keydown',e=>{
+ if(e.key==='Escape')hideTooltip();
+ if(!(editor.contains(document.activeElement)||toolbar.contains(document.activeElement))||!(e.metaKey||e.ctrlKey)||e.altKey)return;
+ const key=e.key.toLowerCase();
+ if(key==='z'||(!mac&&key==='y')){e.preventDefault();travelHistory(e.shiftKey||key==='y');return;}
+ const command={b:'bold',i:'italic',u:'underline'}[key];
+ if(command){e.preventDefault();run(buttons.find(b=>b.dataset.command===command));}
+});
+
+const units=[...toolbar.children].filter(el=>el.matches('button[data-command],.heading-styles'));
+function closeOverflow(restoreFocus=false){
+ hideTooltip();
+ if(restoreFocus)more.focus();
+ if(more.getAttribute('aria-expanded')!=='true')return;
+ const style=getComputedStyle(overflow),from={opacity:style.opacity,transform:style.transform};
+ overflowMotion?.cancel();more.setAttribute('aria-expanded','false');overflow.inert=true;
+ if(reduceMotion.matches){overflow.hidden=true;overflowMotion=null;return;}
+ const motion=overflow.animate([from,{opacity:0,transform:'translateY(-6px)'}],{duration:120,easing:'ease-in',fill:'forwards'});
+ overflowMotion=motion;
+ motion.finished.then(()=>{if(overflowMotion===motion){overflow.hidden=true;motion.cancel();overflowMotion=null;}}).catch(()=>{});
+}
+function openOverflow(focusFirst=false){
+ const from=overflow.hidden?{opacity:0,transform:'translateY(-6px)'}:{opacity:getComputedStyle(overflow).opacity,transform:getComputedStyle(overflow).transform};
+ overflowMotion?.cancel();overflowMotion=null;
+ overflow.hidden=false;overflow.inert=false;more.setAttribute('aria-expanded','true');
+ if(!reduceMotion.matches)overflowMotion=overflow.animate([from,{opacity:1,transform:'translateY(0)'}],{duration:180,easing:'cubic-bezier(.22,.8,.25,1)'});
+ if(focusFirst)overflow.querySelector('button')?.focus();
+ syncHeadingHighlight();
+}
+function fitToolbar(){
+ const available=toolbar.clientWidth-20;
+ const total=units.reduce((sum,el)=>sum+(el===headingGroup?144:44),0)+6*(units.length-1);
+ let used=0,cut=units.length;
+ if(total>available){
+  cut=0;
+  for(const unit of units){
+   const next=used+(cut?6:0)+(unit===headingGroup?144:44);
+   if(next+6+44>available)break;
+   used=next;cut++;
+  }
+ }
+ const active=document.activeElement;
+ units.forEach((unit,i)=>{
+  const parent=i<cut?toolbar:overflow;
+  if(parent===toolbar)toolbar.insertBefore(unit,more);else overflow.append(unit);
+ });
+ more.hidden=cut===units.length;
+ if(more.hidden)closeOverflow();
+ if(active!==document.activeElement&&toolbar.contains(active)){
+  if(overflow.hidden&&overflow.contains(active))more.focus();else active.focus();
+ }
+ syncHeadingHighlight();
+}
+new ResizeObserver(fitToolbar).observe(toolbar);
+fitToolbar();
+let savedRange=null;
+// Keep the selected text marked when keyboard focus moves into the controls.
+function paintSelection(){
+ if(!window.CSS?.highlights||!window.Highlight)return;
+ CSS.highlights.delete('toolbar-selection');
+ if(savedRange&&!savedRange.collapsed&&toolbar.contains(document.activeElement))CSS.highlights.set('toolbar-selection',new Highlight(savedRange));
+}
+
+function updatePlaceholder(){editor.dataset.empty=String(!editor.textContent.trim()&&!editor.querySelector('hr,img'));}
+updatePlaceholder();
+new MutationObserver(updatePlaceholder).observe(editor,{childList:true,subtree:true,characterData:true});
+
+const blocks=['p','h1','h2','h3','blockquote'];
+function saveSelection(){const sel=getSelection();if(sel.rangeCount&&editor.contains(sel.anchorNode)&&editor.contains(sel.focusNode))savedRange=sel.getRangeAt(0).cloneRange();paintSelection();}
+function restoreSelection(){editor.focus({preventScroll:true});const sel=getSelection();sel.removeAllRanges();if(savedRange&&editor.contains(savedRange.startContainer)&&editor.contains(savedRange.endContainer)){sel.addRange(savedRange);}else{const range=document.createRange();range.selectNodeContents(editor.firstElementChild||editor);sel.addRange(range);}}
+function selectedQuotes(){
+ const sel=getSelection();
+ if(!sel.rangeCount)return [];
+ const range=sel.getRangeAt(0);
+ return [...editor.querySelectorAll('blockquote')].filter(q=>range.intersectsNode(q));
+}
+function removeQuotes(){
+ // Native outdent preserves the selection and the browser's undo history.
+ for(let i=0;i<20&&selectedQuotes().length;i++){
+  const before=editor.innerHTML;
+  document.execCommand('outdent');
+  if(editor.innerHTML===before)break;
+ }
+}
+function selectionStates(){
+ const sel=getSelection();
+ if(!sel.rangeCount||!editor.contains(sel.anchorNode))return null;
+ const range=sel.getRangeAt(0),nodes=[];
+ if(!range.collapsed){
+  const walker=document.createTreeWalker(editor,NodeFilter.SHOW_TEXT);
+  while(walker.nextNode()){
+   const node=walker.currentNode;
+   if(!range.intersectsNode(node))continue;
+   const start=node===range.startContainer?range.startOffset:0;
+   const end=node===range.endContainer?range.endOffset:node.length;
+   if(node.textContent.slice(start,end).trim())nodes.push(node.parentElement);
+  }
+ }
+ const block=document.queryCommandValue('formatBlock').toLowerCase().replace(/[<>]/g,'');
+ const matches=(el,cmd)=>{
+  const style=getComputedStyle(el);
+  if(cmd==='bold')return Number(style.fontWeight)>=600||style.fontWeight==='bold';
+  if(cmd==='italic')return style.fontStyle==='italic'||style.fontStyle==='oblique';
+  if(cmd==='underline'){
+   for(let n=el;n&&n!==editor;n=n.parentElement)if(getComputedStyle(n).textDecorationLine.includes('underline'))return true;
+   return false;
+  }
+  const selector={insertOrderedList:'ol',insertUnorderedList:'ul',blockquote:'blockquote',h1:'h1',h2:'h2',h3:'h3'}[cmd];
+  return !!(selector&&el.closest(selector)&&editor.contains(el.closest(selector)));
+ };
+ return Object.fromEntries(buttons.filter(b=>b.hasAttribute('aria-pressed')).map(b=>{
+  const cmd=b.dataset.command;
+  if(!nodes.length)return [cmd,String(cmd==='blockquote'?selectedQuotes().length>0:blocks.includes(cmd)?block===cmd:document.queryCommandState(cmd))];
+  const values=nodes.map(el=>matches(el,cmd));
+  return [cmd,values.every(Boolean)?'true':values.some(Boolean)?'mixed':'false'];
+ }));
+}
+function sync(){
+ const states=selectionStates();if(!states)return;
+ buttons.forEach(b=>{if(b.hasAttribute('aria-pressed'))b.setAttribute('aria-pressed',states[b.dataset.command]);});
+ syncHeadingHighlight();
+}
+// One history entry per toolbar action, even when it needs several native commands.
+// Typing is grouped into short runs; paste, paragraph breaks and formatting stay separate.
+const undoStack=[],redoStack=[];
+let inputBefore=null,lastInputType='',lastInputAt=0,applyingHistory=false;
+function nodePath(node){const path=[];while(node&&node!==editor){path.unshift([...node.parentNode.childNodes].indexOf(node));node=node.parentNode;}return path;}
+function snapshot(){
+ const sel=getSelection();
+ const selection=sel.rangeCount&&editor.contains(sel.anchorNode)&&editor.contains(sel.focusNode)?{anchor:nodePath(sel.anchorNode),anchorOffset:sel.anchorOffset,focus:nodePath(sel.focusNode),focusOffset:sel.focusOffset}:null;
+ return {html:editor.innerHTML,selection};
+}
+function commitHistory(before,after,merge=false){
+ if(before.html===after.html)return;
+ if(merge&&undoStack.length)undoStack[undoStack.length-1].after=after;
+ else undoStack.push({before,after});
+ if(undoStack.length>100)undoStack.shift();
+ redoStack.length=0;
+}
+function applySnapshot(state){
+ applyingHistory=true;editor.innerHTML=state.html;editor.focus({preventScroll:true});
+ const find=path=>path.reduce((node,index)=>node.childNodes[index],editor);
+ if(state.selection){const v=state.selection;getSelection().setBaseAndExtent(find(v.anchor),v.anchorOffset,find(v.focus),v.focusOffset);}
+ else{const r=document.createRange();r.selectNodeContents(editor);r.collapse(false);getSelection().removeAllRanges();getSelection().addRange(r);}
+ saveSelection();sync();updatePlaceholder();applyingHistory=false;
+}
+function travelHistory(redo=false){
+ const from=redo?redoStack:undoStack,to=redo?undoStack:redoStack,entry=from.pop();
+ if(!entry)return;
+ to.push(entry);applySnapshot(redo?entry.after:entry.before);lastInputType='';
+ status.textContent=redo?'Change redone':'Change undone';
+}
+editor.addEventListener('beforeinput',e=>{
+ if(e.inputType==='historyUndo'||e.inputType==='historyRedo'){e.preventDefault();travelHistory(e.inputType==='historyRedo');return;}
+ inputBefore=snapshot();
+});
+editor.addEventListener('input',e=>{
+ if(applyingHistory)return;
+ if(inputBefore){
+  const now=Date.now(),type=e.inputType;
+  const merge=['insertText','deleteContentBackward','deleteContentForward','insertCompositionText'].includes(type)&&type===lastInputType&&now-lastInputAt<900&&undoStack.at(-1)?.after.html===inputBefore.html;
+  commitHistory(inputBefore,snapshot(),merge);lastInputType=type;lastInputAt=now;inputBefore=null;
+ }
+ saveSelection();sync();
+});
+function run(button){
+ restoreSelection();
+ hideTooltip();
+ const before=snapshot();
+ const state=button.getAttribute('aria-pressed');
+ const cmd=button.dataset.command;
+ let removed=false;
+ inputBefore=null;lastInputType='';
+ if(cmd==='blockquote'){
+  removed=state==='true';
+  if(removed)removeQuotes();
+  else {if(state==='mixed')removeQuotes();document.execCommand('formatBlock',false,'blockquote');}
+ }else if(cmd==='clear'){
+  removeQuotes();
+  if(document.queryCommandState('insertOrderedList'))document.execCommand('insertOrderedList');
+  if(document.queryCommandState('insertUnorderedList'))document.execCommand('insertUnorderedList');
+  document.execCommand('formatBlock',false,'p');
+  document.execCommand('removeFormat');
+ }else if(blocks.includes(cmd)){
+  const currentBlock=document.queryCommandValue('formatBlock').toLowerCase().replace(/[<>]/g,'');
+  removed=currentBlock===cmd&&state!=='mixed';
+  removeQuotes();
+  document.execCommand('formatBlock',false,removed?'p':cmd);
+ }else{
+  // A mixed selection becomes uniformly formatted on the first click.
+  if(state==='mixed'&&document.queryCommandState(cmd))document.execCommand(cmd,false,null);
+  removed=state==='true';
+  document.execCommand(cmd,false,null);
+ }
+ saveSelection();sync();
+ commitHistory(before,snapshot());inputBefore=null;lastInputType='';
+ status.textContent=cmd==='clear'?'Formatting cleared':button.getAttribute('aria-label')+(removed?' removed':' applied');
+}
+toolbar.addEventListener('mousedown',e=>{if(e.target.closest('button'))e.preventDefault();});
+toolbar.addEventListener('click',e=>{
+ const b=e.target.closest('button');
+ if(!b)return;
+ if(b===more){if(more.getAttribute('aria-expanded')!=='true')openOverflow(e.detail===0);else closeOverflow(e.detail===0);return;}
+ const fromOverflow=overflow.contains(b);
+ run(b);
+ if(fromOverflow)closeOverflow();
+});
+toolbar.addEventListener('keydown',e=>{
+ if(e.key==='Escape'&&!overflow.hidden){e.preventDefault();closeOverflow(true);return;}
+ if(e.target===more&&e.key==='ArrowDown'){e.preventDefault();openOverflow(true);return;}
+ const scope=overflow.contains(document.activeElement)?overflow:toolbar;
+ const visible=[...scope.querySelectorAll('button')].filter(b=>!b.hidden&&(scope===overflow||!overflow.contains(b)));
+ const i=visible.indexOf(document.activeElement);if(i<0)return;let next;
+ if(e.key==='ArrowRight')next=(i+1)%visible.length;
+ if(e.key==='ArrowLeft')next=(i+visible.length-1)%visible.length;
+ if(e.key==='Home')next=0;if(e.key==='End')next=visible.length-1;
+ if(next!==undefined){e.preventDefault();visible[next].focus();}
+});
+document.addEventListener('pointerdown',e=>{if(!toolbar.contains(e.target))closeOverflow();});
+toolbar.addEventListener('focusout',()=>queueMicrotask(()=>{if(!toolbar.contains(document.activeElement))closeOverflow();}));
+document.addEventListener('selectionchange',()=>{saveSelection();sync();});
+document.addEventListener('focusin',paintSelection);
+editor.addEventListener('paste',e=>{e.preventDefault();const before=snapshot();inputBefore=null;document.execCommand('insertText',false,e.clipboardData.getData('text/plain'));commitHistory(before,snapshot());inputBefore=null;lastInputType='';});
+</script></body></html>

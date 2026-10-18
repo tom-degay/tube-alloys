@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>if(new URLSearchParams(location.search).has('embed'))document.documentElement.classList.add('is-embedded');</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zonefully — interactive programme selector</title>
+<style>
+@font-face{font-family:Zonefully;src:url('fonts/zonefully-open-sans-regular.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:Zonefully;src:url('fonts/zonefully-open-sans-semibold.woff2') format('woff2');font-weight:600;font-display:swap}
+@font-face{font-family:Zonefully;src:url('fonts/zonefully-open-sans-bold.woff2') format('woff2');font-weight:700;font-display:swap}
+*{box-sizing:border-box}
+body{margin:0;background:#f7f7f7;color:#616161;font-family:Zonefully,'Open Sans',system-ui,sans-serif}
+button,input{font:inherit}
+button{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+button:focus-visible{outline:2px solid #777;outline-offset:3px}
+main{width:min(100%,667px);min-height:691px;margin:0 auto;padding:52px clamp(24px,10.5vw,70px) 54px}
+.label{display:flex;align-items:center;gap:6px;margin:0 0 12px;font-size:13px;font-weight:600;letter-spacing:.8px;color:#707070}
+.label svg{display:block;width:17px;height:17px;flex:none;overflow:visible}
+.selector{position:relative}
+.trigger-row{display:flex;align-items:stretch;gap:0;width:100%;padding:0;border:0;border-radius:8px;background:#fff;text-align:left;color:inherit;transition:background-color .18s}
+.trigger-row:hover{background:#f0f0f0}
+.current{flex:1;min-width:0;min-height:69px;border:0;border-radius:8px;background:transparent;padding:9px 15px;display:flex;gap:10px;align-items:flex-start}
+.dot{width:9px;height:9px;flex:none;margin-top:10px;border-radius:50%;background:#00c6e1}
+.current-copy{position:relative;display:block;flex:1;min-width:0}
+.current-text{display:block}
+.current-text-outgoing{position:absolute;inset:0;pointer-events:none}
+.current-title{display:block;font-size:20px;line-height:28px;overflow-wrap:anywhere;color:#4d4d4d}
+.current-count{display:block;font-size:16px;line-height:23px;color:#686868}
+.current.is-empty{align-items:center}
+.current.is-empty .current-title{color:#a0a0a0}
+.current.is-empty .dot,.current.is-empty .current-count{display:none}
+.chevron{display:grid;place-items:center;flex:none;width:44px;background:transparent;color:#4d4d4d}
+.chevron svg{width:16px;height:16px;vertical-align:middle;transition:transform .25s cubic-bezier(.22,.8,.25,1)}
+.trigger-row[aria-expanded=true] .chevron svg{transform:rotate(180deg)}
+.menu{position:absolute;top:calc(100% + 8px);left:0;width:100%;background:#fff;border-radius:13px;box-shadow:0 4px 9px #0000001a;overflow:hidden;opacity:0;visibility:hidden;transform:translateY(-9px);transform-origin:top;transition:opacity .2s ease,transform .28s cubic-bezier(.22,.8,.25,1),visibility 0s .28s;z-index:2}
+.menu.is-open{opacity:1;visibility:visible;transform:translateY(0);transition-delay:0s}
+.search-row{display:flex;align-items:center;gap:8px;margin:10px 24px 0 32px;border-bottom:1px solid #cecece;min-height:53px}
+.search-icon{width:19px;height:22px;flex:none;color:#bcbcbc}
+.search{width:100%;min-width:0;border:0;background:none;padding:12px 0;font-size:16px;color:#616161;outline:none;box-shadow:none}
+.search:focus,.search:focus-visible{outline:none;box-shadow:none}
+.search::placeholder{color:#a0a0a0;opacity:1}
+.search::-webkit-search-cancel-button,.search::-webkit-search-decoration{-webkit-appearance:none;appearance:none}
+.clear-search{display:grid;place-items:center;flex:none;width:44px;height:44px;padding:0;border:0;border-radius:6px;background:transparent;color:#777;transition:background-color .16s,color .16s,transform .12s}
+.clear-search:hover{background:#e5e5e5;color:#4d4d4d}
+.clear-search:active{background:#cecece;transform:scale(.95)}
+.clear-search svg{width:20px;height:20px}
+.items{position:relative;isolation:isolate;height:415px;overflow-y:auto;overflow-anchor:none;overscroll-behavior:contain;scrollbar-gutter:stable;scrollbar-color:#e5e5e5 transparent;scrollbar-width:thin;padding:7px 20px 7px 32px}
+.items::-webkit-scrollbar{width:12px}
+.items::-webkit-scrollbar-thumb{background:#e5e5e5;border:2px solid white;border-radius:10px}
+.selection-highlight{position:absolute;left:0;top:0;z-index:0;pointer-events:none;background:rgb(0 198 225 / .18);clip-path:polygon(0 0,calc(100% - 25px) 0,100% 50%,calc(100% - 25px) 100%,0 100%);border-radius:8px}
+.selection-dot{position:absolute;right:25px;top:calc(50% - 4px);width:7px;height:7px;border-radius:50%;background:#00c6e1}
+.option{position:relative;isolation:isolate;z-index:1;display:flex;align-items:center;gap:8px;min-height:68px;width:calc(100% + 8px);border:0;background:none;text-align:left;color:#616161;margin:0 0 4px -8px;padding:9px 60px 9px 24px;border-radius:8px;cursor:pointer}
+.option::before{content:'';position:absolute;inset:0;z-index:-1;background:rgb(0 198 225 / .08);clip-path:polygon(0 0,calc(100% - 25px) 0,100% 50%,calc(100% - 25px) 100%,0 100%);border-radius:8px;opacity:0;transition:opacity .16s ease,background-color .16s ease}
+.option:hover::before,.option:has(:focus-visible)::before{opacity:1}
+.option.is-selected::before{opacity:0}
+.option::after{content:'';position:absolute;left:8px;top:12px;bottom:12px;width:3px;border-radius:2px;background:#00c6e1}
+.option-copy{min-width:0;flex:1;border:0;background:none;color:inherit;font:inherit;text-align:left;padding:0;border-radius:3px}
+.option-title{display:block;font-size:20px;line-height:28px}
+.option-description{display:block;font-size:16px;line-height:23px;color:#616161}
+.activate{position:relative;flex:none;min-width:110px;text-align:center;background:transparent;border:1px solid #bfbfbf;color:#616161;font-size:12px;font-weight:700;letter-spacing:1px;line-height:24px;padding:0 12px;border-radius:13px;opacity:0;transition:opacity .16s,background-color .16s,border-color .16s,color .16s}
+.option:hover .activate,.option:has(:focus-visible) .activate,.option.is-active .activate,.option.is-selected .activate{opacity:1}
+.option:not(.is-active) .activate:hover,.option:not(.is-active) .activate:focus-visible{background:transparent;border-color:#777;color:#4d4d4d}
+.option.is-active .activate{background:#00fca1;border-color:#00fca1;color:#0d6f30}
+.action-label,.deactivate-label{transition:opacity .12s}
+.deactivate-label{position:absolute;inset:0;display:grid;place-items:center;opacity:0;pointer-events:none}
+.activation-check{position:absolute;left:9px;top:50%;width:12px;height:12px;transform:translateY(-50%);fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:0;pointer-events:none}
+.option.is-active .activate:not(.is-action-feedback):hover,.option.is-active .activate:not(.is-action-feedback):focus-visible{background:#d52a52;border-color:#d52a52;color:#fff}
+.option.is-active .activate:not(.is-action-feedback):hover .action-label,.option.is-active .activate:not(.is-action-feedback):focus-visible .action-label{opacity:0}
+.option.is-active .activate:not(.is-action-feedback):hover .deactivate-label,.option.is-active .activate:not(.is-action-feedback):focus-visible .deactivate-label{opacity:1}
+.option.is-active .activate:not(.is-action-feedback):hover .activation-check,.option.is-active .activate:not(.is-action-feedback):focus-visible .activation-check{visibility:hidden}
+.option:not(.is-active) .activate:active{transform:scale(.96)}
+mark{background:rgb(0 252 161 / .5);color:inherit;border-radius:2px}
+.empty{padding:24px 0 32px;margin:0;font-size:16px;color:#707070}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+[hidden]{display:none!important}
+@media(max-width:480px){
+ main{padding:32px 24px 54px}
+ .current-title,.option-title{font-size:17px;line-height:24px}
+ .current-count,.option-description{font-size:14px;line-height:21px}
+ .chevron{width:44px}
+ .search-row{margin-left:16px;margin-right:12px}
+ .items{padding-left:16px;padding-right:12px}
+ .option{padding-right:44px;display:block}
+ .option-copy{display:block}
+ .activate{display:table;margin-top:6px;font-size:10px;line-height:24px;min-width:94px;opacity:1;transform:none}
+ .menu{border-radius:10px}
+}
+@media(hover:none){.activate{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){*,*::before{transition:none!important}}
+.is-embedded main{width:min(100%,575px);min-height:0;margin:0 auto;padding:64px 24px 36px}
+@media(max-width:360px){.is-embedded main{padding-left:16px;padding-right:16px}}
+</style>
+</head>
+<body>
+<main aria-label="Programme selector demo">
+<h1 class="label"><svg viewBox="70 54 17 17" aria-hidden="true"><path d="M74 56H81C82.1046 56 83 56.8954 83 58V59H85V58C85 55.7909 83.2091 54 81 54H74C71.7909 54 70 55.7909 70 58V65C70 67.2091 71.7909 69 74 69H75V67H74C72.8954 67 72 66.1046 72 65V58C72 56.8954 72.8954 56 74 56Z" fill="#777777"/><path d="M78 61C77.4477 61 77 61.4477 77 62C77 62.5523 77.4477 63 78 63H86C86.5523 63 87 62.5523 87 62C87 61.4477 86.5523 61 86 61H78Z" fill="#777777"/><path d="M78 65C77.4477 65 77 65.4477 77 66C77 66.5523 77.4477 67 78 67H86C86.5523 67 87 66.5523 87 66C87 65.4477 86.5523 65 86 65H78Z" fill="#777777"/><path d="M77 70C77 69.4477 77.4477 69 78 69H86C86.5523 69 87 69.4477 87 70C87 70.5523 86.5523 71 86 71H78C77.4477 71 77 70.5523 77 70Z" fill="#777777"/></svg>PROGRAM</h1>
+<div class="selector">
+<button class="trigger-row" type="button" aria-label="Choose programme" aria-describedby="current-title" aria-expanded="true" aria-controls="programme-menu">
+<span class="current"><span class="dot" aria-hidden="true"></span><span class="current-copy"><span class="current-text"><span class="current-title" id="current-title">Phase I: aerobic foundation</span><span class="current-count">7 Routines</span></span></span></span>
+<span class="chevron" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 6 5 4 5-4"/></svg></span>
+</button>
+<section class="menu is-open" id="programme-menu" aria-label="Choose a programme">
+<div class="search-row"><svg class="search-icon" viewBox="0 0 22 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="9" cy="9" r="7"/><path d="m14 14 7 8"/></svg><input class="search" type="search" placeholder="Search programs" aria-label="Search programmes" aria-describedby="keyboard-help" autocomplete="off"><button class="clear-search" type="button" aria-label="Clear search" title="Clear search" hidden><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15"/></svg></button></div>
+<div class="items" aria-label="Programmes"></div>
+</section>
+</div>
+<p class="sr-only" id="keyboard-help">Use the up and down arrows to browse programmes and Home or End to jump. Enter or Space on a programme previews it. Tab or the right arrow moves to its Activate button; Enter or Space there activates it. Escape closes the menu.</p>
+<p class="sr-only" role="status" aria-live="polite" id="status"></p>
+</main>
+<script>
+(()=>{
+const programmes=[
+{id:'breakfast',title:'Carb loading breakfast',description:'Pre-race diet',routines:3},
+{id:'healthy',title:'Healthy Breakfast',description:'Regular diet',routines:5},
+{id:'week-1',title:'Training week 1',description:'Build base fitness',routines:7},
+{id:'week-2',title:'Training week 2',description:'Longer rides',routines:7},
+{id:'week-3',title:'Training week 3',description:'Ramping up intensity',routines:7},
+{id:'week-4',title:'Training week 4',description:'A muerte',routines:7},
+{id:'foundation',title:'Phase I: aerobic foundation',description:'Build endurance',routines:7}
+];
+const selector=document.querySelector('.selector'),trigger=document.querySelector('.trigger-row'),menu=document.querySelector('.menu'),search=document.querySelector('.search'),items=document.querySelector('.items'),clearSearch=document.querySelector('.clear-search'),status=document.querySelector('#status');
+const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)');
+let previewed='foundation',activeId='foundation',open=true;
+const rows=new Map(),rowAnimations=new Map(),confirmationAnimations=new Set();
+const current=document.querySelector('.current'),currentText=document.querySelector('.current-text');
+let displayedPreview,previewAnimation=null;
+const selectionHighlight=document.createElement('div');
+selectionHighlight.className='selection-highlight';selectionHighlight.setAttribute('aria-hidden','true');selectionHighlight.hidden=true;
+const selectionDot=document.createElement('span');selectionDot.className='selection-dot';selectionHighlight.append(selectionDot);
+let selectionAnimation=null,selectionPosition=null;
+function positionSelection(animate=false,origin=null){
+ const row=items.querySelector('.option.is-selected');
+ if(!row){
+  selectionAnimation?.cancel();selectionAnimation=null;selectionPosition=null;selectionHighlight.hidden=true;return;
+ }
+ // Layout coordinates stay reliable while rows themselves are animating after a search.
+ const next={transform:`translate(${row.offsetLeft}px,${row.offsetTop}px)`,width:`${row.offsetWidth}px`,height:`${row.offsetHeight}px`};
+ if(animate&&!origin&&selectionPosition&&Object.keys(next).every(key=>next[key]===selectionPosition[key]))return;
+ // Capture the live position so a second selection can redirect an unfinished move.
+ const visible=!selectionHighlight.hidden,style=getComputedStyle(selectionHighlight);
+ const from={transform:style.transform,width:style.width,height:style.height,opacity:style.opacity};
+ if(origin){
+  const container=items.getBoundingClientRect();
+  Object.assign(from,{transform:`translate(${origin.left-container.left+items.scrollLeft}px,${origin.top-container.top+items.scrollTop}px)`,width:`${origin.width}px`,height:`${origin.height}px`});
+ }
+ selectionAnimation?.cancel();selectionAnimation=null;
+ selectionHighlight.hidden=false;Object.assign(selectionHighlight.style,next);selectionPosition=next;
+ if(animate&&!reduceMotion.matches){
+  selectionAnimation=selectionHighlight.animate(visible?[from,{...next,opacity:1}]:[{opacity:0},{opacity:1}],{
+   duration:visible?300:140,easing:'cubic-bezier(.22,1,.36,1)'
+  });
+ }
+}
+function highlight(element,text,query){
+ element.replaceChildren();
+ if(!query){element.textContent=text;return;}
+ const lower=text.toLocaleLowerCase();let from=0,index;
+ while((index=lower.indexOf(query,from))!==-1){
+  element.append(document.createTextNode(text.slice(from,index)));
+  const match=document.createElement('mark');match.textContent=text.slice(index,index+query.length);element.append(match);from=index+query.length;
+ }
+ element.append(document.createTextNode(text.slice(from)));
+}
+function updatePreview(animate){
+ if(displayedPreview===previewed)return;
+ const programme=programmes.find(p=>p.id===previewed);
+ if(animate&&!reduceMotion.matches){
+  const outgoing=currentText.cloneNode(true),opacity=getComputedStyle(currentText).opacity;
+  outgoing.className='current-text-outgoing';outgoing.setAttribute('aria-hidden','true');
+  for(const part of outgoing.children){
+   const source=currentText.querySelector(`.${part.className}`),style=getComputedStyle(source);
+   part.removeAttribute('id');part.style.color=style.color;part.style.display=style.display;
+  }
+  currentText.parentElement.append(outgoing);
+  outgoing.animate([{opacity},{opacity:0}],{duration:160,easing:'ease-out'}).onfinish=()=>outgoing.remove();
+ }else current.querySelectorAll('.current-text-outgoing').forEach(el=>el.remove());
+ previewAnimation?.cancel();
+ current.classList.toggle('is-empty',!programme);
+ currentText.querySelector('.current-title').textContent=programme?programme.title:'Select a program';
+ currentText.querySelector('.current-count').textContent=programme?`${programme.routines} Routines`:'';
+ if(animate&&!reduceMotion.matches)previewAnimation=currentText.animate([{opacity:0},{opacity:1}],{duration:180,easing:'ease-out'});
+ displayedPreview=previewed;
+}
+function confirmActivation(action){
+ for(const animation of confirmationAnimations)animation.cancel();
+ confirmationAnimations.clear();
+ if(reduceMotion.matches||!action)return;
+ const icon=action.querySelector('.activation-check');
+ const confirmation=icon.animate([{opacity:0},{opacity:1,offset:.18},{opacity:1,offset:.72},{opacity:0}],{duration:800,easing:'ease-out'});
+ const draw=icon.querySelector('path').animate([{strokeDashoffset:1},{strokeDashoffset:0}],{duration:200,easing:'ease-out'});
+ for(const animation of [confirmation,draw]){confirmationAnimations.add(animation);animation.onfinish=()=>confirmationAnimations.delete(animation);}
+}
+function updateSelection(animate=false,moveHighlight=true){
+ updatePreview(animate);
+ for(const row of items.querySelectorAll('.option')){
+  const active=row.dataset.id===activeId;
+  const preview=row.dataset.id===previewed;
+  row.classList.toggle('is-selected',preview);
+  row.querySelector('.option-copy').setAttribute('aria-pressed',String(preview));
+  row.classList.toggle('is-active',active);
+  const action=row.querySelector('.activate');
+  action.setAttribute('aria-pressed',String(active));
+  const text=action.querySelector('.action-text'),next=active?'ACTIVE':'ACTIVATE';
+  if(text.textContent!==next){
+   text.textContent=next;
+   if(action.isConnected&&!reduceMotion.matches)text.animate([{opacity:0},{opacity:1}],{duration:180,easing:'ease-out'});
+  }
+  const programme=programmes.find(p=>p.id===row.dataset.id);
+  action.setAttribute('aria-label',`${active?'Deactivate':'Activate'} ${programme.title}`);
+ }
+ if(moveHighlight)positionSelection(animate);
+}
+function createRow(p){
+  const row=document.createElement('div');row.className='option';row.dataset.id=p.id;
+  const copy=document.createElement('button');copy.type='button';copy.className='option-copy';copy.setAttribute('aria-label',`Preview ${p.title}`);
+  for(const cls of ['option-title','option-description']){const span=document.createElement('span');span.className=cls;copy.append(span);}
+  const action=document.createElement('button');action.type='button';action.className='activate';
+  for(const [cls,text] of [['action-label','ACTIVATE'],['deactivate-label','DEACTIVATE']]){
+   const label=document.createElement('span');label.className=cls;label.setAttribute('aria-hidden','true');
+   if(cls==='action-label'){const content=document.createElement('span');content.className='action-text';content.textContent=text;label.append(content);}else label.textContent=text;
+   action.append(label);
+  }
+  const check=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  check.classList.add('activation-check');check.setAttribute('viewBox','0 0 12 12');check.setAttribute('aria-hidden','true');
+  const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+  path.setAttribute('d','m2 6 2.5 2.5L10 3');path.setAttribute('pathLength','1');path.setAttribute('stroke-dasharray','1');check.append(path);action.append(check);
+  // Let the click result settle until the pointer starts a fresh hover.
+  action.addEventListener('pointerleave',()=>action.classList.remove('is-action-feedback'));
+  action.addEventListener('blur',()=>{if(!action.matches(':hover'))action.classList.remove('is-action-feedback');});
+  row.append(copy,action);
+  row.addEventListener('click',()=>{
+   previewed=p.id;
+   updateSelection(true);status.textContent=`Previewing ${p.title}. ${p.routines} routines.`;
+  });
+  action.addEventListener('click',event=>{
+   event.stopPropagation();
+   action.classList.add('is-action-feedback');
+   const deactivate=activeId===p.id;
+   if(deactivate){activeId=null;previewed=null;}
+   else{activeId=p.id;if(!previewed)previewed=p.id;}
+   updateSelection(true);status.textContent=deactivate?`${p.title} deactivated. Select a program.`:`${p.title} activated. ${p.routines} routines.`;
+   confirmActivation(deactivate?null:action);
+  });
+  return row;
+}
+function settleRows(){
+ for(const animation of rowAnimations.values())animation.cancel();
+ rowAnimations.clear();
+}
+function render(animate=false){
+ clearSearch.hidden=!search.value;
+ const query=search.value.trim().toLocaleLowerCase();
+ const shown=programmes.filter(p=>`${p.title} ${p.description}`.toLocaleLowerCase().includes(query));
+ const previous=new Map([...items.querySelectorAll('.option')].map(row=>[row.dataset.id,{bounds:row.getBoundingClientRect(),opacity:getComputedStyle(row).opacity}]));
+ const highlightOrigin=selectionHighlight.hidden?null:selectionHighlight.getBoundingClientRect();
+ settleRows();
+ // Reuse rows so action feedback and button geometry survive each search update.
+ const nextRows=shown.map(p=>{
+  if(!rows.has(p.id))rows.set(p.id,createRow(p));
+  const row=rows.get(p.id);
+  highlight(row.querySelector('.option-title'),p.title,query);
+  highlight(row.querySelector('.option-description'),p.description,query);
+  return row;
+ });
+ items.replaceChildren(selectionHighlight,...nextRows);items.scrollTop=0;
+ updateSelection(false,false);
+ positionSelection(animate,highlightOrigin);
+ if(animate&&!reduceMotion.matches){
+  for(const row of nextRows){
+   const before=previous.get(row.dataset.id),after=row.getBoundingClientRect();
+   const from=before?{transform:`translateY(${before.bounds.top-after.top}px)`,opacity:before.opacity}:{transform:'translateY(4px)',opacity:0};
+   const animation=row.animate([from,{transform:'translateY(0)',opacity:1}],{duration:300,easing:'cubic-bezier(.22,1,.36,1)'});
+   rowAnimations.set(row,animation);animation.onfinish=()=>{if(rowAnimations.get(row)===animation)rowAnimations.delete(row);};
+  }
+ }
+ if(!shown.length){const empty=document.createElement('p');empty.className='empty';empty.textContent='No programmes found';items.append(empty);}
+ return shown.length;
+}
+function revealPreview(){
+ const row=items.querySelector('.option.is-selected');if(!row)return;
+ const top=row.offsetTop,bottom=top+row.offsetHeight,padding=7;
+ if(top<items.scrollTop+padding)items.scrollTop=Math.max(0,top-padding);
+ else if(bottom>items.scrollTop+items.clientHeight-padding)items.scrollTop=bottom-items.clientHeight+padding;
+}
+function setOpen(show,restoreFocus=false,focusSearch=false){
+ open=show;trigger.setAttribute('aria-expanded',String(show));menu.inert=!show;menu.classList.toggle('is-open',show);
+ if(show){revealPreview();if(focusSearch)search.focus({preventScroll:true});}
+ else if(restoreFocus)trigger.focus({preventScroll:true});
+}
+trigger.addEventListener('click',e=>setOpen(!open,false,e.detail===0));
+trigger.addEventListener('keydown',e=>{if(e.key==='ArrowDown'||e.key==='ArrowUp'){
+ e.preventDefault();if(!open)setOpen(true);
+ const buttons=items.querySelectorAll('.option-copy');
+ if(e.key==='ArrowUp'&&buttons.length)buttons[buttons.length-1].focus();else search.focus();
+}});
+clearSearch.addEventListener('click',()=>{search.value='';search.focus({preventScroll:true});const count=render(true);status.textContent=`Search cleared. ${count} programmes shown.`;});
+search.addEventListener('input',()=>{const count=render(true);status.textContent=`${count} programme${count===1?'':'s'} found.`;});
+menu.addEventListener('keydown',e=>{
+ const focused=document.activeElement;
+ const inAction=focused.classList.contains('activate');
+ const buttons=[...items.querySelectorAll(inAction?'.activate':'.option-copy')],index=buttons.indexOf(focused);
+ if(e.key==='ArrowDown'||e.key==='ArrowUp'){
+  e.preventDefault();if(buttons.length)buttons[index<0?(e.key==='ArrowDown'?0:buttons.length-1):(index+(e.key==='ArrowDown'?1:-1)+buttons.length)%buttons.length].focus();
+ }else if(index>=0&&(e.key==='Home'||e.key==='End')){
+  e.preventDefault();buttons[e.key==='Home'?0:buttons.length-1].focus();
+ }else if(index>=0&&(e.key==='ArrowRight'||e.key==='ArrowLeft')){
+  e.preventDefault();focused.closest('.option').querySelector(e.key==='ArrowRight'?'.activate':'.option-copy').focus();
+ }
+});
+selector.addEventListener('keydown',e=>{if(e.key==='Escape'&&open){e.preventDefault();e.stopPropagation();setOpen(false,true);}});
+document.addEventListener('pointerdown',e=>{if(open&&!selector.contains(e.target))setOpen(false);});
+document.addEventListener('focusin',e=>{if(open&&!selector.contains(e.target))setOpen(false);});
+render();
+revealPreview();
+new ResizeObserver(()=>{settleRows();positionSelection();if(open)revealPreview();}).observe(items);
+document.fonts.ready.then(()=>{settleRows();positionSelection();revealPreview();});
+reduceMotion.addEventListener('change',()=>{settleRows();positionSelection();previewAnimation?.cancel();current.querySelectorAll('.current-text-outgoing').forEach(el=>el.remove());confirmActivation(null);});
+})();
+</script>
+</body>
+</html>
