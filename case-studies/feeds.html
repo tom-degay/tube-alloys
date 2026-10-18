@@ -4,21 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Feeds</title>
-<meta name="description" content="How Tom de Gay designed Feeds, Quantemplate's workspace for securely exchanging data between organisations — reframing a simple upload portal into infrastructure for a connected data network.">
+<meta name="description" content="How Tom de Gay designed Feeds, Quantemplate's workspace for securely exchanging data between organisations: reframing a simple upload portal into infrastructure for a connected data network.">
 <meta name="theme-color" content="#131313">
 <link rel="canonical" href="https://tomdegay.com/case-studies/feeds">
 
 <meta property="og:type" content="article">
-<meta property="og:title" content="Connecting organisations through data — Tom de Gay">
+<meta property="og:title" content="Connecting organisations through data: Tom de Gay">
 <meta property="og:description" content="How Tom de Gay designed Feeds, Quantemplate's system for securely exchanging data between organisations.">
 <meta property="og:url" content="https://tomdegay.com/case-studies/feeds">
 <meta property="og:image" content="https://tomdegay.com/case-studies/media/feeds-og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Connecting organisations through data — a Quantemplate case study by Tom de Gay">
+<meta property="og:image:alt" content="Connecting organisations through data: a Quantemplate case study by Tom de Gay">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Connecting organisations through data — Tom de Gay">
+<meta name="twitter:title" content="Connecting organisations through data: Tom de Gay">
 <meta name="twitter:description" content="How Tom de Gay designed Feeds, Quantemplate's system for securely exchanging data between organisations.">
 <meta name="twitter:image" content="https://tomdegay.com/case-studies/media/feeds-og.png">
 
@@ -1066,8 +1066,8 @@
 
       <div class="problem-layout">
         <div class="problem-main">
-          <p>Insurance companies depend on regular submissions from brokers, managing general agents, third-party administrators and other partners. Our data transformation pipelines did a good job of <a href="/case-studies/column-mapping">mapping and harmonising</a> this data, but the parts outside Quantemplate were process bottlenecks.</p>
-          <p>Email was manual and difficult to audit, while FTP and API integrations were unwieldy. Moreover, keeping track of what was in or overdue every month was a significant timesink.</p>
+          <p>Quantemplate automated <a href="/case-studies/column-mapping">insurance data processing</a>, but requesting, chasing and moving files still relied on email or cumbersome integrations.</p>
+          <p>Across 150 trading partners submitting monthly, we identified 18,000 manual steps a year. Our aim was to automate everything after the supplier’s upload.</p>
         </div>
         <aside class="problem-side" aria-label="Supporting material">
           <button class="side-card" type="button" aria-haspopup="dialog" aria-controls="analysis-modal">
@@ -1087,7 +1087,7 @@
 
       <div class="problem-layout">
         <div class="problem-main">
-          <p>I mapped every touchpoint from the initial request through submission, processing, validation, correction and onward distribution. For each stage we considered the unhappy paths and dead ends: late or incomplete submissions, incorrect files, resubmissions and validation failures.</p>
+          <p>I mapped the journey from request to onward distribution, including late submissions, wrong files and validation failures. This showed what could be automated and where human judgement remained essential.</p>
         </div>
         <aside class="problem-side" aria-label="Supporting material">
           <button class="side-card" type="button" aria-haspopup="dialog" aria-controls="journey-modal">
@@ -1106,15 +1106,15 @@
 
       <div class="problem-layout">
         <div class="problem-main">
-          <p>My initial concept, Data Drop, was a lightweight portal with an unauthenticated, one-time upload link. It would have been a quick win, but mapping its workflow revealed that it would move the email problem further down the chain: links buried in inboxes, no persistent activity record and resubmissions still needing coordination.</p>
-          <blockquote>The Data Drop would have been a quick win but an incomplete solution. I proposed Feeds instead.</blockquote>
+          <p>My first concept, Data Drop, offered an unauthenticated, one-time upload link. Mapping the workflow exposed its limits: links would still get lost in inboxes, resubmissions needed coordination, and partners had no shared activity record.</p>
+
           <figure class="figure">
             <div class="figure-portrait-frame">
               <img src="media/data-drop-concept.png" width="1600" height="1000" alt="Mockup of the Data Drop secure data transfer concept: a card showing transfer from and to organisations, submission type, period, due date, a worksheet selector with checkboxes, and a submit button." loading="lazy">
             </div>
             <figcaption>The data drop concept we never shipped.</figcaption>
           </figure>
-          <p>Feeds would be a whole new area in the product with authenticated users, separate organisations and persistent relationships between partners. This was a larger product increment, but one that addressed the whole workflow, making persistent connections between organisations and opening a path to a broader network strategy.</p>
+          <p>I proposed Feeds: persistent connections between organisations, with authenticated users, schedules and submission history. It addressed the whole workflow and opened a path to a wider network.</p>
         </div>
         <aside class="problem-side" aria-label="Supporting material">
           <button class="side-card" type="button" aria-haspopup="dialog" aria-controls="architecture-modal">
@@ -1144,17 +1144,14 @@
             </figure>
             <div class="kd-text">
               <p class="kd-num" aria-hidden="true">01</p>
-              <h4 class="kd-title">Dropping the portal layer</h4>
+              <h4 class="kd-title" id="datamodel-heading">Dropping the portal layer</h4>
               <p class="kd-strap">Uploads as simple as a portal, with subsections for complex submissions</p>
               <details class="kd-more">
                 <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 14.5l9-9M10.5 5.5h4v4M5.5 10.5v4h4"/></svg></summary>
                 <div class="kd-more-body">
-                  <p>I initially favoured retaining a separate, stripped-back portal. My product partner challenged that assumption, and working through the journey together changed my view. If we could preserve the simplicity of the upload process within feeds, whilst introducing users to key Quantemplate behaviours, that would make for a more coherent user experience, and a more efficient and maintainable build.</p>
-                  <p>To drop the portal layer, I needed to make the upload design equally intuitive and simple, whilst introducing key behaviours. Here we see a user submitting batches of Premium and Claims data which need to be assigned to separate subsections.</p>
-                  <h3>Flexibility for complex submissions</h3>
-                  <p>When we spoke with users and looked at their existing Quantemplate workflows, we could see that a submission was rarely uniform: Premium and Claims might arrive as separate tabs, files, or from different organisations, each needing different pipeline logic.</p>
-                  <p>I introduced subsections to represent these distinct streams within one submission. Feed owners define subsections, and submitters assign uploads to the appropriate one. Using the <a href="/wayfinding#information-heading">wayfinding principle of progressive disclosure</a>, the interface walks them through the process, step-by-step.</p>
-                  <blockquote>Using wayfinding principles, I navigated users through the process of assigning their data to the right subsection.</blockquote>
+                  <p>My product partner challenged my assumption that suppliers needed a separate portal. Walking through the journey together changed my view: a simple upload flow inside Feeds could introduce suppliers to the product while avoiding a separate experience to build and maintain.</p>
+                  <p>Research showed that Premium and Claims data could arrive as separate tabs, files or submissions from different organisations, each needing its own pipeline logic.</p>
+                  <p>I introduced subsections for these streams. Feed owners define them; submitters assign their uploads to the right one. <a href="/wayfinding#information-heading">Progressive disclosure</a> guides users through each choice without presenting the whole configuration at once.</p>
                 </div>
               </details>
             </div>
@@ -1170,16 +1167,14 @@
               <details class="kd-more">
                 <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 14.5l9-9M10.5 5.5h4v4M5.5 10.5v4h4"/></svg></summary>
                 <div class="kd-more-body">
-                  <p>I modelled permission levels around the way our clients divided responsibility. Owners and managers needed to configure Feeds, connect with partners and oversee the process. Submitters only needed access when it was time to upload data, while read-only users needed visibility to use Feeds data in pipelines.</p>
-                  <p>Sharing a Feed. Owner, Manager, Submitter and view-only roles sit alongside the Robot User, enabling automations across the platform.</p>
-                  <blockquote>I introduced the concept of a &lsquo;Robot User&rsquo; to surface automation capabilities across the platform and make them auditable.</blockquote>
-                  <p>Looking at our permissions model, I realised that we needed a way to run automations without a user present, and have those runs tracked in the history. When the Robot User has access to a Feed, they can take the data from it, run a pipeline they have access to and output it to a dataset they&rsquo;ve been given write permission on.</p>
-                  <p>Enabling automation surfaces a clear ‘Share with Robot User’ button, with prompts to share any dependent documents too. If users lack sharing rights, they can ask the document owner to grant access. This makes the permissions model visible at the point it matters, reduces setup friction and anticipates the next action users need to take.</p>
+                  <p>Owners and managers configure Feeds; submitters upload data; viewers use it in pipelines. Automation needed its own identity so it could run without a person present and remain traceable.</p>
+                  <p>I introduced the Robot User. It needs access to the source Feed and pipeline, plus permission to write the output dataset. Its runs are recorded in the history.</p>
+                  <p>At setup, a “Share with Robot User” prompt identifies missing access, including dependent documents. Users without sharing rights can ask the document owner to grant it.</p>
                   <figure class="figure">
                     <div class="figure-portrait-frame">
                       <img src="media/robot-user-reminder.png" width="1228" height="564" alt="A 'Set up automation' reminder prompting the user to share the pipeline with the Robot User, listing Auto Run and Auto Export options alongside an Add button next to the Robot User row." loading="lazy">
                     </div>
-                    <figcaption>A reminder to share with the Robot User, surfaced right where automation features are set up.</figcaption>
+                    <figcaption>Missing automation permissions are surfaced at setup.</figcaption>
                   </figure>
                 </div>
               </details>
@@ -1213,22 +1208,24 @@
               <details class="kd-more">
                 <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 14.5l9-9M10.5 5.5h4v4M5.5 10.5v4h4"/></svg></summary>
                 <div class="kd-more-body">
-                  <p>Initiating a partner connection required just their contact&rsquo;s email. We used the domain to find their organisation or begin creating it. I researched and proposed a <a href="https://www.logo.dev" target="_blank" rel="noopener noreferrer">logo.dev</a> integration to populate organisation names and logos automatically, reducing setup effort and making requests more recognisable. Admins on each side approve the connection, with all events tracked in a new admin panel.</p>
-                  <blockquote>What if the organisation was already on Quantemplate? What if they were already a partner? Working through every scenario meant some complexity behind the scenes, but ensured simplicity in the user experience.</blockquote>
+                  <p>A contact’s email was enough to find their organisation or begin creating it. I proposed a <a href="https://www.logo.dev" target="_blank" rel="noopener noreferrer">logo.dev</a> integration to fill in names and logos, reducing setup work and making requests recognisable.</p>
+                  <p>Admins on both sides approve the connection, with events recorded in an admin panel. I worked through existing organisations, existing partners and different admin rights so each path stayed simple.</p>
                   <figure class="figure">
                     <div class="figure-portrait-frame">
                       <img src="media/feeds-add-partners-spec.jpg" width="2000" height="1102" alt="Design specification board mapping every path through the add-partners workflow: adding internal submitters, connecting to an existing partner, adding a new partner, setup via a Feed In or Feed Out, setup statuses and review settings." loading="lazy">
                     </div>
-                    <figcaption>Design specification for the &lsquo;Add partners&rsquo; workflow. Did the partner already exist on the system? Were they already connected? Was the user an admin?</figcaption>
+                    <figcaption>The setup specification covers existing partners, new organisations and admin approval.</figcaption>
                   </figure>
-                  <p>Admins can also create reusable schedules to centrally manage request frequency. Research revealed that feeds often shared a cadence but followed different contract dates. I made start and end dates properties of a Feed, rather than a schedule, allowing requests to stop at contract end without affecting other feeds using the same schedule.</p>
+                  <h3>Reuse the schedule</h3>
+                  <p>Admins manage reusable schedules across Feeds. Research showed that partners often shared a reporting cadence but had different contract dates.</p>
+                  <p>I made start and end dates properties of each Feed, so one contract could end without changing the schedule for others.</p>
                   <figure class="figure">
                     <div class="figure-portrait-frame">
                       <img src="media/schedules.png" width="1002" height="1060" alt="A Scheduling modal for a Feed: schedule name 'Monthly BDX', start and end date fields (end date optional), and frequency, request, deadline and reminder settings." loading="lazy">
                     </div>
-                    <figcaption>We needed a scheduling feature to automate submission request creation. Keeping schedules across hundreds of feeds in sync would be a challenge, so I proposed they were centrally managed by Org Admins. An insight from the user research phase was that schedules would need an end date, as contracts might only run for a set number of years.</figcaption>
+                    <figcaption>Shared schedules, with contract dates set independently for each Feed.</figcaption>
                   </figure>
-                  <p>All that&rsquo;s required to set up a new Feed is to add subsections, search for a partner and connect an existing schedule. In under one minute you can be requesting data from your trading partners.</p>
+                  <p>With a partner and schedule in place, users add subsections and start requesting data in under a minute.</p>
                 </div>
               </details>
             </div>
@@ -1244,15 +1241,14 @@
               <details class="kd-more">
                 <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 14.5l9-9M10.5 5.5h4v4M5.5 10.5v4h4"/></svg></summary>
                 <div class="kd-more-body">
-                  <p>Both parties retain an immutable, versioned record of submitted data. User avatars and organisation domains identify the people and companies behind submissions, building trust.</p>
+                  <p>I redesigned the Feed repository as a management dashboard. Managers can see what is complete, waiting for data or overdue, while configurable reminders chase outstanding submissions.</p>
+                  <p>Visible pipeline connections show what each submission will trigger and what the automation is waiting for. Both partners retain an immutable, versioned record, with avatars and organisation domains identifying who submitted each file.</p>
                   <figure class="figure">
                     <div class="figure-portrait-frame">
                       <img src="media/submission-record.png" width="2278" height="616" alt="A submission record showing Premium and versioned Claims files with row counts, submitter avatars and dates, and a 'Submitted by / Submitted date' tooltip for one file." loading="lazy">
                     </div>
+                    <figcaption>A shared submission record preserves file versions, submitters and dates.</figcaption>
                   </figure>
-                  <p>I redesigned the Feed repository as a management dashboard, showing which Feeds are complete, waiting for data or overdue; this real-time view of inventory replaces manual tracking in spreadsheets. Configurable reminders chase outstanding submissions automatically.</p>
-                  <p>Visible connections between Feeds and pipelines help managers understand what each submission will trigger and what the automation is still waiting for.</p>
-                  <p>Feeds repo: I reimagined the document storage as a management dashboard.</p>
                 </div>
               </details>
             </div>
@@ -1273,9 +1269,15 @@
               <details class="kd-more">
                 <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 14.5l9-9M10.5 5.5h4v4M5.5 10.5v4h4"/></svg></summary>
                 <div class="kd-more-body">
-                  <p>Feeds support incoming data, outgoing distribution and onward sharing. An insurer can distribute data to reinsurers, while a broker can receive and pass on the original submission. Each organisation can connect its own processing pipelines while retaining a shared, auditable source record. This uniquely allows us to surface the full data Chain of Custody.</p>
-                  <blockquote>The Feeds lay the architectural groundwork for the big vision: automated data flows across the industry.</blockquote>
-                  <p>We mapped out further <a href="https://help.quantemplate.com/feed-use-cases" target="_blank" rel="noopener noreferrer">Use Cases</a> on this support page.</p>
+                  <p>Feeds support incoming data, outgoing distribution and onward sharing. An insurer can distribute to reinsurers; a broker can receive and pass on the original submission.</p>
+                  <p>Each organisation connects its own pipelines while retaining a shared, auditable source record. This provides a foundation for automated data flows across the industry.</p>
+                  <figure class="figure">
+                    <div class="figure-portrait-frame">
+                      <img src="media/feeds-network-potential-diagram.png" width="1414" height="756" alt="Diagram showing data flowing from MGAs and Carriers who are Quantemplate clients, through to free-user Carriers and Reinsurers, illustrating how submissions and pushes propagate across the network regardless of client status." loading="lazy">
+                    </div>
+                    <figcaption>The wider opportunity: connected data flows across insurers, brokers and reinsurers.</figcaption>
+                  </figure>
+                  <p>Explore the <a href="https://help.quantemplate.com/feed-use-cases" target="_blank" rel="noopener noreferrer">Feed use cases</a>.</p>
                 </div>
               </details>
             </div>
@@ -1302,7 +1304,7 @@
       <h2 class="eyebrow" id="outcome-heading">Outcome</h2>
       <p class="display problem-statement">A foundation for networked&nbsp;data</p>
 
-      <p>Feeds have been running production data for approximately 18 months, processing recurring monthly submissions and 3.4 million rows to date. This removes nearly all of the manual steps identified in the original workflow mapping, for true &lsquo;straight-through processing&rsquo;. The one step that remains, the initial upload, is performed directly by the data supplier.</p>
+      <p>Feeds has handled recurring production submissions for around 18 months, processing 3.4 million rows. Suppliers upload once; the remaining workflow runs automatically.</p>
       <figure class="feeds-chart" aria-labelledby="feeds-chart-title" aria-describedby="feeds-chart-caption">
         <h3 class="feeds-chart-title" id="feeds-chart-title">90% fewer manual steps</h3>
         <p class="feeds-chart-subtitle">Annual manual steps per organisation</p>
@@ -1325,10 +1327,10 @@
           <span>Based on the typical workflow: 9 steps removed × 150 trading partners × 12 monthly submissions.</span>
         </figcaption>
       </figure>
-      <p>Bringing further partners onto Feeds is an ongoing project: in-app guidance and comprehensive tutorials have driven initial uptake, and upcoming features to <a href="/case-studies/validation#impl-sharing">share validation reports and suggest corrections</a> should make the value of switching more visible.</p>
-      <blockquote>Feeds expanded Quantemplate from a product for automating processes within an organisation, towards infrastructure connecting them.</blockquote>
+      <p>Adoption continues through in-app guidance and tutorials. <a href="/case-studies/validation-sharing">Sharing validation results with suppliers</a> extends the workflow into correction, giving partners another reason to switch.</p>
 
-      <p>This opens the door to <a href="https://help.quantemplate.com/artificial-intelligence" target="_blank" rel="noopener noreferrer">Network Intelligence</a>, where data mappings, transformations and corrections are crowdsourced.</p>
+
+
     </section>
 
     <hr class="rule">
@@ -1370,8 +1372,8 @@
         <button class="card-modal-close" type="button" aria-label="Close"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M5.5 5.5l9 9M14.5 5.5l-9 9"/></svg></button>
       </div>
       <div class="card-modal-body evidence-body case-body">
-        <p>Even on the happy path, we identified five manual steps to request data and another five to bring it into and out of Quantemplate.</p>
-        <blockquote>Across an average of 150 trading partners, repeated monthly, that amounted to 18,000 manual steps a year. We aimed to eliminate all steps after the original file upload.</blockquote>
+        <p>The typical workflow had ten manual steps per partner: five to request data and five to move it into and out of Quantemplate. Across 150 partners submitting monthly, that totals 18,000 steps a year.</p>
+        <p>Keeping only the supplier’s upload removes nine of those ten steps, an estimated 16,200 steps annually.</p>
         <figure class="figure figure-strip">
           <div class="figure-portrait-frame">
             <div class="figure-strip-imgs">
@@ -1379,7 +1381,7 @@
               <img src="media/feeds-problem-postits.png" width="1800" height="1206" alt="Annotated version of the Data Repo and pipeline diagram, with yellow sticky notes flagging open questions and trade-offs at each stage: partner data visibility and permissions, input selector categorisation, additive versus replacing submissions, and notification requirements." loading="lazy">
             </div>
           </div>
-          <figcaption>2022 analysis of the typical Quantemplate workflow, identifying the manual bottlenecks &mdash; then an annotated version flagging the trade-offs and open questions on the way to straight-through processing.</figcaption>
+          <figcaption>2022 workflow analysis, followed by annotations on permissions, submissions and notifications.</figcaption>
         </figure>
       </div>
     </div>
@@ -1393,8 +1395,8 @@
         <button class="card-modal-close" type="button" aria-label="Close"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M5.5 5.5l9 9M14.5 5.5l-9 9"/></svg></button>
       </div>
       <div class="card-modal-body evidence-body case-body">
-        <blockquote>The map identified every manual step that could be automated, every notification that needed to be sent and every point where human judgement was still required.</blockquote>
-        <p>It became the basis for the submission lifecycle, schedules, statuses, reminders, version history and pipeline triggers.</p>
+        <p>The map identified what could be automated, where notifications were needed and where people still needed to make decisions.</p>
+        <p>It shaped schedules, statuses, reminders, version history and pipeline triggers.</p>
         <figure class="figure">
           <div class="figure-portrait-frame">
             <img src="media/feeds-research-lifecycle.png" width="1800" height="567" alt="Swimlane diagram of the submission lifecycle spanning Carrier and MGA roles, from period open through upload, parsing, validation and carrier pipeline review, to period close, with pink notification steps, grey decision points and yellow manual touchpoints." loading="lazy">
@@ -1413,18 +1415,19 @@
         <button class="card-modal-close" type="button" aria-label="Close"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M5.5 5.5l9 9M14.5 5.5l-9 9"/></svg></button>
       </div>
       <div class="card-modal-body evidence-body case-body">
-        <p>I used the journey maps to make the case for the broader scope, showing how onboarding, scheduling and administration were necessary parts of a complete submission workflow. Connecting each capability to a concrete user need helped explain why improving the upload experience alone wouldn’t solve the whole problem.</p>
+        <p>I used journey maps to make the case for the broader scope, linking onboarding, scheduling and administration to concrete user needs. Improving the upload alone would leave the rest of the coordination unresolved.</p>
+<p>Each Feed In mirrors a Feed Out in the partner organisation. One organisation leads the configuration; the other responds, reflecting existing market relationships.</p>
         <figure class="figure">
           <div class="figure-portrait-frame">
             <img src="media/feeds-org-relationship-diagram.jpg" width="2000" height="1093" alt="Diagram showing a Data originator org with a Feed Out mirroring data to a Data consumer org's Feed In, fed by API, pipeline and manual upload sources on each side, with an upload portal shown as a separate concept still under consideration." loading="lazy">
           </div>
-          <figcaption>Architecting the relationship between organisation feeds. Every Feed In corresponds to a Feed Out in the partner org. At this point I was still considering the &lsquo;upload portal&rsquo; as a layer in the workflow. It was descoped when the walkthrough revealed it to be superfluous.</figcaption>
+          <figcaption>An early relationship model, before we removed the separate portal.</figcaption>
         </figure>
         <figure class="figure">
           <div class="figure-portrait-frame">
             <img src="media/in-out-diagram.png" width="1346" height="852" alt="Diagram of the four Feed roles: Feed Out Leader (pushing out) and Feed In Follower (receiving pushes) connected by one arrow, Feed Out Follower (responding to requests) and Feed In Leader (pulling/requesting) connected by another." loading="lazy">
           </div>
-          <figcaption>A conceptual model that users could understand: each Feed In is mirrored by a Feed Out in the partner organisation. Leaders control all Feed configuration, whilst followers simply respond. This reflected real-world market relationships.</figcaption>
+          <figcaption>The lead organisation configures the Feed; its partner responds.</figcaption>
         </figure>
       </div>
     </div>
