@@ -905,6 +905,13 @@
 <link rel="stylesheet" href="/case-studies/case-study-v2.css?v=20261018a">
 <style>
   /* Feeds' own additions to the shared treatment */
+  /* Analysis and Journey mapping: wide pop-ups, pictures at full width */
+  #analysis-modal .card-modal-panel,
+  #journey-modal .card-modal-panel,
+  #architecture-modal .card-modal-panel { width: min(72rem, 100%); }
+  #analysis-modal .figure-strip-imgs { grid-template-columns: 1fr; gap: 16px; }
+  #analysis-modal .figure-strip .figure-strip-imgs img { aspect-ratio: auto; height: auto; object-fit: contain; }
+  #analysis-modal .figure, #journey-modal .figure, #architecture-modal .figure { max-width: none; }
   .case-body > h3.kd-heading + .problem-layout { margin-top: clamp(24px, 3vw, 40px); }
   @media (min-width: 1024px) { .content .case-body > h3.kd-heading { max-width: none; } }
   /* Phones: no frames round the pictures */
@@ -1061,8 +1068,6 @@
         <div class="problem-main">
           <p>Insurance companies depend on regular submissions from brokers, managing general agents, third-party administrators and other partners. Our data transformation pipelines did a good job of <a href="/case-studies/column-mapping">mapping and harmonising</a> this data, but the parts outside Quantemplate were process bottlenecks.</p>
           <p>Email was manual and difficult to audit, while FTP and API integrations were unwieldy. Moreover, keeping track of what was in or overdue every month was a significant timesink.</p>
-          <p>Even on the happy path, we identified five manual steps to request data and another five to bring it into and out of Quantemplate.</p>
-          <blockquote>Across an average of 150 trading partners, repeated monthly, that amounted to 18,000 manual steps a year. We aimed to eliminate all steps after the original file upload.</blockquote>
         </div>
         <aside class="problem-side" aria-label="Supporting material">
           <button class="side-card" type="button" aria-haspopup="dialog" aria-controls="analysis-modal">
@@ -1083,8 +1088,6 @@
       <div class="problem-layout">
         <div class="problem-main">
           <p>I mapped every touchpoint from the initial request through submission, processing, validation, correction and onward distribution. For each stage we considered the unhappy paths and dead ends: late or incomplete submissions, incorrect files, resubmissions and validation failures.</p>
-          <blockquote>The map identified every manual step that could be automated, every notification that needed to be sent and every point where human judgement was still required.</blockquote>
-          <p>It became the basis for the submission lifecycle, schedules, statuses, reminders, version history and pipeline triggers.</p>
         </div>
         <aside class="problem-side" aria-label="Supporting material">
           <button class="side-card" type="button" aria-haspopup="dialog" aria-controls="journey-modal">
@@ -1112,7 +1115,6 @@
             <figcaption>The data drop concept we never shipped.</figcaption>
           </figure>
           <p>Feeds would be a whole new area in the product with authenticated users, separate organisations and persistent relationships between partners. This was a larger product increment, but one that addressed the whole workflow, making persistent connections between organisations and opening a path to a broader network strategy.</p>
-          <p>I used the journey maps to make the case for the broader scope, showing how onboarding, scheduling and administration were necessary parts of a complete submission workflow. Connecting each capability to a concrete user need helped explain why improving the upload experience alone wouldn’t solve the whole problem.</p>
         </div>
         <aside class="problem-side" aria-label="Supporting material">
           <button class="side-card" type="button" aria-haspopup="dialog" aria-controls="architecture-modal">
@@ -1368,6 +1370,8 @@
         <button class="card-modal-close" type="button" aria-label="Close"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M5.5 5.5l9 9M14.5 5.5l-9 9"/></svg></button>
       </div>
       <div class="card-modal-body evidence-body case-body">
+        <p>Even on the happy path, we identified five manual steps to request data and another five to bring it into and out of Quantemplate.</p>
+        <blockquote>Across an average of 150 trading partners, repeated monthly, that amounted to 18,000 manual steps a year. We aimed to eliminate all steps after the original file upload.</blockquote>
         <figure class="figure figure-strip">
           <div class="figure-portrait-frame">
             <div class="figure-strip-imgs">
@@ -1389,6 +1393,8 @@
         <button class="card-modal-close" type="button" aria-label="Close"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M5.5 5.5l9 9M14.5 5.5l-9 9"/></svg></button>
       </div>
       <div class="card-modal-body evidence-body case-body">
+        <blockquote>The map identified every manual step that could be automated, every notification that needed to be sent and every point where human judgement was still required.</blockquote>
+        <p>It became the basis for the submission lifecycle, schedules, statuses, reminders, version history and pipeline triggers.</p>
         <figure class="figure">
           <div class="figure-portrait-frame">
             <img src="media/feeds-research-lifecycle.png" width="1800" height="567" alt="Swimlane diagram of the submission lifecycle spanning Carrier and MGA roles, from period open through upload, parsing, validation and carrier pipeline review, to period close, with pink notification steps, grey decision points and yellow manual touchpoints." loading="lazy">
@@ -1407,6 +1413,7 @@
         <button class="card-modal-close" type="button" aria-label="Close"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M5.5 5.5l9 9M14.5 5.5l-9 9"/></svg></button>
       </div>
       <div class="card-modal-body evidence-body case-body">
+        <p>I used the journey maps to make the case for the broader scope, showing how onboarding, scheduling and administration were necessary parts of a complete submission workflow. Connecting each capability to a concrete user need helped explain why improving the upload experience alone wouldn’t solve the whole problem.</p>
         <figure class="figure">
           <div class="figure-portrait-frame">
             <img src="media/feeds-org-relationship-diagram.jpg" width="2000" height="1093" alt="Diagram showing a Data originator org with a Feed Out mirroring data to a Data consumer org's Feed In, fed by API, pipeline and manual upload sources on each side, with an upload portal shown as a separate concept still under consideration." loading="lazy">
