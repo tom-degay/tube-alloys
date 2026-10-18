@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Design craft — Tom de Gay</title>
-<meta name="description" content="Typography, colour and materials across Tom de Gay's work — the Quantemplate interface and brand, plus identity and exhibition design for the White Rainbow gallery and the Isokon Gallery.">
+<meta name="description" content="Interaction craft and physical media across Tom de Gay's work — interactive details for Quantemplate, Image Insight and Zonefully, plus identity, print and exhibition design.">
 <meta name="theme-color" content="#131313">
 <link rel="canonical" href="https://tomdegay.com/design-craft">
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="Design craft — Tom de Gay">
-<meta property="og:description" content="Typography, colour and materials across Tom de Gay's work — the Quantemplate interface and brand, plus identity and exhibition design for the White Rainbow gallery and the Isokon Gallery.">
+<meta property="og:description" content="Interaction craft and physical media across Tom de Gay's work — interactive details for Quantemplate, Image Insight and Zonefully, plus identity, print and exhibition design.">
 <meta property="og:url" content="https://tomdegay.com/design-craft">
 <meta property="og:image" content="https://tomdegay.com/media/og-design-craft.png">
 <meta property="og:image:width" content="1200">
@@ -19,7 +19,7 @@
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Design craft — Tom de Gay">
-<meta name="twitter:description" content="Typography, colour and materials across Tom de Gay's work — the Quantemplate interface and brand, plus identity and exhibition design for the White Rainbow gallery and the Isokon Gallery.">
+<meta name="twitter:description" content="Interaction craft and physical media across Tom de Gay's work — interactive details for Quantemplate, Image Insight and Zonefully, plus identity, print and exhibition design.">
 <meta name="twitter:image" content="https://tomdegay.com/media/og-design-craft.png">
 
 <link rel="icon" href="/tdg-favicon.svg" type="image/svg+xml">
@@ -134,45 +134,8 @@
   }
 
   /* -- pictures -- */
-  /* The standard framed-picture treatment of the case studies: a grey
-     gradient card with the image floating inside it, shadowed. */
-  .p-logo .p-logo-lit { display: none; }
+  /* The Isokon mark stays fully visible as the page scrolls. */
   .p-logo img { display: block; width: min(60%, 260px); height: auto; margin: 0 auto; }
-
-  /* Single column: the same scroll shimmer. Both copies of the logo share one
-     grid cell so the light-up copy lies exactly over the dim one. */
-  @media (max-width: 1023.98px) and (prefers-reduced-motion: no-preference) {
-    .p-logo { display: grid; justify-items: center; }
-    .p-logo img { grid-area: 1 / 1; }
-    .p-logo > img:not(.p-logo-lit) { opacity: 0.62; }
-    .p-logo .p-logo-lit {
-      display: block;
-      pointer-events: none;
-      -webkit-mask-image: linear-gradient(to bottom, transparent calc(var(--shim, 150) * 1% - 28%), rgba(0, 0, 0, 0.55) calc(var(--shim, 150) * 1% - 10%), #000 calc(var(--shim, 150) * 1%), rgba(0, 0, 0, 0.55) calc(var(--shim, 150) * 1% + 10%), transparent calc(var(--shim, 150) * 1% + 28%));
-      mask-image: linear-gradient(to bottom, transparent calc(var(--shim, 150) * 1% - 28%), rgba(0, 0, 0, 0.55) calc(var(--shim, 150) * 1% - 10%), #000 calc(var(--shim, 150) * 1%), rgba(0, 0, 0, 0.55) calc(var(--shim, 150) * 1% + 10%), transparent calc(var(--shim, 150) * 1% + 28%));
-    }
-  }
-
-  .figure-portrait-frame {
-    display: flex;
-    justify-content: center;
-    padding: 5%;
-    background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
-    border-radius: 10px;
-  }
-  .figure-portrait-frame img,
-  .figure-portrait-frame .dashboard-animation {
-    display: block;
-    width: 100%;
-    height: auto;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-  }
-
-  .figure-portrait-frame .dashboard-animation {
-    min-width: 0;
-    aspect-ratio: 2000 / 915;
-    border-radius: 6px;
-  }
 
   /* ---- The combined tab/progress bar, exactly as on the column mapping
      case study (copied from there, unchanged) ---- */
@@ -190,40 +153,7 @@
   .mapping-tabs-detail .stage-heading { align-self: stretch; margin-bottom: 24px; }
   .mapping-tabs-detail .diagram-title { margin: 0; font-size: 20px; line-height: 1.3; }
   .mapping-tabs-detail { container-type: inline-size; }
-  .mapping-tabs-detail .mapping-demo-canvas { position: relative; width: 442px; max-width: 100%; margin-top: 46px; }
-  .mapping-tabs-detail .try-hint {
-    position: absolute;
-    z-index: 1;
-    top: calc(-24px - 1.91571%);
-    right: -75px;
-    width: max-content;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    background: none;
-    color: #00d8aa;
-    font-family: "FaktPro-SemiBold", system-ui, sans-serif;
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 24px;
-    letter-spacing: 0;
-    cursor: pointer;
-  }
-  .mapping-tabs-detail .try-hint:hover, .mapping-tabs-detail .try-hint:focus-visible { color: #63ffd8; }
-  .mapping-tabs-detail .try-hint:focus-visible { outline: 2px solid #00d8aa; outline-offset: 4px; border-radius: 2px; }
-  .mapping-tabs-detail .try-leader { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
-  .mapping-tabs-detail .try-leader-compact { display: none; }
-  .mapping-tabs-detail .try-hint, .mapping-tabs-detail .try-leader { opacity: 1; transition: opacity 0.3s ease, visibility 0s linear; }
-  .mapping-tabs-detail .mapping-demo-canvas.is-interacted .try-hint,
-  .mapping-tabs-detail .mapping-demo-canvas.is-interacted .try-leader { opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.3s ease, visibility 0s linear 0.3s; }
-  @media (prefers-reduced-motion: reduce) {
-    .mapping-tabs-detail .try-hint, .mapping-tabs-detail .try-leader { transition: none !important; }
-  }
-  @container (max-width: 660px) {
-    .mapping-tabs-detail .try-hint { right: -4px; }
-    .mapping-tabs-detail .try-leader-wide { display: none; }
-    .mapping-tabs-detail .try-leader-compact { display: block; }
-  }
+  .mapping-tabs-detail .mapping-demo-canvas { position: relative; width: 442px; max-width: 100%; margin-top: 0; }
   .mapping-tabs-detail object {
     display: block;
     width: 442px;
@@ -262,20 +192,6 @@
 
   @media (max-width: 560px) {
     .mapping-tabs-detail { padding: 16px; }
-  }
-
-  /* The left-hand stack: that component with the profile page directly
-     beneath it, so the pair moves together whatever their heights. */
-  /* The cluster under the dashboard: the visual-language card with the profile
-     page beneath it (right), the tab/progress bar alongside (left). One block,
-     so single-column order stays card, tab bar, profile page. */
-  .p-cluster > * { margin: 0 0 clamp(24px, 7.5vw, 40px); }
-  .p-cluster > :last-child { margin-bottom: 0; }
-  .p-cluster > figure { max-width: none; }
-  @media (min-width: 1024px) {
-    .p-cluster { display: grid; grid-template-columns: subgrid; align-items: start; row-gap: clamp(40px, 4vw, 56px); }
-    .p-cluster > * { grid-column: var(--cc); grid-row: var(--rr); margin: 0; }
-    .p-cluster > .p-lift { margin-top: calc(-1 * var(--lift, 0px)); }
   }
 
   .p-fig > video { display: block; width: 100%; height: auto; border-radius: 6px; }
@@ -405,11 +321,7 @@
        vertically, and pictures that share a start or end row line up with
        each other. The picture fills its cell, trimmed a few percent at most
        to the cell's proportions; the caption hangs in the gap beneath. */
-    /* How far the dashboard (and the card under it) is drawn up from its
-       row, to sit close under the Move fast card, whose height changes with
-       the window. Estimated low so it never reaches the card. */
     .poster {
-      --tuck: clamp(13px, (100vw - 1030px) * 0.25 + 13px, 135px);
       display: grid;
       grid-template-columns: repeat(12, minmax(0, 1fr));
       grid-template-rows: repeat(var(--rows), var(--mod));
@@ -425,7 +337,7 @@
     }
 
     /* room for the last caption, which hangs below the final row */
-    .poster-2, .poster-3, .poster-4 { margin-top: calc(-1 * var(--pull, 0px)); }
+    .poster-3, .poster-4 { margin-top: calc(-1 * var(--pull, 0px)); }
     .poster-5 { padding-bottom: clamp(64px, 7vw, 112px); }
     /* University teaching: content-sized rows (the video keeps its natural
        height), one blank row below White Rainbow */
@@ -440,15 +352,6 @@
       margin: 0;
       object-fit: contain;
     }
-
-    /* sits close under the dashboard caption instead of a full row below */
-    .poster > .p-item.p-tuck { margin-top: calc(32px - var(--gv) - var(--tuck) + var(--caption-clearance, 0px)); }
-
-    /* The visual-language card (inside the cluster) rises as far as the
-       dashboard above allows -- the script sets --lift: to 24px under the
-       picture's frame, beside the dashboard's short caption where the
-       caption's text ends before the card's left edge, below it where it
-       does not. */
 
     .poster > .p-hero { align-self: start; }
     /* the block hugs the right-hand edge; the links read left to right inside
@@ -501,18 +404,6 @@
       align-content: center;
     }
 
-    /* Wide windows: a shallow panel, three rows, its padding easing with the
-       window so the content always fits. Medium windows have less room, so
-       there the panel takes a fourth row and keeps its full padding. */
-    @media (min-width: 1440px) {
-      .p-fig > .agent-demo {
-        padding: clamp(3px, calc((100vw - 1030px) * 0.04 + 3px), 36px) 0 clamp(3px, calc((100vw - 1030px) * 0.03 + 3px), 20px);
-      }
-    }
-    @media (max-width: 1439px) {
-      .poster > .p-fig:has(> .agent-demo) { --r: 2 / span 4 !important; }
-    }
-
     .p-fig > figcaption {
       position: absolute;
       top: 100%;
@@ -522,29 +413,6 @@
       padding-top: 10px;
     }
 
-    /* A framed picture is never cropped: it takes its natural height, so its
-       bottom edge may fall between row lines. Caption follows in flow. */
-    .poster > .p-fig.p-fig-free { position: static; align-self: start; margin-top: calc(-1 * var(--tuck)); }
-    .p-fig-free > figcaption { position: static; padding-top: 10px; }
-
-    /* Scroll shimmer: the logo rests dim and a soft band of light climbs it
-       from bottom to top as it scrolls up through the window (the script
-       sets --shim, the band's centre as a percentage of the logo's height). */
-    @media (prefers-reduced-motion: no-preference) {
-      .poster > .p-logo > img:not(.p-logo-lit) { opacity: 0.62; }
-      .poster > .p-logo > .p-logo-lit {
-        display: block;
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        pointer-events: none;
-        -webkit-mask-image: linear-gradient(to bottom, transparent calc(var(--shim, 150) * 1% - 28%), rgba(0, 0, 0, 0.55) calc(var(--shim, 150) * 1% - 10%), #000 calc(var(--shim, 150) * 1%), rgba(0, 0, 0, 0.55) calc(var(--shim, 150) * 1% + 10%), transparent calc(var(--shim, 150) * 1% + 28%));
-        mask-image: linear-gradient(to bottom, transparent calc(var(--shim, 150) * 1% - 28%), rgba(0, 0, 0, 0.55) calc(var(--shim, 150) * 1% - 10%), #000 calc(var(--shim, 150) * 1%), rgba(0, 0, 0, 0.55) calc(var(--shim, 150) * 1% + 10%), transparent calc(var(--shim, 150) * 1% + 28%));
-      }
-    }
-
     /* A picture that must never be trimmed: natural height, caption in flow. */
     .poster > .p-fig.p-nocrop { position: static; align-self: start; }
     .p-nocrop > img { position: static; height: auto; }
@@ -552,6 +420,135 @@
     /* wide screens: the publication video's caption runs to half its width */
     @media (min-width: 1280px) { .poster-5 .p-nocrop > figcaption { max-width: 50%; } }
     .p-nocrop > figcaption { position: static; padding-top: 10px; }
+  }
+
+  /* Interactive work keeps its natural height; the physical-media poster
+     below retains its staggered layout. */
+  #interaction-craft { scroll-margin-top: 24px; }
+  .poster-digital > .p-item { min-width: 0; }
+  .poster-digital > figure { max-width: none; }
+  .p-statement {
+    display: grid;
+    align-content: center;
+    aspect-ratio: 1;
+    container-type: inline-size;
+  }
+  .p-statement .principle-title {
+    margin: 0;
+    font-size: clamp(28px, 15cqw, 88px);
+    line-height: 1.04;
+  }
+  @property --hl-a { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+  @property --hl-i { syntax: "<number>"; inherits: false; initial-value: 0; }
+  .craft-word {
+    --hl-a: 0deg;
+    --hl-i: 0;
+    color: inherit; border: 0; padding: 0; text-decoration: none;
+    background: linear-gradient(var(--hl-a),
+      color-mix(in srgb, #a1d2ec calc(var(--hl-i) * 100%), #fff),
+      color-mix(in srgb, #c6a8ef calc(var(--hl-i) * 100%), #fff) 35%,
+      color-mix(in srgb, #d39be7 calc(var(--hl-i) * 100%), #fff) 55%,
+      color-mix(in srgb, #eca5cd calc(var(--hl-i) * 100%), #fff) 75%,
+      color-mix(in srgb, #b4dcf0 calc(var(--hl-i) * 100%), #fff));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-box-decoration-break: clone; box-decoration-break: clone;
+  }
+  .p-statement:hover .craft-word,
+  .p-statement:focus-within .craft-word {
+    animation: hl-agent-in 120ms linear forwards, hl-agent-turn 1450ms linear infinite;
+  }
+  @keyframes hl-agent-in { from { --hl-i: 0; } to { --hl-i: 1; } }
+  @keyframes hl-agent-turn { from { --hl-a: 90deg; } to { --hl-a: -270deg; } }
+  @media (prefers-reduced-motion: reduce) {
+    .p-statement:hover .craft-word,
+    .p-statement:focus-within .craft-word { animation: none; }
+  }
+
+  .craft-widget { position: relative; container-type: inline-size; }
+  .craft-widget > object, .craft-widget > iframe {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 0;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .craft-icons > object { aspect-ratio: 253 / 141; }
+  .craft-square > object { aspect-ratio: 1; }
+  .craft-grid > iframe { aspect-ratio: 1; }
+  .craft-date-canvas {
+    display: grid;
+    place-items: center;
+    padding: clamp(24px, 5vw, 64px);
+    border-radius: 10px;
+    background: #fff;
+  }
+  .craft-date-canvas > object {
+    display: block;
+    width: min(100%, 440px);
+    height: auto;
+    aspect-ratio: 1;
+    filter: drop-shadow(0 8px 14px #0002);
+  }
+  .craft-programme > iframe { height: 688px; }
+  .craft-widget > figcaption { margin: 10px 0 0; }
+  @container (max-width: 480px) {
+    .craft-programme > iframe { height: 736px; }
+  }
+  @media (max-width: 640px) {
+    .craft-grid > iframe { aspect-ratio: 1; }
+  }
+  @media (min-width: 1024px) {
+    .poster-digital { --craft-column-offset: calc(2 * (var(--mod) + var(--gv))); }
+    .poster-digital > .craft-left { position: relative; top: var(--craft-column-offset); }
+    .poster.poster-digital {
+      padding-bottom: var(--craft-column-offset);
+      grid-template-rows: none;
+      column-gap: clamp(40px, 5vw, 72px);
+      row-gap: clamp(48px, 5vw, 72px);
+    }
+    .poster-digital > .p-fig {
+      position: static;
+      align-self: start;
+    }
+    .poster-digital .p-fig > .agent-demo {
+      position: static;
+      height: auto;
+      padding: 36px 0 20px;
+    }
+    .poster-digital .p-fig > figcaption { position: static; }
+    .poster-2 { margin-top: clamp(64px, 7vw, 112px); }
+  }
+
+  .zf-brand-mark {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: inherit;
+    background: #000;
+    cursor: pointer;
+    overflow: hidden;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .zf-brand-mark svg { display: block; width: 100%; height: auto; }
+  .zf-brand-mark:focus-visible {
+    outline: 2px solid #ed496e;
+    outline-offset: 4px;
+  }
+  .zf-logo-colour > path { opacity: 0; transition: opacity 320ms ease; }
+  .zf-logo-wireframe { opacity: 1; transition: opacity 540ms ease; }
+  .zf-brand-mark.is-colour .zf-logo-colour > path { opacity: 1; }
+  /* SVG paint order is top, bottom, middle; reveal in visual order. */
+  .zf-brand-mark.is-colour .zf-logo-colour > path:nth-child(3) { transition-delay: 140ms; }
+  .zf-brand-mark.is-colour .zf-logo-colour > path:nth-child(2) { transition-delay: 280ms; }
+  .zf-brand-mark.is-colour .zf-logo-wireframe { opacity: 0; }
+  @media (prefers-reduced-motion: reduce) {
+    .zf-logo-colour > path, .zf-logo-wireframe { transition: none !important; }
   }
 
   /* -- scroll reveal, as on the home page: each card and picture fades in as
@@ -716,16 +713,27 @@
   </nav>
   <main>
     <hr class="rule rule-top">
-    <div class="poster" style="--rows:17">
+    <div class="poster poster-digital" id="interaction-craft">
       <div class="p-item p-hero" style="--c:1 / 8;--r:1 / span 1"><h1 class="lede display head-fade">Design craft</h1></div>
 
       <nav class="p-item toc p-toc" aria-label="On this page" style="--c:10 / 13;--r:1 / span 1">
-        <a href="#move-fast-heading">Approach</a>
-        <a href="#quantemplate-heading">Visual language</a>
+        <a href="#interaction-craft">Interaction craft</a>
         <a href="#isokon-heading">Physical media</a>
       </nav>
 
-      <figure class="p-item figure p-fig" style="--c:7 / 13;--r:2 / span 3">
+      <div class="p-item p-card p-statement" style="--c:7 / 13;--r:2"><h2 class="principle-title display" id="move-fast-heading">Move fast<br>and <span class="craft-word">craft</span><br>things</h2></div>
+
+      <figure class="craft-left p-item figure craft-widget craft-square" id="craft-image-insight-motif" style="--c:1 / 7;--r:2">
+        <object data="/case-studies/media/image-insight-motif-animated.svg?v=20261018-dark#dark" type="image/svg+xml" width="370" height="370" aria-label="Hover or tap to replay the Image Insight brand motif" title="Hover or tap to replay the Image Insight brand motif"><a href="/case-studies/media/image-insight-motif-animated.svg">Hover or tap to replay the Image Insight brand motif</a></object>
+        <figcaption><a href="/case-studies/image-insight#brand-motif">Image Insight</a></figcaption>
+      </figure>
+
+      <figure class="craft-left p-item figure craft-widget craft-icons" id="craft-image-insight-icons" style="--c:1 / 7;--r:3">
+        <object data="/case-studies/media/image-insight-icons-interactive.svg" type="image/svg+xml" width="253" height="141" aria-label="Try Image Insight’s animated icons" title="Try Image Insight’s animated icons"><a href="/case-studies/media/image-insight-icons-interactive.svg">Try Image Insight’s animated icons</a></object>
+        <figcaption><a href="/case-studies/image-insight#icon-details">Image Insight</a></figcaption>
+      </figure>
+
+      <figure class="p-item figure p-fig" style="--c:7 / 13;--r:3">
       <div class="agent-demo">
                       <svg class="agent-interactive" xmlns="http://www.w3.org/2000/svg" width="690" height="250" viewBox="0 0 690 250" role="button" tabindex="0" aria-label="Agent" style="cursor:pointer;overflow:visible;touch-action:manipulation">
                       <title>Agent — hover to animate</title>
@@ -767,31 +775,12 @@
                               </div>
       <figcaption>All the details: Quantemplate Agent hover animation options</figcaption></figure>
 
-      <div class="p-item p-card p-section" style="--c:1 / 7;--r:3 / span 5"><h2 class="principle-title display" id="move-fast-heading">Move fast and craft things</h2><p>If you&rsquo;ve worked with me, you&rsquo;ll know I care about the details. Things you might hear me say:</p><blockquote>
-                  <p>Looks good! Just a few things to tweak.</p>
-                  <p>Could we move that one pixel left?</p>
-                  <p>Could we animate that?</p>
-                  <p>Let&rsquo;s try a 200ms ease-in.</p>
-                  <p>That detail isn&rsquo;t quite working how we expected. I&rsquo;m going to try something else.</p>
-                </blockquote><p>I care about making the product better, and helping everyone do their best work. I also know when to call it done, ship it and learn from real usage.</p></div>
-
-      <figure class="p-item figure p-fig p-fig-free" style="--c:1 / 13;--r:8 / span 5"><div class="figure-portrait-frame"><object class="dashboard-animation" type="image/svg+xml" data="media/dashboard-animated.svg" width="2000" height="915" aria-label="Animated concept design for Quantemplate&rsquo;s early analytics dashboard: solvency margin, value at risk, volatility breakdown, and region, industry and risk tables. Hover over a chart to replay its animation."><img src="media/dashboard-vector.svg" width="2000" height="915" alt="Concept design for Quantemplate&rsquo;s early analytics dashboard: solvency margin, value at risk, volatility breakdown, and region, industry and risk tables."></object></div><figcaption>Dashboard concept design, c.2013. The &lsquo;Bloomberg for Insurance&rsquo;.</figcaption></figure>
-
-      <div class="p-item p-cluster p-tuck" style="--c:1 / 13;--r:13 / span 5">
-        <div class="p-card p-section p-lift" style="--cc:7 / 13;--rr:1"><h2 class="principle-title display" id="quantemplate-heading">Quantemplate&rsquo;s visual language</h2><p>Back in 2013, there was nothing that looked quite like <a href="https://quantemplate.com" target="_blank" rel="noopener noreferrer">Quantemplate</a>. We were inspired by the <a href="https://www.bloomberg.com/professional/products/bloomberg-terminal/" target="_blank" rel="noopener noreferrer">Bloomberg Terminal</a> as a power tool, and a <a href="https://media.evo.co.uk/image/private/s--8AFVzv4W--/f_auto,t_content-image-full-desktop@1/v1556258285/evo/images/dir_446/car_photo_223452.jpg" target="_blank" rel="noopener noreferrer">Lamborghini dashboard</a> as, well, a different kind of power tool.</p><p>We wanted an interface that felt comfortable for long work sessions, and I brought the concept to life with a dark UI and a sparingly applied set of neon colours.</p><blockquote>The visual style and the craft that went into the interface were consistently cited by new hires as a reason for joining.</blockquote><p>The look drew some pushback from sales and prospective buyers, but we believed the brand was a core differentiator and stuck with it. Funnily enough, when Apple introduced Dark Mode on iOS in 2019, we stopped hearing those concerns.</p></div>
-
-        <figure class="figure mapping-tabs-detail" style="--cc:1 / 7;--rr:1 / span 2" id="mapping-tabs-detail" aria-labelledby="mapping-tabs-title">
+      <figure class="craft-left p-item figure mapping-tabs-detail" style="--c:1 / 7;--r:4" id="mapping-tabs-detail" aria-labelledby="mapping-tabs-title">
           <div class="stage-heading">
             <h4 class="diagram-title" id="mapping-tabs-title">Combined tab/progress bar</h4>
           </div>
           <div class="mapping-demo-canvas">
             <object type="image/svg+xml" data="/case-studies/media/column-mapping-tabs.svg?v=20261009-hint3" aria-label="Interactive column mapping with Mapped and Unmapped tabs"><a href="/case-studies/media/column-mapping-tabs.svg">Open the interactive column mapping detail</a>.</object>
-            <svg class="try-leader" viewBox="0 0 442 522" aria-hidden="true">
-              <path class="try-leader-wide" d="M418 29C448 29 472 16 472-10" fill="none" stroke="#00d8aa" stroke-width="1"/>
-              <path class="try-leader-compact" d="M418 29C438 29 440 0 418-10" fill="none" stroke="#00d8aa" stroke-width="1"/>
-              <circle cx="418" cy="29" r="2.5" fill="#00d8aa"/>
-            </svg>
-            <button class="try-hint" type="button">Click to try</button>
           </div>
           <div class="demo-controls" role="group" aria-label="Mapping demo controls">
             <button class="control-button reset-button" type="button" disabled><span>Reset</span></button>
@@ -804,7 +793,113 @@
           <span class="visually-hidden demo-status" role="status" aria-live="polite"></span>
         </figure>
 
-        <figure id="profile-graphic" class="figure p-nocrop profile-statistics" style="--cc:7 / 13;--rr:2">
+      <figure class="p-item figure craft-widget craft-date-picker" id="craft-zonefully-date-picker" style="--c:7 / 13;--r:4">
+        <div class="craft-date-canvas"><object data="/case-studies/media/zonefully-date-picker-interactive.svg?v=20261018-next-month#open" type="image/svg+xml" width="375" height="375" aria-label="Try Zonefully’s date picker" title="Try Zonefully’s date picker"><a href="/case-studies/media/zonefully-date-picker-interactive.svg">Try Zonefully’s date picker</a></object></div>
+        <figcaption><a href="/case-studies/zonefully#date-picker">Zonefully</a></figcaption>
+      </figure>
+
+      <figure class="craft-left p-item figure craft-widget craft-grid" id="craft-image-insight-grid" style="--c:1 / 7;--r:5">
+        <iframe src="/case-studies/media/image-insight-grid-interactive.html?hints=off" title="Try Image Insight’s image grid: refresh photos, switch categories and adjust the image count" loading="lazy"></iframe>
+        <figcaption><a href="/case-studies/image-insight#image-grid-controls">Image Insight</a></figcaption>
+      </figure>
+
+      <figure class="p-item figure craft-widget craft-square" id="craft-zonefully-brand" style="--c:7 / 13;--r:5">
+        <button class="zf-brand-mark" type="button" aria-label="Show full-colour Zonefully logo" aria-pressed="false">
+                <svg xmlns="http://www.w3.org/2000/svg" width="532" height="532" viewBox="0 0 266 266" fill="none" aria-hidden="true" focusable="false">
+                <rect width="266" height="266" fill="#000"/>
+                <g class="zf-logo-colour">
+                <path d="M90.390600 51.744700 L167.281000 77.202500 C171.692267 78.663035 175.913251 81.611428 178.458000 86.955400 C178.765020 87.600142 182.444198 99.176623 167.589000 106.686000 C165.408000 105.615000 163.323263 104.730357 161.478000 104.129000 L88.237500 80.260500 C86.300583 79.629274 85.000000 77.833100 85.000000 75.820300 L85.000000 55.614800 C85.000000 52.392600 87.301671 50.721980 90.390600 51.744700 Z" fill="#FF406E"/>
+                <path d="M85.000000 145.646000 C85.000000 154.059000 96.811911 161.482189 104.492000 163.985000 L177.733000 187.853000 C179.669890 188.484200 180.945000 190.281000 180.945000 192.294000 L180.945000 212.499000 C180.945000 215.721000 178.676747 217.394062 175.580000 216.369000 L98.697700 190.920000 C91.617286 188.576295 85.000000 182.567000 85.000000 168.581000 L85.000000 145.646000 Z" fill="#FF406E"/>
+                <path d="M178.458000 86.955400 C178.765020 87.600142 182.444198 99.176623 167.589000 106.686000 C141.340000 119.955000 85.000000 124.352000 85.000000 145.646000 C85.000000 151.834166 91.390609 157.486813 97.826951 161.039756 C124.185000 147.935000 180.945000 141.205000 180.945000 122.477000 C180.945000 96.120900 181.676522 93.714296 178.458000 86.955400 Z" fill="#972843"/>
+                </g>
+                <g class="zf-logo-wireframe">
+                <g stroke="#737F8B" stroke-width="0.7" stroke-linejoin="round">
+                <path d="M90.390600 51.744700 L167.281000 77.202500 C171.692267 78.663035 175.913251 81.611428 178.458000 86.955400 C178.765020 87.600142 182.444198 99.176623 167.589000 106.686000 C165.408000 105.615000 163.323263 104.730357 161.478000 104.129000 L88.237500 80.260500 C86.300583 79.629274 85.000000 77.833100 85.000000 75.820300 L85.000000 55.614800 C85.000000 52.392600 87.301671 50.721980 90.390600 51.744700 Z"/>
+                <path d="M85.000000 145.646000 C85.000000 154.059000 96.811911 161.482189 104.492000 163.985000 L177.733000 187.853000 C179.669890 188.484200 180.945000 190.281000 180.945000 192.294000 L180.945000 212.499000 C180.945000 215.721000 178.676747 217.394062 175.580000 216.369000 L98.697700 190.920000 C91.617286 188.576295 85.000000 182.567000 85.000000 168.581000 L85.000000 145.646000 Z"/>
+                <path d="M178.458000 86.955400 C178.765020 87.600142 182.444198 99.176623 167.589000 106.686000 C141.340000 119.955000 85.000000 124.352000 85.000000 145.646000 C85.000000 151.834166 91.390609 157.486813 97.826951 161.039756 C124.185000 147.935000 180.945000 141.205000 180.945000 122.477000 C180.945000 96.120900 181.676522 93.714296 178.458000 86.955400 Z"/>
+                </g>
+                <g stroke="#159BFA" stroke-width="0.6" opacity="0.85">
+                <path d="M167.281000 77.202500 L171.692267 78.663035"/>
+                <path d="M178.458000 86.955400 L175.913251 81.611428"/>
+                <path d="M167.589000 106.686000 L182.444198 99.176623"/>
+                <path d="M167.589000 106.686000 L165.408000 105.615000"/>
+                <path d="M161.478000 104.129000 L163.323263 104.730357"/>
+                <path d="M88.237500 80.260500 L86.300583 79.629274"/>
+                <path d="M85.000000 75.820300 L85.000000 77.833100"/>
+                <path d="M85.000000 55.614800 L85.000000 52.392600"/>
+                <path d="M90.390600 51.744700 L87.301671 50.721980"/>
+                <path d="M85.000000 145.646000 L85.000000 154.059000"/>
+                <path d="M104.492000 163.985000 L96.811911 161.482189"/>
+                <path d="M177.733000 187.853000 L179.669890 188.484200"/>
+                <path d="M180.945000 192.294000 L180.945000 190.281000"/>
+                <path d="M180.945000 212.499000 L180.945000 215.721000"/>
+                <path d="M175.580000 216.369000 L178.676747 217.394062"/>
+                <path d="M98.697700 190.920000 L91.617286 188.576295"/>
+                <path d="M85.000000 168.581000 L85.000000 182.567000"/>
+                <path d="M167.589000 106.686000 L141.340000 119.955000"/>
+                <path d="M85.000000 145.646000 L85.000000 124.352000"/>
+                <path d="M97.826951 161.039756 L124.185000 147.935000"/>
+                <path d="M180.945000 122.477000 L180.945000 141.205000"/>
+                <path d="M180.945000 122.477000 L180.945000 96.120900"/>
+                <path d="M178.458000 86.955400 L181.676522 93.714296"/>
+                </g>
+                <g stroke="#159BFA" stroke-width="0.7" fill="#fff">
+                <path d="M171.692267 77.813035 L172.542267 78.663035 L171.692267 79.513035 L170.842267 78.663035 Z"/>
+                <path d="M175.913251 80.761428 L176.763251 81.611428 L175.913251 82.461428 L175.063251 81.611428 Z"/>
+                <path d="M182.444198 98.326623 L183.294198 99.176623 L182.444198 100.026623 L181.594198 99.176623 Z"/>
+                <path d="M165.408000 104.765000 L166.258000 105.615000 L165.408000 106.465000 L164.558000 105.615000 Z"/>
+                <path d="M163.323263 103.880357 L164.173263 104.730357 L163.323263 105.580357 L162.473263 104.730357 Z"/>
+                <path d="M86.300583 78.779274 L87.150583 79.629274 L86.300583 80.479274 L85.450583 79.629274 Z"/>
+                <path d="M85.000000 76.983100 L85.850000 77.833100 L85.000000 78.683100 L84.150000 77.833100 Z"/>
+                <path d="M85.000000 51.542600 L85.850000 52.392600 L85.000000 53.242600 L84.150000 52.392600 Z"/>
+                <path d="M87.301671 49.871980 L88.151671 50.721980 L87.301671 51.571980 L86.451671 50.721980 Z"/>
+                <path d="M85.000000 153.209000 L85.850000 154.059000 L85.000000 154.909000 L84.150000 154.059000 Z"/>
+                <path d="M96.811911 160.632189 L97.661911 161.482189 L96.811911 162.332189 L95.961911 161.482189 Z"/>
+                <path d="M179.669890 187.634200 L180.519890 188.484200 L179.669890 189.334200 L178.819890 188.484200 Z"/>
+                <path d="M180.945000 189.431000 L181.795000 190.281000 L180.945000 191.131000 L180.095000 190.281000 Z"/>
+                <path d="M180.945000 214.871000 L181.795000 215.721000 L180.945000 216.571000 L180.095000 215.721000 Z"/>
+                <path d="M178.676747 216.544062 L179.526747 217.394062 L178.676747 218.244062 L177.826747 217.394062 Z"/>
+                <path d="M91.617286 187.726295 L92.467286 188.576295 L91.617286 189.426295 L90.767286 188.576295 Z"/>
+                <path d="M85.000000 181.717000 L85.850000 182.567000 L85.000000 183.417000 L84.150000 182.567000 Z"/>
+                <path d="M141.340000 119.105000 L142.190000 119.955000 L141.340000 120.805000 L140.490000 119.955000 Z"/>
+                <path d="M85.000000 123.502000 L85.850000 124.352000 L85.000000 125.202000 L84.150000 124.352000 Z"/>
+                <path d="M124.185000 147.085000 L125.035000 147.935000 L124.185000 148.785000 L123.335000 147.935000 Z"/>
+                <path d="M180.945000 140.355000 L181.795000 141.205000 L180.945000 142.055000 L180.095000 141.205000 Z"/>
+                <path d="M180.945000 95.270900 L181.795000 96.120900 L180.945000 96.970900 L180.095000 96.120900 Z"/>
+                <path d="M181.676522 92.864296 L182.526522 93.714296 L181.676522 94.564296 L180.826522 93.714296 Z"/>
+                </g>
+                <g stroke="#159BFA" stroke-width="0.75" fill="#fff">
+                <circle cx="90.390600" cy="51.744700" r="1.05"/>
+                <circle cx="167.281000" cy="77.202500" r="1.05"/>
+                <circle cx="178.458000" cy="86.955400" r="1.05"/>
+                <circle cx="167.589000" cy="106.686000" r="1.05"/>
+                <circle cx="161.478000" cy="104.129000" r="1.05"/>
+                <circle cx="88.237500" cy="80.260500" r="1.05"/>
+                <circle cx="85.000000" cy="75.820300" r="1.05"/>
+                <circle cx="85.000000" cy="55.614800" r="1.05"/>
+                <circle cx="85.000000" cy="145.646000" r="1.05"/>
+                <circle cx="104.492000" cy="163.985000" r="1.05"/>
+                <circle cx="177.733000" cy="187.853000" r="1.05"/>
+                <circle cx="180.945000" cy="192.294000" r="1.05"/>
+                <circle cx="180.945000" cy="212.499000" r="1.05"/>
+                <circle cx="175.580000" cy="216.369000" r="1.05"/>
+                <circle cx="98.697700" cy="190.920000" r="1.05"/>
+                <circle cx="85.000000" cy="168.581000" r="1.05"/>
+                <circle cx="97.826951" cy="161.039756" r="1.05"/>
+                <circle cx="180.945000" cy="122.477000" r="1.05"/>
+                </g>
+                </g>
+                </svg>
+              </button>
+        <figcaption><a href="/case-studies/zonefully#brand-mark">Zonefully</a></figcaption>
+      </figure>
+
+      <figure class="craft-left p-item figure craft-widget craft-programme" id="craft-zonefully-programme" style="--c:1 / 7;--r:6">
+        <iframe src="/case-studies/media/zonefully-program-selector-interactive.html?embed" title="Try Zonefully’s programme preview, search and activation" loading="lazy"></iframe>
+        <figcaption><a href="/case-studies/zonefully#programme-selector">Zonefully</a></figcaption>
+      </figure>
+
+      <figure id="profile-graphic" class="p-item figure p-nocrop profile-statistics" style="--c:7 / 13;--r:6">
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1005pt" height="719pt" viewBox="0 0 1005 719">
 <defs>
 <filter id="profile-filter-remove-color" x="0%" y="0%" width="100%" height="100%">
@@ -2741,14 +2836,10 @@
 <mask id="profile-animated-regions" maskUnits="userSpaceOnUse" x="0" y="0" width="1005" height="719"><rect width="1005" height="719" fill="white"/><rect x="316" y="391" width="187" height="10" fill="black"/><rect x="316" y="439" width="187" height="10" fill="black"/><rect x="316" y="487" width="187" height="10" fill="black"/><rect x="316" y="535" width="187" height="10" fill="black"/><rect x="316" y="583" width="187" height="10" fill="black"/><rect x="316" y="631" width="187" height="10" fill="black"/><rect x="601" y="391" width="203" height="10" fill="black"/><rect x="601" y="439" width="203" height="10" fill="black"/><rect x="601" y="487" width="203" height="10" fill="black"/><rect x="601" y="535" width="203" height="10" fill="black"/><rect x="601" y="583" width="203" height="10" fill="black"/><rect x="601" y="631" width="203" height="10" fill="black"/><rect x="316" y="320" width="90" height="49" fill="black"/><rect x="599" y="320" width="114" height="49" fill="black"/></mask><rect x="80" y="243" width="842" height="431" rx="8" fill="#0f1434"/><use xlink:href="#profile-source-28" mask="url(#profile-animated-regions)"/>
 <rect class="animated-bar" x="317" y="392" width="185.0" height="8" rx="4" fill="#00d3ed" data-width="185.0" data-delay="0"/><rect class="animated-bar" x="317" y="440" width="15.408106607440311" height="8" rx="4" fill="#00d3ed" data-width="15.408106607440311" data-delay="85"/><rect class="animated-bar" x="317" y="488" width="35.43864519711271" height="8" rx="4" fill="#00d3ed" data-width="35.43864519711271" data-delay="170"/><rect class="animated-bar" x="317" y="536" width="0.3081621321488062" height="8" rx="0.1540810660744031" fill="#00d3ed" data-width="0.3081621321488062" data-delay="255"/><rect class="animated-bar" x="317" y="584" width="24.036646307606887" height="8" rx="4" fill="#00d3ed" data-width="24.036646307606887" data-delay="340"/><rect class="animated-bar" x="317" y="632" width="24.652970571904497" height="8" rx="4" fill="#00d3ed" data-width="24.652970571904497" data-delay="425"/><rect class="animated-bar" x="602" y="392" width="185.0" height="8" rx="4" fill="#00cfa4" data-width="185.0" data-delay="0"/><rect class="animated-bar" x="602" y="440" width="45.936440677966104" height="8" rx="4" fill="#00cfa4" data-width="45.936440677966104" data-delay="85"/><rect class="animated-bar" x="602" y="488" width="5.408898305084746" height="8" rx="2.704449152542373" fill="#00cfa4" data-width="5.408898305084746" data-delay="170"/><rect class="animated-bar" x="602" y="536" width="61.144067796610166" height="8" rx="4" fill="#00cfa4" data-width="61.144067796610166" data-delay="255"/><rect class="animated-bar" x="602" y="584" width="97.04661016949153" height="8" rx="4" fill="#00cfa4" data-width="97.04661016949153" data-delay="340"/><rect class="animated-bar" x="602" y="632" width="111.62711864406779" height="8" rx="4" fill="#00cfa4" data-width="111.62711864406779" data-delay="425"/><g id="profile-headline-left" fill="#00d3ed"/><g id="profile-headline-right" fill="#00cfa4"/></svg>
 <figcaption>Quantemplate profile page showing usage statistics</figcaption></figure>
-      </div>
-
-
-
     </div>
 
     <div class="poster poster-2" style="--rows:6">
-      <figure class="p-item p-logo" style="--c:2 / 6;--r:1 / span 5"><img src="media/isokon-gallery-logo.svg" width="541" height="815" alt="Isokon Gallery logo" loading="lazy"><img class="p-logo-lit" src="media/isokon-gallery-logo.svg" width="541" height="815" alt="" aria-hidden="true" loading="lazy"></figure>
+      <figure class="p-item p-logo" style="--c:2 / 6;--r:1 / span 5"><img src="media/isokon-gallery-logo.svg" width="541" height="815" alt="Isokon Gallery logo" loading="lazy"></figure>
 
       <div class="p-item p-card p-section" style="--c:7 / 13;--r:3 / span 4"><h2 class="principle-title display" id="isokon-heading">Isokon Gallery</h2><p>I&rsquo;ve had a long involvement with the Isokon building, the famous Grade I listed apartment block in north London. My first contribution was to design a sign for it in 2005. There was no precedent for a sign on the building so the material and finish mattered. Cast aluminium was the hard way, but the right way for durability and quality.</p><p>In 2014 I co-founded a <a href="https://isokongallery.org" target="_blank" rel="noopener noreferrer">micro-museum</a> in the building&rsquo;s former garage space to tell its remarkable history. I co-designed the permanent exhibition, mentoring an MA student through the work.</p><p>Every couple of years we hold a special exhibition focusing on an important resident. Most recently this was Egon Riss, one of modernism&rsquo;s most elusive characters. I spent my weekends designing a <a href="https://isokongallery.org/products/design-displacement-donkeys-the-fractured-life-of-egon-riss" target="_blank" rel="noopener noreferrer">book</a> to tell his story. Uncoated paper, chunky typography and a plywood colour palette capture the spirit of his work.</p></div>
     </div>
@@ -2868,70 +2959,11 @@
     var wide = window.matchMedia("(min-width: 1024px)");
     function el(id) { var n = document.querySelector(id); return n && (n.classList.contains("p-item") ? n : n.parentElement); }
     var links = [
-      /* The Isokon block sits under whichever column it would otherwise run
-         into: its logo (left) clears the tab/progress bar, its card (right)
-         clears the profile page; the tighter of the two decides. */
-      { poster: ".poster-2", rules: [
-        { above: ".mapping-tabs-detail", exact: true, first: ".p-logo", gap: 56 },
-        { above: "#profile-graphic", exact: true, first: "#isokon-heading", gap: 68 }
-      ] },
       { poster: ".poster-3", rules: [{ above: "#isokon-heading", first: 'img[src$="craft-isokon-01.jpg"]', gap: 68 }] },
       { poster: ".poster-4", rules: [{ above: "#white-rainbow-heading", first: 'img[src$="craft-white-rainbow-01-studio.webp"]', gap: 68 }] },
       { poster: ".poster-5", rules: [{ above: 'img[src$="craft-white-rainbow-11-studio.webp"]', first: "#teaching-heading", gap: 68 }] }
     ];
-    function tuck() {
-      /* the dashboard (and the cards drawn up with it) sits a fixed distance
-         below the Move fast card, whatever height that card comes to */
-      var p1 = document.querySelector(".poster"), mf = el("#move-fast-heading");
-      var dash = document.querySelector(".figure-portrait-frame");
-      if (!p1 || !mf || !dash) return;
-      dash = dash.closest(".p-item");
-      p1.style.removeProperty("--tuck");
-      if (!wide.matches) return;
-      p1.style.setProperty("--tuck", "0px");
-      var t = dash.style.translate; dash.style.translate = "";
-      var gap = dash.getBoundingClientRect().top - mf.getBoundingClientRect().bottom;
-      dash.style.translate = t;
-      p1.style.setProperty("--tuck", (gap - 56) + "px");
-    }
-    function clearDashboardCaption() {
-      var cluster = document.querySelector(".p-cluster.p-tuck");
-      var frame = document.querySelector(".figure-portrait-frame");
-      if (!cluster || !frame) return;
-      cluster.style.removeProperty("--caption-clearance");
-      if (!wide.matches) return;
-      var figure = frame.closest(".p-item"), caption = figure.querySelector("figcaption");
-      if (!caption) return;
-      // Measure the resting layout, independently of scroll entrance motion.
-      var ft = figure.style.translate, ct = cluster.style.translate;
-      figure.style.translate = "";
-      cluster.style.translate = "";
-      var clearance = caption.getBoundingClientRect().bottom + 32 - cluster.getBoundingClientRect().top;
-      figure.style.translate = ft;
-      cluster.style.translate = ct;
-      cluster.style.setProperty("--caption-clearance", Math.max(0, clearance) + "px");
-    }
-    function lift() {
-      /* the visual-language card: as close under the dashboard as it can sit
-         without touching the picture's frame or the caption's text */
-      var card = el("#quantemplate-heading"), frame = document.querySelector(".figure-portrait-frame");
-      if (!card || !frame) return;
-      card.style.removeProperty("--lift");
-      if (!wide.matches) return;
-      var dash = frame.closest(".p-item"), cap = dash.querySelector("figcaption");
-      var t = dash.style.translate; dash.style.translate = "";
-      var range = document.createRange(); range.selectNodeContents(cap);
-      var text = range.getBoundingClientRect(), fb = frame.getBoundingClientRect().bottom;
-      dash.style.translate = t;
-      var cr = card.getBoundingClientRect();
-      var target = fb + 24;
-      if (text.right > cr.left - 16) target = Math.max(target, text.bottom + 24);
-      card.style.setProperty("--lift", Math.max(0, cr.top - target) + "px");
-    }
     function pull() {
-      tuck();
-      clearDashboardCaption();
-      lift();
       links.forEach(function (l) {
         var p = document.querySelector(l.poster);
         if (!p) return;
@@ -2959,7 +2991,7 @@
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(pull);
     if (window.ResizeObserver) {
       var ro = new ResizeObserver(pull);
-      ["#move-fast-heading", "#quantemplate-heading", "#profile-graphic", "#isokon-heading", "#white-rainbow-heading", ".figure-portrait-frame", ".p-fig-free > figcaption"].forEach(function (id) { var a = el(id); if (a) ro.observe(a); });
+      ["#isokon-heading", "#white-rainbow-heading"].forEach(function (id) { var a = el(id); if (a) ro.observe(a); });
     }
   })();
 </script>
@@ -2991,29 +3023,13 @@
       }
     }
 
-    /* Scroll shimmer on the Isokon logo: its progress through the window
-       (0 entering at the bottom, 1 leaving at the top) places the band. */
-    var logo = document.querySelector(".p-logo");
-    var shimmerQueued = false;
-    function shimmer() {
-      shimmerQueued = false;
-      if (!logo) return;
-      var r = logo.getBoundingClientRect(), vh = window.innerHeight;
-      var p = Math.max(0, Math.min(1, (vh - r.top) / (vh + r.height)));
-      logo.style.setProperty("--shim", (128 - p * 156).toFixed(1));
-    }
-    function queueShimmer() { if (!shimmerQueued) { shimmerQueued = true; requestAnimationFrame(shimmer); } }
-    window.addEventListener("scroll", queueShimmer, { passive: true });
-    window.addEventListener("resize", queueShimmer);
-    shimmer();
-
     /* Parallax: pictures drift against the page, slower in the left half and
        faster in the right, so the two columns slide past each other. Cards
        stay put so text never moves under the reader. Uses the individual
        `translate` property; capped so a picture never reaches its neighbour. */
     var RATE = 0.04, MAX = 30;
     var pics = items.filter(function (el) {
-      return el.classList.contains("p-fig") || el.classList.contains("p-logo") || el.classList.contains("wr-roundel");
+      return !el.closest(".poster-digital") && (el.classList.contains("p-fig") || el.classList.contains("p-logo") || el.classList.contains("wr-roundel"));
     }).map(function (el) {
       var c = (el.style.getPropertyValue("--c") || "1 / 13").split("/");
       var mid = (parseInt(c[0], 10) + parseInt(c[1], 10)) / 2;
@@ -3105,8 +3121,7 @@
   })();
 </script>
 <script>
-  /* The combined tab/progress bar's controls and "Click to try" hint, exactly
-     as on the column mapping case study. */
+  /* Keep the combined tab/progress bar’s playback controls connected. */
     (function () {
       var detail = document.querySelector('.mapping-tabs-detail');
       var diagram = detail.querySelector('object');
@@ -3123,18 +3138,6 @@
         demo.disabled = false;
         demo.setAttribute('aria-pressed', 'false');
         demo.querySelector('span').textContent = 'Play demo';
-        var hint = detail.querySelector('.try-hint');
-        var canvas = hint.closest('.mapping-demo-canvas');
-        function showHint(visible) {
-          canvas.classList.toggle('is-interacted', !visible);
-          hint.disabled = !visible;
-          hint.setAttribute('aria-hidden', String(!visible));
-        }
-        showHint(true);
-        root.addEventListener('mapping-hint-state', function (event) { showHint(event.detail.visible); });
-        hint.onmouseenter = hint.onfocus = function () { root.dispatchEvent(new Event('mapping-hint-hover')); };
-        hint.onmouseleave = hint.onblur = function () { root.dispatchEvent(new Event('mapping-hint-leave')); };
-        hint.onclick = function () { root.dispatchEvent(new Event('mapping-hint-activate')); };
         reset.onclick = function () { root.dispatchEvent(new Event('mapping-reset')); };
         demo.onclick = function () { root.dispatchEvent(new Event(running ? 'mapping-demo-stop' : 'mapping-demo-play')); };
         root.addEventListener('mapping-demo-state', function (event) {
@@ -3148,9 +3151,37 @@
       connect();
     })();
 </script>
+<script>
+    /* Hover previews the finished mark; tap or keyboard toggles it. */
+    (function () {
+      var mark = document.querySelector('.zf-brand-mark');
+      if (!mark) return;
+      var pointerType = '';
+      function showColour(show) {
+        mark.classList.toggle('is-colour', show);
+        mark.setAttribute('aria-pressed', String(show));
+      }
+      mark.addEventListener('pointerenter', function (event) {
+        if (event.pointerType === 'mouse') showColour(true);
+      });
+      mark.addEventListener('pointerleave', function (event) {
+        if (event.pointerType === 'mouse') showColour(false);
+      });
+      mark.addEventListener('pointerdown', function (event) {
+        pointerType = event.pointerType;
+      });
+      mark.addEventListener('click', function (event) {
+        if (event.detail && pointerType === 'mouse') return;
+        showColour(mark.getAttribute('aria-pressed') !== 'true');
+      });
+    })();
+
+</script>
+
 <script src="/media/agent-interactive.js?v=2"></script>
 <script src="/media/agent-cube-studies.js"></script>
 <script src="/media/white-rainbow-shimmer.js"></script>
 <script src="/media/profile-page-animation.js"></script>
+<script src="/media/design-craft-motion.js"></script>
 </body>
 </html>

@@ -4,7 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Image Insight — interactive image grid</title>
+<script>if (new URLSearchParams(location.search).get("hints") === "off") document.documentElement.classList.add("hide-hints");</script>
 <style>
+.hide-hints .try-bubble { display: none; }
 @font-face { font-family: 'Open Sans'; src: url('fonts/zonefully-open-sans-semibold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
 @font-face { font-family: 'Fakt Blond'; src: url('../../FaktProBlond.woff2') format('woff2'); font-weight: 400; font-display: swap; }
 @font-face { font-family: 'Fakt Blond'; src: url('../../FaktProSemiBold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
@@ -172,7 +174,7 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
   'city-street': 'A street between tall city buildings', 'city-crossing': 'A sunlit city crossing', canal: 'Bicycles beside an Amsterdam canal', towers: 'Modern white and blue towers', 'city-taxis': 'Yellow taxis on a city avenue', 'city-avenue': 'Pedestrians crossing a busy avenue'
  };
  const collections = {
-  Standard: ['library','glacier','snow','mushrooms','adventure','signpost','ostrich','lake','salad','market','balloons','cave','forest','shopping','money','home','cafe','construction','canal','towers','city-street','city-crossing','city-taxis','city-avenue'],
+  Standard: ['library','glacier','snow','mushrooms','adventure','signpost','forest','lake','salad','market','balloons','cave','ostrich','shopping','money','home','cafe','construction','canal','towers','city-street','city-crossing','city-taxis','city-avenue'],
   Nature: ['snow','mushrooms','glacier','forest','lake','ostrich','cave','signpost'],
   Leisure: ['library','salad','balloons','cafe','shopping','adventure','lake'],
   Urban: ['market','city-street','canal','towers','city-crossing','city-taxis','construction','city-avenue']

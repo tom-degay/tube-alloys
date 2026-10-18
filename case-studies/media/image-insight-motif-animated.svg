@@ -3,6 +3,7 @@
   <desc id="motif-description">Nine rounded squares ripple gently out from the centre. Hover, tap, or press Enter to replay.</desc>
   <style>
     :root { display: block; width: 100%; height: 100%; cursor: pointer; outline: none; }
+    #dark:target { fill: #000; }
     .tile { transform-box: view-box; transform-origin: 185px 185px; }
     .is-playing .tile-centre { animation: centre-draw 1800ms ease-out both; }
     .is-playing .tile-inner { animation: tile-ripple 1500ms 180ms cubic-bezier(.22, 1, .36, 1) both; }
@@ -24,7 +25,7 @@
       .is-playing .tile { animation: none; }
     }
   </style>
-  <rect width="370" height="370" fill="#FFFFFF"/>
+  <rect id="dark" width="370" height="370" fill="#FFFFFF"/>
   <rect x="147.237" y="237.474" width="75.5282" height="75.5282" rx="17.8783" stroke="#4BC6E5" stroke-opacity="0.3" stroke-width="2" class="tile tile-outer" style="--dx:-0.001px;--dy:-64.971px"/>
   <rect x="198.348" y="198.345" width="75.5282" height="75.5282" rx="17.8783" stroke="#4BC6E5" stroke-opacity="0.7" stroke-width="2" class="tile tile-inner" style="--dx:-36.801px;--dy:-36.799px"/>
   <rect x="95.8843" y="198.345" width="75.5282" height="75.5282" rx="17.8783" stroke="#4BC6E5" stroke-opacity="0.7" stroke-width="2" class="tile tile-inner" style="--dx:36.973px;--dy:-36.799px"/>
