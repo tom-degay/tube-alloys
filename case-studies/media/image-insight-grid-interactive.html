@@ -409,12 +409,12 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
   refresh.classList.add('is-playing');
   refreshTimer = setTimeout(() => refresh.classList.remove('is-playing'), 680);
  });
- undo.addEventListener('click', () => {
+ undo.addEventListener('click', event => {
   if (!previousDeck) return;
   deck = [...previousDeck];
   clearTimeout(refreshTimer);
   refresh.classList.remove('is-playing');
-  refresh.focus({ preventScroll: true });
+  if (event.detail === 0) refresh.focus({ preventScroll: true });
   hideUndo();
   render('flip', 1); announce(false, 'Refresh undone. ');
  });
