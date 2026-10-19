@@ -220,10 +220,10 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
     flip.animations = [
      flip.previous.animate([
       { transform: 'perspective(1200px) rotateY(0deg)' },
-      { transform: 'perspective(1200px) rotateY(-180deg)' }
+      { transform: `perspective(1200px) rotateY(${flip.direction * 180}deg)` }
      ], timing),
      flip.image.animate([
-      { transform: 'perspective(1200px) rotateY(180deg)' },
+      { transform: `perspective(1200px) rotateY(${-flip.direction * 180}deg)` },
       { transform: 'perspective(1200px) rotateY(0deg)' }
      ], timing)
     ];
@@ -251,7 +251,7 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
  new ResizeObserver(fit).observe(scene);
  fit();
 
- function render(animate = false) {
+ function render(animate = false, flipDirection = -1) {
   const flips = [];
   const sceneBox = scene.getBoundingClientRect();
   const visibleCards = new Set(animate === 'flip' ? cells.filter(cell => {
@@ -305,7 +305,7 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
      previous.setAttribute('aria-hidden', 'true');
      img.style.visibility = 'hidden';
      cell.append(previous);
-     const flip = { cell, image: img, previous, animations: [] };
+     const flip = { cell, image: img, previous, direction: flipDirection, animations: [] };
      cardFlips.set(cell, flip);
      flips.push(flip);
     } else if (animate === true && !reduced.matches) {
@@ -411,7 +411,7 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
   refresh.classList.remove('is-playing');
   refresh.focus({ preventScroll: true });
   hideUndo();
-  render(true); announce(false, 'Refresh undone. ');
+  render('flip', 1); announce(false, 'Refresh undone. ');
  });
  picker.addEventListener('click', event => menu.hidden ? openMenu(false, event.detail === 0) : closeMenu(true));
  picker.addEventListener('keydown', event => {
