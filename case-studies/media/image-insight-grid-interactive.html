@@ -291,11 +291,18 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
    // A tile keeps its photograph through count and viewport changes.
    // Only Refresh, Undo or a collection change can replace its image.
    const name = deck[i % deck.length];
-   const img = cell.firstElementChild;
+   let img = cell.firstElementChild;
    if (cell.dataset.image !== name) {
     finishFlip(cell);
     img.getAnimations().forEach(animation => animation.cancel());
-    const previous = animate === 'flip' && !reduced.matches && visibleCards.has(cell) && img.hasAttribute('src') ? img.cloneNode() : null;
+    const previous = animate === 'flip' && !reduced.matches && visibleCards.has(cell) && img.hasAttribute('src') ? img : null;
+    if (previous) {
+     // Keep the already-painted face in place while its replacement decodes.
+     // Cloning the outgoing face can briefly expose the background in an iframe.
+     img = img.cloneNode();
+     img.style.visibility = 'hidden';
+     cell.prepend(img);
+    }
     cell.dataset.image = name;
     img.src = source(name);
     img.alt = images[name];
@@ -303,8 +310,6 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
      previous.className = 'photo-previous';
      previous.alt = '';
      previous.setAttribute('aria-hidden', 'true');
-     img.style.visibility = 'hidden';
-     cell.append(previous);
      const flip = { cell, image: img, previous, direction: flipDirection, animations: [] };
      cardFlips.set(cell, flip);
      flips.push(flip);
