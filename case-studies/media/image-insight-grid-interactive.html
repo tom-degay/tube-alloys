@@ -22,8 +22,9 @@ button:focus-visible, input:focus-visible { outline: 2px solid #18768b; outline-
 .canvas { position: absolute; width: 1059px; height: 495px; transform-origin: top left; }
 .viewport { position: absolute; inset: 0; overflow: visible; }
 .photos { position: absolute; left: 50%; top: 0; transform: translateX(-50%); transition: width 180ms ease; }
-.photo { position: absolute; margin: 0; overflow: hidden; background: #e3e7e7; border-radius: 13%; transition: width 180ms ease, height 180ms ease, transform 180ms ease; }
-.photo img { display: block; width: 100%; height: 100%; object-fit: cover; user-select: none; -webkit-user-drag: none; }
+.photo { position: absolute; margin: 0; border-radius: 13%; transition: width 180ms ease, height 180ms ease, transform 180ms ease; }
+.photo img { display: block; width: 100%; height: 100%; object-fit: cover; background: #e3e7e7; border-radius: inherit; backface-visibility: hidden; -webkit-backface-visibility: hidden; user-select: none; -webkit-user-drag: none; }
+.photo .photo-previous { position: absolute; inset: 0; pointer-events: none; }
 .try-bubble { position: absolute; z-index: 1; top: 22px; left: 50%; transform: translateX(-50%); min-height: 44px; padding: 10px 18px; border: 0; border-radius: 10px; background: #fff; box-shadow: 0 3px 16px #18252d30; font-family: 'Fakt Blond', system-ui, sans-serif; font-weight: 700; font-size: 16px; line-height: 24px; letter-spacing: 0; color: #0e76aa; white-space: nowrap; }
 .try-bubble > span { display: inline-block; transform: translateY(1px); }
 .undo-button > span { display: inline-block; transform: translateX(-1px); }
@@ -194,6 +195,48 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
  let cropWidth = 1059;
  let cropHeight = 495;
  const cells = [];
+ const cardFlips = new Map();
+
+ function finishFlip(cell) {
+  const flip = cardFlips.get(cell);
+  if (!flip) return;
+  cardFlips.delete(cell);
+  flip.animations.forEach(animation => animation.cancel());
+  flip.previous.remove();
+  flip.image.style.visibility = '';
+  delete cell.dataset.flipping;
+ }
+ function playFlips(flips) {
+  // Decode the incoming faces before turning any card, so slow images
+  // cannot leave a blank back. All visible cards share one start time.
+  Promise.all(flips.map(flip => flip.image.decode().catch(() => {}))).then(() => {
+   const start = document.timeline.currentTime;
+   flips.forEach(flip => {
+    if (cardFlips.get(flip.cell) !== flip) return;
+    if (reduced.matches) { finishFlip(flip.cell); return; }
+    const timing = { duration: 640, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'both' };
+    flip.image.style.visibility = '';
+    flip.cell.dataset.flipping = 'true';
+    flip.animations = [
+     flip.previous.animate([
+      { transform: 'perspective(1200px) rotateY(0deg)' },
+      { transform: 'perspective(1200px) rotateY(-180deg)' }
+     ], timing),
+     flip.image.animate([
+      { transform: 'perspective(1200px) rotateY(180deg)' },
+      { transform: 'perspective(1200px) rotateY(0deg)' }
+     ], timing)
+    ];
+    if (start !== null) flip.animations.forEach(animation => { animation.startTime = start; });
+    flip.animations[1].finished.then(() => {
+     if (cardFlips.get(flip.cell) === flip) finishFlip(flip.cell);
+    }, () => {});
+   });
+  });
+ }
+ reduced.addEventListener('change', () => {
+  if (reduced.matches) [...cardFlips.keys()].forEach(finishFlip);
+ });
 
  function fit() {
   const scale = Math.max(scene.clientWidth / 1059, scene.clientHeight / 495);
@@ -209,6 +252,13 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
  fit();
 
  function render(animate = false) {
+  const flips = [];
+  const sceneBox = scene.getBoundingClientRect();
+  const visibleCards = new Set(animate === 'flip' ? cells.filter(cell => {
+   if (cell.hidden) return false;
+   const box = cell.getBoundingClientRect();
+   return box.left < sceneBox.right && box.right > sceneBox.left && box.top < sceneBox.bottom && box.bottom > sceneBox.top;
+  }) : []);
   const columns = Math.ceil(Math.sqrt(count));
   // Keep the larger working area centred behind the crop and toolbar.
   // Six images use three columns: their 478px tiles are the size ceiling.
@@ -243,11 +293,24 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
    const name = deck[i % deck.length];
    const img = cell.firstElementChild;
    if (cell.dataset.image !== name) {
+    finishFlip(cell);
+    img.getAnimations().forEach(animation => animation.cancel());
+    const previous = animate === 'flip' && !reduced.matches && visibleCards.has(cell) && img.hasAttribute('src') ? img.cloneNode() : null;
     cell.dataset.image = name;
     img.src = source(name);
     img.alt = images[name];
-    img.getAnimations().forEach(animation => animation.cancel());
-    if (animate && !reduced.matches) img.animate([{ opacity: 0, transform: 'scale(1.025)' }, { opacity: 1, transform: 'none' }], { duration: 300, easing: 'ease' });
+    if (previous) {
+     previous.className = 'photo-previous';
+     previous.alt = '';
+     previous.setAttribute('aria-hidden', 'true');
+     img.style.visibility = 'hidden';
+     cell.append(previous);
+     const flip = { cell, image: img, previous, animations: [] };
+     cardFlips.set(cell, flip);
+     flips.push(flip);
+    } else if (animate === true && !reduced.matches) {
+     img.animate([{ opacity: 0, transform: 'scale(1.025)' }, { opacity: 1, transform: 'none' }], { duration: 300, easing: 'ease' });
+    }
    }
    cell.style.width = cell.style.height = `${size}px`;
    cell.style.transform = `translate(${positions[i].x}px,${positions[i].y}px)`;
@@ -256,7 +319,8 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
    const visible = x < cropWidth && x + size > 0 && y < cropHeight && y + size > 0;
    cell.setAttribute('aria-hidden', String(!visible));
   }
-  cells.slice(count).forEach(cell => { cell.hidden = true; });
+  cells.slice(count).forEach(cell => { finishFlip(cell); cell.hidden = true; });
+  if (flips.length) playFlips(flips);
   range.value = String(count);
   if (!editingCount) countInput.value = String(count);
   range.setAttribute('aria-valuetext', `${count} ${count === 1 ? 'image' : 'images'}`);
@@ -332,7 +396,7 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
  refresh.addEventListener('click', () => {
   closeMenu();
   previousDeck = [...deck];
-  shuffle(); revision++; render(true); announce(true);
+  shuffle(); revision++; render('flip'); announce(true);
   showUndo();
   clearTimeout(refreshTimer);
   refresh.classList.remove('is-playing');
