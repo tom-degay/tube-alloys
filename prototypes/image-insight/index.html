@@ -17,7 +17,19 @@
     <nav class="rail" aria-label="Session navigation">
       <img class="brand" src="/prototypes/image-insight/nav-logo.svg" alt="Image Insight">
       <div class="rail-tools">
-        <button class="icon rail-button plus" data-icon="plus" id="new-session" aria-label="Create new session" title="New session"></button>
+        <div class="new-session-control">
+          <button class="icon rail-button plus" data-icon="plus" id="new-session" aria-label="New session options" aria-expanded="false" aria-controls="new-session-menu" title="New session"></button>
+          <div class="new-session-menu" id="new-session-menu" role="group" aria-label="New session options" hidden>
+            <button class="session-menu-item" id="new-session-choice">
+              <span class="icon plus" data-icon="plus" aria-hidden="true"></span>
+              <span><strong>New session</strong><small>Start a session using your default settings</small></span>
+            </button>
+            <button class="session-menu-item" disabled>
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="5" width="16" height="16" rx="1" stroke="currentColor" stroke-width="1.8"/><path d="M4 10H20M8 3V7M16 3V7" stroke="currentColor" stroke-width="1.8"/><text x="12" y="18" fill="currentColor" text-anchor="middle" font-size="8" font-family="sans-serif">31</text></svg>
+              <span><strong>Schedule a session</strong><small>Schedule and customise a session</small></span>
+            </button>
+          </div>
+        </div>
         <button class="icon rail-button folder" data-icon="folder" id="saved-sessions" aria-label="Saved sessions" title="Saved sessions"></button>
       </div>
       <div class="profile"><img src="/case-studies/media/image-insight-grid/forest.webp" alt=""><span>Tom</span></div>

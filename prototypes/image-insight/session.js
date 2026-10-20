@@ -265,7 +265,39 @@
     sendSelection();
   }
   $('#start-session').addEventListener('click', startSession);
-  $('#new-session').addEventListener('click', requestNewSession);
+  const newSessionMenu = $('#new-session-menu');
+  function closeNewSessionMenu(restoreFocus = false) {
+    newSessionMenu.hidden = true;
+    $('#new-session').setAttribute('aria-expanded', 'false');
+    if (restoreFocus) $('#new-session').focus({ preventScroll: true });
+  }
+  $('#new-session').addEventListener('click', () => {
+    const opening = newSessionMenu.hidden;
+    newSessionMenu.hidden = !opening;
+    $('#new-session').setAttribute('aria-expanded', String(opening));
+    if (opening && document.documentElement.dataset.input === 'keyboard') $('#new-session-choice').focus();
+  });
+  $('#new-session-choice').addEventListener('click', () => {
+    closeNewSessionMenu(true);
+    requestNewSession();
+  });
+  document.addEventListener('pointerdown', event => {
+    if (!event.target.closest('.new-session-control')) closeNewSessionMenu();
+  });
+  document.addEventListener('focusin', event => {
+    if (!event.target.closest('.new-session-control')) closeNewSessionMenu();
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && !newSessionMenu.hidden) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      closeNewSessionMenu(true);
+    }
+  });
+  // Pointer events inside an iframe do not bubble to the surrounding page.
+  window.addEventListener('blur', () => {
+    setTimeout(() => { if (document.activeElement === board) closeNewSessionMenu(); }, 0);
+  });
   $('#confirm-new').addEventListener('click', newSession);
   $('#complete-new').addEventListener('click', newSession);
   function previewQuestion() {
