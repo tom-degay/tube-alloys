@@ -99,6 +99,7 @@ dialog{color:var(--ink);border:0;border-radius:28px;padding:30px;box-shadow:0 15
 dialog[open]{animation:dialog-in 220ms var(--ease)}
 dialog::backdrop{background:#e8eded66;-webkit-backdrop-filter:blur(15px);backdrop-filter:blur(15px)}
 .question-dialog::backdrop,.discussion-dialog::backdrop{background:#e8eded33;-webkit-backdrop-filter:none;backdrop-filter:none}
+.discussion-dialog::backdrop{background:transparent}
 body:has(#question-dialog[open]) .board-shell,.discussion-open .board-shell{filter:blur(15px);opacity:.7}
 .dialog-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
 .dialog-heading h2{font-size:24px;color:var(--accent)}
