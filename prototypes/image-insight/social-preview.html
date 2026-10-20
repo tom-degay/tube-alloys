@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>Image Insight prototype — social image artwork</title>
+<style>
+@font-face{font-family:OpenSans;src:url('/case-studies/media/fonts/zonefully-open-sans-regular.woff2');font-weight:400}
+@font-face{font-family:OpenSans;src:url('/case-studies/media/fonts/zonefully-open-sans-semibold.woff2');font-weight:600}
+*{box-sizing:border-box}
+html,body{margin:0;background:#efefef;color:#354856;font-family:OpenSans,sans-serif}
+.artwork{position:relative;width:1200px;height:630px;overflow:hidden;background:#efefef}
+.copy{position:absolute;inset:0 auto 0 0;width:556px;padding:64px}
+.logo{display:block;width:64px;height:64px;margin-bottom:56px;background:#47b3cf;mask:url(/case-studies/media/image-insight-logo.svg) center/contain no-repeat;-webkit-mask:url(/case-studies/media/image-insight-logo.svg) center/contain no-repeat}
+.label{font-size:22px;color:#187d94;margin:0 0 16px;font-weight:600}
+h1{font-size:58px;line-height:1.12;letter-spacing:-2px;font-weight:600;margin:0 0 24px;white-space:nowrap}
+.description{font-size:27px;line-height:1.5;margin:0;max-width:400px}
+.site{position:absolute;bottom:54px;left:64px;font-size:18px;color:#6e7b84}
+.gallery{position:absolute;left:580px;top:-4px;display:grid;grid-template-columns:repeat(3,194px);gap:24px}
+.photo{position:relative;width:194px;height:194px}
+.photo img{display:block;width:100%;height:100%;object-fit:cover;clip-path:url(#squircle)}
+.selection{position:absolute;inset:0;width:100%;height:100%;overflow:visible;z-index:1;color:#47b3cf}
+.count{position:absolute;right:8px;top:8px;z-index:2;display:grid;place-items:center;width:36px;height:36px;border:2px solid #fff;border-radius:50%;background:#47b3cf;color:#fff;font-size:20px;font-weight:600}
+</style>
+</head>
+<body>
+<main class="artwork">
+<svg width="0" height="0" style="position:absolute"><defs><clipPath id="squircle" clipPathUnits="objectBoundingBox"><path d="M.3 0H.7C.80501 0 .85751 0 .89762 .02044C.9329 .03841 .96159 .0671 .97956 .10238C1 .14249 1 .19499 1 .3V.7C1 .80501 1 .85751 .97956 .89762C.96159 .9329 .9329 .96159 .89762 .97956C.85751 1 .80501 1 .7 1H.3C.19499 1 .14249 1 .10238 .97956C.0671 .96159 .03841 .9329 .02044 .89762C0 .85751 0 .80501 0 .7V.3C0 .19499 0 .14249 .02044 .10238C.03841 .0671 .0671 .03841 .10238 .02044C.14249 0 .19499 0 .3 0Z"/></clipPath></defs></svg>
+<section class="copy">
+  <span class="logo" role="img" aria-label="Image Insight"></span>
+  <p class="label">Interactive prototype</p>
+  <h1>Image Insight</h1>
+  <p class="description">Choose an image.<br>Explore a different perspective.</p>
+  <p class="site">tomdegay.com</p>
+</section>
+<div class="gallery" aria-label="A selection of images from the prototype">
+  <div class="photo"><img src="/case-studies/media/image-insight-grid/library.webp" alt="Library"></div>
+  <div class="photo"><img src="/case-studies/media/image-insight-grid/glacier.webp" alt="Glacier"></div>
+  <div class="photo"><img src="/case-studies/media/image-insight-grid/signpost.webp" alt="Signpost at sunset"></div>
+  <div class="photo"><img src="/case-studies/media/image-insight-grid/lake.webp" alt="Boats on a lake"><svg class="selection" viewBox="0 0 100 100" aria-hidden="true"><defs><mask id="selection-ring" maskUnits="userSpaceOnUse" x="-100" y="-100" width="300" height="300" style="mask-type:luminance"><path d="M30 0H70C80.501 0 85.751 0 89.762 2.044C93.29 3.841 96.159 6.71 97.956 10.238C100 14.249 100 19.499 100 30V70C100 80.501 100 85.751 97.956 89.762C96.159 93.29 93.29 96.159 89.762 97.956C85.751 100 80.501 100 70 100H30C19.499 100 14.249 100 10.238 97.956C6.71 96.159 3.841 93.29 2.044 89.762C0 85.751 0 80.501 0 70V30C0 19.499 0 14.249 2.044 10.238C3.841 6.71 6.71 3.841 10.238 2.044C14.249 0 19.499 0 30 0Z" fill="white" stroke="white" stroke-width="16" vector-effect="non-scaling-stroke"/><path d="M30 0H70C80.501 0 85.751 0 89.762 2.044C93.29 3.841 96.159 6.71 97.956 10.238C100 14.249 100 19.499 100 30V70C100 80.501 100 85.751 97.956 89.762C96.159 93.29 93.29 96.159 89.762 97.956C85.751 100 80.501 100 70 100H30C19.499 100 14.249 100 10.238 97.956C6.71 96.159 3.841 93.29 2.044 89.762C0 85.751 0 80.501 0 70V30C0 19.499 0 14.249 2.044 10.238C3.841 6.71 6.71 3.841 10.238 2.044C14.249 0 19.499 0 30 0Z" fill="black" stroke="black" stroke-width="10" vector-effect="non-scaling-stroke"/></mask></defs><rect x="-100" y="-100" width="300" height="300" fill="currentColor" mask="url(#selection-ring)"/></svg><span class="count">1</span></div>
+  <div class="photo"><img src="/case-studies/media/image-insight-grid/forest.webp" alt="Sunlit forest"></div>
+  <div class="photo"><img src="/case-studies/media/image-insight-grid/mushrooms.webp" alt="Mushrooms"></div>
+  <div class="photo"><img src="/case-studies/media/image-insight-grid/balloons.webp" alt="Hot-air balloons"></div>
+  <div class="photo"><img src="/case-studies/media/image-insight-grid/cafe.webp" alt="Friends in a café"></div>
+  <div class="photo"><img src="/case-studies/media/image-insight-grid/cave.webp" alt="Sunlit cave"></div>
+</div>
+</main>
+</body>
+</html>
