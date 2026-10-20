@@ -40,7 +40,7 @@ button:focus-visible, input:focus-visible { outline: 2px solid #18768b; outline-
 /* A continuous-corner icon shape: straight sides ease into each corner.
    The same contour clips the photo and defines its offset ring.
    Non-scaling mask strokes keep the clear gap at 5px and the ring at 3px. */
-.session-mode .photo img { border-radius: 0; clip-path: url(#photo-squircle-clip); }
+.photo img { border-radius: 0; clip-path: url(#photo-squircle-clip); }
 .photo-ring { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 1; color: #fff; opacity: 0; transition: opacity 160ms ease, color 160ms ease; }
 .session-mode .photo:hover .photo-ring { color: #47b3cf; opacity: .5; }
 .session-mode .photo[aria-pressed="true"] .photo-ring { color: #47b3cf; opacity: 1; }
