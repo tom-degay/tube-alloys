@@ -144,8 +144,8 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
  /* A short landscape board has room for the picker over its controls. */
  .session-mode .menu { bottom: 0; max-height: calc(100dvh - 24px); }
 }
-.session-mode.session-mobile-nav .scene { --toolbar-bottom: 12px; }
-.session-mode.session-mobile-nav .viewport { inset: 12px; }
+.session-mode.session-mobile-nav .scene { --toolbar-bottom: calc(80px + env(safe-area-inset-bottom)); }
+.session-mode.session-mobile-nav .viewport { inset: 0 12px; }
 .session-mode.session-mobile-nav .toolbar { display: none; width: 580px; max-width: calc(100% - 24px); height: 56px; flex-wrap: nowrap; border-radius: 20px; }
 .session-mode.session-mobile-nav.session-controls-open .toolbar { display: flex; }
 .session-mode.session-mobile-nav .refresh { display: none; }
@@ -157,8 +157,8 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
 .session-mode.session-mobile-nav .density-icon { display: none; }
 .session-mode.session-mobile-nav input[type="range"] { min-width: 24px; height: 44px; }
 .session-mode.session-mobile-nav .count-input { width: 44px; height: 44px; }
-.session-mode.session-mobile-nav .undo-notice { bottom: 12px; }
-.session-mode.session-mobile-nav.session-controls-open .undo-notice { bottom: 76px; }
+.session-mode.session-mobile-nav .undo-notice { bottom: calc(80px + env(safe-area-inset-bottom)); }
+.session-mode.session-mobile-nav.session-controls-open .undo-notice { bottom: calc(144px + env(safe-area-inset-bottom)); }
 @keyframes session-undo-rise { from { opacity: 0; transform: translate(-50%, 12px); } to { opacity: 1; transform: translate(-50%, 0); } }
 @media (prefers-reduced-motion: reduce) {
  *, *::before, *::after { animation: none !important; transition: none !important; }
@@ -364,11 +364,51 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
    }
    ignoredScrollTop = null;
    if (!mobileNavigation || !delta) return;
+   if (controlsOpen) setControlsOpen(false);
    scrollTravel = Math.sign(delta) === Math.sign(scrollTravel) ? scrollTravel + delta : delta;
    if (Math.abs(scrollTravel) <= 6) return;
    parent.postMessage({ type: 'ii-session-scroll', direction: scrollTravel > 0 ? 'down' : 'up' }, location.origin);
    scrollTravel = 0;
   }, { passive: true });
+  // A short grid cannot emit scroll events. Still respond to the user's scroll
+  // gesture, including at either end of a longer board, without blocking it.
+  let gestureTravel = 0;
+  let touchPosition = null;
+  function reportBlockedScroll(delta) {
+   if (!mobileNavigation || !delta) return;
+   const top = Math.max(0, boardViewport.scrollTop);
+   const remaining = boardViewport.scrollHeight - boardViewport.clientHeight - top;
+   if ((delta > 0 && remaining > 1) || (delta < 0 && top > 1)) {
+    gestureTravel = 0;
+    return;
+   }
+   gestureTravel = Math.sign(delta) === Math.sign(gestureTravel) ? gestureTravel + delta : delta;
+   if (Math.abs(gestureTravel) <= 6) return;
+   parent.postMessage({ type: 'ii-session-scroll', direction: gestureTravel > 0 ? 'down' : 'up' }, location.origin);
+   gestureTravel = 0;
+  }
+  scene.addEventListener('wheel', event => {
+   if (event.ctrlKey || event.target.closest('.toolbar,.undo-notice')) return;
+   if (mobileNavigation && event.deltaY && controlsOpen) setControlsOpen(false);
+   reportBlockedScroll(event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? boardViewport.clientHeight : 1));
+  }, { passive: true });
+  scene.addEventListener('touchstart', event => {
+   gestureTravel = 0;
+   touchPosition = event.touches.length === 1 && !event.target.closest('.toolbar,.undo-notice')
+    ? { x: event.touches[0].clientX, y: event.touches[0].clientY } : null;
+  }, { passive: true });
+  scene.addEventListener('touchmove', event => {
+   if (!touchPosition || event.touches.length !== 1) { touchPosition = null; return; }
+   const touch = event.touches[0];
+   const dx = touchPosition.x - touch.clientX, dy = touchPosition.y - touch.clientY;
+   touchPosition = { x: touch.clientX, y: touch.clientY };
+   if (Math.abs(dy) > Math.abs(dx)) {
+    if (mobileNavigation && controlsOpen) setControlsOpen(false);
+    reportBlockedScroll(dy);
+   }
+  }, { passive: true });
+  scene.addEventListener('touchend', () => { touchPosition = null; }, { passive: true });
+  scene.addEventListener('touchcancel', () => { touchPosition = null; }, { passive: true });
   grid.addEventListener('click', event => {
    const cell = event.target.closest('.photo');
    if (!cell || cell.dataset.flipping) return;
@@ -497,7 +537,8 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
   const columns = sessionMode ? Math.min(Math.ceil(Math.sqrt(count)), availableColumns) : Math.ceil(Math.sqrt(count));
   // Keep the larger working area centred behind the crop and toolbar.
   // Six images use three columns: their 478px tiles are the size ceiling.
-  const gap = sessionMode ? (scene.clientWidth < 600 ? 12 : 22) : 30;
+  // Each selection ring extends 8px beyond its image; 22px leaves 6px clear.
+  const gap = sessionMode ? 22 : 30;
   const area = sessionMode ? Math.max(240, scene.clientWidth - 54) : 1494;
   const ceilingColumns = Math.min(3, availableColumns);
   const size = sessionMode ? Math.min(478, (area - (ceilingColumns - 1) * gap) / ceilingColumns, (area - (columns - 1) * gap) / columns) : Math.min((1494 - 2 * 30) / 3, (1494 - (columns - 1) * 30) / columns);
@@ -507,9 +548,9 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
   const viewport = canvas.querySelector('.viewport');
   const compactSession = sessionMode && (mobileNavigation || compactSessionLayout.matches);
   const boardSpace = sessionMode ? (compactSession ? viewport.clientHeight : toolbar.offsetTop - viewport.offsetTop - 24) : 0;
-  const offset = sessionMode ? Math.max(12, (boardSpace - height) / 2) : Math.max(-size * .365, 475 - height);
+  const offset = sessionMode ? Math.max(mobileNavigation ? 0 : 12, (boardSpace - height) / 2) : Math.max(-size * .365, 475 - height);
   if (sessionMode) {
-   const endPadding = compactSession ? 12 : scene.clientHeight - toolbar.offsetTop + 24;
+   const endPadding = mobileNavigation ? 92 : compactSession ? 12 : scene.clientHeight - toolbar.offsetTop + 24;
    grid.style.height = `${Math.max(viewport.clientHeight, offset + height + endPadding)}px`;
    if (height < boardSpace && viewport.scrollTop !== 0) {
     ignoredScrollTop = 0;
