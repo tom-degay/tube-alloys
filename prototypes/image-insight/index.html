@@ -77,8 +77,19 @@
   <dialog class="question-dialog" id="question-dialog" aria-labelledby="question-title">
     <form method="dialog" id="question-form">
       <div class="dialog-heading"><h2 id="question-title">Question 1</h2><button class="icon-button close" type="button" data-close aria-label="Close question picker">×</button></div>
-      <p class="muted">Choose a starting point for your conversation.</p>
-      <label class="question-choice"><input type="radio" name="question" value="What is important to you?" checked><span>What is important to you?</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></label>
+      <label class="sr-only" for="question-preview">Selected question</label>
+      <input id="question-preview" class="question-preview" value="What is important to you?" readonly tabindex="-1">
+      <fieldset class="question-options"><legend class="sr-only">Choose a question</legend>
+        <label class="question-choice"><input type="radio" name="question" value="What is important to you?" checked><span>What is important to you?</span></label>
+        <label class="question-choice"><input type="radio" name="question" value="What is your super-power?"><span>What is your super-power?</span></label>
+        <label class="question-choice"><input type="radio" name="question" value="What makes you happy?"><span>What makes you happy?</span></label>
+        <label class="question-choice"><input type="radio" name="question" value="What are you good at?"><span>What are you good at?</span></label>
+        <label class="question-choice"><input type="radio" name="question" value="What do you love?"><span>What do you love?</span></label>
+        <label class="question-choice"><input type="radio" name="question" value="How can you be your best self?"><span>How can you be your best self?</span></label>
+        <label class="question-choice"><input type="radio" name="question" value="What makes you feel safe?"><span>What makes you feel safe?</span></label>
+        <label class="question-choice"><input type="radio" name="question" value="What makes a good friend?"><span>What makes a good friend?</span></label>
+        <label class="question-choice"><input type="radio" name="question" value="How could we support you in lessons?"><span>How could we support you in lessons?</span></label>
+      </fieldset>
       <div class="dialog-footer"><button class="primary" type="submit">Continue</button></div>
     </form>
   </dialog>

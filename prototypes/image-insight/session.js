@@ -6,7 +6,9 @@
   const storageKey = 'image-insight-session-prototype-v1';
   const catalog = new Map();
   const dialogs = [...document.querySelectorAll('dialog')];
-  const question = 'What is important to you?';
+  const defaultSessionName = () => `Session ${new Intl.DateTimeFormat('en-GB', {
+    day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/London'
+  }).format(new Date())}`;
   // View changes keep a useful focus target, without inheriting keyboard
   // rings from an automatically focused dialog field after a pointer click.
   function setInputMode(mode, notifyBoard = true) {
@@ -26,7 +28,7 @@
   let history = [];
   let storageAvailable = true;
   const freshSession = () => ({
-    id: crypto.randomUUID(), started: false, question: '', name: '', selected: [],
+    id: crypto.randomUUID(), started: false, question: '', name: defaultSessionName(), selected: [], setupStep: 'settings',
     notes: {}, summary: '', actions: [], profile: 'Adult', client: '', sessionNotes: '',
     completed: false, updated: new Date().toISOString()
   });
@@ -133,11 +135,14 @@
     $('#session-footer').hidden = !state.started || settingsOpen;
     $('#settings-content').hidden = !settingsOpen;
     $('#settings-footer').hidden = !settingsOpen;
+    $('#settings-done').textContent = state.setupStep === 'settings' ? 'Continue' : 'Done';
+    $('#expand-session').hidden = settingsOpen && state.setupStep === 'settings';
     $('#session-settings').setAttribute('aria-expanded', String(settingsOpen));
     $('#session-settings').setAttribute('aria-label', settingsOpen ? 'Back to session' : 'Session settings');
     $('#session-settings').title = settingsOpen ? 'Back to session' : 'Session settings';
     $('#session-panel').classList.toggle('is-settings', settingsOpen);
-    $('#current-question').textContent = state.question || 'Choose a question';
+    $('#current-question').textContent = $('#question-dialog').open
+      ? $('#question-form input[name=question]:checked').value : state.question || 'Choose a question';
     $('#empty-selection').hidden = state.selected.length > 0;
     $('#selection-hint').hidden = state.selected.length === 0;
     $('#selection-hint').textContent = expanded ? 'Choose an image to talk about.' : 'Select an image to discuss it.';
@@ -197,6 +202,7 @@
     dialogOpener = opener;
     dialogs.forEach(other => { if (other.open) other.close('switch'); });
     dialog.showModal();
+    if (dialog.id === 'question-dialog') document.body.classList.add('question-selecting');
     // Announce the view before its controls; do not auto-focus a notes field
     // or a close button merely because it happens to be first in the markup.
     const heading = dialog.querySelector('h2');
@@ -209,6 +215,10 @@
   dialogs.forEach(dialog => {
     dialog.querySelectorAll('[data-close]').forEach(button => button.addEventListener('click', () => closeDialog(dialog)));
     dialog.addEventListener('close', () => {
+      if (dialog.id === 'question-dialog') {
+        document.body.classList.remove('question-selecting');
+        renderPanel();
+      }
       if (dialog.id === 'discussion-dialog') {
         activeImage = null;
         document.body.classList.remove('discussion-open');
@@ -230,9 +240,14 @@
 
   function startSession() {
     state.started = true;
+    if (!state.name.trim()) state.name = defaultSessionName();
+    if (state.setupStep === 'question') { openQuestionPicker(); return; }
+    dialogs.forEach(dialog => { if (dialog.open) dialog.close('switch'); });
+    state.setupStep = 'settings';
+    expanded = true;
+    applyExpansion();
+    openSettings();
     save();
-    renderPanel();
-    openDialog($('#question-dialog'));
   }
   function requestNewSession() {
     if (state.started && (state.selected.length || state.name.trim() || state.sessionNotes)) {
@@ -253,10 +268,25 @@
   $('#new-session').addEventListener('click', requestNewSession);
   $('#confirm-new').addEventListener('click', newSession);
   $('#complete-new').addEventListener('click', newSession);
-  $('#edit-question').addEventListener('click', () => openDialog($('#question-dialog')));
+  function previewQuestion() {
+    const choice = $('#question-form input[name=question]:checked').value;
+    $('#question-preview').value = choice;
+    $('#current-question').textContent = choice;
+  }
+  function openQuestionPicker() {
+    if (expanded) { expanded = false; applyExpansion(); }
+    const choices = [...document.querySelectorAll('#question-form input[name=question]')];
+    const choice = choices.find(input => input.value === state.question) || choices[0];
+    choice.checked = true;
+    openDialog($('#question-dialog'), $('#edit-question'));
+    previewQuestion();
+  }
+  $('#edit-question').addEventListener('click', openQuestionPicker);
+  $('#question-form').addEventListener('change', previewQuestion);
   $('#question-form').addEventListener('submit', event => {
     event.preventDefault();
-    state.question = question;
+    state.question = $('#question-form input[name=question]:checked').value;
+    state.setupStep = 'complete';
     save();
     closeDialog($('#question-dialog'));
     renderPanel();
@@ -333,19 +363,38 @@
 
   $('#session-settings').addEventListener('click', () => {
     if (settingsOpen) { closeSettings(); return; }
+    openSettings();
+  });
+  function openSettings() {
     $('#settings-name').value = state.name;
     $('#client-name').value = state.client;
     $('#session-notes').value = state.sessionNotes;
     document.querySelectorAll('input[name=profile]').forEach(input => { input.checked = input.value === state.profile; });
     settingsOpen = true;
     renderPanel();
-  });
+  }
   function closeSettings() {
+    if (state.setupStep === 'settings') {
+      state.started = false;
+      expanded = false;
+      applyExpansion();
+      save();
+    }
     settingsOpen = false;
     renderPanel();
-    $('#session-settings').focus({ preventScroll: true });
+    $(state.started ? '#session-settings' : '#start-session').focus({ preventScroll: true });
   }
-  $('#settings-done').addEventListener('click', closeSettings);
+  $('#settings-done').addEventListener('click', () => {
+    if (state.setupStep !== 'settings') { closeSettings(); return; }
+    if (!state.name.trim()) state.name = defaultSessionName();
+    state.setupStep = 'question';
+    settingsOpen = false;
+    expanded = false;
+    applyExpansion();
+    save();
+    renderPanel();
+    openQuestionPicker();
+  });
   [['#settings-name','name'],['#client-name','client'],['#session-notes','sessionNotes']].forEach(([selector, key]) => {
     $(selector).addEventListener('input', event => {
       state[key] = event.target.value;
@@ -470,11 +519,20 @@
         $('#selected-images').replaceChildren();
         save(); renderPanel(); sendSelection();
         closeDialog($('#saved-dialog'));
+        resumeSetup();
       });
       list.append(button);
     });
     openDialog($('#saved-dialog'));
   });
+  function resumeSetup() {
+    if (state.started && state.setupStep === 'settings') {
+      expanded = true;
+      applyExpansion();
+      openSettings();
+    } else if (state.started && state.setupStep === 'question') openQuestionPicker();
+  }
   renderPanel();
+  resumeSetup();
   board.contentWindow.postMessage({ type: 'ii-session-connect' }, location.origin);
 })();

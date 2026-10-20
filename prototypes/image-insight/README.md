@@ -4,9 +4,11 @@ Open `/prototypes/image-insight/` through the site's static server. From the
 repository root, `python3 -m http.server 8765 --bind 127.0.0.1` serves it at
 http://127.0.0.1:8765/prototypes/image-insight/.
 
-The complete flow is: create a session → choose “What is important to you?” →
+The complete flow is: create a session → expanded settings with a dated default name → choose a question →
 select board images → expand the session → discuss an image and add notes →
-review, name and complete the session.
+review and complete the session. New sessions default to “Session [date]” using
+the current London date. Continue in settings opens the nine-question selector;
+Continue in that selector starts image selection. Unfinished setup resumes after reload.
 
 The grid is the existing `case-studies/media/image-insight-grid-interactive.html`
 component, with an opt-in `?mode=session&hints=off` view. This mode provides a
