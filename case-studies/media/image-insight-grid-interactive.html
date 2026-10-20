@@ -33,12 +33,12 @@ button:focus-visible, input:focus-visible { outline: 2px solid #18768b; outline-
 .session-mode .scene { --toolbar-bottom: 66px; }
 .session-mode .viewport { inset: 22px 18px 0; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; }
 .session-mode .photo { padding: 0; border: 0; background: transparent; cursor: pointer; }
-/* The ring is 16px wider than its image: subtract 13% of that expansion
-   from the 8px outer offset so both curves share the same corner centre.
-   Its 3px stroke then leaves an even 5px gap, including during resizing. */
-.session-mode .photo::after { content: ''; position: absolute; z-index: 1; inset: -8px; border: 3px solid transparent; border-radius: calc(13% + 5.92px); transition: border-color 160ms ease; pointer-events: none; }
-.session-mode .photo:hover::after { border-color: #ffffffbb; }
-.session-mode .photo[aria-pressed="true"]::after { border-color: #47b3cf; }
+/* One shared squircle contour clips the photo and defines its offset ring.
+   Non-scaling mask strokes keep the clear gap at 5px and the ring at 3px. */
+.session-mode .photo img { border-radius: 0; clip-path: url(#photo-squircle-clip); }
+.photo-ring { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 1; color: #fff; opacity: 0; transition: opacity 160ms ease, color 160ms ease; }
+.session-mode .photo:hover .photo-ring { opacity: .73; }
+.session-mode .photo[aria-pressed="true"] .photo-ring { color: #47b3cf; opacity: 1; }
 .session-mode .photo[aria-pressed="true"]::before { content: attr(data-selection); position: absolute; z-index: 2; right: 9px; top: 9px; display: grid; place-items: center; width: 28px; height: 28px; border: 2px solid white; border-radius: 50%; background: #47b3cf; color: white; font-size: 14px; pointer-events: none; }
 .session-mode .photo:focus-visible { outline: 3px solid #18768b; outline-offset: 4px; }
 html.session-mode[data-input="pointer"] :is(button,input[type="range"]):focus { outline: none; }
@@ -127,6 +127,9 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
 </style>
 </head>
 <body>
+<svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs>
+ <clipPath id="photo-squircle-clip" clipPathUnits="objectBoundingBox"><path d="M.5 0C.95 0 1 .05 1 .5C1 .95 .95 1 .5 1C.05 1 0 .95 0 .5C0 .05 .05 0 .5 0Z"/></clipPath>
+</defs></svg>
 <main class="scene" aria-label="Try the Image Insight grid controls">
  <button class="try-bubble" type="button" aria-label="Click to try: refresh the images"><span>Click to try</span></button>
  <div class="toolbar" role="group" aria-label="Image grid controls">
@@ -427,7 +430,17 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
     else cell.setAttribute('role', 'listitem');
     const img = document.createElement('img');
     img.alt = ''; img.draggable = false; img.decoding = 'async';
-    cell.append(img); cells.push(cell); grid.append(cell);
+    cell.append(img);
+    if (sessionMode) {
+     const ring = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+     ring.setAttribute('class', 'photo-ring');
+     ring.setAttribute('viewBox', '0 0 100 100');
+     ring.setAttribute('aria-hidden', 'true');
+     const contour = 'M50 0C95 0 100 5 100 50C100 95 95 100 50 100C5 100 0 95 0 50C0 5 5 0 50 0Z';
+     ring.innerHTML = `<defs><mask id="photo-ring-${i}" maskUnits="userSpaceOnUse" x="-100" y="-100" width="300" height="300" style="mask-type:luminance"><path d="${contour}" fill="white" stroke="white" stroke-width="16" vector-effect="non-scaling-stroke"/><path d="${contour}" fill="black" stroke="black" stroke-width="10" vector-effect="non-scaling-stroke"/></mask></defs><rect x="-100" y="-100" width="300" height="300" fill="currentColor" mask="url(#photo-ring-${i})"/>`;
+     cell.append(ring);
+    }
+    cells.push(cell); grid.append(cell);
    }
    if (countChanged && i >= renderedCount && !reduced.matches) fadeCard(cell, true);
    else if (cell.hidden || cell.inert) {
