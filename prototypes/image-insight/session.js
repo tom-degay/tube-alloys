@@ -3,6 +3,24 @@
   const $ = selector => document.querySelector(selector);
   const board = $('#image-board');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  // Fit sheets to the visible screen when the phone keyboard is open.
+  function updateVisibleScreen() {
+    const viewport = window.visualViewport;
+    const height = viewport ? viewport.height : window.innerHeight;
+    document.documentElement.style.setProperty('--app-height', `${height}px`);
+    document.documentElement.style.setProperty('--view-top', `${viewport?.offsetTop || 0}px`);
+    const boardEditing = document.activeElement === board && board.contentDocument?.activeElement?.matches('input');
+    const editing = document.activeElement?.matches('input, textarea') || boardEditing;
+    document.body.classList.toggle('board-editing', Boolean(boardEditing));
+    document.body.classList.toggle('keyboard-open', Boolean(editing && window.innerHeight - height > 120));
+  }
+  window.visualViewport?.addEventListener('resize', updateVisibleScreen);
+  window.visualViewport?.addEventListener('scroll', updateVisibleScreen);
+  window.addEventListener('resize', updateVisibleScreen);
+  document.addEventListener('focusin', updateVisibleScreen);
+  document.addEventListener('focusout', updateVisibleScreen);
+  updateVisibleScreen();
+
   const catalog = new Map();
   const dialogs = [...document.querySelectorAll('dialog')];
   const defaultSessionName = () => `Session ${new Intl.DateTimeFormat('en-GB', {
@@ -375,7 +393,10 @@
     $('#notes-field').hidden = !visible;
     $('#toggle-notes').setAttribute('aria-expanded', String(visible));
     $('#toggle-notes span').textContent = visible ? 'Hide notes' : 'Add notes';
-    if (visible && focus) $('#image-notes').focus({ preventScroll: true });
+    if (visible && focus) {
+      $('#image-notes').focus({ preventScroll: true });
+      if (matchMedia('(max-width: 600px)').matches) requestAnimationFrame(() => $('#image-notes').scrollIntoView({ block: 'nearest' }));
+    }
   }
   $('#toggle-notes').addEventListener('click', () => setNotesVisible($('#notes-field').hidden));
   $('#image-notes').addEventListener('input', event => {
