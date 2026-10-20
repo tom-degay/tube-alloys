@@ -33,7 +33,10 @@ button:focus-visible, input:focus-visible { outline: 2px solid #18768b; outline-
 .session-mode .scene { --toolbar-bottom: 66px; }
 .session-mode .viewport { inset: 22px 18px 0; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; }
 .session-mode .photo { padding: 0; border: 0; background: transparent; cursor: pointer; }
-.session-mode .photo::after { content: ''; position: absolute; z-index: 1; inset: -8px; border: 3px solid transparent; border-radius: calc(13% + 7px); transition: border-color 160ms ease; pointer-events: none; }
+/* The ring is 16px wider than its image: subtract 13% of that expansion
+   from the 8px outer offset so both curves share the same corner centre.
+   Its 3px stroke then leaves an even 5px gap, including during resizing. */
+.session-mode .photo::after { content: ''; position: absolute; z-index: 1; inset: -8px; border: 3px solid transparent; border-radius: calc(13% + 5.92px); transition: border-color 160ms ease; pointer-events: none; }
 .session-mode .photo:hover::after { border-color: #ffffffbb; }
 .session-mode .photo[aria-pressed="true"]::after { border-color: #47b3cf; }
 .session-mode .photo[aria-pressed="true"]::before { content: attr(data-selection); position: absolute; z-index: 2; right: 9px; top: 9px; display: grid; place-items: center; width: 28px; height: 28px; border: 2px solid white; border-radius: 50%; background: #47b3cf; color: white; font-size: 14px; pointer-events: none; }
