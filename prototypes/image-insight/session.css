@@ -280,3 +280,5 @@ input[aria-invalid=true]{border-color:#c73352}
 .prototype-intro a:hover{color:var(--ink)}
 .prototype-intro .intro-credit{font-size:14px;color:var(--muted);margin-top:26px}
 .prototype-intro .dialog-footer{margin-top:28px}
+
+.prototype-intro .intro-logo{display:block;width:56px;height:56px;margin:0 0 22px}
