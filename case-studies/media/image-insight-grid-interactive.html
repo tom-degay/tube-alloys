@@ -25,15 +25,15 @@ button:focus-visible, input:focus-visible { outline: 2px solid #18768b; outline-
 /* The SVG is a 1059 × 495 window into the larger image grid. */
 .canvas { position: absolute; width: 1059px; height: 495px; transform-origin: top left; }
 .viewport { position: absolute; inset: 0; overflow: visible; }
-.photos { position: absolute; left: 50%; top: 0; transform: translateX(-50%); transition: width 320ms cubic-bezier(.22,1,.36,1); }
-.photo { position: absolute; margin: 0; border-radius: 13%; transition: width 320ms cubic-bezier(.22,1,.36,1), height 320ms cubic-bezier(.22,1,.36,1), transform 320ms cubic-bezier(.22,1,.36,1); }
+.photos { position: absolute; left: 50%; top: 0; transform: translateX(-50%); transition: width 440ms cubic-bezier(.22,1,.36,1); }
+.photo { position: absolute; margin: 0; border-radius: 13%; transition: width 440ms cubic-bezier(.22,1,.36,1), height 440ms cubic-bezier(.22,1,.36,1), transform 440ms cubic-bezier(.22,1,.36,1); }
 .photo img { display: block; width: 100%; height: 100%; object-fit: cover; background: #e3e7e7; border-radius: inherit; backface-visibility: hidden; -webkit-backface-visibility: hidden; user-select: none; -webkit-user-drag: none; }
 .photo .photo-previous { position: absolute; inset: 0; pointer-events: none; }
 /* The standalone session uses the same controls and motion on a full board. */
 .session-mode .scene { --toolbar-bottom: 66px; }
 .session-mode .viewport { inset: 22px 18px 0; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; }
 .session-mode .photo { padding: 0; border: 0; background: transparent; cursor: pointer; }
-.session-mode .photo::after { content: ''; position: absolute; z-index: 1; inset: -8px; border: 3px solid transparent; border-radius: calc(13% + 8px); transition: border-color 160ms ease; pointer-events: none; }
+.session-mode .photo::after { content: ''; position: absolute; z-index: 1; inset: -8px; border: 3px solid transparent; border-radius: calc(13% + 7px); transition: border-color 160ms ease; pointer-events: none; }
 .session-mode .photo:hover::after { border-color: #ffffffbb; }
 .session-mode .photo[aria-pressed="true"]::after { border-color: #47b3cf; }
 .session-mode .photo[aria-pressed="true"]::before { content: attr(data-selection); position: absolute; z-index: 2; right: 9px; top: 9px; display: grid; place-items: center; width: 28px; height: 28px; border: 2px solid white; border-radius: 50%; background: #47b3cf; color: white; font-size: 14px; pointer-events: none; }
@@ -359,7 +359,7 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
   cell.hidden = false;
   cell.inert = !entering;
   const animation = cell.animate([{ opacity }, { opacity: entering ? 1 : 0 }], {
-   duration: entering ? 260 : 180, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'both'
+   duration: entering ? 360 : 280, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'both'
   });
   cardFades.set(cell, animation);
   animation.onfinish = () => {
