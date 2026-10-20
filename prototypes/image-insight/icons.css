@@ -1,0 +1,54 @@
+/* Motion from image-insight-icons-interactive.svg. */
+
+.icon { color:#334857; cursor:pointer; outline:none; -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+.art { pointer-events:none; }
+.tile { fill:#f1f3f4; fill-opacity:0; transition:fill-opacity 180ms ease; }
+.focus { fill:none; stroke:#567888; stroke-width:1; opacity:0; pointer-events:none; }
+.icon:focus-visible .focus { opacity:1; }
+.icon:is(:hover,:focus-visible,.is-playing) .tile { fill-opacity:1; }
+.arrow-offset,.arrow-turn,.handle,.refresh-art,.square-front,.square-middle,.square-back,.plus-art,.folder-front { transition:transform 280ms cubic-bezier(.2,.75,.25,1); }
+.icon:is(:hover,:focus-visible,.is-playing) .arrow-offset { transform:translate(var(--dx),var(--dy)); }
+.arrows[aria-expanded="false"] .arrow-turn { transform:rotate(180deg); }
+.handle { fill:#fff; transition:transform 300ms ease,fill 180ms ease; }
+.icon:is(:hover,:focus-visible,.is-playing) .handle { fill:#f1f3f4; }
+.sliders:is(:hover,:focus-visible,.is-playing) .handle-low { transform:translateY(-7px); }
+.sliders:is(:hover,:focus-visible,.is-playing) .handle-high { transform:translateY(7px); }
+.sliders.is-reset .handle { transform:translateY(0); transition:none; }
+.refresh-art { transform-origin:149.029px 50.505px; }
+.refresh:is(:hover,:focus-visible) .refresh-art { transform:rotate(18deg); }
+.refresh.is-playing .refresh-art { animation:spin 650ms cubic-bezier(.25,.1,.2,1); }
+@keyframes spin { from { transform:rotate(18deg); } to { transform:rotate(378deg); } }
+.squares:is(:hover,:focus-visible) .square-front { transform:translate(-1px,1px); }
+.squares:is(:hover,:focus-visible) .square-back { transform:translate(1px,-1px); }
+.squares.is-playing .square-front { transform:translate(-2px,2px); }
+.squares.is-playing .square-back { transform:translate(2px,-2px); }
+.trash { transition:color 180ms ease; }
+.trash:is(:hover,:focus-visible,.is-playing) { color:#ff3030; }
+.trash-lid { transform-origin:48.8px 82px; }
+.trash.is-playing .trash-lid { animation:lid 700ms ease-in-out; }
+@keyframes lid { 0%,100% { transform:none; } 35%,55% { transform:translateY(-3px) rotate( -18deg); } }
+.plus-art { transform-origin:95px 89.5px; }
+.plus:is(:hover,:focus-visible,.is-playing) .plus-art { --wobble:5deg; animation:plus-wobble 600ms ease-in-out; }
+@keyframes plus-wobble {
+  0%,100% { transform:rotate(0deg); }
+  25% { transform:rotate(calc(-1 * var(--wobble))); }
+  65% { transform:rotate(var(--wobble)); }
+}
+.folder-front { transform-origin:149px 99.0586px; }
+.folder:is(:hover,:focus-visible,.is-playing) .folder-front { transform:skewX(-12deg) scaleY(.82); }
+.folder.is-playing .art { animation:folder-bounce 600ms cubic-bezier(.25,.6,.35,1); }
+@keyframes folder-bounce {
+  0%,100% { transform:translateY(0); }
+  30% { transform:translateY(-3px); }
+  55% { transform:translateY(0); }
+  75% { transform:translateY(-1px); }
+}
+.headphones { transform-origin:200.7px 89.5px; }
+.headset:is(:hover,:focus-visible,.is-playing) .headphones { animation:wiggle 650ms ease-in-out; }
+.headset.is-playing .headphones { animation-name:wiggle-click; }
+@keyframes wiggle-click { 0%,100% { transform:rotate(0); } 25% { transform:rotate(-8deg); } 65% { transform:rotate(7deg); } }
+@keyframes wiggle { 0%,100% { transform:rotate(0); } 25% { transform:rotate(-8deg); } 65% { transform:rotate(7deg); } }
+@media (prefers-reduced-motion:reduce) {
+ .icon,.icon * { transition:none !important; animation:none !important; }
+ .icon .arrow-offset,.icon .handle,.icon .refresh-art,.icon .square-front,.icon .square-back,.icon .plus-arm,.icon .folder-front { transform:none !important; }
+}

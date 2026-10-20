@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive,noimageindex">
+  <meta name="theme-color" content="#4ac3df">
+  <title>Image Insight — session prototype</title>
+  <link rel="icon" href="/case-studies/media/image-insight-logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/prototypes/image-insight/icons.css">
+  <link rel="stylesheet" href="/prototypes/image-insight/session.css">
+  <script src="/prototypes/image-insight/icons.js" defer></script>
+  <script src="/prototypes/image-insight/session.js" defer></script>
+</head>
+<body>
+  <div class="workspace" id="workspace">
+    <nav class="rail" aria-label="Session navigation">
+      <img class="brand" src="/prototypes/image-insight/nav-logo.svg" alt="Image Insight">
+      <div class="rail-tools">
+        <button class="icon rail-button plus" data-icon="plus" id="new-session" aria-label="Create new session" title="New session"></button>
+        <button class="icon rail-button folder" data-icon="folder" id="saved-sessions" aria-label="Saved sessions" title="Saved sessions"></button>
+      </div>
+      <div class="profile"><img src="/case-studies/media/image-insight-grid/forest.webp" alt=""><span>Tom</span></div>
+    </nav>
+    <main class="board-shell" aria-label="Image board">
+      <iframe id="image-board" title="Choose images — image grid controls" src="/case-studies/media/image-insight-grid-interactive.html?mode=session&amp;hints=off"></iframe>
+    </main>
+    <div class="expand-shade" aria-hidden="true"></div>
+    <aside class="session-panel" id="session-panel" aria-label="Current session">
+      <header class="session-header">
+        <h1 id="session-title">New session</h1>
+        <div class="header-tools" id="session-tools" hidden>
+          <button class="icon icon-button arrows" data-icon="arrows" id="expand-session" aria-label="Expand session" aria-expanded="false" title="Expand session"></button>
+          <button class="icon icon-button sliders settings-toggle" id="session-settings" aria-label="Session settings" aria-controls="settings-content" aria-expanded="false" title="Session settings">
+            <svg viewBox="77 33.5 36 34" fill="none" aria-hidden="true">
+              <g class="settings-stem settings-stem-left"><path d="M87 40V61" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></g>
+              <g class="settings-stem settings-stem-middle"><path d="M95 40V61" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></g>
+              <g class="settings-stem settings-stem-right"><path d="M103 40V61" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></g>
+              <g class="settings-handles" stroke="currentColor" stroke-width="2">
+                <circle class="handle handle-low" cx="87" cy="54" r="3"/>
+                <circle class="handle handle-high" cx="95" cy="47" r="3"/>
+                <circle class="handle handle-low" cx="103" cy="54" r="3"/>
+              </g>
+            </svg>
+          </button>
+        </div>
+      </header>
+      <div class="session-body">
+        <section class="welcome" id="welcome">
+          <div class="welcome-mark" aria-hidden="true"><img src="/case-studies/media/image-insight-logo.svg" alt=""></div>
+          <h2>Make space for reflection</h2>
+          <p>Start with a question. Choose the images that speak to you, then explore what they mean.</p>
+          <button class="primary" id="start-session">Create new session</button>
+        </section>
+        <div id="session-content" hidden>
+          <button class="question-heading" id="edit-question" title="Change question"><span id="current-question">Choose a question</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 4 5 5M4 20l5-1L21 7a2 2 0 0 0-5-5L4 14z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></button>
+          <p class="selection-hint" id="selection-hint">Choose images from the board.</p>
+          <div class="empty-selection" id="empty-selection"><strong>No images selected</strong><span>Select an image from the board.</span></div>
+          <div class="selected-images" id="selected-images"></div>
+        </div>
+        <section class="settings-content" id="settings-content" aria-label="Session settings" hidden>
+          <label class="field"><span class="sr-only">Session name</span><input id="settings-name" maxlength="100" placeholder="Untitled session"></label>
+          <fieldset class="profile-options"><legend>Session profile</legend><label><input type="radio" name="profile" value="Junior"> Junior</label><label><input type="radio" name="profile" value="Teen"> Teen</label><label><input type="radio" name="profile" value="Adult" checked> Adult</label></fieldset>
+          <label class="field">Client name <span class="optional">Optional</span><input id="client-name" maxlength="100" placeholder="Enter name" autocomplete="off"></label>
+          <label class="field settings-notes">Notes<textarea id="session-notes" placeholder="Enter notes"></textarea></label>
+        </section>
+      </div>
+      <footer class="session-footer" id="session-footer" hidden>
+        <button class="primary" id="review-session" disabled>Review session</button>
+        <button class="quiet" id="back-to-board" hidden>Back to image board</button>
+        <p class="selection-count" id="selection-count" aria-live="polite">Select an image to begin</p>
+      </footer>
+      <footer class="settings-footer" id="settings-footer" hidden><button class="primary" id="settings-done">Done</button></footer>
+    </aside>
+  </div>
+
+  <dialog class="question-dialog" id="question-dialog" aria-labelledby="question-title">
+    <form method="dialog" id="question-form">
+      <div class="dialog-heading"><h2 id="question-title">Question 1</h2><button class="icon-button close" type="button" data-close aria-label="Close question picker">×</button></div>
+      <p class="muted">Choose a starting point for your conversation.</p>
+      <label class="question-choice"><input type="radio" name="question" value="What is important to you?" checked><span>What is important to you?</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></label>
+      <div class="dialog-footer"><button class="primary" type="submit">Continue</button></div>
+    </form>
+  </dialog>
+
+  <dialog class="discussion-dialog" id="discussion-dialog" aria-labelledby="discussion-title">
+    <div class="dialog-heading"><h2 id="discussion-title"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M4 4h20a1 1 0 0 1 1 1v14H10l-5 5v-5H3V5a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>Let’s discuss this image</h2><button class="icon-button close" data-close aria-label="Close image discussion">×</button></div>
+    <div class="discussion-image"><img id="discussion-image" alt=""></div>
+    <div class="notes-field" id="notes-field" hidden><label class="sr-only" for="image-notes">Notes and insights for this image</label><textarea id="image-notes" placeholder="Add notes and insights"></textarea></div>
+    <div class="dialog-footer"><button class="secondary" id="toggle-notes" aria-expanded="false" aria-controls="notes-field"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16l-4-3H4zM7 8h10M7 11h10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Add notes</span></button><button class="primary" data-close>Done</button></div>
+  </dialog>
+
+  <dialog class="review-dialog" id="review-dialog" aria-labelledby="review-title">
+    <form id="review-form" novalidate>
+      <div class="dialog-heading"><h2 id="review-title">Session review</h2><button class="icon-button close" type="button" data-close aria-label="Close session review">×</button></div>
+      <div class="review-columns">
+        <section class="review-images-section"><p class="question-number">Question 1</p><h3 id="review-question"></h3><div id="review-images" class="review-images"></div></section>
+        <section class="review-details" aria-label="Session details">
+          <label class="field">Session name<input id="review-name" maxlength="100" placeholder="Name this session" required aria-describedby="name-error"></label>
+          <p id="name-error" class="error" hidden>Give your session a name to continue.</p>
+          <label class="field">Summary <span class="optional">Optional</span><textarea id="review-summary" placeholder="Add a summary of the session"></textarea></label>
+          <div class="actions-heading"><h3>Actions</h3><span class="optional">Optional</span></div>
+          <div id="review-actions" class="review-actions"></div>
+          <button class="quiet icon plus" type="button" id="add-action"><span data-icon="plus"></span>Add action</button>
+        </section>
+      </div>
+      <div class="review-footer"><p class="storage-note">Saved in this browser.</p><button class="quiet" type="button" data-close>Go back</button><button class="primary" type="submit">Complete session</button></div>
+    </form>
+  </dialog>
+
+  <dialog class="complete-dialog" id="complete-dialog" aria-labelledby="complete-title">
+    <div class="complete-mark"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="m10 21 7 7 14-17" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <p class="question-number">Session complete</p>
+    <h2 id="complete-title"></h2>
+    <p id="complete-detail"></p>
+    <div class="complete-images" id="complete-images"></div>
+    <p class="storage-note">Your images, notes and summary are saved in this browser.</p>
+    <div class="dialog-footer"><button class="secondary" id="reopen-review">Review session</button><button class="primary" id="complete-new">New session</button></div>
+  </dialog>
+
+  <dialog class="saved-dialog" id="saved-dialog" aria-labelledby="saved-title">
+    <div class="dialog-heading"><h2 id="saved-title">Your sessions</h2><button class="icon-button close" data-close aria-label="Close saved sessions">×</button></div>
+    <div id="saved-list"></div>
+    <p class="storage-note">Sessions are stored only in this browser.</p>
+  </dialog>
+
+  <dialog class="confirm-dialog" id="confirm-dialog" aria-labelledby="confirm-title">
+    <h2 id="confirm-title">Start a new session?</h2>
+    <p>Your current session will stay in Your sessions, so you can come back to it.</p>
+    <div class="dialog-footer"><button class="secondary" data-close>Keep working</button><button class="primary" id="confirm-new">New session</button></div>
+  </dialog>
+  <p class="sr-only" id="announcement" role="status" aria-live="polite"></p>
+  <noscript><p class="noscript">Please enable JavaScript to try the session prototype.</p></noscript>
+</body>
+</html>

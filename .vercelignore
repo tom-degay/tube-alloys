@@ -11,3 +11,4 @@ AGENTS.md
 # and /case-studies/schema-flow-proof. No leading slash, so this matches at
 # any depth, including the one under case-studies/.
 *-proof.html
+prototypes/image-insight/README.md

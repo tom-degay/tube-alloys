@@ -4,7 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Image Insight — interactive image grid</title>
-<script>if (new URLSearchParams(location.search).get("hints") === "off") document.documentElement.classList.add("hide-hints");</script>
+<script>
+const gridParams = new URLSearchParams(location.search);
+if (gridParams.get("hints") === "off") document.documentElement.classList.add("hide-hints");
+if (gridParams.get("mode") === "session") document.documentElement.classList.add("session-mode");
+</script>
 <style>
 .hide-hints .try-bubble { display: none; }
 @font-face { font-family: 'Open Sans'; src: url('fonts/zonefully-open-sans-semibold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
@@ -25,6 +29,16 @@ button:focus-visible, input:focus-visible { outline: 2px solid #18768b; outline-
 .photo { position: absolute; margin: 0; border-radius: 13%; transition: width 180ms ease, height 180ms ease, transform 180ms ease; }
 .photo img { display: block; width: 100%; height: 100%; object-fit: cover; background: #e3e7e7; border-radius: inherit; backface-visibility: hidden; -webkit-backface-visibility: hidden; user-select: none; -webkit-user-drag: none; }
 .photo .photo-previous { position: absolute; inset: 0; pointer-events: none; }
+/* The standalone session uses the same controls and motion on a full board. */
+.session-mode .scene { --toolbar-bottom: 66px; }
+.session-mode .viewport { inset: 22px 18px 0; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; }
+.session-mode .photo { padding: 0; border: 0; background: transparent; cursor: pointer; }
+.session-mode .photo::after { content: ''; position: absolute; z-index: 1; inset: -8px; border: 3px solid transparent; border-radius: calc(13% + 8px); transition: border-color 160ms ease; pointer-events: none; }
+.session-mode .photo:hover::after { border-color: #ffffffbb; }
+.session-mode .photo[aria-pressed="true"]::after { border-color: #4ac3df; }
+.session-mode .photo[aria-pressed="true"]::before { content: attr(data-selection); position: absolute; z-index: 2; right: 9px; top: 9px; display: grid; place-items: center; width: 28px; height: 28px; border: 2px solid white; border-radius: 50%; background: #4ac3df; color: white; font-size: 14px; pointer-events: none; }
+.session-mode .photo:focus-visible { outline: 3px solid #18768b; outline-offset: 4px; }
+html.session-mode[data-input="pointer"] :is(button,input[type="range"]):focus { outline: none; }
 .try-bubble { position: absolute; z-index: 1; top: 22px; left: 50%; transform: translateX(-50%); min-height: 44px; padding: 10px 18px; border: 0; border-radius: 10px; background: #fff; box-shadow: 0 3px 16px #18252d30; font-family: 'Fakt Blond', system-ui, sans-serif; font-weight: 700; font-size: 16px; line-height: 24px; letter-spacing: 0; color: #0e76aa; white-space: nowrap; }
 .try-bubble > span { display: inline-block; transform: translateY(1px); }
 .undo-button > span { display: inline-block; transform: translateX(-1px); }
@@ -149,7 +163,7 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
  <p class="sr-only" role="status" aria-live="polite" aria-atomic="true">25 images in the Standard collection.</p>
 </main>
 <script>
-(() => {
+(async () => {
  'use strict';
  const scene = document.querySelector('.scene');
  const canvas = document.querySelector('.canvas');
@@ -166,6 +180,8 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
  const countInput = document.querySelector('#image-count-value');
  const status = document.querySelector('[role="status"]');
  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+ const sessionMode = document.documentElement.classList.contains('session-mode');
+ let selectedImages = [];
  const images = {
   library: 'Curved bookshelves in a library', glacier: 'A blue glacier meeting the sea', signpost: 'A signpost against a pink sunset',
   snow: 'A snowy mountain forest', mushrooms: 'Mushrooms growing on a mossy log', adventure: 'A camper van parked in a forest',
@@ -180,10 +196,43 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
   Leisure: ['library','salad','balloons','cafe','shopping','adventure','lake'],
   Urban: ['market','city-street','canal','towers','city-crossing','city-taxis','construction','city-avenue']
  };
+ const originalCollections = Object.fromEntries(Object.entries(collections).map(([name, ids]) => [name, [...ids]]));
+ if (sessionMode) {
+  try {
+   const response = await fetch('image-insight-grid/session-library.json');
+   if (!response.ok) throw new Error('Photo library unavailable');
+   const library = await response.json();
+   for (const photo of library.photos) images[photo.id] = photo.alt;
+   for (const name of Object.keys(collections)) {
+    collections[name] = [...new Set([...collections[name], ...library.collections[name]])];
+   }
+  } catch {
+   status.textContent = 'The full photo library could not load. Reload to try again.';
+  }
+ }
  const external = new Set(['city-street','city-crossing','canal','towers','city-taxis','city-avenue']);
  const source = name => `image-insight-grid/${name}.${external.has(name) ? 'jpg' : 'webp'}?v=2`;
  let collection = 'Standard';
- let deck = [...collections.Standard];
+ const sessionDecks = new Map();
+ function shuffled(list) {
+  const result = [...list];
+  for (let i = result.length - 1; i > 0; i--) {
+   const j = Math.floor(Math.random() * (i + 1));
+   [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+ }
+ function galleryState(name) {
+  if (!sessionDecks.has(name)) {
+   const first = originalCollections[name];
+   sessionDecks.set(name, {
+    deck: [...first, ...shuffled(collections[name].filter(id => !first.includes(id)))],
+    seen: new Set()
+   });
+  }
+  return sessionDecks.get(name);
+ }
+ let deck = sessionMode ? galleryState(collection).deck : [...collections.Standard];
  let count = Number(range.value);
  let revision = 0;
  let refreshTimer;
@@ -196,6 +245,48 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
  let cropHeight = 495;
  const cells = [];
  const cardFlips = new Map();
+ if (sessionMode) {
+  function setInputMode(mode, notifyParent = true) {
+   document.documentElement.dataset.input = mode;
+   if (notifyParent) parent.postMessage({ type: 'ii-session-input', mode }, location.origin);
+  }
+  setInputMode('pointer', false);
+  document.addEventListener('pointerdown', () => setInputMode('pointer'), true);
+  document.addEventListener('keydown', event => {
+   if (!['Shift', 'Control', 'Alt', 'Meta'].includes(event.key)) setInputMode('keyboard');
+  }, true);
+  scene.setAttribute('aria-label', 'Choose images for your session');
+  grid.setAttribute('role', 'group');
+  window.addEventListener('message', event => {
+   if (event.origin !== location.origin || event.source !== parent) return;
+   if (event.data?.type === 'ii-session-input' && ['pointer', 'keyboard'].includes(event.data.mode)) {
+    setInputMode(event.data.mode, false);
+   }
+   if (event.data?.type === 'ii-session-selection' && Array.isArray(event.data.ids)) {
+    selectedImages = [...new Set(event.data.ids.filter(id => Object.hasOwn(images, id)))];
+    updateSelection();
+   }
+   if (event.data?.type === 'ii-session-connect') sendCatalog();
+  });
+  grid.addEventListener('click', event => {
+   const cell = event.target.closest('.photo');
+   if (!cell || cell.dataset.flipping) return;
+   parent.postMessage({ type: 'ii-session-toggle', id: cell.dataset.image }, location.origin);
+  });
+  sendCatalog();
+ }
+ function sendCatalog() {
+  parent.postMessage({ type: 'ii-session-ready', images: Object.entries(images).map(([id, alt]) => ({ id, alt, src: new URL(source(id), location.href).href })) }, location.origin);
+ }
+ function updateSelection() {
+  if (!sessionMode) return;
+  cells.forEach(cell => {
+   const index = selectedImages.indexOf(cell.dataset.image);
+   cell.setAttribute('aria-pressed', String(index !== -1));
+   cell.dataset.selection = index + 1;
+   cell.setAttribute('aria-label', `${index === -1 ? 'Select' : 'Deselect'} ${images[cell.dataset.image]}`);
+  });
+ }
 
  function finishFlip(cell) {
   const flip = cardFlips.get(cell);
@@ -239,6 +330,13 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
  });
 
  function fit() {
+  if (sessionMode) {
+   canvas.style.cssText = 'width:100%;height:100%;left:0;top:0;transform:none';
+   cropWidth = scene.clientWidth;
+   cropHeight = scene.clientHeight;
+   render();
+   return;
+  }
   const scale = Math.max(scene.clientWidth / 1059, scene.clientHeight / 495);
   canvas.style.transform = `scale(${scale})`;
   canvas.style.left = `${(scene.clientWidth - 1059 * scale) / 2}px`;
@@ -252,6 +350,13 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
  fit();
 
  function render(animate = false, flipDirection = -1) {
+  if (sessionMode) {
+   count = Math.min(count, deck.length);
+   range.max = countInput.max = String(Math.min(30, deck.length));
+   const current = galleryState(collection);
+   current.deck = deck;
+   deck.slice(0, count).forEach(id => current.seen.add(id));
+  }
   const flips = [];
   const sceneBox = scene.getBoundingClientRect();
   const visibleCards = new Set(animate === 'flip' ? cells.filter(cell => {
@@ -259,30 +364,41 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
    const box = cell.getBoundingClientRect();
    return box.left < sceneBox.right && box.right > sceneBox.left && box.top < sceneBox.bottom && box.bottom > sceneBox.top;
   }) : []);
-  const columns = Math.ceil(Math.sqrt(count));
+  const availableColumns = Math.max(1, Math.floor((scene.clientWidth - 36) / 140));
+  const columns = sessionMode ? Math.min(Math.ceil(Math.sqrt(count)), availableColumns) : Math.ceil(Math.sqrt(count));
   // Keep the larger working area centred behind the crop and toolbar.
   // Six images use three columns: their 478px tiles are the size ceiling.
-  const size = Math.min((1494 - 2 * 30) / 3, (1494 - (columns - 1) * 30) / columns);
-  const width = columns * size + (columns - 1) * 30;
+  const gap = sessionMode ? (scene.clientWidth < 600 ? 12 : 22) : 30;
+  const area = sessionMode ? Math.max(240, scene.clientWidth - 54) : 1494;
+  const ceilingColumns = Math.min(3, availableColumns);
+  const size = sessionMode ? Math.min(478, (area - (ceilingColumns - 1) * gap) / ceilingColumns, (area - (columns - 1) * gap) / columns) : Math.min((1494 - 2 * 30) / 3, (1494 - (columns - 1) * 30) / columns);
+  const width = columns * size + (columns - 1) * gap;
   const rows = Math.ceil(count / columns);
-  const height = rows * size + (rows - 1) * 30;
-  const offset = Math.max(-size * .365, 475 - height);
+  const height = rows * size + (rows - 1) * gap;
+  const viewport = canvas.querySelector('.viewport');
+  const boardSpace = sessionMode ? toolbar.offsetTop - viewport.offsetTop - 24 : 0;
+  const offset = sessionMode ? Math.max(12, (boardSpace - height) / 2) : Math.max(-size * .365, 475 - height);
+  if (sessionMode) {
+   grid.style.height = `${Math.max(viewport.clientHeight, offset + height + scene.clientHeight - toolbar.offsetTop + 24)}px`;
+   if (height < boardSpace) viewport.scrollTop = 0;
+  }
   grid.style.width = `${width}px`;
   const positions = Array.from({ length: count }, (_, i) => {
    const row = Math.floor(i / columns);
    const rowCount = Math.min(columns, count - row * columns);
    return {
-    x: (i % columns) * (size + 30) + (columns - rowCount) * (size + 30) / 2,
-    y: row * (size + 30) + offset
+    x: (i % columns) * (size + gap) + (columns - rowCount) * (size + gap) / 2,
+    y: row * (size + gap) + offset
    };
   });
   grid.setAttribute('aria-label', `Visible images in the ${collection} collection`);
   for (let i = 0; i < count; i++) {
    let cell = cells[i];
    if (!cell) {
-    cell = document.createElement('div');
+    cell = document.createElement(sessionMode ? 'button' : 'div');
     cell.className = 'photo';
-    cell.setAttribute('role', 'listitem');
+    if (sessionMode) cell.type = 'button';
+    else cell.setAttribute('role', 'listitem');
     const img = document.createElement('img');
     img.alt = ''; img.draggable = false; img.decoding = 'async';
     cell.append(img); cells.push(cell); grid.append(cell);
@@ -322,9 +438,10 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
    const x = positions[i].x + (cropWidth - width) / 2;
    const y = positions[i].y + cropHeight - 495;
    const visible = x < cropWidth && x + size > 0 && y < cropHeight && y + size > 0;
-   cell.setAttribute('aria-hidden', String(!visible));
+   if (!sessionMode) cell.setAttribute('aria-hidden', String(!visible));
   }
   cells.slice(count).forEach(cell => { finishFlip(cell); cell.hidden = true; });
+  updateSelection();
   if (flips.length) playFlips(flips);
   range.value = String(count);
   if (!editingCount) countInput.value = String(count);
@@ -334,6 +451,20 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
   status.textContent = `${message}${fresh ? 'Refreshed. ' : ''}${count} ${count === 1 ? 'image' : 'images'} in the ${collection} collection.${fresh ? ` Selection ${revision}. Undo refresh is available.` : ''}`;
  }
  function shuffle() {
+  if (sessionMode) {
+   const current = galleryState(collection);
+   let unseen = shuffled(collections[collection].filter(id => !current.seen.has(id)));
+   if (unseen.length < count) {
+    // Finish the unseen photos before starting another cycle. Never repeat a
+    // card within a grid, or immediately reuse a card from the visible grid.
+    const visible = new Set(deck.slice(0, count));
+    unseen.push(...shuffled(collections[collection].filter(id => current.seen.has(id) && !visible.has(id))));
+    current.seen.clear();
+   }
+   const next = new Set(unseen);
+   deck = [...unseen, ...shuffled(collections[collection].filter(id => !next.has(id)))];
+   return;
+  }
   const before = [...deck];
   for (let attempt = 0; attempt < 20; attempt++) {
    deck = [...before];
@@ -437,8 +568,8 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
   if (option.dataset.collection === collection) { closeMenu(true); return; }
   hideUndo();
   collection = option.dataset.collection;
-  deck = [...collections[collection]];
-  shuffle();
+  if (sessionMode) deck = galleryState(collection).deck;
+  else { deck = [...collections[collection]]; shuffle(); }
   document.querySelector('.collection-label').textContent = collection;
   picker.setAttribute('aria-label', `Image collection: ${collection}`);
   options.forEach(item => item.setAttribute('aria-checked', String(item === option)));
@@ -473,9 +604,9 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
   if (event.key === 'Escape') { event.preventDefault(); countDirty = false; countInput.value = String(count); countInput.select(); announce(false, 'Edit cancelled. '); }
  });
  render();
- // Only small local files are used, so a theme change never depends on a
- // third-party image service. Warm the cache after the initial grid paints.
- window.addEventListener('load', () => Object.keys(images).forEach(name => { const img = new Image(); img.src = source(name); }));
+ // The larger session catalogue loads only the photos being displayed.
+ // Keep the original cropped widget's small cache warm.
+ if (!sessionMode) window.addEventListener('load', () => Object.keys(images).forEach(name => { const img = new Image(); img.src = source(name); }));
 })();
 </script>
 </body>

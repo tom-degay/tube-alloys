@@ -1,6 +1,19 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "rewrites": [
+    { "source": "/case-studies/image-insight/prototype", "destination": "/prototypes/image-insight/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/case-studies/image-insight/prototype",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive, noimageindex" }]
+    },
+    {
+      "source": "/prototypes/image-insight/:path*",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive, noimageindex" }]
+    }
+  ],
   "redirects": [
     { "source": "/case-studies/connecting-organisations", "destination": "/case-studies/feeds", "permanent": true },
     { "source": "/case-studies/validation-and-correction", "destination": "/case-studies/validation", "permanent": true },
