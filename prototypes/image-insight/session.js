@@ -42,6 +42,44 @@
   let expandedBeforeDiscussion = false;
   let activeImage = null;
   let dialogOpener = null;
+  const phoneLayout = matchMedia('(max-width:600px), (max-width:900px) and (max-height:500px)');
+  let mobileControlsOpen = false;
+  function showMobileSessionBar(visible) {
+    $('#workspace').classList.toggle('mobile-session-visible', visible);
+    $('#mobile-session-bar').inert = !visible || !phoneLayout.matches;
+  }
+  function setMobileControls(open) {
+    mobileControlsOpen = open && phoneLayout.matches;
+    $('#mobile-grid-controls').setAttribute('aria-expanded', String(mobileControlsOpen));
+    board.contentWindow.postMessage({ type: 'ii-session-controls', open: mobileControlsOpen }, location.origin);
+  }
+  function syncMobileNavigation() {
+    board.contentWindow.postMessage({ type: 'ii-session-mobile-nav', enabled: phoneLayout.matches }, location.origin);
+    $('#mobile-session-bar').inert = !phoneLayout.matches || !$('#workspace').classList.contains('mobile-session-visible');
+    if (!phoneLayout.matches) setMobileControls(false);
+  }
+  phoneLayout.addEventListener('change', syncMobileNavigation);
+  $('#mobile-grid-controls').addEventListener('click', () => setMobileControls(!mobileControlsOpen));
+  $('#mobile-refresh').addEventListener('click', () => {
+    setMobileControls(false);
+    board.contentWindow.postMessage({ type: 'ii-session-refresh' }, location.origin);
+  });
+  $('#mobile-session-bar').addEventListener('click', () => {
+    setMobileControls(false);
+    if (!state.started) startSession();
+    else if (!expanded) toggleExpansion();
+  });
+  document.addEventListener('pointerdown', event => {
+    if (!event.target.closest('#mobile-grid-controls')) setMobileControls(false);
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && mobileControlsOpen) {
+      event.preventDefault();
+      setMobileControls(false);
+      $('#mobile-grid-controls').focus({ preventScroll: true });
+    }
+  });
+
   let history = [];
   const freshSession = () => ({
     id: crypto.randomUUID(), started: false, question: '', name: defaultSessionName(), selected: [], setupStep: 'settings',
@@ -98,12 +136,24 @@
       state.selected = [...new Set(state.selected)].filter(id => catalog.has(id));
       renderPanel();
       sendSelection();
+      syncMobileNavigation();
+    }
+    if (event.data?.type === 'ii-session-scroll' && ['down','up'].includes(event.data.direction) && phoneLayout.matches && !expanded && !settingsOpen) {
+      showMobileSessionBar(event.data.direction === 'down');
+    }
+    if (event.data?.type === 'ii-session-controls-state') {
+      mobileControlsOpen = Boolean(event.data.open);
+      $('#mobile-grid-controls').setAttribute('aria-expanded', String(mobileControlsOpen));
+      if (!mobileControlsOpen && document.activeElement === board && document.documentElement.dataset.input === 'keyboard') {
+        $('#mobile-grid-controls').focus({ preventScroll: true });
+      }
     }
     if (event.data?.type === 'ii-session-toggle' && catalog.has(event.data.id)) {
       if (!state.started || !state.question) {
         startSession();
         return;
       }
+      showMobileSessionBar(true);
       const id = event.data.id;
       const selected = state.selected.includes(id);
       if (selected) state.selected = state.selected.filter(item => item !== id);
@@ -138,6 +188,10 @@
     return image;
   }
   function renderPanel() {
+    $('#workspace').classList.toggle('is-settings-open', settingsOpen);
+    $('#mobile-session-name').textContent = state.name.trim() || 'Untitled session';
+    $('#mobile-session-count').textContent = state.selected.length;
+    $('#mobile-session-bar').setAttribute('aria-label', `${state.name.trim() || 'Untitled session'}, ${state.selected.length} images selected. Open session`);
     $('#session-title').textContent = settingsOpen ? 'Settings' : state.started ? (state.name.trim() || 'Untitled session') : 'New session';
     $('#welcome').hidden = state.started || settingsOpen;
     $('#session-content').hidden = !state.started || settingsOpen;
@@ -240,8 +294,10 @@
         renderPanel();
       }
       if (dialog.returnValue !== 'switch' && !dialogs.some(other => other.open)) {
-        const target = dialogOpener?.isConnected && dialogOpener.getClientRects().length && !dialogOpener.closest('[hidden]')
-          ? dialogOpener : $('#expand-session');
+        const mobileBoard = phoneLayout.matches && !expanded && !settingsOpen;
+        const openerVisible = dialogOpener?.isConnected && dialogOpener.getClientRects().length && !dialogOpener.closest('[hidden]');
+        if (!openerVisible && mobileBoard) showMobileSessionBar(true);
+        const target = openerVisible ? dialogOpener : $(mobileBoard ? '#mobile-session-bar' : '#expand-session');
         target?.focus({ preventScroll: true });
       }
       dialog.returnValue = '';
@@ -333,10 +389,14 @@
     closeDialog($('#question-dialog'));
     renderPanel();
     announce('Question selected. Choose images from the board.');
+    if (phoneLayout.matches) { showMobileSessionBar(true); $('#mobile-session-bar').focus({ preventScroll: true }); }
   });
 
   function applyExpansion() {
     $('#workspace').classList.toggle('is-expanded', expanded);
+    $('#mobile-session-bar').setAttribute('aria-expanded', String(expanded));
+    setMobileControls(false);
+    if (!expanded) showMobileSessionBar(true);
     $('#expand-session').setAttribute('aria-expanded', String(expanded));
     $('#expand-session').setAttribute('aria-label', expanded ? 'Collapse session' : 'Expand session');
     $('#expand-session').title = expanded ? 'Collapse session' : 'Expand session';
@@ -349,6 +409,9 @@
     const before = new Map(cards.map(card => [card, card.getBoundingClientRect()]));
     expanded = !expanded;
     applyExpansion();
+    if (phoneLayout.matches) {
+      $(expanded ? '#expand-session' : '#mobile-session-bar').focus({ preventScroll: true });
+    }
     if (!reduced.matches) {
       // FLIP preserves the cards' positions while the sidebar grows into the session.
       requestAnimationFrame(() => {
@@ -371,7 +434,7 @@
       closeSettings();
     } else if (event.key === 'Escape' && expanded && !dialogs.some(dialog => dialog.open)) {
       toggleExpansion();
-      $('#expand-session').focus();
+      if (!phoneLayout.matches) $('#expand-session').focus();
     }
   });
 
@@ -416,6 +479,7 @@
     $('#session-notes').value = state.sessionNotes;
     document.querySelectorAll('input[name=profile]').forEach(input => { input.checked = input.value === state.profile; });
     settingsOpen = true;
+    setMobileControls(false);
     renderPanel();
   }
   function closeSettings() {
@@ -427,7 +491,9 @@
     }
     settingsOpen = false;
     renderPanel();
-    $(state.started ? '#session-settings' : '#start-session').focus({ preventScroll: true });
+    const returnToBoard = phoneLayout.matches && !expanded;
+    if (returnToBoard) showMobileSessionBar(true);
+    $(returnToBoard ? '#mobile-session-bar' : state.started ? '#session-settings' : '#start-session').focus({ preventScroll: true });
   }
   $('#settings-done').addEventListener('click', () => {
     if (state.setupStep !== 'settings') { closeSettings(); return; }

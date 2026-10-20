@@ -23,7 +23,7 @@
       <img class="brand" src="/prototypes/image-insight/nav-logo.svg" alt="Image Insight">
       <div class="rail-tools">
         <div class="new-session-control">
-          <button class="icon rail-button plus" data-icon="plus" id="new-session" aria-label="New session options" aria-expanded="false" aria-controls="new-session-menu" title="New session"></button>
+          <button class="icon rail-button plus" id="new-session" aria-label="New session options" aria-expanded="false" aria-controls="new-session-menu" title="New session"><span data-icon="plus" aria-hidden="true"></span><span class="rail-label">New session</span></button>
           <div class="new-session-menu" id="new-session-menu" role="group" aria-label="New session options" hidden>
             <button class="session-menu-item" id="new-session-choice">
               <span class="icon plus" aria-hidden="true"><svg viewBox="110 147 22 22" fill="none" aria-hidden="true"><g class="plus-art" style="transform-origin:121px 158px"><path d="M121 151V153C121 155.761 118.761 158 116 158H114" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" />
@@ -38,10 +38,16 @@
             </button>
           </div>
         </div>
-        <button class="icon rail-button folder" data-icon="folder" id="saved-sessions" aria-label="Saved sessions" title="Saved sessions"></button>
+        <button class="icon rail-button folder" id="saved-sessions" aria-label="Saved sessions" title="Saved sessions"><span data-icon="folder" aria-hidden="true"></span><span class="rail-label">Folder</span></button>
+        <button class="icon rail-button squares mobile-control" id="mobile-grid-controls" aria-label="Grid controls" aria-expanded="false" title="Grid controls"><span data-icon="squares" aria-hidden="true"></span><span class="rail-label">Grid</span></button>
+        <button class="icon rail-button refresh mobile-control" id="mobile-refresh" aria-label="Refresh images" title="Refresh images"><span data-icon="refresh" aria-hidden="true"></span><span class="rail-label">Refresh</span></button>
       </div>
       <div class="profile"><img src="/case-studies/media/image-insight-grid/forest.webp" alt=""><span>Tom</span></div>
     </nav>
+    <button class="mobile-session-bar" id="mobile-session-bar" aria-expanded="false" aria-controls="session-panel">
+      <span id="mobile-session-name"></span><span class="mobile-session-count" id="mobile-session-count">0</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
     <main class="board-shell" aria-label="Image board">
       <iframe id="image-board" title="Choose images — image grid controls" src="/case-studies/media/image-insight-grid-interactive.html?mode=session&amp;hints=off"></iframe>
     </main>

@@ -144,6 +144,21 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
  /* A short landscape board has room for the picker over its controls. */
  .session-mode .menu { bottom: 0; max-height: calc(100dvh - 24px); }
 }
+.session-mode.session-mobile-nav .scene { --toolbar-bottom: 12px; }
+.session-mode.session-mobile-nav .viewport { inset: 12px; }
+.session-mode.session-mobile-nav .toolbar { display: none; width: 580px; max-width: calc(100% - 24px); height: 56px; flex-wrap: nowrap; border-radius: 20px; }
+.session-mode.session-mobile-nav.session-controls-open .toolbar { display: flex; }
+.session-mode.session-mobile-nav .refresh { display: none; }
+.session-mode.session-mobile-nav .collection { flex: 0 0 112px; }
+.session-mode.session-mobile-nav .collection-toggle { height: 56px; border-radius: 20px 0 0 20px; border-right: 1px solid #d7d7d7; padding: 0 9px; gap: 5px; font-size: 14px; }
+.session-mode.session-mobile-nav .collection-toggle>svg:not(.chevron) { display: none; }
+.session-mode.session-mobile-nav .collection-toggle .chevron { width: 12px; height: 12px; margin: 0; }
+.session-mode.session-mobile-nav .density { flex: 1 1 0; height: 56px; gap: 8px; padding: 0 8px; border-top: 0; }
+.session-mode.session-mobile-nav .density-icon { display: none; }
+.session-mode.session-mobile-nav input[type="range"] { min-width: 24px; height: 44px; }
+.session-mode.session-mobile-nav .count-input { width: 44px; height: 44px; }
+.session-mode.session-mobile-nav .undo-notice { bottom: 12px; }
+.session-mode.session-mobile-nav.session-controls-open .undo-notice { bottom: 76px; }
 @keyframes session-undo-rise { from { opacity: 0; transform: translate(-50%, 12px); } to { opacity: 1; transform: translate(-50%, 0); } }
 @media (prefers-reduced-motion: reduce) {
  *, *::before, *::after { animation: none !important; transition: none !important; }
@@ -228,6 +243,12 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
  const sessionMode = document.documentElement.classList.contains('session-mode');
  const compactSessionLayout = matchMedia('(max-width: 600px), (max-width: 900px) and (max-height: 500px)');
+ const boardViewport = canvas.querySelector('.viewport');
+ let mobileNavigation = false;
+ let controlsOpen = false;
+ let lastScrollTop = 0;
+ let scrollTravel = 0;
+ let ignoredScrollTop = null;
  let selectedImages = [];
  const images = {
   library: 'Curved bookshelves in a library', glacier: 'A blue glacier meeting the sea', signpost: 'A signpost against a pink sunset',
@@ -315,8 +336,39 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
     selectedImages = [...new Set(event.data.ids.filter(id => Object.hasOwn(images, id)))];
     updateSelection();
    }
+   if (event.data?.type === 'ii-session-mobile-nav' && typeof event.data.enabled === 'boolean') {
+    mobileNavigation = event.data.enabled;
+    document.documentElement.classList.toggle('session-mobile-nav', mobileNavigation);
+    setControlsOpen(false, false);
+    lastScrollTop = boardViewport.scrollTop;
+    scrollTravel = 0;
+    fit();
+   }
+   if (event.data?.type === 'ii-session-controls' && typeof event.data.open === 'boolean') {
+    setControlsOpen(event.data.open, false);
+   }
+   if (event.data?.type === 'ii-session-refresh') {
+    setControlsOpen(false);
+    refreshImages();
+   }
    if (event.data?.type === 'ii-session-connect') sendCatalog();
   });
+  boardViewport.addEventListener('scroll', () => {
+   const top = Math.max(0, boardViewport.scrollTop);
+   const delta = top - lastScrollTop;
+   lastScrollTop = top;
+   if (ignoredScrollTop !== null && Math.abs(top - ignoredScrollTop) < 1) {
+    ignoredScrollTop = null;
+    scrollTravel = 0;
+    return;
+   }
+   ignoredScrollTop = null;
+   if (!mobileNavigation || !delta) return;
+   scrollTravel = Math.sign(delta) === Math.sign(scrollTravel) ? scrollTravel + delta : delta;
+   if (Math.abs(scrollTravel) <= 6) return;
+   parent.postMessage({ type: 'ii-session-scroll', direction: scrollTravel > 0 ? 'down' : 'up' }, location.origin);
+   scrollTravel = 0;
+  }, { passive: true });
   grid.addEventListener('click', event => {
    const cell = event.target.closest('.photo');
    if (!cell || cell.dataset.flipping) return;
@@ -326,6 +378,14 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
  }
  function sendCatalog() {
   parent.postMessage({ type: 'ii-session-ready', images: Object.entries(images).map(([id, alt]) => ({ id, alt, src: new URL(source(id), location.href).href })) }, location.origin);
+ }
+ function setControlsOpen(open, notifyParent = true) {
+  controlsOpen = mobileNavigation && open;
+  document.documentElement.classList.toggle('session-controls-open', controlsOpen);
+  if (mobileNavigation) toolbar.setAttribute('aria-hidden', String(!controlsOpen));
+  else toolbar.removeAttribute('aria-hidden');
+  if (!controlsOpen) closeMenu();
+  if (notifyParent) parent.postMessage({ type: 'ii-session-controls-state', open: controlsOpen }, location.origin);
  }
  function updateSelection() {
   if (!sessionMode) return;
@@ -445,13 +505,18 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
   const rows = Math.ceil(count / columns);
   const height = rows * size + (rows - 1) * gap;
   const viewport = canvas.querySelector('.viewport');
-  const compactSession = sessionMode && compactSessionLayout.matches;
+  const compactSession = sessionMode && (mobileNavigation || compactSessionLayout.matches);
   const boardSpace = sessionMode ? (compactSession ? viewport.clientHeight : toolbar.offsetTop - viewport.offsetTop - 24) : 0;
   const offset = sessionMode ? Math.max(12, (boardSpace - height) / 2) : Math.max(-size * .365, 475 - height);
   if (sessionMode) {
    const endPadding = compactSession ? 12 : scene.clientHeight - toolbar.offsetTop + 24;
    grid.style.height = `${Math.max(viewport.clientHeight, offset + height + endPadding)}px`;
-   if (height < boardSpace) viewport.scrollTop = 0;
+   if (height < boardSpace && viewport.scrollTop !== 0) {
+    ignoredScrollTop = 0;
+    lastScrollTop = 0;
+    scrollTravel = 0;
+    viewport.scrollTop = 0;
+   }
   }
   grid.style.width = `${width}px`;
   const positions = Array.from({ length: count }, (_, i) => {
@@ -615,7 +680,7 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
   scheduleUndoDismiss();
  }
  undoNotice.addEventListener('animationend', event => {
-  if (event.animationName === 'undo-drop') undoNotice.classList.remove('is-entering');
+  if (['undo-drop', 'session-undo-rise'].includes(event.animationName)) undoNotice.classList.remove('is-entering');
  });
  undoNotice.addEventListener('pointerenter', pauseUndoDismiss);
  undoNotice.addEventListener('pointerleave', scheduleUndoDismiss);
@@ -627,7 +692,7 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
   refresh.focus({ preventScroll: true });
   refresh.click();
  });
- refresh.addEventListener('click', () => {
+ function refreshImages() {
   closeMenu();
   previousDeck = [...deck];
   shuffle(); revision++; render('flip'); announce(true);
@@ -637,13 +702,17 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
   void refresh.offsetWidth;
   refresh.classList.add('is-playing');
   refreshTimer = setTimeout(() => refresh.classList.remove('is-playing'), 680);
- });
+ }
+ refresh.addEventListener('click', refreshImages);
  undo.addEventListener('click', event => {
   if (!previousDeck) return;
   deck = [...previousDeck];
   clearTimeout(refreshTimer);
   refresh.classList.remove('is-playing');
-  if (event.detail === 0) refresh.focus({ preventScroll: true });
+  if (event.detail === 0) {
+   const focusTarget = mobileNavigation ? cells.find(cell => !cell.hidden) : refresh;
+   focusTarget?.focus({ preventScroll: true });
+  }
   hideUndo();
   render('flip', 1); announce(false, 'Refresh undone. ');
  });
@@ -675,9 +744,11 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
  }));
  document.addEventListener('keydown', event => {
   if (event.key === 'Escape' && !menu.hidden) { event.preventDefault(); closeMenu(true); }
+  else if (event.key === 'Escape' && controlsOpen) { event.preventDefault(); setControlsOpen(false); }
  });
  document.addEventListener('pointerdown', event => {
   if (!event.target.closest('.collection')) closeMenu();
+  if (controlsOpen && !event.target.closest('.toolbar')) setControlsOpen(false);
  });
  document.addEventListener('focusin', event => {
   if (!event.target.closest('.collection')) closeMenu();
