@@ -2,7 +2,7 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/case-studies/image-insight/prototype", "destination": "/prototypes/image-insight/index.html" }
+    { "source": "/case-studies/image-insight/prototype", "destination": "/prototypes/image-insight" }
   ],
   "headers": [
     {
