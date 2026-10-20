@@ -30,7 +30,11 @@
     notes: {}, summary: '', actions: [], profile: 'Adult', client: '', sessionNotes: '',
     completed: false, updated: new Date().toISOString()
   });
-  let state = freshSession();
+  // Start the demo ready for image selection; explicit new sessions retain setup.
+  let state = {
+    ...freshSession(), started: true, setupStep: 'complete',
+    question: 'What is important to you?'
+  };
   // Prototype entries live only in memory and reset on reload or close.
   function announce(message) { $('#announcement').textContent = message; }
   function save() { state.updated = new Date().toISOString(); }
