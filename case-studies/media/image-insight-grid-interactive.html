@@ -33,7 +33,8 @@ button:focus-visible, input:focus-visible { outline: 2px solid #18768b; outline-
 .session-mode .scene { --toolbar-bottom: 66px; }
 .session-mode .viewport { inset: 22px 18px 0; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; }
 .session-mode .photo { padding: 0; border: 0; background: transparent; cursor: pointer; }
-/* One shared squircle contour clips the photo and defines its offset ring.
+/* A continuous-corner icon shape: straight sides ease into each corner.
+   The same contour clips the photo and defines its offset ring.
    Non-scaling mask strokes keep the clear gap at 5px and the ring at 3px. */
 .session-mode .photo img { border-radius: 0; clip-path: url(#photo-squircle-clip); }
 .photo-ring { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 1; color: #fff; opacity: 0; transition: opacity 160ms ease, color 160ms ease; }
@@ -128,7 +129,7 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
 </head>
 <body>
 <svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs>
- <clipPath id="photo-squircle-clip" clipPathUnits="objectBoundingBox"><path d="M.5 0C.95 0 1 .05 1 .5C1 .95 .95 1 .5 1C.05 1 0 .95 0 .5C0 .05 .05 0 .5 0Z"/></clipPath>
+ <clipPath id="photo-squircle-clip" clipPathUnits="objectBoundingBox"><path d="M0.3 0H0.7C0.80501 0 0.85751 0 0.89762 0.02044C0.9329 0.03841 0.96159 0.0671 0.97956 0.10238C1 0.14249 1 0.19499 1 0.3V0.7C1 0.80501 1 0.85751 0.97956 0.89762C0.96159 0.9329 0.9329 0.96159 0.89762 0.97956C0.85751 1 0.80501 1 0.7 1H0.3C0.19499 1 0.14249 1 0.10238 0.97956C0.0671 0.96159 0.03841 0.9329 0.02044 0.89762C0 0.85751 0 0.80501 0 0.7V0.3C0 0.19499 0 0.14249 0.02044 0.10238C0.03841 0.0671 0.0671 0.03841 0.10238 0.02044C0.14249 0 0.19499 0 0.3 0Z"/></clipPath>
 </defs></svg>
 <main class="scene" aria-label="Try the Image Insight grid controls">
  <button class="try-bubble" type="button" aria-label="Click to try: refresh the images"><span>Click to try</span></button>
@@ -436,7 +437,7 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
      ring.setAttribute('class', 'photo-ring');
      ring.setAttribute('viewBox', '0 0 100 100');
      ring.setAttribute('aria-hidden', 'true');
-     const contour = 'M50 0C95 0 100 5 100 50C100 95 95 100 50 100C5 100 0 95 0 50C0 5 5 0 50 0Z';
+     const contour = 'M30 0H70C80.501 0 85.751 0 89.762 2.044C93.29 3.841 96.159 6.71 97.956 10.238C100 14.249 100 19.499 100 30V70C100 80.501 100 85.751 97.956 89.762C96.159 93.29 93.29 96.159 89.762 97.956C85.751 100 80.501 100 70 100H30C19.499 100 14.249 100 10.238 97.956C6.71 96.159 3.841 93.29 2.044 89.762C0 85.751 0 80.501 0 70V30C0 19.499 0 14.249 2.044 10.238C3.841 6.71 6.71 3.841 10.238 2.044C14.249 0 19.499 0 30 0Z';
      ring.innerHTML = `<defs><mask id="photo-ring-${i}" maskUnits="userSpaceOnUse" x="-100" y="-100" width="300" height="300" style="mask-type:luminance"><path d="${contour}" fill="white" stroke="white" stroke-width="16" vector-effect="non-scaling-stroke"/><path d="${contour}" fill="black" stroke="black" stroke-width="10" vector-effect="non-scaling-stroke"/></mask></defs><rect x="-100" y="-100" width="300" height="300" fill="currentColor" mask="url(#photo-ring-${i})"/>`;
      cell.append(ring);
     }
