@@ -135,7 +135,7 @@
           <button class="quiet icon plus" type="button" id="add-action"><span data-icon="plus"></span>Add action</button>
         </section>
       </div>
-      <div class="review-footer"><p class="storage-note">Saved in this browser.</p><button class="quiet" type="button" data-close>Go back</button><button class="primary" type="submit">Complete session</button></div>
+      <div class="review-footer"><p class="storage-note">Temporary session — not saved.</p><button class="quiet" type="button" data-close>Go back</button><button class="primary" type="submit">Complete session</button></div>
     </form>
   </dialog>
 
@@ -145,14 +145,14 @@
     <h2 id="complete-title"></h2>
     <p id="complete-detail"></p>
     <div class="complete-images" id="complete-images"></div>
-    <p class="storage-note">Your images, notes and summary are saved in this browser.</p>
+    <p class="storage-note">Your entries will be lost when you refresh or close this page.</p>
     <div class="dialog-footer"><button class="secondary" id="reopen-review">Review session</button><button class="primary" id="complete-new">New session</button></div>
   </dialog>
 
   <dialog class="saved-dialog" id="saved-dialog" aria-labelledby="saved-title">
     <div class="dialog-heading"><h2 id="saved-title">Your sessions</h2><button class="icon-button close" data-close aria-label="Close saved sessions">×</button></div>
     <div id="saved-list"></div>
-    <p class="storage-note">Sessions are stored only in this browser.</p>
+    <p class="storage-note">Sessions are available only until you refresh or close this page.</p>
   </dialog>
 
   <dialog class="confirm-dialog" id="confirm-dialog" aria-labelledby="confirm-title">
@@ -160,6 +160,16 @@
     <p>Your current session will stay in Your sessions, so you can come back to it.</p>
     <div class="dialog-footer"><button class="secondary" data-close>Keep working</button><button class="primary" id="confirm-new">New session</button></div>
   </dialog>
+  <dialog class="prototype-intro" id="prototype-intro" aria-labelledby="prototype-intro-title">
+    <h2 id="prototype-intro-title">Image Insight prototype</h2>
+    <p class="intro-lede">Prototypes are tools for learning.</p>
+    <p>This work in progress explores Image Insight’s interactions and navigation. It’s a prototype, not a finished app: some details are still being refined, and not every feature works.</p>
+    <p>Anything you enter is temporary. It won’t be saved and will be lost when you refresh or close this page.</p>
+    <p>Have a thought or spotted something unexpected? <a href="/contact" target="_blank" rel="noopener">Send me feedback<span class="sr-only"> (opens in a new tab)</span></a>.</p>
+    <p class="intro-credit">Image Insight © Anna Malone Coaching 2026.<br><a href="https://imageinsight.app/" target="_blank" rel="noopener">Visit the Image Insight website<span class="sr-only"> (opens in a new tab)</span></a></p>
+    <div class="dialog-footer"><button class="primary" id="prototype-continue" type="button">Continue</button></div>
+  </dialog>
+
   <p class="sr-only" id="announcement" role="status" aria-live="polite"></p>
   <noscript><p class="noscript">Please enable JavaScript to try the session prototype.</p></noscript>
 </body>

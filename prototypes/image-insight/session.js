@@ -3,7 +3,6 @@
   const $ = selector => document.querySelector(selector);
   const board = $('#image-board');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const storageKey = 'image-insight-session-prototype-v1';
   const catalog = new Map();
   const dialogs = [...document.querySelectorAll('dialog')];
   const defaultSessionName = () => `Session ${new Intl.DateTimeFormat('en-GB', {
@@ -26,38 +25,15 @@
   let activeImage = null;
   let dialogOpener = null;
   let history = [];
-  let storageAvailable = true;
   const freshSession = () => ({
     id: crypto.randomUUID(), started: false, question: '', name: defaultSessionName(), selected: [], setupStep: 'settings',
     notes: {}, summary: '', actions: [], profile: 'Adult', client: '', sessionNotes: '',
     completed: false, updated: new Date().toISOString()
   });
   let state = freshSession();
-  // Only read our own small, versioned draft. Malformed or obsolete data is ignored.
-  function validSession(value) {
-    return value && typeof value.id === 'string' && Array.isArray(value.selected) &&
-      value.selected.every(id => typeof id === 'string') && value.notes &&
-      typeof value.notes === 'object' && Array.isArray(value.actions) &&
-      ['name','summary','client','sessionNotes','profile','question'].every(key => typeof value[key] === 'string');
-  }
-  try {
-    const saved = JSON.parse(localStorage.getItem(storageKey) || 'null');
-    if (validSession(saved?.current)) state = saved.current;
-    if (Array.isArray(saved?.history)) history = saved.history.filter(validSession).slice(0, 12);
-  } catch { /* A fresh session remains usable when browser storage is unavailable. */ }
-
+  // Prototype entries live only in memory and reset on reload or close.
   function announce(message) { $('#announcement').textContent = message; }
-  function save() {
-    state.updated = new Date().toISOString();
-    try {
-      localStorage.setItem(storageKey, JSON.stringify({ current: state, history }));
-    } catch {
-      storageAvailable = false;
-      document.querySelectorAll('.storage-note').forEach(el => {
-        el.textContent = 'Browser storage is unavailable. Keep this tab open to retain your session.';
-      });
-    }
-  }
+  function save() { state.updated = new Date().toISOString(); }
   function archiveCurrent() {
     if (!state.started) return;
     history = [structuredClone(state), ...history.filter(item => item.id !== state.id)].slice(0, 12);
@@ -530,7 +506,7 @@
     $('#complete-detail').textContent = `${count} ${count === 1 ? 'image' : 'images'} explored${notes ? ` · ${notes} with notes` : ''}${state.actions.length ? ` · ${state.actions.length} ${state.actions.length === 1 ? 'action' : 'actions'}` : ''}`;
     $('#complete-images').replaceChildren(...state.selected.slice(0, 6).map(makeImage));
     openDialog($('#complete-dialog'));
-    announce(storageAvailable ? 'Session complete and saved in this browser.' : 'Session complete. Keep this tab open to retain it.');
+    announce('Session complete. Entries are temporary and will be lost when you refresh or close this page.');
   });
 
   $('#saved-sessions').addEventListener('click', () => {
@@ -576,7 +552,11 @@
       openSettings();
     } else if (state.started && state.setupStep === 'question') openQuestionPicker();
   }
+  $('#prototype-continue').addEventListener('click', () => closeDialog($('#prototype-intro')));
+  $('#prototype-intro').addEventListener('close', () => {
+    $('#new-session').focus({ preventScroll: true });
+  });
   renderPanel();
-  resumeSetup();
+  openDialog($('#prototype-intro'), $('#new-session'));
   board.contentWindow.postMessage({ type: 'ii-session-connect' }, location.origin);
 })();
