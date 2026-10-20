@@ -118,6 +118,18 @@
     }
   });
 
+  let selectionRingId = 0;
+  function makeSelectionRing() {
+    const id = `session-photo-ring-${++selectionRingId}`;
+    const contour = $('#session-photo-contour').getAttribute('d');
+    const ring = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    ring.setAttribute('class', 'selected-photo-ring');
+    ring.setAttribute('viewBox', '0 0 100 100');
+    ring.setAttribute('aria-hidden', 'true');
+    // Fixed strokes preserve the same 5px clear gap at every card size.
+    ring.innerHTML = `<defs><mask id="${id}" maskUnits="userSpaceOnUse" x="-100" y="-100" width="300" height="300" style="mask-type:luminance"><path d="${contour}" fill="white" stroke="white" stroke-width="16" vector-effect="non-scaling-stroke"/><path d="${contour}" fill="black" stroke="black" stroke-width="10" vector-effect="non-scaling-stroke"/></mask></defs><rect x="-100" y="-100" width="300" height="300" fill="currentColor" mask="url(#${id})"/>`;
+    return ring;
+  }
   function makeImage(id) {
     const image = document.createElement('img');
     const photo = catalog.get(id);
@@ -163,7 +175,7 @@
         const button = document.createElement('button');
         button.className = 'image-button';
         button.setAttribute('aria-label', `Discuss ${catalog.get(id).alt.toLowerCase()}`);
-        button.append(makeImage(id));
+        button.append(makeImage(id), makeSelectionRing());
         button.addEventListener('click', () => openDiscussion(id, button));
         const badge = document.createElement('span');
         badge.className = 'number-badge';
