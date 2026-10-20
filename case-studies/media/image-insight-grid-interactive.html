@@ -25,8 +25,8 @@ button:focus-visible, input:focus-visible { outline: 2px solid #18768b; outline-
 /* The SVG is a 1059 × 495 window into the larger image grid. */
 .canvas { position: absolute; width: 1059px; height: 495px; transform-origin: top left; }
 .viewport { position: absolute; inset: 0; overflow: visible; }
-.photos { position: absolute; left: 50%; top: 0; transform: translateX(-50%); transition: width 180ms ease; }
-.photo { position: absolute; margin: 0; border-radius: 13%; transition: width 180ms ease, height 180ms ease, transform 180ms ease; }
+.photos { position: absolute; left: 50%; top: 0; transform: translateX(-50%); transition: width 320ms cubic-bezier(.22,1,.36,1); }
+.photo { position: absolute; margin: 0; border-radius: 13%; transition: width 320ms cubic-bezier(.22,1,.36,1), height 320ms cubic-bezier(.22,1,.36,1), transform 320ms cubic-bezier(.22,1,.36,1); }
 .photo img { display: block; width: 100%; height: 100%; object-fit: cover; background: #e3e7e7; border-radius: inherit; backface-visibility: hidden; -webkit-backface-visibility: hidden; user-select: none; -webkit-user-drag: none; }
 .photo .photo-previous { position: absolute; inset: 0; pointer-events: none; }
 /* The standalone session uses the same controls and motion on a full board. */
@@ -35,8 +35,8 @@ button:focus-visible, input:focus-visible { outline: 2px solid #18768b; outline-
 .session-mode .photo { padding: 0; border: 0; background: transparent; cursor: pointer; }
 .session-mode .photo::after { content: ''; position: absolute; z-index: 1; inset: -8px; border: 3px solid transparent; border-radius: calc(13% + 8px); transition: border-color 160ms ease; pointer-events: none; }
 .session-mode .photo:hover::after { border-color: #ffffffbb; }
-.session-mode .photo[aria-pressed="true"]::after { border-color: #4ac3df; }
-.session-mode .photo[aria-pressed="true"]::before { content: attr(data-selection); position: absolute; z-index: 2; right: 9px; top: 9px; display: grid; place-items: center; width: 28px; height: 28px; border: 2px solid white; border-radius: 50%; background: #4ac3df; color: white; font-size: 14px; pointer-events: none; }
+.session-mode .photo[aria-pressed="true"]::after { border-color: #47b3cf; }
+.session-mode .photo[aria-pressed="true"]::before { content: attr(data-selection); position: absolute; z-index: 2; right: 9px; top: 9px; display: grid; place-items: center; width: 28px; height: 28px; border: 2px solid white; border-radius: 50%; background: #47b3cf; color: white; font-size: 14px; pointer-events: none; }
 .session-mode .photo:focus-visible { outline: 3px solid #18768b; outline-offset: 4px; }
 html.session-mode[data-input="pointer"] :is(button,input[type="range"]):focus { outline: none; }
 .try-bubble { position: absolute; z-index: 1; top: 22px; left: 50%; transform: translateX(-50%); min-height: 44px; padding: 10px 18px; border: 0; border-radius: 10px; background: #fff; box-shadow: 0 3px 16px #18252d30; font-family: 'Fakt Blond', system-ui, sans-serif; font-weight: 700; font-size: 16px; line-height: 24px; letter-spacing: 0; color: #0e76aa; white-space: nowrap; }
@@ -245,6 +245,8 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
  let cropHeight = 495;
  const cells = [];
  const cardFlips = new Map();
+ const cardFades = new Map();
+ let renderedCount = null;
  if (sessionMode) {
   function setInputMode(mode, notifyParent = true) {
    document.documentElement.dataset.input = mode;
@@ -349,6 +351,25 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
  new ResizeObserver(fit).observe(scene);
  fit();
 
+ // Retarget fades from their current opacity when the slider changes direction.
+ function fadeCard(cell, entering) {
+  const prior = cardFades.get(cell);
+  const opacity = cell.hidden ? 0 : Number(getComputedStyle(cell).opacity);
+  if (prior) prior.cancel();
+  cell.hidden = false;
+  cell.inert = !entering;
+  const animation = cell.animate([{ opacity }, { opacity: entering ? 1 : 0 }], {
+   duration: entering ? 260 : 180, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'both'
+  });
+  cardFades.set(cell, animation);
+  animation.onfinish = () => {
+   if (cardFades.get(cell) !== animation) return;
+   cell.hidden = !entering;
+   cardFades.delete(cell);
+   animation.cancel();
+  };
+ }
+
  function render(animate = false, flipDirection = -1) {
   if (sessionMode) {
    count = Math.min(count, deck.length);
@@ -357,6 +378,7 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
    current.deck = deck;
    deck.slice(0, count).forEach(id => current.seen.add(id));
   }
+  const countChanged = renderedCount !== null && renderedCount !== count;
   const flips = [];
   const sceneBox = scene.getBoundingClientRect();
   const visibleCards = new Set(animate === 'flip' ? cells.filter(cell => {
@@ -397,13 +419,20 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
    if (!cell) {
     cell = document.createElement(sessionMode ? 'button' : 'div');
     cell.className = 'photo';
+    cell.hidden = true;
     if (sessionMode) cell.type = 'button';
     else cell.setAttribute('role', 'listitem');
     const img = document.createElement('img');
     img.alt = ''; img.draggable = false; img.decoding = 'async';
     cell.append(img); cells.push(cell); grid.append(cell);
    }
-   cell.hidden = false;
+   if (countChanged && i >= renderedCount && !reduced.matches) fadeCard(cell, true);
+   else if (cell.hidden || cell.inert) {
+    cardFades.get(cell)?.cancel();
+    cardFades.delete(cell);
+    cell.hidden = false;
+   }
+   cell.inert = false;
    // A tile keeps its photograph through count and viewport changes.
    // Only Refresh, Undo or a collection change can replace its image.
    const name = deck[i % deck.length];
@@ -440,7 +469,17 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
    const visible = x < cropWidth && x + size > 0 && y < cropHeight && y + size > 0;
    if (!sessionMode) cell.setAttribute('aria-hidden', String(!visible));
   }
-  cells.slice(count).forEach(cell => { finishFlip(cell); cell.hidden = true; });
+  cells.slice(count).forEach(cell => {
+   finishFlip(cell);
+   if (cell.hidden || cell.inert) return;
+   if (countChanged && !reduced.matches) fadeCard(cell, false);
+   else {
+    cardFades.get(cell)?.cancel();
+    cardFades.delete(cell);
+    cell.hidden = true;
+   }
+  });
+  renderedCount = count;
   updateSelection();
   if (flips.length) playFlips(flips);
   range.value = String(count);
