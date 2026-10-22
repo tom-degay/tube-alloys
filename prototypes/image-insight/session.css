@@ -418,3 +418,13 @@ input[aria-invalid=true]{border-color:#c73352}
  @media(prefers-reduced-motion:no-preference){.is-expanded .session-panel{animation:mobile-session-in 300ms var(--ease)}}
 }
 @keyframes mobile-session-in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+/* Keep breathing room between photos and their offset selection rings. */
+.selected-images{gap:32px}
+.is-expanded .selected-images{gap:40px}
+@media (max-width:600px), (max-width:900px) and (max-height:500px){
+ .is-expanded .selected-images{gap:32px}
+}
+@media (min-width:901px){
+ .rail{top:var(--edge);bottom:var(--edge)}
+}

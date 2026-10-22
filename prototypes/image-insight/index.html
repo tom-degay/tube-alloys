@@ -24,9 +24,10 @@
   <meta name="twitter:image:alt" content="Image Insight interactive prototype: a grid of photographs with a lake image selected. Choose an image. Explore a different perspective.">
   <link rel="icon" href="/case-studies/media/image-insight-logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/prototypes/image-insight/icons.css">
-  <link rel="stylesheet" href="/prototypes/image-insight/session.css?v=20261020-min-width">
+  <link rel="stylesheet" href="/prototypes/image-insight/session.css?v=20261022-rail-alignment">
+  <link rel="stylesheet" href="/prototypes/image-insight/theme.css?v=20261023-final">
   <script src="/prototypes/image-insight/icons.js" defer></script>
-  <script src="/prototypes/image-insight/session.js" defer></script>
+  <script src="/prototypes/image-insight/session.js?v=20261022-selection-badge" defer></script>
 </head>
 <body>
   <svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs>
@@ -58,14 +59,14 @@
         <button class="icon rail-button squares mobile-control" id="mobile-grid-controls" aria-label="Grid controls" aria-expanded="false" title="Grid controls"><span data-icon="squares" aria-hidden="true"></span><span class="rail-label">Grid</span></button>
         <button class="icon rail-button refresh mobile-control" id="mobile-refresh" aria-label="Refresh images" title="Refresh images"><span data-icon="refresh" aria-hidden="true"></span><span class="rail-label">Refresh</span></button>
       </div>
-      <div class="profile"><img src="/case-studies/media/image-insight-grid/forest.webp" alt=""><span>Tom</span></div>
+      <div class="profile"><button class="theme-toggle" data-theme-toggle aria-label="Dark mode" aria-pressed="false" title="Switch to dark mode"><svg class="theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.3 15.4A8.7 8.7 0 0 1 8.6 3.7 8.7 8.7 0 1 0 20.3 15.4Z"/></svg><svg class="theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.4 1.4m11.2 11.2L19 19M5 19l1.4-1.4M17.6 6.4 19 5"/></svg></button><img src="/case-studies/media/image-insight-grid/forest.webp" alt=""><span>Tom</span></div>
     </nav>
     <button class="mobile-session-bar" id="mobile-session-bar" aria-expanded="false" aria-controls="session-panel">
       <span id="mobile-session-name"></span><span class="mobile-session-count" id="mobile-session-count">0</span>
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
     <main class="board-shell" aria-label="Image board">
-      <iframe id="image-board" title="Choose images — image grid controls" src="/case-studies/media/image-insight-grid-interactive.html?mode=session&amp;hints=off&amp;v=20261020-toolbar-selected"></iframe>
+      <iframe id="image-board" title="Choose images — image grid controls" src="/case-studies/media/image-insight-grid-interactive.html?mode=session&amp;hints=off&amp;v=20261023-curated"></iframe>
     </main>
     <div class="expand-shade" aria-hidden="true"></div>
     <aside class="session-panel" id="session-panel" aria-label="Current session">
@@ -101,6 +102,7 @@
           <div class="selected-images" id="selected-images"></div>
         </div>
         <section class="settings-content" id="settings-content" aria-label="Session settings" hidden>
+          <div class="mobile-appearance"><span>Dark mode</span><button class="theme-toggle" data-theme-toggle aria-label="Dark mode" aria-pressed="false" title="Switch to dark mode"><svg class="theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.3 15.4A8.7 8.7 0 0 1 8.6 3.7 8.7 8.7 0 1 0 20.3 15.4Z"/></svg><svg class="theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.4 1.4m11.2 11.2L19 19M5 19l1.4-1.4M17.6 6.4 19 5"/></svg></button></div>
           <label class="field"><span class="sr-only">Session name</span><input id="settings-name" maxlength="100" placeholder="Untitled session"></label>
           <fieldset class="profile-options"><legend>Session profile</legend><label><input type="radio" name="profile" value="Junior"> Junior</label><label><input type="radio" name="profile" value="Teen"> Teen</label><label><input type="radio" name="profile" value="Adult" checked> Adult</label></fieldset>
           <label class="field">Client name <span class="optional">Optional</span><input id="client-name" maxlength="100" placeholder="Enter name" autocomplete="off"></label>
@@ -110,7 +112,6 @@
       <footer class="session-footer" id="session-footer" hidden>
         <button class="primary" id="review-session" disabled>Review session</button>
         <button class="quiet" id="back-to-board" hidden>Back to image board</button>
-        <p class="selection-count" id="selection-count" aria-live="polite">Select an image to begin</p>
       </footer>
       <footer class="settings-footer" id="settings-footer" hidden><button class="primary" id="settings-done">Done</button></footer>
     </aside>

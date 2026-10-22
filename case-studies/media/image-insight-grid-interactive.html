@@ -37,6 +37,8 @@ button:focus-visible, input:focus-visible { outline: 2px solid #18768b; outline-
 .session-mode .scene { --toolbar-bottom: 66px; }
 .session-mode .viewport { inset: 22px 18px 0; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; }
 .session-mode .photo { padding: 0; border: 0; background: transparent; cursor: pointer; }
+/* Avoid a pale underpaint showing through the antialiased photo edge. */
+.session-mode .photo img { background: transparent; border: 0; box-shadow: none; }
 /* A continuous-corner icon shape: straight sides ease into each corner.
    The same contour clips the photo and defines its offset ring.
    Non-scaling mask strokes keep the clear gap at 5px and the ring at 3px. */
@@ -44,7 +46,7 @@ button:focus-visible, input:focus-visible { outline: 2px solid #18768b; outline-
 .photo-ring { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 1; color: #fff; opacity: 0; transition: opacity 160ms ease, color 160ms ease; }
 .session-mode .photo:hover .photo-ring { color: #47b3cf; opacity: .5; }
 .session-mode .photo[aria-pressed="true"] .photo-ring { color: #47b3cf; opacity: 1; }
-.session-mode .photo[aria-pressed="true"]::before { content: attr(data-selection); position: absolute; z-index: 2; right: 9px; top: 9px; display: grid; place-items: center; width: 28px; height: 28px; border: 2px solid white; border-radius: 50%; background: #47b3cf; color: white; font-size: 14px; pointer-events: none; }
+.session-mode .photo[aria-pressed="true"]::before { content: attr(data-selection); position: absolute; z-index: 2; right: max(9px, 6%); top: max(9px, 6%); display: grid; place-items: center; width: 28px; height: 28px; border: 2px solid white; border-radius: 50%; background: #47b3cf; color: white; font-size: 14px; pointer-events: none; }
 .session-mode .photo:focus-visible { outline: 3px solid #18768b; outline-offset: 4px; }
 html.session-mode[data-input="pointer"] :is(button,input[type="range"]):focus { outline: none; }
 .try-bubble { position: absolute; z-index: 1; top: 22px; left: 50%; transform: translateX(-50%); min-height: 44px; padding: 10px 18px; border: 0; border-radius: 10px; background: #fff; box-shadow: 0 3px 16px #18252d30; font-family: 'Fakt Blond', system-ui, sans-serif; font-weight: 700; font-size: 16px; line-height: 24px; letter-spacing: 0; color: #0e76aa; white-space: nowrap; }
@@ -180,6 +182,31 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
  input[type="range"]::-moz-range-thumb { background: ButtonFace; border: 2px solid ButtonText; box-shadow: none; }
  button:focus-visible, input:focus-visible { outline-color: Highlight; }
 }
+
+/* Session appearance is supplied by the prototype; the case-study preview stays light. */
+html.session-mode[data-theme=dark], .session-mode[data-theme=dark] body { background:#1c1c1c; color:#ededed; color-scheme:dark; }
+.session-mode[data-theme=dark] { --grid-line:#444444; }
+.session-mode[data-theme=dark] :is(.toolbar,.undo-notice)::before { background:rgb(36 36 36 / 90%); }
+.session-mode[data-theme=dark] :is(.control:hover,.control:focus-visible,.undo-button:hover,.undo-button:focus-visible,.option:hover,.option:focus-visible) { background:rgb(255 255 255 / 10%); color:#ededed; }
+.session-mode[data-theme=dark] :is(.refresh,.collection-toggle,.density,.undo-button,.count-input) { border-color:var(--grid-line); }
+.session-mode[data-theme=dark] .control[aria-expanded=true] { background:rgb(255 255 255 / 10%); }
+.session-mode[data-theme=dark] .count-input { background:#131313; color:#ededed; }
+.session-mode[data-theme=dark] .menu { background:#242424f5; border-color:var(--grid-line); }
+.session-mode[data-theme=dark] :is(button,input):focus-visible { outline-color:#d0d0d0; }
+.session-mode[data-theme=dark] .photo:is(:hover,[aria-pressed=true]) .photo-ring { color:#72e0fc; }
+.session-mode[data-theme=dark] .photo[aria-pressed=true]::before { background:#285661; color:#b4f0ff; border:0; }
+.session-mode[data-theme=dark] input[type=range]::-webkit-slider-runnable-track { background:#131313; }
+.session-mode[data-theme=dark] input[type=range]::-webkit-slider-thumb { background:#e5e5e5; border-color:#f4f4f4; }
+.session-mode[data-theme=dark] input[type=range]::-moz-range-track { background:#131313; }
+.session-mode[data-theme=dark] input[type=range]::-moz-range-thumb { background:#e5e5e5; border-color:#f4f4f4; }
+
+
+.session-mode[data-theme=dark] :is(.toolbar,.undo-notice,.menu) { box-shadow:0 3px 18px #0003; }
+/* Keep the dark toolbar quiet against the photographs. */
+.session-mode[data-theme=dark] :is(.toolbar,.undo-notice,.menu,.count-input){color:#b7b7b7}
+.session-mode[data-theme=dark] :is(.control:hover,.control:focus-visible,.undo-button:hover,.undo-button:focus-visible,.option:hover,.option:focus-visible){color:#b7b7b7}
+.session-mode[data-theme=dark] input[type=range]::-webkit-slider-thumb{background:#b7b7b7;border-color:#c5c5c5}
+.session-mode[data-theme=dark] input[type=range]::-moz-range-thumb{background:#b7b7b7;border-color:#c5c5c5}
 </style>
 </head>
 <body>
@@ -266,14 +293,15 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
   Urban: ['market','city-street','canal','towers','city-crossing','city-taxis','construction','city-avenue']
  };
  const originalCollections = Object.fromEntries(Object.entries(collections).map(([name, ids]) => [name, [...ids]]));
- if (sessionMode) {
+ {
   try {
-   const response = await fetch('image-insight-grid/session-library.json');
+   const response = await fetch('image-insight-grid/session-library.json?v=20261023-curated');
    if (!response.ok) throw new Error('Photo library unavailable');
    const library = await response.json();
    for (const photo of library.photos) images[photo.id] = photo.alt;
    for (const name of Object.keys(collections)) {
-    collections[name] = [...new Set([...collections[name], ...library.collections[name]])];
+    collections[name] = [...new Set(library.collections[name])];
+    originalCollections[name] = library.opening?.[name] || collections[name].slice(0, 24);
    }
   } catch {
    status.textContent = 'The full photo library could not load. Reload to try again.';
@@ -301,7 +329,7 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
   }
   return sessionDecks.get(name);
  }
- let deck = sessionMode ? galleryState(collection).deck : [...collections.Standard];
+ let deck = galleryState(collection).deck;
  let count = Number(range.value);
  let revision = 0;
  let refreshTimer;
@@ -330,6 +358,9 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
   grid.setAttribute('role', 'group');
   window.addEventListener('message', event => {
    if (event.origin !== location.origin || event.source !== parent) return;
+   if (event.data?.type === 'ii-session-theme' && ['light', 'dark'].includes(event.data.theme)) {
+    document.documentElement.dataset.theme = event.data.theme;
+   }
    if (event.data?.type === 'ii-session-input' && ['pointer', 'keyboard'].includes(event.data.mode)) {
     setInputMode(event.data.mode, false);
    }
@@ -519,7 +550,7 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
  }
 
  function render(animate = false, flipDirection = -1) {
-  if (sessionMode) {
+  {
    count = Math.min(count, deck.length);
    range.max = countInput.max = String(Math.min(30, deck.length));
    const current = galleryState(collection);
@@ -539,7 +570,7 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
   // Keep the larger working area centred behind the crop and toolbar.
   // Six images use three columns: their 478px tiles are the size ceiling.
   // Each selection ring extends 8px beyond its image; 22px leaves 6px clear.
-  const gap = sessionMode ? 22 : 30;
+  const gap = sessionMode ? 32 : 30;
   const area = sessionMode ? Math.max(240, scene.clientWidth - 54) : 1494;
   const ceilingColumns = Math.min(3, availableColumns);
   const size = sessionMode ? Math.min(478, (area - (ceilingColumns - 1) * gap) / ceilingColumns, (area - (columns - 1) * gap) / columns) : Math.min((1494 - 2 * 30) / 3, (1494 - (columns - 1) * 30) / columns);
@@ -656,30 +687,16 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
   status.textContent = `${message}${fresh ? 'Refreshed. ' : ''}${count} ${count === 1 ? 'image' : 'images'} in the ${collection} collection.${fresh ? ` Selection ${revision}. Undo refresh is available.` : ''}`;
  }
  function shuffle() {
-  if (sessionMode) {
-   const current = galleryState(collection);
-   let unseen = shuffled(collections[collection].filter(id => !current.seen.has(id)));
-   if (unseen.length < count) {
-    // Finish the unseen photos before starting another cycle. Never repeat a
-    // card within a grid, or immediately reuse a card from the visible grid.
-    const visible = new Set(deck.slice(0, count));
-    unseen.push(...shuffled(collections[collection].filter(id => current.seen.has(id) && !visible.has(id))));
-    current.seen.clear();
-   }
-   const next = new Set(unseen);
-   deck = [...unseen, ...shuffled(collections[collection].filter(id => !next.has(id)))];
-   return;
+  const current = galleryState(collection);
+  let unseen = shuffled(collections[collection].filter(id => !current.seen.has(id)));
+  if (unseen.length < count) {
+   // Finish unseen photos before starting another cycle; avoid the visible grid.
+   const visible = new Set(deck.slice(0, count));
+   unseen.push(...shuffled(collections[collection].filter(id => current.seen.has(id) && !visible.has(id))));
+   current.seen.clear();
   }
-  const before = [...deck];
-  for (let attempt = 0; attempt < 20; attempt++) {
-   deck = [...before];
-   for (let i = deck.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [deck[i], deck[j]] = [deck[j], deck[i]];
-   }
-   if (deck.every((image, i) => image !== before[i])) return;
-  }
-  deck = [...before.slice(1), before[0]];
+  const next = new Set(unseen);
+  deck = [...unseen, ...shuffled(collections[collection].filter(id => !next.has(id)))];
  }
  function closeMenu(returnFocus = false) {
   menu.hidden = true;
@@ -777,8 +794,7 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
   if (option.dataset.collection === collection) { closeMenu(true); return; }
   hideUndo();
   collection = option.dataset.collection;
-  if (sessionMode) deck = galleryState(collection).deck;
-  else { deck = [...collections[collection]]; shuffle(); }
+  deck = galleryState(collection).deck;
   document.querySelector('.collection-label').textContent = collection;
   picker.setAttribute('aria-label', `Image collection: ${collection}`);
   options.forEach(item => item.setAttribute('aria-checked', String(item === option)));
@@ -815,9 +831,7 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
   if (event.key === 'Escape') { event.preventDefault(); countDirty = false; countInput.value = String(count); countInput.select(); announce(false, 'Edit cancelled. '); }
  });
  render();
- // The larger session catalogue loads only the photos being displayed.
- // Keep the original cropped widget's small cache warm.
- if (!sessionMode) window.addEventListener('load', () => Object.keys(images).forEach(name => { const img = new Image(); img.src = source(name); }));
+ // Load only displayed photos from the curated catalogue.
 })();
 </script>
 </body>

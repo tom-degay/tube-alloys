@@ -20,7 +20,7 @@ against the frame and the frame's image catalogue.
 `image-insight-icons-interactive.svg`. All photographs and fonts are local.
 There is no build step or third-party dependency.
 
-The session-only `session-library.json` adds 386 curated photographs, stored as
+The session-only `session-library.json` offers 301 curated photographs, stored as
 1,200 × 1,200 WebP files alongside the original grid images. Source photographs
 smaller than that were excluded. Photographer names, original dimensions and
 individual Unsplash links are recorded in `session-photo-credits.csv` in that
@@ -56,3 +56,17 @@ name validation, summary and actions; completion; draft restoration after reload
 Refinements checked at 1440 × 1000 and 390 × 844: 120 distinct cards across four
 batches in each gallery; refresh/undo/refresh; settings and discussion focus;
 keyboard focus; review focus; and vertical centring with one image.
+
+### Art direction — October 2026
+
+The prototype library is selected for atmospheric light, considered composition,
+texture and visual ambiguity, aiming for a photography art book rather than
+a generic stock library. 85 weaker images (including the pub interior) are
+excluded; their files and attribution remain available for reference.
+`session-curation.json` records the exclusions. `session-library.json` defines
+the approved collections and deliberate opening sequences. Shared case-study
+preview images are unaffected.
+
+The Standard gallery has 301 photographs; Nature 146, Leisure 127 and Urban 126.
+Some images belong to multiple appropriate themes. Every gallery still has
+at least 120 distinct images for an initial grid of 30 and three refreshes.

@@ -3,6 +3,23 @@
   const $ = selector => document.querySelector(selector);
   const board = $('#image-board');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  // Appearance is independent of session data and is shared with the image board.
+  let theme = new URLSearchParams(location.search).get('theme') === 'dark' ? 'dark' : 'light';
+  function applyTheme() {
+    document.documentElement.dataset.theme = theme;
+    document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#1c1c1c' : '#47b3cf';
+    document.querySelectorAll('[data-theme-toggle]').forEach(button => {
+      button.setAttribute('aria-pressed', String(theme === 'dark'));
+      button.title = `Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`;
+    });
+    board.contentWindow.postMessage({ type: 'ii-session-theme', theme }, location.origin);
+  }
+  document.querySelectorAll('[data-theme-toggle]').forEach(button => button.addEventListener('click', () => {
+    theme = theme === 'dark' ? 'light' : 'dark';
+    applyTheme();
+  }));
+  applyTheme();
+
   // Fit sheets to the visible screen when the phone keyboard is open.
   function updateVisibleScreen() {
     const viewport = window.visualViewport;
@@ -137,6 +154,7 @@
       renderPanel();
       sendSelection();
       syncMobileNavigation();
+      applyTheme();
     }
     if (event.data?.type === 'ii-session-scroll' && ['down','up'].includes(event.data.direction) && phoneLayout.matches && !expanded && !settingsOpen) {
       showMobileSessionBar(event.data.direction === 'down');
@@ -211,7 +229,6 @@
     $('#selection-hint').hidden = state.selected.length === 0;
     $('#selection-hint').textContent = expanded ? 'Choose an image to talk about.' : 'Select an image to discuss it.';
     $('#review-session').disabled = state.selected.length === 0;
-    $('#selection-count').textContent = state.selected.length ? `${state.selected.length} ${state.selected.length === 1 ? 'image' : 'images'} selected` : 'Select an image to begin';
     const container = $('#selected-images');
     // Keep existing card nodes so adding or removing an image never reanimates the whole list.
     [...container.children].forEach(card => {
@@ -235,7 +252,9 @@
         button.append(badge);
         const indicator = document.createElement('span');
         indicator.className = 'note-indicator';
-        indicator.textContent = 'Notes added';
+        indicator.setAttribute('aria-label', 'Notes added');
+        indicator.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 3v-3a2 2 0 0 1-2-2V7a2 2 0 0 1 3-2Z" fill="currentColor"/><path d="M6 9h12M6 12h9" stroke="#354856" stroke-width="1.5" stroke-linecap="round"/></svg>';
+
         button.append(indicator);
         const remove = document.createElement('button');
         remove.className = 'icon icon-button trash remove-image';
