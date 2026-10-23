@@ -621,13 +621,16 @@ html.slider-dragging{user-select:none;-webkit-user-select:none}
   // Mobile outer margins are 24px, wider than the 20px gutters.
   const area = mobileNavigation ? scene.clientWidth - 48 : sessionMode ? Math.max(240, scene.clientWidth - 54) : 1494;
   const ceilingColumns = mobileNavigation ? columns : Math.min(3, availableColumns);
-  const size = sessionMode ? Math.min(478, (area - (ceilingColumns - 1) * gap) / ceilingColumns, (area - (columns - 1) * gap) / columns) : Math.min((1494 - 2 * 30) / 3, (1494 - (columns - 1) * 30) / columns);
-  const width = columns * size + (columns - 1) * gap;
-  const rows = Math.ceil(count / columns);
-  const height = rows * size + (rows - 1) * gap;
   const viewport = canvas.querySelector('.viewport');
   const compactSession = sessionMode && (mobileNavigation || compactSessionLayout.matches);
   const boardSpace = sessionMode ? (compactSession ? viewport.clientHeight : toolbar.offsetTop - viewport.offsetTop - 24) : 0;
+  const rows = Math.ceil(count / columns);
+  // Small desktop selections fit above the controls, with generous breathing room.
+  const desktopFit = sessionMode && !mobileNavigation && !compactSession && count <= 9;
+  const heightLimit = desktopFit ? Math.max(1, (boardSpace - 64 - (rows - 1) * gap) / rows) : Infinity;
+  const size = sessionMode ? Math.min(478, heightLimit, (area - (ceilingColumns - 1) * gap) / ceilingColumns, (area - (columns - 1) * gap) / columns) : Math.min((1494 - 2 * 30) / 3, (1494 - (columns - 1) * 30) / columns);
+  const width = columns * size + (columns - 1) * gap;
+  const height = rows * size + (rows - 1) * gap;
   const offset = sessionMode ? Math.max(12, (boardSpace - height) / 2) : Math.max(-size * .365, 475 - height);
   if (sessionMode) {
    const endPadding = mobileNavigation ? 92 : compactSession ? 12 : scene.clientHeight - toolbar.offsetTop + 24;
