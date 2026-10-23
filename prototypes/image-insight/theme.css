@@ -39,8 +39,8 @@ html[data-theme=dark]{color-scheme:dark;--accent:#72e0fc;--accent-ink:#72e0fc;--
 [data-theme=dark] .primary{background:var(--teal-soft);color:var(--accent)}
 [data-theme=dark] .primary:not(:disabled):hover{background:var(--teal-hover);color:#b4f0ff;box-shadow:none}
 [data-theme=dark] .primary:disabled{background:rgb(255 255 255 / 15%);color:rgb(255 255 255 / 40%);opacity:1}
-[data-theme=dark] .secondary{background:transparent;color:var(--accent);border-color:var(--accent)}
-[data-theme=dark] .secondary:hover{background:var(--teal-soft)}
+[data-theme=dark] .secondary{background:transparent;color:var(--muted);border-color:var(--line)}
+[data-theme=dark] .secondary:hover{background:transparent;color:#d0d0d0;border-color:#707070}
 [data-theme=dark] :is(input:not([type=radio]),textarea){background:var(--page);color:var(--ink);border-color:var(--line)}
 [data-theme=dark] :is(input,textarea)::placeholder{color:var(--muted)}
 [data-theme=dark] .settings-content :is(input:not([type=radio]),textarea){background:var(--soft);border-color:transparent}
@@ -116,11 +116,11 @@ html:not([data-theme=dark]) .profile > span{color:#fff}
 /* Image actions sit in opposite right-hand corners. */
 .selected-card .remove-image{top:auto;bottom:max(3px,calc(6% - 6px));padding:0}
 .selected-card .image-button{cursor:default}
-.expand-image{position:absolute;z-index:3;right:max(3px,calc(6% - 6px));top:max(3px,calc(6% - 6px));width:44px;height:44px;padding:0;display:grid;place-items:center;border:0;background:transparent;color:#fff;isolation:isolate;opacity:0;pointer-events:none;transition:opacity 160ms}
+.expand-image{position:absolute;z-index:3;left:50%;top:50%;transform:translate(-50%,-50%);width:64px;height:64px;padding:0;display:grid;place-items:center;border:0;background:transparent;color:#fff;isolation:isolate;opacity:0;pointer-events:none;transition:opacity 160ms}
 .expand-image::before{content:'';position:absolute;inset:6px;border-radius:50%;corner-shape:round;background:rgb(0 0 0 / 50%);z-index:-1;transition:background 160ms}
 .expand-image:hover::before{background:rgb(0 0 0 / 70%)}
 .selected-card:is(:hover,:focus-within) .expand-image{opacity:1;pointer-events:auto}
-.expand-image svg{width:28px;height:28px}
+.expand-image svg{width:40px;height:40px}
 .expand-image .arrow-turn{transform:rotate(180deg)}
 .expand-image .arrow-offset{transition:transform 280ms cubic-bezier(.2,.75,.25,1)}
 .expand-image:is(:hover,:focus-visible) .arrow-offset{transform:translate(var(--dx),var(--dy))}
@@ -176,3 +176,21 @@ html:not([data-theme=dark]) .profile > span{color:#fff}
 [data-theme=dark] .rail-button:is(.plus,.folder) svg path{stroke-width:1.8}
 [data-theme=dark] .rail-button.squares svg path{stroke-width:.2}
 [data-theme=dark] .rail-button.refresh .refresh-art{filter:url(#toolbar-lighten-stroke)}
+
+/* Session image actions share the same bottom-left anchor and circle size. */
+.selected-card .image-button{cursor:pointer}
+.selected-card .number-badge{z-index:4;left:max(9px,6%);bottom:max(9px,6%);width:32px;min-width:32px;height:32px;border:0;font-size:15px;background:rgb(0 0 0 / 50%);color:#fff}
+.selected-card .remove-image{left:max(3px,calc(6% - 6px));right:auto;bottom:max(3px,calc(6% - 6px));top:auto;width:44px;height:44px;transform:translateX(0);opacity:0;pointer-events:none;transition:transform 280ms var(--ease),opacity 180ms,width 180ms var(--ease)}
+.selected-card:is(:hover,:focus-within) .remove-image{transform:translateX(38px);opacity:1;pointer-events:auto;transition-delay:500ms,500ms,0ms}
+.selected-card .remove-image.is-confirming{width:96px;transform:translateX(38px);pointer-events:auto;transition-delay:0ms}
+@media(hover:none),(pointer:coarse){
+ .selected-card .remove-image,.selected-card:is(:hover,:focus-within) .remove-image{visibility:visible;opacity:1;pointer-events:auto;transform:translateX(38px);transition-delay:0ms}
+}
+@media(prefers-reduced-motion:reduce){.selected-card .remove-image{transition:none}}
+.session-footer #discuss-images{width:100%;grid-column:1/-1}
+
+@media(min-width:901px){
+ .session-footer{width:100%;max-width:250px;align-self:center}
+ .is-expanded .session-footer{width:clamp(180px,24vw,330px);max-width:100%}
+}
+@media(min-width:1600px){.workspace:not(.is-expanded) .session-footer{max-width:280px}}

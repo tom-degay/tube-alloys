@@ -24,10 +24,10 @@
   <meta name="twitter:image:alt" content="Image Insight interactive prototype: a grid of photographs with a lake image selected. Choose an image. Explore a different perspective.">
   <link rel="icon" href="/case-studies/media/image-insight-logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/prototypes/image-insight/icons.css">
-  <link rel="stylesheet" href="/prototypes/image-insight/session.css?v=20261023-nine-notes">
-  <link rel="stylesheet" href="/prototypes/image-insight/theme.css?v=20261023-toolbar-weight">
+  <link rel="stylesheet" href="/prototypes/image-insight/session.css?v=20261023-session-actions">
+  <link rel="stylesheet" href="/prototypes/image-insight/theme.css?v=20261023-session-actions">
   <script src="/prototypes/image-insight/icons.js" defer></script>
-  <script src="/prototypes/image-insight/session.js?v=20261023-nine-notes" defer></script>
+  <script src="/prototypes/image-insight/session.js?v=20261023-session-actions" defer></script>
 </head>
 <body>
 <div class="profile-menu" id="profile-menu" role="group" aria-label="Profile menu" hidden>
@@ -108,7 +108,7 @@
 <path d="M1.0928 13.6597L1.6392 10.9277L3.8248 13.1133L1.0928 13.6597Z" fill="#979797"/>
 <rect x="1" y="16" width="13" height="2" rx="1" fill="#979797"/>
 </svg></button>
-          <p class="selection-hint" id="selection-hint">Choose images from the board.</p>
+          <p class="selection-hint" id="selection-hint" hidden></p>
           <div class="empty-selection" id="empty-selection"><span class="empty-selection-label">Select an image from the board</span><button class="secondary empty-board-button" id="empty-back-to-board" type="button">Select an image from the board</button></div>
           <div class="selected-images" id="selected-images"></div>
         </div>
@@ -121,7 +121,8 @@
         </section>
       </div>
       <footer class="session-footer" id="session-footer" hidden>
-        <button class="primary" id="review-session" disabled>Review session</button>
+        <button class="primary" id="discuss-images" disabled>Discuss your images</button>
+        <button class="secondary" id="review-session" disabled>Review session</button>
         <button class="quiet" id="back-to-board" hidden><svg viewBox="-4 -4 24 24" fill="currentColor" aria-hidden="true"><rect x="0" y="0" width="4" height="4" rx="1"/><rect x="6" y="0" width="4" height="4" rx="1"/><rect x="12" y="0" width="4" height="4" rx="1"/><rect x="0" y="6" width="4" height="4" rx="1"/><rect x="6" y="6" width="4" height="4" rx="1"/><rect x="12" y="6" width="4" height="4" rx="1"/><rect x="0" y="12" width="4" height="4" rx="1"/><rect x="6" y="12" width="4" height="4" rx="1"/><rect x="12" y="12" width="4" height="4" rx="1"/></svg><span>Image board</span></button>
       </footer>
       <footer class="settings-footer" id="settings-footer" hidden><button class="primary" id="settings-done">Done</button></footer>

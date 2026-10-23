@@ -339,9 +339,10 @@
     $('#current-question').textContent = $('#question-dialog').open
       ? $('#question-form input[name=question]:checked').value : state.question || 'Choose a question';
     $('#empty-selection').hidden = state.selected.length > 0;
-    $('#selection-hint').hidden = state.selected.length === 0;
-    $('#selection-hint').textContent = expanded ? 'Choose an image to talk about.' : 'Expand an image to discuss it.';
+    $('#selection-hint').hidden = true;
+    $('#selection-hint').textContent = '';
     $('#review-session').disabled = state.selected.length === 0;
+    $('#discuss-images').disabled = state.selected.length === 0;
     const container = $('#selected-images');
     // Keep existing card nodes so adding or removing an image never reanimates the whole list.
     [...container.children].forEach(card => {
@@ -354,24 +355,11 @@
         card = document.createElement('article');
         card.className = 'selected-card';
         card.dataset.id = id;
-        const button = document.createElement('div');
+        const button = document.createElement('button');
+        button.type = 'button';
         button.className = 'image-button';
         button.append(makeImage(id), makeSelectionRing());
-        const toggleImageControls = () => {
-          if (!phoneLayout.matches) return;
-          const show = !card.classList.contains('controls-visible');
-          container.querySelectorAll('.selected-card').forEach(item => {
-            const visible = item === card && show;
-            item.classList.toggle('controls-visible', visible);
-            item.querySelector('.image-button').setAttribute('aria-expanded', String(visible));
-          });
-        };
-        button.addEventListener('click', toggleImageControls);
-        button.addEventListener('keydown', event => {
-          if (phoneLayout.matches && ['Enter', ' '].includes(event.key)) {
-            event.preventDefault(); toggleImageControls();
-          }
-        });
+        button.addEventListener('click', () => openDiscussion(id, button));
         const expand = document.createElement('button');
         expand.className = 'expand-image';
         expand.type = 'button';
@@ -397,14 +385,7 @@
         card.append(button, expand, remove);
       }
       const imageControl = card.querySelector('.image-button');
-      if (phoneLayout.matches) {
-        imageControl.setAttribute('role', 'button');
-        imageControl.tabIndex = 0;
-        imageControl.setAttribute('aria-label', `Show controls for ${catalog.get(id).alt.toLowerCase()}`);
-        imageControl.setAttribute('aria-expanded', String(card.classList.contains('controls-visible')));
-      } else {
-        ['role', 'tabindex', 'aria-label', 'aria-expanded'].forEach(attribute => imageControl.removeAttribute(attribute));
-      }
+      imageControl.setAttribute('aria-label', `Discuss ${catalog.get(id).alt.toLowerCase()}`);
       card.querySelector('.number-badge').textContent = index + 1;
       card.querySelector('.note-indicator').hidden = !String(state.notes[id] || '').trim();
       card.classList.toggle('is-active', activeImage === id);
@@ -641,7 +622,7 @@
     $('#expand-session').title = expanded ? 'Collapse session' : 'Expand session';
     $('#back-to-board').hidden = !expanded;
     $('#image-board').inert = expanded;
-    $('#selection-hint').textContent = expanded ? 'Choose an image to talk about.' : 'Expand an image to discuss it.';
+    $('#selection-hint').textContent = '';
   }
   function toggleExpansion() {
     if (activeImage) { closeDiscussion(); return; }
@@ -845,17 +826,23 @@
     swipeStart = null;
   }
   swipeHero.addEventListener('pointerdown', event => {
-    if (event.pointerType === 'mouse' || !event.isPrimary || state.selected.length < 2 || swipeSettling) return;
+    if (event.pointerType === 'mouse' || !event.isPrimary || (!phoneLayout.matches && state.selected.length < 2) || swipeSettling) return;
     swipeHero.getAnimations().forEach(animation => animation.cancel());
     resetDiscussionDrag();
-    swipeStart = {id:event.pointerId,x:event.clientX,y:event.clientY,dx:0,horizontal:false,direction:0};
+    swipeStart = {id:event.pointerId,x:event.clientX,y:event.clientY,dx:0,dy:0,horizontal:false,vertical:false,direction:0};
     swipeHero.setPointerCapture(event.pointerId);
   });
   swipeHero.addEventListener('pointermove', event => {
     if (!swipeStart || swipeStart.id !== event.pointerId) return;
     const dx = event.clientX - swipeStart.x, dy = event.clientY - swipeStart.y;
+    if (swipeStart.vertical) { swipeStart.dy = dy; return; }
     if (!swipeStart.horizontal) {
-      if (Math.abs(dy) > 10 && Math.abs(dy) > Math.abs(dx)) { resetDiscussionDrag(); return; }
+      if (Math.abs(dy) > 10 && Math.abs(dy) > Math.abs(dx) * 1.5) {
+        if (phoneLayout.matches && dy > 0) { swipeStart.vertical = true; swipeStart.dy = dy; }
+        else resetDiscussionDrag();
+        return;
+      }
+      if (state.selected.length < 2) return;
       if (Math.abs(dx) < 8 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
       swipeStart.horizontal = true;
     }
@@ -888,7 +875,12 @@
   });
   swipeHero.addEventListener('pointerup', event => {
     if (!swipeStart || swipeStart.id !== event.pointerId) return;
-    const {dx,horizontal} = swipeStart;
+    const {dx,dy,horizontal,vertical} = swipeStart;
+    if (vertical) {
+      resetDiscussionDrag();
+      if (dy > 64) closeDiscussion();
+      return;
+    }
     const commit = horizontal && Math.abs(dx) > Math.min(64, swipeHero.clientWidth * .2);
     const direction = dx < 0 ? 1 : -1;
     if (!swipePreview || reduced.matches) {
@@ -1131,6 +1123,9 @@
     renderActions();
     openDialog($('#review-dialog'));
   }
+  $('#discuss-images').addEventListener('click', () => {
+    if (state.selected.length) openDiscussion(state.selected[0], $('#discuss-images'));
+  });
   $('#review-session').addEventListener('click', openReview);
   $('#reopen-review').addEventListener('click', openReview);
   $('#review-name').addEventListener('input', event => {
