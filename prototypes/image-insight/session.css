@@ -60,9 +60,9 @@ h3{font-size:20px;line-height:1.5;font-weight:600}
 .selected-card{position:relative;min-width:0;animation:card-arrive 300ms var(--ease) both}
 .selected-card .image-button{width:100%;aspect-ratio:1;display:block;padding:0;border:0;background:transparent;border-radius:0;position:relative}
 .selected-card img{display:block;width:100%;height:100%;border-radius:0;object-fit:cover;clip-path:url(#session-photo-clip)}
-.selected-photo-ring{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:1;color:var(--accent);opacity:0;transition:opacity 180ms}
+.selected-photo-ring{display:none;position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:1;color:var(--accent);opacity:0;transition:opacity 180ms}
 .selected-card .image-button:hover .selected-photo-ring,.selected-card.is-active .selected-photo-ring{opacity:1}
-.number-badge{position:absolute;z-index:2;bottom:-12px;left:-12px;min-width:32px;height:32px;display:grid;place-items:center;border-radius:50%;background:var(--accent);color:white;border:2px solid white;font-size:15px;font-weight:600;pointer-events:none}
+.number-badge{position:absolute;z-index:2;bottom:-6px;left:-6px;min-width:32px;height:32px;display:grid;place-items:center;border-radius:50%;background:var(--accent);color:white;border:2px solid white;font-size:15px;font-weight:600;pointer-events:none}
 .remove-image{position:absolute;right:7px;top:7px;width:34px;height:34px;border-radius:10px;background:#fffffff2;opacity:0;transition:opacity 150ms}
 .remove-image svg{width:30px;height:30px}
 .selected-card:is(:hover,:focus-within) .remove-image{opacity:1}
@@ -207,7 +207,7 @@ input[aria-invalid=true]{border-color:#c73352}
  .selection-hint{display:none}
  .selected-images{display:flex;gap:20px;margin:4px 0;padding:9px 12px 14px;max-width:none;width:auto;overflow:auto}
  .selected-card{width:81px;min-width:81px}
- .number-badge{width:25px;height:25px;min-width:25px;left:-9px;bottom:-9px;font-size:11px}
+ .number-badge{width:25px;height:25px;min-width:25px;left:-3px;bottom:-3px;font-size:11px}
  .note-indicator{font-size:8px;bottom:6px;right:5px;padding:2px 4px}
  .remove-image{width:26px;height:26px;right:3px;top:3px}.remove-image svg{width:24px;height:24px}
  .session-footer{padding-top:3px;gap:4px}.session-footer .primary{min-height:37px;padding:7px;font-size:14px}
@@ -307,7 +307,7 @@ input[aria-invalid=true]{border-color:#c73352}
  .question-heading svg{display:block;width:16px;height:16px;opacity:.5;margin:0 0 0 auto}
  .selected-images{flex-wrap:nowrap;align-items:center;gap:20px;margin:0 -4px;padding:9px 12px 12px;width:calc(100% + 8px);height:88px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;scroll-snap-type:x proximity}
  .selected-card{width:62px;min-width:62px;flex:none;scroll-snap-align:start}
- .number-badge{min-width:23px;width:23px;height:23px;font-size:11px;left:-8px;bottom:-7px}
+ .number-badge{min-width:23px;width:23px;height:23px;font-size:11px;left:-2px;bottom:-1px}
  .workspace:not(.is-expanded) .session-panel:not(.is-settings) .remove-image{display:none}
  .empty-selection{height:76px;min-height:76px;font-size:13px;gap:0;padding:12px;border-radius:16px;align-content:center}
  .session-footer{display:flex;align-items:center;gap:12px;padding-top:6px}

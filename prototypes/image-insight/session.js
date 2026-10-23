@@ -257,7 +257,7 @@
       ? $('#question-form input[name=question]:checked').value : state.question || 'Choose a question';
     $('#empty-selection').hidden = state.selected.length > 0;
     $('#selection-hint').hidden = state.selected.length === 0;
-    $('#selection-hint').textContent = expanded ? 'Choose an image to talk about.' : 'Select an image to discuss it.';
+    $('#selection-hint').textContent = expanded ? 'Choose an image to talk about.' : 'Expand an image to discuss it.';
     $('#review-session').disabled = state.selected.length === 0;
     const container = $('#selected-images');
     // Keep existing card nodes so adding or removing an image never reanimates the whole list.
@@ -479,7 +479,7 @@
     $('#expand-session').title = expanded ? 'Collapse session' : 'Expand session';
     $('#back-to-board').hidden = !expanded;
     $('#image-board').inert = expanded;
-    $('#selection-hint').textContent = expanded ? 'Choose an image to talk about.' : 'Select an image to discuss it.';
+    $('#selection-hint').textContent = expanded ? 'Choose an image to talk about.' : 'Expand an image to discuss it.';
   }
   function toggleExpansion() {
     if (activeImage) { closeDiscussion(); return; }
