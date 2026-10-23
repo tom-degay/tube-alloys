@@ -189,6 +189,7 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
 html.session-mode[data-theme=dark], .session-mode[data-theme=dark] body { background:#1c1c1c; color:#ededed; color-scheme:dark; }
 .session-mode[data-theme=dark] { --grid-line:#444444; }
 .session-mode[data-theme=dark] :is(.toolbar,.undo-notice)::before { background:rgb(36 36 36 / 90%); }
+.session-mode[data-theme=dark] .toolbar::before { box-shadow:inset 0 0 0 1px rgb(255 255 255 / 12%); }
 .session-mode[data-theme=dark] :is(.control:hover,.control:focus-visible,.undo-button:hover,.undo-button:focus-visible,.option:hover,.option:focus-visible) { background:rgb(255 255 255 / 10%); color:#ededed; }
 .session-mode[data-theme=dark] :is(.refresh,.collection-toggle,.density,.undo-button,.count-input) { border-color:var(--grid-line); }
 .session-mode[data-theme=dark] .control[aria-expanded=true] { background:rgb(255 255 255 / 10%); }
@@ -227,6 +228,8 @@ html.session-mode[data-theme=dark], .session-mode[data-theme=dark] body { backgr
 .session-mode .photo-select:focus-visible{outline:3px solid #18768b;outline-offset:4px}
 @media(prefers-reduced-motion:reduce){.session-mode .photo-expand svg{transition:none}}
 .session-mode.session-mobile-nav .photo-expand{display:none}
+.session-mode .photo[data-selected="true"]::before{display:none}
+.session-mode.session-mobile-nav .photo[data-selected="true"] .photo-expand{display:grid;opacity:1;pointer-events:auto}
 </style>
 </head>
 <body>
@@ -606,9 +609,9 @@ html.session-mode[data-theme=dark], .session-mode[data-theme=dark] body { backgr
   // Keep the larger working area centred behind the crop and toolbar.
   // Six images use three columns: their 478px tiles are the size ceiling.
   // Each selection ring extends 8px beyond its image; 22px leaves 6px clear.
-  const gap = sessionMode ? 32 : 30;
-  // Mobile outer margins are 40px, wider than the 32px gutters.
-  const area = mobileNavigation ? scene.clientWidth - 80 : sessionMode ? Math.max(240, scene.clientWidth - 54) : 1494;
+  const gap = mobileNavigation ? 20 : sessionMode ? 32 : 30;
+  // Mobile outer margins are 24px, wider than the 20px gutters.
+  const area = mobileNavigation ? scene.clientWidth - 48 : sessionMode ? Math.max(240, scene.clientWidth - 54) : 1494;
   const ceilingColumns = Math.min(3, availableColumns);
   const size = sessionMode ? Math.min(478, (area - (ceilingColumns - 1) * gap) / ceilingColumns, (area - (columns - 1) * gap) / columns) : Math.min((1494 - 2 * 30) / 3, (1494 - (columns - 1) * 30) / columns);
   const width = columns * size + (columns - 1) * gap;

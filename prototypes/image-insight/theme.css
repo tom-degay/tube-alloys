@@ -149,3 +149,6 @@ html:not([data-theme=dark]) .profile > span{color:#fff}
  .mobile-profile img{display:block;width:32px;height:32px;object-fit:cover;border:2px solid #fff;border-radius:50%;corner-shape:round}
  [data-theme=dark] .mobile-profile img{border-color:#6f6f6f}
 }
+
+/* A quiet edge separates the floating session bar from the dark board. */
+[data-theme=dark] .mobile-session-bar::before{box-shadow:inset 0 0 0 1px rgb(255 255 255 / 12%)}
