@@ -660,3 +660,13 @@ input:not([type=radio]):not([type=checkbox]):not([type=range]):focus,textarea:fo
  #review-form>.review-columns{flex:none;overflow:visible}
  #review-form>.review-footer{position:static;margin-top:20px}
 }
+
+#discussion-dialog.notes-settling :is(.discussion-image,.discussion-actions){transition:none}
+
+/* Keep review fields inside the keyboard's visual viewport on phones. */
+@media(max-width:600px),(max-width:900px) and (max-height:500px){
+ #review-dialog{top:var(--view-top,0px);bottom:auto;height:calc(var(--app-height,100dvh) + 1px);max-height:none;overscroll-behavior:contain;scroll-padding-top:76px;scroll-padding-bottom:16px}
+ #review-dialog::backdrop{background:var(--surface,#fff)}
+ .keyboard-open #review-dialog{padding-bottom:16px}
+ .keyboard-open #review-dialog textarea{min-height:80px;max-height:max(80px,calc(var(--app-height,100dvh) - 120px));scroll-margin-block:16px}
+}

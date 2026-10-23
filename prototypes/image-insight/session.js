@@ -55,6 +55,23 @@
   let keyboardBaseline = window.visualViewport?.height || window.innerHeight;
   let keyboardWidth = window.innerWidth;
   let keyboardVisible = false;
+  let reviewFocusFrame = 0;
+  function keepReviewFieldVisible() {
+    if (reviewFocusFrame) return;
+    reviewFocusFrame = requestAnimationFrame(() => {
+      reviewFocusFrame = 0;
+      if (!matchMedia('(max-width:600px), (max-width:900px) and (max-height:500px)').matches) return;
+      const dialog = $('#review-dialog'), field = document.activeElement;
+      if (!dialog.open || !field?.matches('input,textarea') || !dialog.contains(field)) return;
+      const viewport = window.visualViewport;
+      const bounds = dialog.getBoundingClientRect(), rect = field.getBoundingClientRect();
+      const heading = dialog.querySelector('.dialog-heading').getBoundingClientRect();
+      const top = Math.max(bounds.top, viewport?.offsetTop || 0, heading.bottom) + 12;
+      const bottom = Math.min(bounds.bottom, (viewport?.offsetTop || 0) + (viewport?.height || innerHeight)) - 16;
+      if (rect.top < top) dialog.scrollTop += rect.top - top;
+      else if (rect.bottom > bottom) dialog.scrollTop += Math.min(rect.bottom-bottom, rect.top-top);
+    });
+  }
   function updateVisibleScreen() {
     const viewport = window.visualViewport;
     const height = viewport ? viewport.height : window.innerHeight;
@@ -76,6 +93,7 @@
     const keyboardOpen = Boolean((editing || keyboardVisible) && keyboardOcclusion > (keyboardVisible ? 80 : 120));
     keyboardVisible = keyboardOpen;
     document.body.classList.toggle('keyboard-open', keyboardOpen);
+    keepReviewFieldVisible();
     if (keyboardOpen && document.activeElement?.id === 'image-notes') {
       const dialog = document.getElementById('discussion-dialog');
       dialog.scrollTop = 0;
@@ -872,14 +890,14 @@
     const dx = event.clientX - swipeStart.x, dy = event.clientY - swipeStart.y;
     if (swipeStart.vertical) {
       swipeStart.dy = dy;
-      if (!reduced.matches) swipeHero.style.transform = `translateY(${Math.max(0, dy)}px)`;
+      if (!reduced.matches) swipeHero.style.transform = `translateY(${dy > 0 ? dy : Math.max(-48, dy * .35)}px)`;
       return;
     }
     if (!swipeStart.horizontal) {
       if (Math.abs(dy) > 10 && Math.abs(dy) > Math.abs(dx) * 1.5) {
-        if (phoneLayout.matches && dy > 0) {
+        if (phoneLayout.matches) {
           swipeStart.vertical = true; swipeStart.dy = dy;
-          if (!reduced.matches) swipeHero.style.transform = `translateY(${dy}px)`;
+          if (!reduced.matches) swipeHero.style.transform = `translateY(${dy > 0 ? dy : Math.max(-48, dy * .35)}px)`;
         }
         else resetDiscussionDrag();
         return;
@@ -910,6 +928,12 @@
     if (!swipeStart || swipeStart.id !== event.pointerId) return;
     const {dx,dy,horizontal,vertical} = swipeStart;
     if (vertical) {
+      if (dy < -64) {
+        resetDiscussionDrag();
+        setNotesVisible(true);
+        $('#image-notes').focus({preventScroll:true});
+        return;
+      }
       if (dy > 64) {
         // Retain the dragged position while history returns to the previous view.
         swipeStart = null;
@@ -988,9 +1012,53 @@
   $('#discussion-dialog').addEventListener('cancel', event => { event.preventDefault(); closeDiscussion(); });
   let notesAnimation;
   let notesContentAnimation;
+  let notesCloseGeneration = 0;
+  let notesClosing = false;
   function setNotesVisible(visible, focus = true) {
     const surface = $('#discussion-dialog .discussion-actions');
     const field = $('#notes-field');
+    const dialog = $('#discussion-dialog');
+    if (!visible && focus && phoneLayout.matches && !reduced.matches && dialog.classList.contains('has-notes')) {
+      if (notesClosing) return;
+      notesClosing = true;
+      const generation = ++notesCloseGeneration;
+      notesAnimation?.cancel(); notesContentAnimation?.cancel();
+      notesContentAnimation = field.animate([{opacity:1},{opacity:0}],{duration:160,fill:'forwards',easing:'ease-out'});
+      $('#toggle-notes').focus({preventScroll:true});
+      // Let the keyboard finish retracting before measuring the final position.
+      const started = performance.now();
+      let previousHeight = window.visualViewport?.height || innerHeight, stableFrames = 0;
+      const settle = () => {
+        if (generation !== notesCloseGeneration || !dialog.open) { notesClosing = false; return; }
+        const height = window.visualViewport?.height || innerHeight;
+        stableFrames = Math.abs(height-previousHeight) < 1 ? stableFrames+1 : 0;
+        previousHeight = height;
+        if (performance.now()-started < 180 || ((keyboardVisible || stableFrames < 3) && performance.now()-started < 750)) {
+          requestAnimationFrame(settle); return;
+        }
+        const hero = $('#discussion-image');
+        const oldImage = hero.getBoundingClientRect(), oldSurface = surface.getBoundingClientRect();
+        dialog.classList.add('notes-settling');
+        setNotesVisible(false,false);
+        positionDiscussionNotes();
+        const newImage = hero.getBoundingClientRect(), newSurface = surface.getBoundingClientRect();
+        const options = {duration:420,easing:'cubic-bezier(.22,1,.36,1)'};
+        hero.animate([
+          {transformOrigin:'top left',transform:`translate(${oldImage.left-newImage.left}px,${oldImage.top-newImage.top}px) scale(${oldImage.width/newImage.width})`},
+          {transformOrigin:'top left',transform:'none'}
+        ],options);
+        notesAnimation = surface.animate([
+          {width:`${oldSurface.width}px`,height:`${oldSurface.height}px`,transform:`translate(${oldSurface.left-newSurface.left}px,${oldSurface.top-newSurface.top}px)`},
+          {width:`${newSurface.width}px`,height:`${newSurface.height}px`,transform:'none'}
+        ],options);
+        notesAnimation.finished.then(() => dialog.classList.remove('notes-settling'),() => dialog.classList.remove('notes-settling'));
+        notesClosing = false;
+      };
+      requestAnimationFrame(settle);
+      return;
+    }
+    ++notesCloseGeneration;
+    notesClosing = false;
     const from = surface.getBoundingClientRect();
     notesAnimation?.cancel();
     notesContentAnimation?.cancel();
