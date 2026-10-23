@@ -1366,7 +1366,24 @@
     $('#complete-detail').textContent = `${count} ${count === 1 ? 'image' : 'images'} explored${notes ? ` · ${notes} with notes` : ''}${state.actions.length ? ` · ${state.actions.length} ${state.actions.length === 1 ? 'action' : 'actions'}` : ''}`;
     $('#complete-images').replaceChildren(...state.selected.slice(0, 6).map(makeImage));
     openDialog($('#complete-dialog'));
-    announce('Session complete. Entries are temporary and will be lost when you refresh or close this page.');
+    announce('Session complete.');
+  });
+
+  const completeDialog = $('#complete-dialog');
+  let completeBackdropPressed = false;
+  function outsideComplete(event) {
+    const bounds = completeDialog.getBoundingClientRect();
+    return event.target === completeDialog && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom);
+  }
+  completeDialog.addEventListener('pointerdown', event => { completeBackdropPressed = outsideComplete(event); });
+  completeDialog.addEventListener('pointercancel', () => { completeBackdropPressed = false; });
+  completeDialog.addEventListener('click', event => {
+    if (completeBackdropPressed && outsideComplete(event)) {
+      state.completed = false;
+      save();
+      openReview();
+    }
+    completeBackdropPressed = false;
   });
 
   $('#saved-sessions').addEventListener('click', () => {

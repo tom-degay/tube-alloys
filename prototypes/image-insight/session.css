@@ -116,8 +116,8 @@ body:has(#question-dialog[open]) .board-shell,.discussion-open .board-shell{filt
 .question-dialog h2{color:var(--accent)}
 .question-dialog #question-preview{font-size:20px;font-weight:600;margin:24px 0 18px}
 .question-options{border:0;padding:0 10px 0 0;margin:0;min-width:0;max-height:48dvh;overflow:auto;scrollbar-width:thin}
-.question-choice{position:relative;display:block;border-radius:12px;padding:9px 12px;margin:0;cursor:pointer;font-weight:600;font-size:20px;color:#5e707c}
-.question-choice:hover{background:#def4fa}
+.question-choice{-webkit-tap-highlight-color:transparent;touch-action:manipulation;position:relative;display:block;border-radius:12px;padding:9px 12px;margin:0;cursor:pointer;font-weight:600;font-size:20px;color:#5e707c}
+@media(hover:hover) and (pointer:fine){.question-choice:hover{background:#def4fa}}
 .question-choice:has(input:checked){background:#c7edf7}
 .question-choice:has(input:focus-visible){outline:2px solid var(--accent-ink);outline-offset:-2px}
 .question-choice input{position:absolute;width:1px;height:1px;opacity:0}

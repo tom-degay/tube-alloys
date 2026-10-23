@@ -24,10 +24,10 @@
   <meta name="twitter:image:alt" content="Image Insight interactive prototype: a grid of photographs with a lake image selected. Choose an image. Explore a different perspective.">
   <link rel="icon" href="/case-studies/media/image-insight-logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/prototypes/image-insight/icons.css?v=20261023-trash-hover">
-  <link rel="stylesheet" href="/prototypes/image-insight/session.css?v=20261023-review-polish">
-  <link rel="stylesheet" href="/prototypes/image-insight/theme.css?v=20261023-review-polish">
+  <link rel="stylesheet" href="/prototypes/image-insight/session.css?v=20261023-mobile-completion">
+  <link rel="stylesheet" href="/prototypes/image-insight/theme.css?v=20261023-mobile-completion">
   <script src="/prototypes/image-insight/icons.js" defer></script>
-  <script src="/prototypes/image-insight/session.js?v=20261023-review-polish" defer></script>
+  <script src="/prototypes/image-insight/session.js?v=20261023-mobile-completion" defer></script>
 </head>
 <body>
 <div class="profile-menu" id="profile-menu" role="group" aria-label="Profile menu" hidden>
@@ -113,7 +113,6 @@
           <div class="selected-images" id="selected-images"></div>
         </div>
         <section class="settings-content" id="settings-content" aria-label="Session settings" hidden>
-          <div class="mobile-appearance"><span>Dark mode</span><button class="theme-toggle" data-theme-toggle aria-label="Dark mode" aria-pressed="false" title="Switch to dark mode"><svg class="theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.3 15.4A8.7 8.7 0 0 1 8.6 3.7 8.7 8.7 0 1 0 20.3 15.4Z"/></svg><svg class="theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.4 1.4m11.2 11.2L19 19M5 19l1.4-1.4M17.6 6.4 19 5"/></svg></button></div>
           <label class="field"><span class="sr-only">Session name</span><input id="settings-name" maxlength="100" placeholder="Untitled session"></label>
           <fieldset class="profile-options"><legend>Session profile</legend><label><input type="radio" name="profile" value="Junior"> Junior</label><label><input type="radio" name="profile" value="Teen"> Teen</label><label><input type="radio" name="profile" value="Adult" checked> Adult</label></fieldset>
           <label class="field">Client name <span class="optional">Optional</span><input id="client-name" maxlength="100" placeholder="Enter name" autocomplete="off"></label>
@@ -188,7 +187,6 @@
     <h2 id="complete-title"></h2>
     <p id="complete-detail"></p>
     <div class="complete-images" id="complete-images"></div>
-    <p class="storage-note">Your entries will be lost when you refresh or close this page.</p>
     <div class="dialog-footer"><button class="secondary" id="reopen-review">Review session</button><button class="primary" id="complete-new">New session</button></div>
   </dialog>
 
