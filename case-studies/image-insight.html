@@ -579,9 +579,10 @@
   a.ii-watch {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 9px;
     min-height: 44px;
-    padding: 9px 22px 9px 18px;
+    padding: 9px 22px;
     border: 1px solid #ffffff09;
     border-radius: 16px;
     background: rgba(29, 29, 29, 0.5);
@@ -593,7 +594,7 @@
     transition: background-color 0.15s ease, color 0.15s ease;
   }
 
-  a.ii-watch[href="#developing-heading"] { padding-inline: 22px; }
+  a.ii-watch[target="_blank"]::after { content: none; }
   a.ii-watch svg { flex: 0 0 auto; width: 14px; height: 14px; }
 
   a.ii-watch:hover, a.ii-watch:focus-visible { color: #fff; }
