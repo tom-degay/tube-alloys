@@ -131,3 +131,12 @@ html:not([data-theme=dark]) .profile > span{color:#fff}
 .remove-image .remove-label{display:block;max-width:100%;overflow:hidden;animation:remove-label-in 120ms ease 100ms both}
 @keyframes remove-label-in{from{opacity:0}to{opacity:1}}
 @media(prefers-reduced-motion:reduce){.remove-image{transition:none}.remove-image .remove-label{animation:none}}
+
+/* Phone photo controls are revealed explicitly, rather than through sticky hover. */
+@media(max-width:600px),(max-width:900px) and (max-height:500px){
+ .selected-card .image-button{cursor:pointer;touch-action:manipulation}
+ .selected-card .image-button:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+ .selected-card:is(:hover,:focus-within) :is(.expand-image,.remove-image),
+ .selected-card :is(.expand-image,.remove-image){visibility:hidden;opacity:0;pointer-events:none}
+ .selected-card.controls-visible :is(.expand-image,.remove-image){visibility:visible;opacity:1;pointer-events:auto}
+}

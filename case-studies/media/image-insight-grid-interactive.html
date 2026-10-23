@@ -226,6 +226,7 @@ html.session-mode[data-theme=dark], .session-mode[data-theme=dark] body { backgr
 .session-mode .photo[data-selected="true"]::before{left:max(9px,6%);right:auto;top:auto;bottom:max(9px,6%)}
 .session-mode .photo-select:focus-visible{outline:3px solid #18768b;outline-offset:4px}
 @media(prefers-reduced-motion:reduce){.session-mode .photo-expand svg{transition:none}}
+.session-mode.session-mobile-nav .photo-expand{display:none}
 </style>
 </head>
 <body>
@@ -474,8 +475,8 @@ html.session-mode[data-theme=dark], .session-mode[data-theme=dark] body { backgr
    if (!reduced.matches && document.documentElement.dataset.input === 'pointer' && (mobileNavigation || event.pointerType === 'touch')) {
     cell.tapAnimation?.cancel();
     cell.tapAnimation = cell.animate([
-     { scale: '1' }, { scale: '.97', offset: .35 }, { scale: '1' }
-    ], { duration: 260, easing: 'cubic-bezier(.22,.75,.25,1)' });
+     { scale: '1' }, { scale: '.99', offset: .35 }, { scale: '1' }
+    ], { duration: 200, easing: 'cubic-bezier(.22,.75,.25,1)' });
    }
    parent.postMessage({ type: 'ii-session-toggle', id: cell.dataset.image }, location.origin);
   });

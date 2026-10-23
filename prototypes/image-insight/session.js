@@ -274,6 +274,21 @@
         const button = document.createElement('div');
         button.className = 'image-button';
         button.append(makeImage(id), makeSelectionRing());
+        const toggleImageControls = () => {
+          if (!phoneLayout.matches) return;
+          const show = !card.classList.contains('controls-visible');
+          container.querySelectorAll('.selected-card').forEach(item => {
+            const visible = item === card && show;
+            item.classList.toggle('controls-visible', visible);
+            item.querySelector('.image-button').setAttribute('aria-expanded', String(visible));
+          });
+        };
+        button.addEventListener('click', toggleImageControls);
+        button.addEventListener('keydown', event => {
+          if (phoneLayout.matches && ['Enter', ' '].includes(event.key)) {
+            event.preventDefault(); toggleImageControls();
+          }
+        });
         const expand = document.createElement('button');
         expand.className = 'expand-image';
         expand.type = 'button';
@@ -297,6 +312,15 @@
         remove.innerHTML = icon('trash');
         remove.addEventListener('click', () => requestImageRemoval(id, remove));
         card.append(button, expand, remove);
+      }
+      const imageControl = card.querySelector('.image-button');
+      if (phoneLayout.matches) {
+        imageControl.setAttribute('role', 'button');
+        imageControl.tabIndex = 0;
+        imageControl.setAttribute('aria-label', `Show controls for ${catalog.get(id).alt.toLowerCase()}`);
+        imageControl.setAttribute('aria-expanded', String(card.classList.contains('controls-visible')));
+      } else {
+        ['role', 'tabindex', 'aria-label', 'aria-expanded'].forEach(attribute => imageControl.removeAttribute(attribute));
       }
       card.querySelector('.number-badge').textContent = index + 1;
       card.querySelector('.note-indicator').hidden = !String(state.notes[id] || '').trim();
