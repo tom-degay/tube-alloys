@@ -233,9 +233,68 @@
       save();
       renderPanel();
       sendSelection();
+      if (!selected) animateSelectionArrival(id);
       announce(`${selected ? 'Removed' : 'Added'} ${catalog.get(id).alt.toLowerCase()}. ${state.selected.length} images selected.`);
     }
   });
+
+  const selectionFlights = new Set();
+  const arrivalPulses = new WeakMap();
+  function animateSelectionArrival(id) {
+    if (reduced.matches) return;
+    const source = [...board.contentDocument.querySelectorAll('.photo')].find(cell => cell.dataset.image === id)?.querySelector('img');
+    if (!source) return;
+    const frame = board.getBoundingClientRect();
+    const rect = source.getBoundingClientRect();
+    const from = {left:frame.left + rect.left, top:frame.top + rect.top, width:rect.width, height:rect.height};
+    const card = [...$('#selected-images').children].find(item => item.dataset.id === id);
+    let target = phoneLayout.matches ? $('.mobile-session-count') : card?.querySelector('img');
+    if (!target) return;
+    let to = target.getBoundingClientRect();
+    if (!phoneLayout.matches) {
+      const visible = sessionScroller.getBoundingClientRect();
+      if (to.top < visible.top || to.bottom > visible.bottom) {
+        target = $('#session-title');
+        to = target.getBoundingClientRect();
+      }
+    }
+    // The mobile bar may still be sliding in; aim at its settled position.
+    let targetY = to.top + to.height / 2;
+    if (phoneLayout.matches) {
+      const transform = getComputedStyle($('#mobile-session-bar')).transform;
+      if (transform !== 'none') targetY -= new DOMMatrixReadOnly(transform).m42;
+    }
+    const size = phoneLayout.matches ? 26 : Math.min(64, to.width);
+    const ghost = document.createElement('img');
+    ghost.className = 'selection-flight';
+    ghost.src = source.currentSrc || source.src;
+    ghost.alt = '';
+    ghost.setAttribute('aria-hidden', 'true');
+    Object.assign(ghost.style, {left:`${from.left}px`,top:`${from.top}px`,width:`${from.width}px`,height:`${from.height}px`});
+    document.body.append(ghost);
+    const dx = to.left + to.width / 2 - (from.left + from.width / 2);
+    const dy = targetY - (from.top + from.height / 2);
+    while (selectionFlights.size >= 3) {
+      const oldest = selectionFlights.values().next().value;
+      selectionFlights.delete(oldest); oldest.cancel();
+    }
+    const flight = ghost.animate([
+      {transform:'translate(0,0) scale(1)',opacity:.5},
+      {transform:`translate(${dx * .55}px,${dy * .55 - 6}px) scale(.45)`,opacity:.4,offset:.55},
+      {transform:`translate(${dx}px,${dy}px) scale(${size / from.width})`,opacity:0}
+    ], {duration:720,easing:'cubic-bezier(.35,0,.25,1)'});
+    selectionFlights.add(flight);
+    const clean = () => { ghost.remove(); selectionFlights.delete(flight); };
+    flight.oncancel = clean;
+    flight.onfinish = () => {
+      clean();
+      if (!state.selected.includes(id) || !target.isConnected) return;
+      arrivalPulses.get(target)?.cancel();
+      arrivalPulses.set(target, target.animate([
+        {scale:'1'},{scale:phoneLayout.matches?'1.05':'1.012',offset:.4},{scale:'1'}
+      ],{duration:380,easing:'ease-in-out'}));
+    };
+  }
 
   let selectionRingId = 0;
   function makeSelectionRing() {

@@ -572,3 +572,5 @@ html[data-theme=dark] .profile-menu{background:#242424f5;border-color:#444;color
 @media(max-width:600px),(max-width:900px) and (max-height:500px){
  #discussion-dialog .discussion-nav{display:none}
 }
+
+.selection-flight{position:fixed;z-index:40;object-fit:cover;border-radius:24%;corner-shape:squircle;pointer-events:none;transform-origin:center;box-shadow:0 5px 18px #0002;will-change:transform,opacity}
