@@ -728,7 +728,27 @@
   const swipeSessionPanel = $('#session-panel');
   let panelSwipe = null;
   let panelSwipeClickUntil = 0;
+  let panelSwipeSettling = false;
+  function settlePanelSwipe(dismiss = false) {
+    const distance = Math.max(0, panelSwipe?.dy || 0);
+    panelSwipe = null;
+    const finish = () => {
+      if (dismiss && expanded) toggleExpansion();
+      swipeSessionPanel.style.removeProperty('transform');
+      swipeSessionPanel.style.removeProperty('will-change');
+      panelSwipeSettling = false;
+    };
+    if (!distance || reduced.matches) { finish(); return; }
+    panelSwipeSettling = true;
+    const destination = dismiss ? Math.max(innerHeight, swipeSessionPanel.offsetHeight) : 0;
+    const animation = swipeSessionPanel.animate([
+      {transform:`translateY(${distance}px)`},
+      {transform:`translateY(${destination}px)`}
+    ], {duration:dismiss ? 280 : 380,easing:'cubic-bezier(.22,1,.36,1)',fill:'both'});
+    animation.onfinish = () => { finish(); animation.cancel(); };
+  }
   swipeSessionPanel.addEventListener('touchstart', event => {
+    if (panelSwipeSettling) return;
     panelSwipe = null;
     if (!phoneLayout.matches || !expanded || settingsOpen || activeImage || event.touches.length !== 1 || sessionScroller.scrollTop > 1) return;
     if (event.target.closest('input,textarea,select,button:not(.image-button),a,[contenteditable]')) return;
@@ -737,7 +757,7 @@
   }, {passive:true});
   swipeSessionPanel.addEventListener('touchmove', event => {
     if (!panelSwipe) return;
-    if (event.touches.length !== 1) { panelSwipe = null; return; }
+    if (event.touches.length !== 1) { settlePanelSwipe(); return; }
     const dx = event.touches[0].clientX - panelSwipe.x;
     const dy = event.touches[0].clientY - panelSwipe.y;
     if (!panelSwipe.axis && Math.max(Math.abs(dx),Math.abs(dy)) > 10) {
@@ -746,17 +766,19 @@
     }
     if (panelSwipe.axis === 'down') {
       event.preventDefault();
-      panelSwipe.dy = dy;
+      panelSwipe.dy = Math.max(0, dy);
+      swipeSessionPanel.style.willChange = 'transform';
+      swipeSessionPanel.style.transform = `translateY(${panelSwipe.dy}px)`;
     }
   }, {passive:false});
   swipeSessionPanel.addEventListener('touchend', () => {
     if (panelSwipe?.axis === 'down') {
       panelSwipeClickUntil = performance.now() + 500;
-      if (panelSwipe.dy > 64 && expanded) toggleExpansion();
+      settlePanelSwipe(panelSwipe.dy > 64 && expanded);
     }
     panelSwipe = null;
   });
-  swipeSessionPanel.addEventListener('touchcancel', () => { panelSwipe = null; });
+  swipeSessionPanel.addEventListener('touchcancel', () => settlePanelSwipe());
   swipeSessionPanel.addEventListener('click', event => {
     if (performance.now() < panelSwipeClickUntil) { event.preventDefault(); event.stopImmediatePropagation(); }
   }, true);
