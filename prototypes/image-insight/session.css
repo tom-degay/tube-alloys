@@ -495,3 +495,9 @@ html[data-input=pointer] #image-notes:focus{outline:none}
  #discussion-dialog .discussion-image img{max-width:calc(100% - 164px)}
  #discussion-dialog.has-notes .discussion-actions{width:calc(100vw - 24px)}
 }
+
+/* Balance the hover-only edit icon so the question text stays truly centred. */
+@media(min-width:901px){
+ .is-expanded .question-heading::before{content:'';width:18px;flex:0 0 18px}
+ .is-expanded .question-heading span{min-width:0}
+}
