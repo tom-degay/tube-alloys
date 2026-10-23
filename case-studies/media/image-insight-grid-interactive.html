@@ -539,10 +539,40 @@ html.slider-dragging{user-select:none;-webkit-user-select:none}
     if (gridPinch?.pending) applyGridPinch(gridPinch.pending.distance,gridPinch.pending.midpoint);
    });
   }, {passive:false});
+  function snapGridPinch() {
+   const area = scene.clientWidth - 48, base = (area - 40) / 3;
+   const currentSize = base * mobileImageScale;
+   const sizes = Array.from({length:Math.min(4,count)}, (_, i) => (area - i * 20) / (i + 1));
+   const targetSize = sizes.reduce((nearest, size) => Math.abs(size-currentSize) < Math.abs(nearest-currentSize) ? size : nearest);
+   const before = cells.filter(cell => !cell.hidden).map(cell => ({cell,rect:cell.getBoundingClientRect()}));
+   const anchor = gridPinch.anchor;
+   const anchorBefore = anchor && before.find(item => item.cell === anchor.cell)?.rect;
+   pinchReflows.forEach(animation => animation.cancel()); pinchReflows.clear();
+   mobileImageScale = targetSize / base;
+   // Apply final geometry without CSS transitions, then animate from the visible
+   // positions so an unfinished column reflow flows naturally into the snap.
+   render();
+   if (anchorBefore) {
+    const rect = anchor.cell.getBoundingClientRect();
+    boardViewport.scrollTop += rect.top + rect.height * anchor.fraction - (anchorBefore.top + anchorBefore.height * anchor.fraction);
+    ignoredScrollTop = lastScrollTop = boardViewport.scrollTop;
+   }
+   if (reduced.matches) return;
+   for (const {cell,rect} of before) {
+    const to = cell.getBoundingClientRect();
+    const animation = cell.animate([
+     {transformOrigin:'top left',transform:`translate(${rect.left-to.left}px,${rect.top-to.top}px) scale(${rect.width/to.width},${rect.height/to.height})`},
+     {transformOrigin:'top left',transform:'translate(0px,0px) scale(1)'}
+    ], {duration:360,easing:'cubic-bezier(.22,1,.36,1)',composite:'add'});
+    pinchReflows.set(cell,animation);
+    animation.finished.then(() => {if(pinchReflows.get(cell)===animation) pinchReflows.delete(cell);},()=>{});
+   }
+  }
   const finishGridPinch = event => {
    if (!gridPinch || event.touches.length !== 0) return;
    if (pinchFrame) { cancelAnimationFrame(pinchFrame); pinchFrame = 0; }
    if (gridPinch.pending) applyGridPinch(gridPinch.pending.distance,gridPinch.pending.midpoint);
+   snapGridPinch();
    gridPinch = null;
    suppressGridClickUntil = performance.now() + 500;
    document.documentElement.classList.remove('grid-pinching');
