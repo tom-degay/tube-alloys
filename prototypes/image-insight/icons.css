@@ -52,3 +52,8 @@
  .icon,.icon * { transition:none !important; animation:none !important; }
  .icon .arrow-offset,.icon .handle,.icon .refresh-art,.icon .square-front,.icon .square-back,.icon .plus-arm,.icon .folder-front { transform:none !important; }
 }
+
+@media(any-hover:hover) and (prefers-reduced-motion:no-preference){
+ .trash .trash-lid{transform-box:view-box;transform-origin:48.8px 82px;transition:transform 300ms cubic-bezier(.22,1,.36,1)}
+ .trash:hover .trash-lid{animation:none;transform:translateY(-3px) rotate(-18deg)}
+}

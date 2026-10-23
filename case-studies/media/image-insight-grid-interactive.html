@@ -41,7 +41,7 @@ button:focus-visible, input:focus-visible { outline: 2px solid #18768b; outline-
 .session-mode .photo img { background: transparent; border: 0; box-shadow: none; }
 /* A continuous-corner icon shape: straight sides ease into each corner.
    The same contour clips the photo and defines its offset ring.
-   Non-scaling mask strokes keep the clear gap at 5px and the ring at 3px. */
+   A measured offset outline keeps the clear gap at 5px and the ring at 2px. */
 .photo img { border-radius: 0; clip-path: url(#photo-squircle-clip); }
 .photo-ring { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 1; color: #fff; opacity: 0; transition: opacity 160ms ease, color 160ms ease; }
 .session-mode .photo:hover .photo-ring { color: #47b3cf; opacity: .5; }
@@ -661,6 +661,18 @@ html.slider-dragging{user-select:none;-webkit-user-select:none}
   if (reduced.matches) [...cardFlips.keys()].forEach(finishFlip);
  });
 
+ let ringContour;
+ const ringResize = new ResizeObserver(entries => {
+  for (const {target, contentRect} of entries) {
+   const ring = target.querySelector('.photo-ring');
+   const {width, height} = contentRect;
+   if (!ring || !ringContour || !width || !height) continue;
+   ring.setAttribute('viewBox', `0 0 ${width} ${height}`);
+   const points = ringContour.map(point => `${(point.x * width + point.nx * 6).toFixed(3)},${(point.y * height + point.ny * 6).toFixed(3)}`);
+   ring.firstElementChild.setAttribute('d', `M${points.join('L')}Z`);
+  }
+ });
+
  function fit() {
   if (sessionMode) {
    canvas.style.cssText = 'width:100%;height:100%;left:0;top:0;transform:none';
@@ -776,8 +788,28 @@ html.slider-dragging{user-select:none;-webkit-user-select:none}
      ring.setAttribute('viewBox', '0 0 100 100');
      ring.setAttribute('aria-hidden', 'true');
      const contour = 'M30 0H70C80.501 0 85.751 0 89.762 2.044C93.29 3.841 96.159 6.71 97.956 10.238C100 14.249 100 19.499 100 30V70C100 80.501 100 85.751 97.956 89.762C96.159 93.29 93.29 96.159 89.762 97.956C85.751 100 80.501 100 70 100H30C19.499 100 14.249 100 10.238 97.956C6.71 96.159 3.841 93.29 2.044 89.762C0 85.751 0 80.501 0 70V30C0 19.499 0 14.249 2.044 10.238C3.841 6.71 6.71 3.841 10.238 2.044C14.249 0 19.499 0 30 0Z';
-     ring.innerHTML = `<defs><mask id="photo-ring-${i}" maskUnits="userSpaceOnUse" x="-100" y="-100" width="300" height="300" style="mask-type:luminance"><path d="${contour}" fill="white" stroke="white" stroke-width="14" vector-effect="non-scaling-stroke"/><path d="${contour}" fill="black" stroke="black" stroke-width="10" vector-effect="non-scaling-stroke"/></mask></defs><rect x="-100" y="-100" width="300" height="300" fill="currentColor" mask="url(#photo-ring-${i})"/>`;
+     const outline = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+     outline.setAttribute('d', contour);
+     outline.setAttribute('fill', 'none');
+     outline.setAttribute('stroke', 'currentColor');
+     outline.setAttribute('stroke-width', '2');
+     outline.setAttribute('stroke-linejoin', 'round');
+     ring.append(outline);
      cell.append(ring);
+     // Sample the original smooth contour once; offset its normals in pixels.
+     if (!ringContour) {
+      const length = outline.getTotalLength();
+      ringContour = Array.from({length:512}, (_, index) => {
+       const distance = index * length / 512;
+       const point = outline.getPointAtLength(distance);
+       const before = outline.getPointAtLength((distance - .02 + length) % length);
+       const after = outline.getPointAtLength((distance + .02) % length);
+       const dx = after.x - before.x, dy = after.y - before.y;
+       const magnitude = Math.hypot(dx, dy);
+       return {x:point.x / 100,y:point.y / 100,nx:dy / magnitude,ny:-dx / magnitude};
+      });
+     }
+     ringResize.observe(cell);
      const select = document.createElement('button');
      select.className = 'photo-select'; select.type = 'button';
      const expand = document.createElement('button');

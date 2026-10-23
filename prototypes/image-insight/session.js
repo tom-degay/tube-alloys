@@ -14,6 +14,13 @@
   [sessionScroller, $('#session-content'), $('#selected-images'), $('#settings-content')].forEach(element => scrollFadeResize.observe(element));
   const reviewScrollers = [$('.review-columns'), $('#review-images')];
   function updateReviewFades() {
+    const question = $('#review-question');
+    const section = $('.review-images-section');
+    if (question.getClientRects().length) {
+      const questionRect = question.getBoundingClientRect();
+      $('#review-form').style.setProperty('--review-heading-offset', `${questionRect.top - section.getBoundingClientRect().top}px`);
+      $('#review-form').style.setProperty('--review-heading-height', `${questionRect.height}px`);
+    }
     reviewScrollers.forEach(element => {
       const remaining = element.scrollHeight - element.clientHeight - element.scrollTop;
       element.style.setProperty('--scroll-fade-top', `${Math.min(24,Math.max(0,element.scrollTop))}px`);
@@ -502,6 +509,19 @@
     }
   }
   function closeDialog(dialog) { if (dialog.open) dialog.close(); }
+  const reviewDialog = $('#review-dialog');
+  let reviewBackdropPressed = false;
+  function outsideReview(event) {
+    const bounds = reviewDialog.getBoundingClientRect();
+    return event.target === reviewDialog && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom);
+  }
+  reviewDialog.addEventListener('pointerdown', event => { reviewBackdropPressed = outsideReview(event); });
+  reviewDialog.addEventListener('pointercancel', () => { reviewBackdropPressed = false; });
+  reviewDialog.addEventListener('click', event => {
+    if (reviewBackdropPressed && outsideReview(event)) closeDialog(reviewDialog);
+    reviewBackdropPressed = false;
+  });
+
   dialogs.forEach(dialog => {
     dialog.querySelectorAll('[data-close]').forEach(button => button.addEventListener('click', () => closeDialog(dialog)));
     dialog.addEventListener('close', () => {
@@ -1119,6 +1139,45 @@
     }
   }
   $('#notes-done').addEventListener('click', finishNotes);
+  const notesSurface = $('#discussion-dialog .discussion-actions');
+  let notesSwipe = null;
+  let suppressNotesClickUntil = 0;
+  notesSurface.addEventListener('touchstart', event => {
+    notesSwipe = null;
+    if (!phoneLayout.matches || notesClosing || event.touches.length !== 1 ||
+        !$('#discussion-dialog').classList.contains('has-notes') || event.target.closest('textarea,input')) return;
+    notesSwipe = {x:event.touches[0].clientX,y:event.touches[0].clientY,dy:0,dragging:false};
+  }, {passive:true});
+  notesSurface.addEventListener('touchmove', event => {
+    if (!notesSwipe) return;
+    if (event.touches.length !== 1) { notesSwipe = null; return; }
+    const dx = event.touches[0].clientX-notesSwipe.x;
+    const dy = event.touches[0].clientY-notesSwipe.y;
+    if (!notesSwipe.dragging) {
+      if (Math.abs(dx)>10 && Math.abs(dx)>Math.abs(dy)) { notesSwipe=null; return; }
+      if (dy<10 || dy<Math.abs(dx)*1.5) return;
+      notesSwipe.dragging = true;
+    }
+    event.preventDefault();
+    notesSwipe.dy = dy;
+  }, {passive:false});
+  notesSurface.addEventListener('touchend', event => {
+    if (!notesSwipe) return;
+    const swipe = notesSwipe;
+    notesSwipe = null;
+    if (swipe.dragging) {
+      event.preventDefault();
+      suppressNotesClickUntil = performance.now()+500;
+      if (swipe.dy>64) finishNotes();
+    }
+  }, {passive:false});
+  notesSurface.addEventListener('touchcancel', () => { notesSwipe=null; });
+  notesSurface.addEventListener('click', event => {
+    if (performance.now()<suppressNotesClickUntil) {
+      event.preventDefault(); event.stopImmediatePropagation();
+    }
+  }, true);
+
   function positionDiscussionNotes() {
     const image = $('#discussion-image');
     const dialog = $('#discussion-dialog');
@@ -1232,6 +1291,7 @@
       row.append(makeImage(id), label, notes);
       $('#review-images').append(row);
     });
+    if (!state.actions.length) { state.actions.push(''); save(); }
     renderActions();
     openDialog($('#review-dialog'));
   }
@@ -1255,7 +1315,7 @@
       const input = document.createElement('input');
       input.type = 'text'; input.maxLength = 240;
       input.value = String(value);
-      input.placeholder = 'What will you do next?';
+      input.placeholder = 'Describe action';
       input.setAttribute('aria-label', `Action ${index + 1}`);
       input.addEventListener('input', () => { state.actions[index] = input.value; save(); });
       const remove = document.createElement('button');
@@ -1263,7 +1323,21 @@
       remove.className = 'icon icon-button trash';
       remove.innerHTML = icon('trash');
       remove.setAttribute('aria-label', `Remove action ${index + 1}`);
-      remove.addEventListener('click', () => { state.actions.splice(index, 1); save(); renderActions(); $('#add-action').focus(); });
+      remove.addEventListener('click', () => {
+        if (armedRemove !== remove) {
+          cancelImageRemoval();
+          armedRemove = remove;
+          remove.dataset.originalLabel = remove.getAttribute('aria-label');
+          remove.classList.add('is-confirming');
+          remove.innerHTML = '<span class="remove-label">Remove</span>';
+          remove.setAttribute('aria-label', `Confirm removal of action ${index + 1}`);
+          removeResetTimer = setTimeout(cancelImageRemoval, 5000);
+          return;
+        }
+        cancelImageRemoval();
+        state.actions.splice(index, 1); save(); renderActions(); $('#add-action').focus();
+        announce('Action removed.');
+      });
       row.append(input, remove);
       list.append(row);
     });
