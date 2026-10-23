@@ -574,3 +574,21 @@ html[data-theme=dark] .profile-menu{background:#242424f5;border-color:#444;color
 }
 
 .selection-flight{position:fixed;z-index:40;object-fit:cover;border-radius:24%;corner-shape:squircle;pointer-events:none;transform-origin:center;box-shadow:0 5px 18px #0002;will-change:transform,opacity}
+
+.discussion-position{position:absolute;z-index:3;left:calc(var(--hero-left,0px) + var(--hero-width,100%) / 2);top:calc(var(--hero-bottom,100%) - 38px);transform:translateX(-50%);padding:4px 10px;border-radius:20px;corner-shape:round;background:rgb(25 25 25 / 45%);color:rgb(255 255 255 / 85%);font-size:12px;font-weight:400;line-height:20px;white-space:nowrap;pointer-events:none;font-variant-numeric:tabular-nums}
+.discussion-position[hidden],.keyboard-open .discussion-position{display:none}
+
+#discussion-dialog:not(.has-notes) #toggle-notes{justify-content:center}
+
+.discussion-note-indicator{position:absolute;left:calc(var(--hero-left,0px) + 12px);top:calc(var(--hero-bottom,100%) - 42px);display:grid;place-items:center;width:30px;height:30px;border-radius:50%;corner-shape:round;background:rgb(25 25 25 / 45%);color:#fff;pointer-events:none}
+.discussion-note-indicator svg{width:18px;height:18px}
+.discussion-note-indicator[hidden],.keyboard-open .discussion-note-indicator{display:none}
+#toggle-notes.has-content svg{color:var(--accent)}
+
+#discussion-dialog .discussion-actions,#discussion-dialog .discussion-nav,#discussion-dialog .discussion-position,#discussion-dialog .discussion-note-indicator{transition:opacity 200ms ease}
+#discussion-dialog.is-closing :is(.discussion-actions,.discussion-nav,.discussion-position,.discussion-note-indicator){opacity:0;pointer-events:none}
+#discussion-dialog.is-closing{pointer-events:none}
+#discussion-dialog.is-closing::backdrop{animation:discussion-backdrop-out 360ms ease forwards}
+@keyframes discussion-backdrop-out{to{opacity:0}}
+@media(hover:hover) and (pointer:fine){#discussion-dialog .discussion-nav{transition:opacity 300ms ease}}
+@media(prefers-reduced-motion:reduce){#discussion-dialog :is(.discussion-actions,.discussion-nav,.discussion-position,.discussion-note-indicator){transition:none}}

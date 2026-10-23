@@ -457,7 +457,20 @@
     if (event.key === 'Escape' && armedRemove) { event.preventDefault(); cancelImageRemoval(); }
   });
 
+  const viewPositions = new WeakMap();
+  const panelPositions = {collapsed:0,expanded:0};
+  function captureViewPosition() {
+    return {panel:sessionScroller.scrollTop,board:board.contentDocument?.querySelector('.viewport')?.scrollTop || 0};
+  }
+  function restoreViewPosition(position) {
+    if (!position) return;
+    sessionScroller.scrollTop = position.panel;
+    const viewport = board.contentDocument?.querySelector('.viewport');
+    if (viewport) viewport.scrollTop = position.board;
+    updateScrollFades();
+  }
   function openDialog(dialog, opener = document.activeElement) {
+    viewPositions.set(dialog, captureViewPosition());
     dialogOpener = opener;
     dialogs.forEach(other => { if (other.open) other.close('switch'); });
     dialog.showModal();
@@ -475,6 +488,7 @@
     dialog.querySelectorAll('[data-close]').forEach(button => button.addEventListener('click', () => closeDialog(dialog)));
     dialog.addEventListener('close', () => {
       if (dialog.id === 'discussion-dialog') {
+        rememberNotesCursor();
         activeImage = null;
         renderPanel();
       }
@@ -482,7 +496,10 @@
         document.body.classList.remove('question-selecting');
         renderPanel();
       }
+      if (dialog.id === 'review-dialog') renderPanel();
       if (dialog.returnValue !== 'switch' && !dialogs.some(other => other.open)) {
+        const position = viewPositions.get(dialog);
+        requestAnimationFrame(() => restoreViewPosition(position));
         const mobileBoard = phoneLayout.matches && !expanded && !settingsOpen;
         const openerVisible = dialogOpener?.isConnected && dialogOpener.getClientRects().length && !dialogOpener.closest('[hidden]');
         if (!openerVisible && mobileBoard) showMobileSessionBar(true);
@@ -627,10 +644,13 @@
   }
   function toggleExpansion() {
     if (activeImage) { closeDiscussion(); return; }
+    panelPositions[expanded ? 'expanded' : 'collapsed'] = sessionScroller.scrollTop;
+    const boardPosition = captureViewPosition().board;
     const cards = [...$('#selected-images').children];
     const before = new Map(cards.map(card => [card, card.getBoundingClientRect()]));
     expanded = !expanded;
     applyExpansion();
+    requestAnimationFrame(() => restoreViewPosition({panel:panelPositions[expanded ? 'expanded' : 'collapsed'],board:boardPosition}));
     if (phoneLayout.matches) {
       $(expanded ? '#expand-session' : '#mobile-session-bar').focus({ preventScroll: true });
     }
@@ -662,6 +682,25 @@
     }
   });
 
+  const notesCursors = new Map();
+  function rememberNotesCursor() {
+    if (!activeImage) return;
+    const field = $('#image-notes');
+    notesCursors.set(activeImage,{start:field.selectionStart,end:field.selectionEnd,scroll:field.scrollTop});
+  }
+  function restoreNotesCursor() {
+    const cursor = notesCursors.get(activeImage);
+    if (!cursor) return;
+    const field = $('#image-notes');
+    field.setSelectionRange(cursor.start,cursor.end);
+    field.scrollTop = cursor.scroll;
+  }
+  function updateNotesIndicator() {
+    const hasNotes = Boolean(String(state.notes[activeImage] || '').trim());
+    $('#toggle-notes').classList.toggle('has-content',hasNotes);
+    $('#toggle-notes').setAttribute('aria-label',hasNotes ? 'Notes — notes added' : 'Notes');
+    $('#discussion-note-indicator').hidden = !hasNotes;
+  }
   function openDiscussion(id, opener) {
     const from = (opener?.closest('.selected-card')?.querySelector('img') || opener?.querySelector('img'))?.getBoundingClientRect();
     activeImage = id;
@@ -669,6 +708,7 @@
     $('#discussion-image').src = image.src;
     $('#discussion-image').alt = image.alt;
     $('#image-notes').value = String(state.notes[id] || '');
+    restoreNotesCursor(); updateNotesIndicator();
     setNotesVisible(Boolean($('#image-notes').value.trim()), false);
     renderPanel();
     const dialog = $('#discussion-dialog');
@@ -689,11 +729,13 @@
   function updateDiscussionNavigation() {
     const multiple = state.selected.length > 1;
     $('#discussion-prev').hidden = $('#discussion-next').hidden = !multiple;
-    $('#discussion-position').textContent = multiple ? `Image ${state.selected.indexOf(activeImage) + 1} of ${state.selected.length}` : '';
+    $('#discussion-position').textContent = multiple ? `${state.selected.indexOf(activeImage) + 1} of ${state.selected.length}` : '';
+    $('#discussion-position').hidden = !multiple;
     positionDiscussionNotes();
   }
-  function navigateDiscussion(direction) {
+  function navigateDiscussion(direction, swipe = false) {
     if (state.selected.length < 2) return;
+    rememberNotesCursor();
     const index = state.selected.indexOf(activeImage);
     activeImage = state.selected[(index + direction + state.selected.length) % state.selected.length];
     const photo = catalog.get(activeImage);
@@ -701,11 +743,12 @@
     hero.src = photo.src;
     hero.alt = photo.alt;
     $('#image-notes').value = String(state.notes[activeImage] || '');
+    restoreNotesCursor(); updateNotesIndicator();
     renderPanel();
     updateDiscussionNavigation();
     if (!reduced.matches) {
       hero.getAnimations().forEach(animation => animation.cancel());
-      hero.animate([{opacity:.4,transform:`translateX(${direction * 16}px)`},{opacity:1,transform:'none'}],{duration:240,easing:'ease-out'});
+      hero.animate([{opacity:.4,transform:`translateX(${direction * (swipe ? 64 : 16)}px)`},{opacity:1,transform:'none'}],{duration:320,easing:'cubic-bezier(.22,.75,.25,1)'});
     }
   }
   $('#discussion-prev').addEventListener('click', () => navigateDiscussion(-1));
@@ -715,21 +758,86 @@
     event.preventDefault(); navigateDiscussion(event.key === 'ArrowRight' ? 1 : -1);
   });
   let swipeStart = null;
-  $('#discussion-image').addEventListener('pointerdown', event => {
-    if (event.pointerType === 'mouse') return;
-    swipeStart = {id:event.pointerId,x:event.clientX,y:event.clientY};
-    event.currentTarget.setPointerCapture(event.pointerId);
+  const swipeHero = $('#discussion-image');
+  function resetDiscussionDrag(animate = false) {
+    const transform = swipeHero.style.transform;
+    const opacity = swipeHero.style.opacity;
+    swipeHero.style.removeProperty('transform');
+    swipeHero.style.removeProperty('opacity');
+    if (animate && transform && !reduced.matches) swipeHero.animate([
+      {transform,opacity},{transform:'none',opacity:1}
+    ],{duration:300,easing:'cubic-bezier(.22,.75,.25,1)'});
+    swipeStart = null;
+  }
+  swipeHero.addEventListener('pointerdown', event => {
+    if (event.pointerType === 'mouse' || !event.isPrimary || state.selected.length < 2) return;
+    swipeHero.getAnimations().forEach(animation => animation.cancel());
+    resetDiscussionDrag();
+    swipeStart = {id:event.pointerId,x:event.clientX,y:event.clientY,dx:0,horizontal:false};
+    swipeHero.setPointerCapture(event.pointerId);
   });
-  $('#discussion-image').addEventListener('pointerup', event => {
+  swipeHero.addEventListener('pointermove', event => {
     if (!swipeStart || swipeStart.id !== event.pointerId) return;
     const dx = event.clientX - swipeStart.x, dy = event.clientY - swipeStart.y;
-    swipeStart = null;
-    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) navigateDiscussion(dx < 0 ? 1 : -1);
+    if (!swipeStart.horizontal) {
+      if (Math.abs(dy) > 10 && Math.abs(dy) > Math.abs(dx)) { resetDiscussionDrag(); return; }
+      if (Math.abs(dx) < 8 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+      swipeStart.horizontal = true;
+    }
+    swipeStart.dx = dx;
+    if (!reduced.matches) {
+      const distance = Math.max(-swipeHero.clientWidth * .6, Math.min(swipeHero.clientWidth * .6, dx));
+      swipeHero.style.transform = `translateX(${distance}px)`;
+      swipeHero.style.opacity = String(1 - Math.min(.25, Math.abs(distance) / swipeHero.clientWidth * .4));
+    }
   });
-  $('#discussion-image').addEventListener('pointercancel', () => { swipeStart = null; });
+  swipeHero.addEventListener('pointerup', event => {
+    if (!swipeStart || swipeStart.id !== event.pointerId) return;
+    const {dx,horizontal} = swipeStart;
+    const commit = horizontal && Math.abs(dx) > Math.min(64, swipeHero.clientWidth * .2);
+    resetDiscussionDrag(!commit);
+    if (commit) navigateDiscussion(dx < 0 ? 1 : -1, true);
+  });
+  swipeHero.addEventListener('pointercancel', () => resetDiscussionDrag(true));
+  swipeHero.addEventListener('lostpointercapture', () => { if (swipeStart) resetDiscussionDrag(true); });
+  $('#discussion-dialog').addEventListener('close', () => resetDiscussionDrag());
+  let discussionClosing = false;
   function closeDiscussion() {
-    closeDialog($('#discussion-dialog'));
+    const dialog = $('#discussion-dialog');
+    if (!dialog.open || discussionClosing) return;
+    rememberNotesCursor();
+    if (reduced.matches) { closeDialog(dialog); return; }
+    discussionClosing = true;
+    resetDiscussionDrag();
+    const hero = $('#discussion-image');
+    const from = hero.getBoundingClientRect();
+    let target;
+    if (dialogOpener === board) {
+      const source = [...board.contentDocument.querySelectorAll('.photo')].find(cell => cell.dataset.image === activeImage)?.querySelector('img');
+      if (source) {
+        const rect = source.getBoundingClientRect(), frame = board.getBoundingClientRect();
+        target = {left:rect.left+frame.left,top:rect.top+frame.top,width:rect.width,height:rect.height};
+      }
+    } else {
+      const source = [...$('#selected-images').children].find(card => card.dataset.id === activeImage)?.querySelector('img');
+      if (source) {
+        const rect = source.getBoundingClientRect(), viewport = sessionScroller.getBoundingClientRect();
+        if (rect.top >= viewport.top && rect.bottom <= viewport.bottom) target = rect;
+      }
+    }
+    const visible = target?.width && target.top >= 0 && target.top + target.height <= window.innerHeight;
+    dialog.classList.add('is-closing');
+    hero.getAnimations().forEach(animation => animation.cancel());
+    const animation = hero.animate([
+      {transformOrigin:'top left',transform:'none',opacity:1},
+      {transformOrigin:'top left',transform:visible ? `translate(${target.left-from.left}px,${target.top-from.top}px) scale(${target.width/from.width},${target.height/from.height})` : 'scale(.98)',opacity:visible ? .25 : 0}
+    ],{duration:360,easing:'cubic-bezier(.4,0,.2,1)',fill:'forwards'});
+    const finish = () => {
+      closeDialog(dialog); animation.cancel(); dialog.classList.remove('is-closing'); discussionClosing = false;
+    };
+    animation.finished.then(finish, () => { discussionClosing = false; dialog.classList.remove('is-closing'); });
   }
+  $('#discussion-dialog').addEventListener('cancel', event => { event.preventDefault(); closeDiscussion(); });
   let notesAnimation;
   let notesContentAnimation;
   function setNotesVisible(visible, focus = true) {
@@ -742,6 +850,8 @@
     $('#toggle-notes').setAttribute('aria-expanded', String(visible));
     field.inert = !visible;
     field.hidden = !visible;
+    if (visible) restoreNotesCursor();
+    updateNotesIndicator();
     if (focus && !reduced.matches) {
       const to = surface.getBoundingClientRect();
       notesAnimation = surface.animate([
@@ -757,10 +867,21 @@
       $('#image-notes').focus({ preventScroll: true });
     }
   }
-  $('#toggle-notes').addEventListener('click', () => setNotesVisible($('#toggle-notes').getAttribute('aria-expanded') !== 'true'));
+  $('#image-notes').addEventListener('blur', rememberNotesCursor);
+  $('#image-notes').addEventListener('select', rememberNotesCursor);
+  $('#toggle-notes').addEventListener('click', () => {
+    const opening = $('#toggle-notes').getAttribute('aria-expanded') !== 'true';
+    if (!opening) rememberNotesCursor();
+    setNotesVisible(opening);
+  });
   $('#notes-done').addEventListener('click', () => {
     $('#toggle-notes').focus({ preventScroll: true });
     setNotesVisible(false);
+    renderPanel();
+    if (String(state.notes[activeImage] || '').trim()) {
+      announce('Notes added to this image.');
+      if (!reduced.matches) $('#discussion-note-indicator').animate([{opacity:0,scale:'.85'},{opacity:1,scale:'1'}],{duration:250,easing:'ease-out'});
+    }
   });
   function positionDiscussionNotes() {
     const image = $('#discussion-image');
@@ -769,6 +890,7 @@
     dialog.style.setProperty('--notes-top', `${image.parentElement.offsetTop + image.offsetTop}px`);
     dialog.style.setProperty('--hero-left', `${image.parentElement.offsetLeft + image.offsetLeft}px`);
     dialog.style.setProperty('--hero-width', `${image.offsetWidth}px`);
+    dialog.style.setProperty('--hero-bottom', `${image.parentElement.offsetTop + image.offsetTop + image.offsetHeight}px`);
     dialog.style.setProperty('--hero-middle', `${image.parentElement.offsetTop + image.offsetTop + image.offsetHeight / 2}px`);
     const rightSpace = window.innerWidth - dialog.offsetLeft - image.parentElement.offsetLeft - image.offsetLeft - image.offsetWidth - 36;
     dialog.style.setProperty('--notes-width', `${Math.max(104, Math.min(440, rightSpace))}px`);
@@ -789,6 +911,7 @@
   $('#image-notes').addEventListener('input', event => {
     if (!activeImage) return;
     state.notes[activeImage] = event.target.value;
+    updateNotesIndicator();
     state.completed = false;
     save();
   });
