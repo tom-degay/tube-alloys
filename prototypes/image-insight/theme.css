@@ -171,3 +171,8 @@ html:not([data-theme=dark]) .profile > span{color:#fff}
 
 /* Optical weight correction for the session header on dark surfaces. */
 [data-theme=dark] #session-tools :is(.arrow-turn path,.settings-stem path,.settings-handles){stroke-width:1.8}
+
+/* Match the header's dark-mode optical weight, including outlined fill artwork. */
+[data-theme=dark] .rail-button:is(.plus,.folder) svg path{stroke-width:1.8}
+[data-theme=dark] .rail-button.squares svg path{stroke-width:.2}
+[data-theme=dark] .rail-button.refresh .refresh-art{filter:url(#toolbar-lighten-stroke)}

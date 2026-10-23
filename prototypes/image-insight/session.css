@@ -568,3 +568,7 @@ html[data-theme=dark] .profile-menu{background:#242424f5;border-color:#444;color
 @media(prefers-reduced-motion:reduce){
  #discussion-dialog .discussion-nav{transition:none}
 }
+
+@media(max-width:600px),(max-width:900px) and (max-height:500px){
+ #discussion-dialog .discussion-nav{display:none}
+}

@@ -232,10 +232,13 @@ html.session-mode[data-theme=dark], .session-mode[data-theme=dark] body { backgr
 .session-mode.session-mobile-nav .photo[data-selected="true"] .photo-expand{display:grid;opacity:1;pointer-events:auto}
 html.slider-dragging .toolbar button,html.slider-dragging .photo{pointer-events:none}
 html.slider-dragging{user-select:none;-webkit-user-select:none}
+/* Filled icon outlines need the same 0.2-unit optical reduction as strokes. */
+.session-mode[data-theme=dark] .toolbar .refresh-art{filter:url(#toolbar-lighten-stroke)}
+.session-mode[data-theme=dark] .toolbar :is(.square-front,.square-middle,.square-back){stroke-width:.2}
 </style>
 </head>
 <body>
-<svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs>
+<svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs><filter id="toolbar-lighten-stroke" color-interpolation-filters="sRGB"><feMorphology in="SourceGraphic" operator="erode" radius="0.1"/></filter>
  <clipPath id="photo-squircle-clip" clipPathUnits="objectBoundingBox"><path d="M0.3 0H0.7C0.80501 0 0.85751 0 0.89762 0.02044C0.9329 0.03841 0.96159 0.0671 0.97956 0.10238C1 0.14249 1 0.19499 1 0.3V0.7C1 0.80501 1 0.85751 0.97956 0.89762C0.96159 0.9329 0.9329 0.96159 0.89762 0.97956C0.85751 1 0.80501 1 0.7 1H0.3C0.19499 1 0.14249 1 0.10238 0.97956C0.0671 0.96159 0.03841 0.9329 0.02044 0.89762C0 0.85751 0 0.80501 0 0.7V0.3C0 0.19499 0 0.14249 0.02044 0.10238C0.03841 0.0671 0.0671 0.03841 0.10238 0.02044C0.14249 0 0.19499 0 0.3 0Z"/></clipPath>
 </defs></svg>
 <main class="scene" aria-label="Try the Image Insight grid controls">

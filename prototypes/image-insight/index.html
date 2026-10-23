@@ -24,8 +24,8 @@
   <meta name="twitter:image:alt" content="Image Insight interactive prototype: a grid of photographs with a lake image selected. Choose an image. Explore a different perspective.">
   <link rel="icon" href="/case-studies/media/image-insight-logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/prototypes/image-insight/icons.css">
-  <link rel="stylesheet" href="/prototypes/image-insight/session.css?v=20261023-focus-hover">
-  <link rel="stylesheet" href="/prototypes/image-insight/theme.css?v=20261023-header-icon-weight">
+  <link rel="stylesheet" href="/prototypes/image-insight/session.css?v=20261023-mobile-swipe">
+  <link rel="stylesheet" href="/prototypes/image-insight/theme.css?v=20261023-toolbar-weight">
   <script src="/prototypes/image-insight/icons.js" defer></script>
   <script src="/prototypes/image-insight/session.js?v=20261023-focus-navigation" defer></script>
 </head>
@@ -35,7 +35,7 @@
 <button disabled><svg viewBox="23 23 22 20" aria-hidden="true"><path d="M41 40.1755C40.9999 38.0094 39.069 36.1549 36.3296 35.3846C37.3443 34.3449 38.0005 32.708 38.0005 30.8652C38.0005 27.7229 36.3472 26.1755 34 26.1755C31.6529 26.1757 29.5001 27.723 29.5001 30.8652C29.5001 32.6478 30.1134 34.238 31.0719 35.2812C28.1216 35.9772 26.0001 37.9051 26 40.1755" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><span>Profile</span></button>
 <button id="profile-logout"><svg viewBox="23 52 22 20" aria-hidden="true"><path d="M28.5034 58.5701C27.5619 59.7074 27 61.1438 27 62.7054C27 66.3934 30.134 69.3831 34 69.3831C37.866 69.3831 41 66.3934 41 62.7054C41 61.0569 40.3738 59.5479 39.3359 58.3831" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M33 55.4285C33 54.8511 33.4681 54.3831 34.0455 54.3831V54.3831C34.6228 54.3831 35.0909 54.8511 35.0909 55.4285V61.2467C35.0909 61.8241 34.6228 62.2921 34.0455 62.2921V62.2921C33.4681 62.2921 33 61.8241 33 61.2467V55.4285Z" fill="currentColor"/></svg><span>Log out</span></button>
 </div>
-  <svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs>
+  <svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs><filter id="toolbar-lighten-stroke" color-interpolation-filters="sRGB"><feMorphology in="SourceGraphic" operator="erode" radius="0.1"/></filter>
     <path id="session-photo-contour" d="M24 0H76C84.4008 0 88.6008 0 91.8096 1.6352C94.632 3.0728 96.9272 5.368 98.3648 8.1904C100 11.3992 100 15.5992 100 24V76C100 84.4008 100 88.6008 98.3648 91.8096C96.9272 94.632 94.632 96.9272 91.8096 98.3648C88.6008 100 84.4008 100 76 100H24C15.5992 100 11.3992 100 8.1904 98.3648C5.368 96.9272 3.0728 94.632 1.6352 91.8096C0 88.6008 0 84.4008 0 76V24C0 15.5992 0 11.3992 1.6352 8.1904C3.0728 5.368 5.368 3.0728 8.1904 1.6352C11.3992 0 15.5992 0 24 0Z"/>
     <clipPath id="session-photo-clip" clipPathUnits="objectBoundingBox"><path d="M0.24 0H0.76C0.844008 0 0.886008 0 0.918096 0.016352C0.94632 0.030728 0.969272 0.05368 0.983648 0.081904C1 0.113992 1 0.155992 1 0.24V0.76C1 0.844008 1 0.886008 0.983648 0.918096C0.969272 0.94632 0.94632 0.969272 0.918096 0.983648C0.886008 1 0.844008 1 0.76 1H0.24C0.155992 1 0.113992 1 0.081904 0.983648C0.05368 0.969272 0.030728 0.94632 0.016352 0.918096C0 0.886008 0 0.844008 0 0.76V0.24C0 0.155992 0 0.113992 0.016352 0.081904C0.030728 0.05368 0.05368 0.030728 0.081904 0.016352C0.113992 0 0.155992 0 0.24 0Z"/></clipPath>
     <clipPath id="discussion-photo-clip" clipPathUnits="objectBoundingBox"><path d="M0.18 0H0.82C0.883006 0 0.914506 0 0.938572 0.012264C0.95974 0.023046 0.976954 0.04026 0.987736 0.061428C1 0.085494 1 0.116994 1 0.18V0.82C1 0.883006 1 0.914506 0.987736 0.938572C0.976954 0.95974 0.95974 0.976954 0.938572 0.987736C0.914506 1 0.883006 1 0.82 1H0.18C0.116994 1 0.085494 1 0.061428 0.987736C0.04026 0.976954 0.023046 0.95974 0.012264 0.938572C0 0.914506 0 0.883006 0 0.82V0.18C0 0.116994 0 0.085494 0.012264 0.061428C0.023046 0.04026 0.04026 0.023046 0.061428 0.012264C0.085494 0 0.116994 0 0.18 0Z"/></clipPath>
@@ -72,7 +72,7 @@
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
     <main class="board-shell" aria-label="Image board">
-      <iframe id="image-board" title="Choose images — image grid controls" src="/case-studies/media/image-insight-grid-interactive.html?mode=session&amp;hints=off&amp;v=20261023-scroll-bounce"></iframe>
+      <iframe id="image-board" title="Choose images — image grid controls" src="/case-studies/media/image-insight-grid-interactive.html?mode=session&amp;hints=off&amp;v=20261023-toolbar-weight"></iframe>
     </main>
     <div class="expand-shade" aria-hidden="true"></div>
     <aside class="session-panel" id="session-panel" aria-label="Current session">
