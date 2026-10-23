@@ -501,3 +501,13 @@ html[data-input=pointer] #image-notes:focus{outline:none}
  .is-expanded .question-heading::before{content:'';width:18px;flex:0 0 18px}
  .is-expanded .question-heading span{min-width:0}
 }
+
+/* On phones, notes expand below the image without changing its dimensions. */
+@media(max-width:600px),(max-width:900px) and (max-height:500px){
+ #discussion-dialog{overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}
+ #discussion-dialog .discussion-image{height:clamp(160px,45dvh,360px);width:100%}
+ #discussion-dialog .discussion-image img{max-width:100%;max-height:100%}
+ #discussion-dialog .discussion-actions{position:relative;left:auto;right:auto;top:auto;margin:14px auto 0;width:104px;max-height:none;flex-shrink:0}
+ #discussion-dialog.has-notes .discussion-actions{width:100%}
+ #discussion-dialog #image-notes{height:240px}
+}

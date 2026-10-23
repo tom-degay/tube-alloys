@@ -215,7 +215,10 @@ html.session-mode[data-theme=dark], .session-mode[data-theme=dark] body { backgr
 .session-mode .photo-expand::before{content:'';position:absolute;inset:6px;border-radius:50%;corner-shape:round;background:rgb(0 0 0 / 50%);z-index:-1;transition:background 160ms}
 .session-mode .photo-expand:hover::before{background:rgb(0 0 0 / 70%)}
 .session-mode .photo-expand{opacity:0;pointer-events:none;transition:opacity 160ms ease}
-.session-mode .photo:is(:hover,:focus-within) .photo-expand{opacity:1;pointer-events:auto}
+.session-mode .photo:focus-within .photo-expand{opacity:1;pointer-events:auto}
+@media(hover:hover) and (pointer:fine){.session-mode .photo:hover .photo-expand{opacity:1;pointer-events:auto}}
+/* Keep touch targets present before the tap: Safari must not spend it revealing hover UI. */
+@media(hover:none),(pointer:coarse){.session-mode .photo-expand{opacity:1;pointer-events:auto}.session-mode .photo-select,.session-mode .photo-expand{touch-action:manipulation}}
 .session-mode .photo-expand svg{width:28px;height:28px}
 .session-mode .photo-expand .arrow-turn{transform:rotate(180deg)}
 .session-mode .photo-expand .arrow-offset{transition:transform 280ms cubic-bezier(.2,.75,.25,1)}
