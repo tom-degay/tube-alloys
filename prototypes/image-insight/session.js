@@ -12,6 +12,18 @@
   sessionScroller.addEventListener('scroll', updateScrollFades, { passive: true });
   const scrollFadeResize = new ResizeObserver(updateScrollFades);
   [sessionScroller, $('#session-content'), $('#selected-images'), $('#settings-content')].forEach(element => scrollFadeResize.observe(element));
+  const reviewScrollers = [$('.review-columns'), $('#review-images')];
+  function updateReviewFades() {
+    reviewScrollers.forEach(element => {
+      const remaining = element.scrollHeight - element.clientHeight - element.scrollTop;
+      element.style.setProperty('--scroll-fade-top', `${Math.min(24,Math.max(0,element.scrollTop))}px`);
+      element.style.setProperty('--scroll-fade-bottom', `${Math.min(24,Math.max(0,remaining))}px`);
+    });
+  }
+  reviewScrollers.forEach(element => element.addEventListener('scroll', updateReviewFades, {passive:true}));
+  const reviewFadeResize = new ResizeObserver(updateReviewFades);
+  [...reviewScrollers, $('#review-form'), $('.review-details'), $('.review-images-section')].forEach(element => reviewFadeResize.observe(element));
+  new MutationObserver(() => requestAnimationFrame(updateReviewFades)).observe($('#review-form'), {childList:true,subtree:true});
   // Appearance is independent of session data and is shared with the image board.
   const deviceTheme = matchMedia('(prefers-color-scheme: dark)');
   const requestedTheme = new URLSearchParams(location.search).get('theme');
@@ -42,6 +54,7 @@
   // Fit sheets to the visible screen when the phone keyboard is open.
   let keyboardBaseline = window.visualViewport?.height || window.innerHeight;
   let keyboardWidth = window.innerWidth;
+  let keyboardVisible = false;
   function updateVisibleScreen() {
     const viewport = window.visualViewport;
     const height = viewport ? viewport.height : window.innerHeight;
@@ -54,9 +67,14 @@
     if (Math.abs(window.innerWidth - keyboardWidth) > 80) {
       keyboardBaseline = window.innerHeight;
       keyboardWidth = window.innerWidth;
+      keyboardVisible = false;
     }
-    if (!editing) keyboardBaseline = Math.max(height, window.innerHeight);
-    const keyboardOpen = Boolean(editing && Math.max(keyboardBaseline, window.innerHeight) - height > 120);
+    // Blur happens before the keyboard retracts. Keep its compact layout until
+    // the visible viewport has actually recovered, avoiding a premature jump.
+    if (!editing && !keyboardVisible) keyboardBaseline = Math.max(height, window.innerHeight);
+    const keyboardOcclusion = Math.max(keyboardBaseline, window.innerHeight) - height;
+    const keyboardOpen = Boolean((editing || keyboardVisible) && keyboardOcclusion > (keyboardVisible ? 80 : 120));
+    keyboardVisible = keyboardOpen;
     document.body.classList.toggle('keyboard-open', keyboardOpen);
     if (keyboardOpen && document.activeElement?.id === 'image-notes') {
       const dialog = document.getElementById('discussion-dialog');
@@ -880,15 +898,6 @@
       swipePreview.className = 'swipe-preview';
       swipePreview.alt = ''; swipePreview.setAttribute('aria-hidden','true');
       const index = (state.selected.indexOf(activeImage) + direction + state.selected.length) % state.selected.length;
-      const loadingPreview = swipePreview;
-      swipePreview.onload = () => {
-        // Match the incoming photo's own aspect ratio before it reaches centre.
-        if (!phoneLayout.matches || swipePreview !== loadingPreview || !loadingPreview.naturalWidth) return;
-        const frame = swipeHero.parentElement;
-        const scale = Math.min(frame.clientWidth / swipePreview.naturalWidth, frame.clientHeight / swipePreview.naturalHeight);
-        const width = swipePreview.naturalWidth * scale, height = swipePreview.naturalHeight * scale;
-        Object.assign(swipePreview.style, {width:`${width}px`,height:`${height}px`,left:`${(frame.clientWidth-width)/2}px`,top:`${(frame.clientHeight-height)/2}px`});
-      };
       swipePreview.src = catalog.get(state.selected[index]).src;
       Object.assign(swipePreview.style,{left:`${swipeHero.offsetLeft}px`,top:`${swipeHero.offsetTop}px`,width:`${swipeHero.offsetWidth}px`,height:`${swipeHero.offsetHeight}px`});
       swipeHero.parentElement.append(swipePreview);
@@ -1045,6 +1054,14 @@
   function positionDiscussionNotes() {
     const image = $('#discussion-image');
     const dialog = $('#discussion-dialog');
+    const frame = image.parentElement;
+    const reserved = Math.max(180, Math.min(440, window.innerWidth * .27));
+    const availableWidth = phoneLayout.matches ? frame.clientWidth : Math.min(frame.clientWidth, window.innerWidth - 2 * (reserved + 36));
+    const size = Math.max(0, Math.min(availableWidth, frame.clientHeight));
+    image.style.width = image.style.height = `${size}px`;
+    if (swipePreview) Object.assign(swipePreview.style, {
+      width:`${size}px`,height:`${size}px`,left:`${(frame.clientWidth-size)/2}px`,top:`${(frame.clientHeight-size)/2}px`
+    });
     dialog.style.setProperty('--notes-left', `${image.parentElement.offsetLeft + image.offsetLeft + image.offsetWidth + (window.innerWidth <= 600 ? 10 : 20)}px`);
     dialog.style.setProperty('--notes-top', `${image.parentElement.offsetTop + image.offsetTop}px`);
     dialog.style.setProperty('--hero-left', `${image.parentElement.offsetLeft + image.offsetLeft}px`);

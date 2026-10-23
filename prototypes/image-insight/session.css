@@ -627,3 +627,36 @@ html[data-theme=dark] .profile-menu{background:#242424f5;border-color:#444;color
  #discussion-dialog.has-notes :is(#toggle-notes,#notes-done){flex-shrink:0}
  .keyboard-open #discussion-dialog.has-notes[open]{padding-bottom:0}
 }
+
+/* Focus images and incoming swipe frames use the same square crop as the board. */
+#discussion-dialog .discussion-image :is(#discussion-image,.swipe-preview){object-fit:cover;aspect-ratio:1;max-width:none;max-height:none;flex-shrink:0}
+
+@media(max-width:600px),(max-width:900px) and (max-height:500px){
+ #discussion-dialog .discussion-image{transition:height 320ms cubic-bezier(.22,.75,.25,1),margin-top 320ms cubic-bezier(.22,.75,.25,1)}
+ #discussion-dialog .discussion-actions{transition:margin-top 320ms cubic-bezier(.22,.75,.25,1),opacity 200ms ease}
+}
+@media(prefers-reduced-motion:reduce){
+ #discussion-dialog .discussion-image,#discussion-dialog .discussion-actions{transition:none}
+}
+
+/* Fade review content at scroll boundaries, keeping the heading and actions clear. */
+#review-dialog{overflow:hidden}
+#review-form{display:flex;flex-direction:column;max-height:calc(var(--app-height,100dvh) - 108px);min-height:0}
+#review-form>.dialog-heading,#review-form>.review-footer{flex-shrink:0}
+#review-form>.review-columns{min-height:0;overflow:auto}
+#review-dialog :is(.review-columns,.review-images){-webkit-mask-image:linear-gradient(to bottom,transparent,#000 var(--scroll-fade-top,0px),#000 calc(100% - var(--scroll-fade-bottom,0px)),transparent);mask-image:linear-gradient(to bottom,transparent,#000 var(--scroll-fade-top,0px),#000 calc(100% - var(--scroll-fade-bottom,0px)),transparent)}
+@media(max-width:600px),(max-width:900px) and (max-height:500px){
+ #review-form{height:100%;max-height:100%}
+ #review-form>.review-columns{flex:1}
+ #review-form>.review-footer{position:static;margin-top:12px}
+}
+/* Text fields retain their normal border without a bright outer focus ring. */
+input:not([type=radio]):not([type=checkbox]):not([type=range]):focus,textarea:focus{outline:none;box-shadow:none}
+
+/* Mobile review actions follow the content rather than staying at the viewport edge. */
+@media(max-width:600px),(max-width:900px) and (max-height:500px){
+ #review-dialog{overflow-y:auto}
+ #review-form{height:auto;max-height:none}
+ #review-form>.review-columns{flex:none;overflow:visible}
+ #review-form>.review-footer{position:static;margin-top:20px}
+}
