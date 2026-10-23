@@ -601,13 +601,14 @@ html.session-mode[data-theme=dark], .session-mode[data-theme=dark] body { backgr
    const box = cell.getBoundingClientRect();
    return box.left < sceneBox.right && box.right > sceneBox.left && box.top < sceneBox.bottom && box.bottom > sceneBox.top;
   }) : []);
-  const availableColumns = Math.max(1, Math.floor((scene.clientWidth - 36) / 140));
-  const columns = sessionMode ? Math.min(Math.ceil(Math.sqrt(count)), availableColumns) : Math.ceil(Math.sqrt(count));
+  const availableColumns = mobileNavigation ? 3 : Math.max(1, Math.floor((scene.clientWidth - 36) / 140));
+  const columns = mobileNavigation ? Math.min(count, 3) : sessionMode ? Math.min(Math.ceil(Math.sqrt(count)), availableColumns) : Math.ceil(Math.sqrt(count));
   // Keep the larger working area centred behind the crop and toolbar.
   // Six images use three columns: their 478px tiles are the size ceiling.
   // Each selection ring extends 8px beyond its image; 22px leaves 6px clear.
   const gap = sessionMode ? 32 : 30;
-  const area = sessionMode ? Math.max(240, scene.clientWidth - 54) : 1494;
+  // Mobile outer margins are 40px, wider than the 32px gutters.
+  const area = mobileNavigation ? scene.clientWidth - 80 : sessionMode ? Math.max(240, scene.clientWidth - 54) : 1494;
   const ceilingColumns = Math.min(3, availableColumns);
   const size = sessionMode ? Math.min(478, (area - (ceilingColumns - 1) * gap) / ceilingColumns, (area - (columns - 1) * gap) / columns) : Math.min((1494 - 2 * 30) / 3, (1494 - (columns - 1) * 30) / columns);
   const width = columns * size + (columns - 1) * gap;

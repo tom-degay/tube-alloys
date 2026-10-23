@@ -140,3 +140,12 @@ html:not([data-theme=dark]) .profile > span{color:#fff}
  .selected-card :is(.expand-image,.remove-image){visibility:hidden;opacity:0;pointer-events:none}
  .selected-card.controls-visible :is(.expand-image,.remove-image){visibility:visible;opacity:1;pointer-events:auto}
 }
+
+.mobile-profile{display:none}
+@media(max-width:600px),(max-width:900px) and (max-height:500px){
+ .rail .rail-button,.rail .rail-button.plus{border-right:0;border-left:0}
+ .rail .rail-button.plus{border-radius:0}
+ .rail-tools>.mobile-profile{display:grid;place-items:center;flex:1;min-width:0;height:56px}
+ .mobile-profile img{display:block;width:32px;height:32px;object-fit:cover;border:2px solid #fff;border-radius:50%;corner-shape:round}
+ [data-theme=dark] .mobile-profile img{border-color:#6f6f6f}
+}

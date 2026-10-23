@@ -330,6 +330,14 @@
     });
   }
 
+  $('#session-panel').addEventListener('pointerdown', event => {
+    if (!phoneLayout.matches || event.target.closest('.selected-card')) return;
+    $('#selected-images').querySelectorAll('.controls-visible').forEach(card => {
+      card.classList.remove('controls-visible');
+      card.querySelector('.image-button').setAttribute('aria-expanded', 'false');
+    });
+  });
+
   let armedRemove = null;
   let removeResetTimer;
   function cancelImageRemoval() {

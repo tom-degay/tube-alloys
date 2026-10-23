@@ -25,9 +25,9 @@
   <link rel="icon" href="/case-studies/media/image-insight-logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/prototypes/image-insight/icons.css">
   <link rel="stylesheet" href="/prototypes/image-insight/session.css?v=20261023-badge-inset">
-  <link rel="stylesheet" href="/prototypes/image-insight/theme.css?v=20261023-mobile-photo-controls">
+  <link rel="stylesheet" href="/prototypes/image-insight/theme.css?v=20261023-mobile-avatar">
   <script src="/prototypes/image-insight/icons.js" defer></script>
-  <script src="/prototypes/image-insight/session.js?v=20261023-mobile-photo-controls" defer></script>
+  <script src="/prototypes/image-insight/session.js?v=20261023-mobile-avatar" defer></script>
 </head>
 <body>
   <svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs>
@@ -39,6 +39,7 @@
     <nav class="rail" aria-label="Session navigation">
       <img class="brand" src="/prototypes/image-insight/nav-logo.svg" alt="Image Insight">
       <div class="rail-tools">
+        <span class="mobile-profile"><img src="/case-studies/media/image-insight-grid/forest.webp" alt="Tom’s profile"></span>
         <div class="new-session-control">
           <button class="icon rail-button plus" id="new-session" aria-label="New session options" aria-expanded="false" aria-controls="new-session-menu" title="New session"><span data-icon="plus" aria-hidden="true"></span><span class="rail-label">New session</span></button>
           <div class="new-session-menu" id="new-session-menu" role="group" aria-label="New session options" hidden>
@@ -66,7 +67,7 @@
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
     <main class="board-shell" aria-label="Image board">
-      <iframe id="image-board" title="Choose images — image grid controls" src="/case-studies/media/image-insight-grid-interactive.html?mode=session&amp;hints=off&amp;v=20261023-mobile-photo-controls"></iframe>
+      <iframe id="image-board" title="Choose images — image grid controls" src="/case-studies/media/image-insight-grid-interactive.html?mode=session&amp;hints=off&amp;v=20261023-mobile-margins"></iframe>
     </main>
     <div class="expand-shade" aria-hidden="true"></div>
     <aside class="session-panel" id="session-panel" aria-label="Current session">
