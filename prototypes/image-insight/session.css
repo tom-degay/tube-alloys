@@ -504,7 +504,7 @@ html[data-input=pointer] #image-notes:focus{outline:none}
 
 /* On phones, notes expand below the image without changing its dimensions. */
 @media(max-width:600px),(max-width:900px) and (max-height:500px){
- #discussion-dialog{overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}
+ #discussion-dialog{overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;scroll-padding:0}
  #discussion-dialog .discussion-image{height:clamp(160px,45dvh,360px);width:100%}
  #discussion-dialog .discussion-image img{max-width:100%;max-height:100%}
  #discussion-dialog .discussion-actions{position:relative;left:auto;right:auto;top:auto;margin:14px auto 0;width:104px;max-height:none;flex-shrink:0}
@@ -515,11 +515,11 @@ html[data-input=pointer] #image-notes:focus{outline:none}
 /* Anchor the phone discussion to the visible viewport, including the keyboard. */
 @media(max-width:600px),(max-width:900px) and (max-height:500px){
  #discussion-dialog{top:calc(var(--view-top,0px) + 12px);bottom:auto;margin:0 auto;height:calc(var(--app-height,100dvh) - 24px);max-height:calc(var(--app-height,100dvh) - 24px)}
- .keyboard-open #discussion-dialog.has-notes[open]{display:flex;flex-direction:column;gap:10px}
- .keyboard-open #discussion-dialog.has-notes .discussion-image{display:flex;height:clamp(64px,18vh,100px);flex:0 0 auto}
+ .keyboard-open #discussion-dialog.has-notes[open]{display:flex;flex-direction:column;gap:12px;overflow:hidden;padding:0;scroll-padding:0}
+ .keyboard-open #discussion-dialog.has-notes .discussion-image{display:flex;height:clamp(48px,18%,72px);flex:0 0 auto}
  .keyboard-open #discussion-dialog.has-notes .discussion-actions{margin:0;width:100%;flex:1;min-height:0;max-height:none}
- .keyboard-open #discussion-dialog .notes-field{display:flex;flex-direction:column;flex:1;min-height:0;overflow:auto}
+ .keyboard-open #discussion-dialog .notes-field{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden}
  .keyboard-open #discussion-dialog .notes-field[hidden]{display:none}
- .keyboard-open #discussion-dialog #image-notes{height:auto;min-height:64px;flex:1;scroll-margin:12px}
+ .keyboard-open #discussion-dialog #image-notes{height:0;min-height:0;flex:1;overflow-y:auto;scroll-margin:0}
  .keyboard-open #discussion-dialog :is(#toggle-notes,#notes-done){flex-shrink:0}
 }

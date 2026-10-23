@@ -24,10 +24,10 @@
   <meta name="twitter:image:alt" content="Image Insight interactive prototype: a grid of photographs with a lake image selected. Choose an image. Explore a different perspective.">
   <link rel="icon" href="/case-studies/media/image-insight-logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/prototypes/image-insight/icons.css">
-  <link rel="stylesheet" href="/prototypes/image-insight/session.css?v=20261023-mobile-keyboard">
-  <link rel="stylesheet" href="/prototypes/image-insight/theme.css?v=20261023-bar-borders">
+  <link rel="stylesheet" href="/prototypes/image-insight/session.css?v=20261023-keyboard-thumbnail">
+  <link rel="stylesheet" href="/prototypes/image-insight/theme.css?v=20261023-mobile-toolbar-border">
   <script src="/prototypes/image-insight/icons.js" defer></script>
-  <script src="/prototypes/image-insight/session.js?v=20261023-mobile-avatar" defer></script>
+  <script src="/prototypes/image-insight/session.js?v=20261023-keyboard-thumbnail" defer></script>
 </head>
 <body>
   <svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs>
@@ -98,7 +98,11 @@
           <button class="primary" id="start-session">Create new session</button>
         </section>
         <div id="session-content" hidden>
-          <button class="question-heading" id="edit-question" title="Change question"><span id="current-question">Choose a question</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 4 5 5M4 20l5-1L21 7a2 2 0 0 0-5-5L4 14z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></button>
+          <button class="question-heading" id="edit-question" title="Change question"><span id="current-question">Choose a question</span><svg aria-hidden="true" width="15" height="18" viewBox="0 0 15 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M2.73193 9.83545L11.4743 1.09304C12.0779 0.489501 13.0564 0.489501 13.6599 1.09304V1.09304C14.2635 1.69658 14.2635 2.6751 13.6599 3.27864L4.91754 12.0211L2.73193 9.83545Z" fill="#979797"/>
+<path d="M1.0928 13.6597L1.6392 10.9277L3.8248 13.1133L1.0928 13.6597Z" fill="#979797"/>
+<rect x="1" y="16" width="13" height="2" rx="1" fill="#979797"/>
+</svg></button>
           <p class="selection-hint" id="selection-hint">Choose images from the board.</p>
           <div class="empty-selection" id="empty-selection"><strong>No images selected</strong><span>Select an image from the board.</span></div>
           <div class="selected-images" id="selected-images"></div>
@@ -113,7 +117,7 @@
       </div>
       <footer class="session-footer" id="session-footer" hidden>
         <button class="primary" id="review-session" disabled>Review session</button>
-        <button class="quiet" id="back-to-board" hidden>Back to image board</button>
+        <button class="quiet squares" id="back-to-board" hidden><span data-icon="squares" aria-hidden="true"></span><span>Back to image board</span></button>
       </footer>
       <footer class="settings-footer" id="settings-footer" hidden><button class="primary" id="settings-done">Done</button></footer>
     </aside>

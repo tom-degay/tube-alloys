@@ -39,6 +39,8 @@
   applyTheme();
 
   // Fit sheets to the visible screen when the phone keyboard is open.
+  let keyboardBaseline = window.visualViewport?.height || window.innerHeight;
+  let keyboardWidth = window.innerWidth;
   function updateVisibleScreen() {
     const viewport = window.visualViewport;
     const height = viewport ? viewport.height : window.innerHeight;
@@ -47,7 +49,18 @@
     const boardEditing = document.activeElement === board && board.contentDocument?.activeElement?.matches('input');
     const editing = document.activeElement?.matches('input, textarea') || boardEditing;
     document.body.classList.toggle('board-editing', Boolean(boardEditing));
-    document.body.classList.toggle('keyboard-open', Boolean(editing && window.innerHeight - height > 120));
+    // Some mobile browsers shrink both viewports, so retain the unfocused height.
+    if (Math.abs(window.innerWidth - keyboardWidth) > 80) {
+      keyboardBaseline = window.innerHeight;
+      keyboardWidth = window.innerWidth;
+    }
+    if (!editing) keyboardBaseline = Math.max(height, window.innerHeight);
+    const keyboardOpen = Boolean(editing && Math.max(keyboardBaseline, window.innerHeight) - height > 120);
+    document.body.classList.toggle('keyboard-open', keyboardOpen);
+    if (keyboardOpen && document.activeElement?.id === 'image-notes') {
+      const dialog = document.getElementById('discussion-dialog');
+      dialog.scrollTop = 0;
+    }
   }
   window.visualViewport?.addEventListener('resize', updateVisibleScreen);
   window.visualViewport?.addEventListener('scroll', updateVisibleScreen);
