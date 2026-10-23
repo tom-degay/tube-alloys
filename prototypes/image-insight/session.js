@@ -3,8 +3,20 @@
   const $ = selector => document.querySelector(selector);
   const board = $('#image-board');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const sessionScroller = $('.session-body');
+  function updateScrollFades() {
+    const remaining = sessionScroller.scrollHeight - sessionScroller.clientHeight - sessionScroller.scrollTop;
+    sessionScroller.style.setProperty('--scroll-fade-top', `${Math.min(24, Math.max(0, sessionScroller.scrollTop))}px`);
+    sessionScroller.style.setProperty('--scroll-fade-bottom', `${Math.min(24, Math.max(0, remaining))}px`);
+  }
+  sessionScroller.addEventListener('scroll', updateScrollFades, { passive: true });
+  const scrollFadeResize = new ResizeObserver(updateScrollFades);
+  [sessionScroller, $('#session-content'), $('#selected-images'), $('#settings-content')].forEach(element => scrollFadeResize.observe(element));
   // Appearance is independent of session data and is shared with the image board.
-  let theme = new URLSearchParams(location.search).get('theme') === 'dark' ? 'dark' : 'light';
+  const deviceTheme = matchMedia('(prefers-color-scheme: dark)');
+  const requestedTheme = new URLSearchParams(location.search).get('theme');
+  let themeOverridden = ['light', 'dark'].includes(requestedTheme);
+  let theme = themeOverridden ? requestedTheme : deviceTheme.matches ? 'dark' : 'light';
   function applyTheme() {
     document.documentElement.dataset.theme = theme;
     document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#1c1c1c' : '#47b3cf';
@@ -15,9 +27,15 @@
     board.contentWindow.postMessage({ type: 'ii-session-theme', theme }, location.origin);
   }
   document.querySelectorAll('[data-theme-toggle]').forEach(button => button.addEventListener('click', () => {
+    themeOverridden = true;
     theme = theme === 'dark' ? 'light' : 'dark';
     applyTheme();
   }));
+  deviceTheme.addEventListener('change', () => {
+    if (themeOverridden) return;
+    theme = deviceTheme.matches ? 'dark' : 'light';
+    applyTheme();
+  });
   applyTheme();
 
   // Fit sheets to the visible screen when the phone keyboard is open.
@@ -56,7 +74,6 @@
   }, true);
   let expanded = false;
   let settingsOpen = false;
-  let expandedBeforeDiscussion = false;
   let activeImage = null;
   let dialogOpener = null;
   const phoneLayout = matchMedia('(max-width:600px), (max-width:900px) and (max-height:500px)');
@@ -71,11 +88,17 @@
     board.contentWindow.postMessage({ type: 'ii-session-controls', open: mobileControlsOpen }, location.origin);
   }
   function syncMobileNavigation() {
+    syncToolbarAlignment();
     board.contentWindow.postMessage({ type: 'ii-session-mobile-nav', enabled: phoneLayout.matches }, location.origin);
     $('#mobile-session-bar').inert = !phoneLayout.matches || !$('#workspace').classList.contains('mobile-session-visible');
     if (!phoneLayout.matches) setMobileControls(false);
   }
   phoneLayout.addEventListener('change', syncMobileNavigation);
+  function syncToolbarAlignment() {
+    const bottom = window.innerWidth > 900 ? parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--edge')) : 12;
+    board.contentWindow.postMessage({ type: 'ii-session-toolbar-alignment', bottom }, location.origin);
+  }
+  window.addEventListener('resize', syncToolbarAlignment);
   $('#mobile-grid-controls').addEventListener('click', () => setMobileControls(!mobileControlsOpen));
   $('#mobile-refresh').addEventListener('click', () => {
     setMobileControls(false);
@@ -166,6 +189,13 @@
         $('#mobile-grid-controls').focus({ preventScroll: true });
       }
     }
+    if (event.data?.type === 'ii-session-discuss' && catalog.has(event.data.id)) {
+      const id = event.data.id;
+      if (!state.selected.includes(id)) state.selected.push(id);
+      state.completed = false;
+      save(); renderPanel(); sendSelection();
+      openDiscussion(id, board);
+    }
     if (event.data?.type === 'ii-session-toggle' && catalog.has(event.data.id)) {
       if (!state.started || !state.question) {
         startSession();
@@ -241,11 +271,16 @@
         card = document.createElement('article');
         card.className = 'selected-card';
         card.dataset.id = id;
-        const button = document.createElement('button');
+        const button = document.createElement('div');
         button.className = 'image-button';
-        button.setAttribute('aria-label', `Discuss ${catalog.get(id).alt.toLowerCase()}`);
         button.append(makeImage(id), makeSelectionRing());
-        button.addEventListener('click', () => openDiscussion(id, button));
+        const expand = document.createElement('button');
+        expand.className = 'expand-image';
+        expand.type = 'button';
+        expand.setAttribute('aria-label', `Discuss ${catalog.get(id).alt.toLowerCase()}`);
+        expand.innerHTML = icon('arrows');
+        [...expand.querySelectorAll('.arrow-offset')].slice(0, 2).forEach(arrow => arrow.remove());
+        expand.addEventListener('click', () => openDiscussion(id, expand));
         const badge = document.createElement('span');
         badge.className = 'number-badge';
         badge.setAttribute('aria-hidden', 'true');
@@ -260,18 +295,8 @@
         remove.className = 'icon icon-button trash remove-image';
         remove.setAttribute('aria-label', `Remove ${catalog.get(id).alt.toLowerCase()} from session`);
         remove.innerHTML = icon('trash');
-        remove.addEventListener('click', () => {
-          const next = card.nextElementSibling || card.previousElementSibling;
-          state.selected = state.selected.filter(imageId => imageId !== id);
-          state.completed = false;
-          save();
-          renderPanel();
-          sendSelection();
-          if (next) next.querySelector('.image-button').focus({ preventScroll: true });
-          else $('#edit-question').focus({ preventScroll: true });
-          announce('Image removed from the session.');
-        });
-        card.append(button, remove);
+        remove.addEventListener('click', () => requestImageRemoval(id, remove));
+        card.append(button, expand, remove);
       }
       card.querySelector('.number-badge').textContent = index + 1;
       card.querySelector('.note-indicator').hidden = !String(state.notes[id] || '').trim();
@@ -280,6 +305,43 @@
       container.append(card);
     });
   }
+
+  let armedRemove = null;
+  let removeResetTimer;
+  function cancelImageRemoval() {
+    clearTimeout(removeResetTimer);
+    if (!armedRemove) return;
+    armedRemove.classList.remove('is-confirming');
+    armedRemove.innerHTML = icon('trash');
+    armedRemove.setAttribute('aria-label', armedRemove.dataset.originalLabel);
+    armedRemove = null;
+  }
+  function requestImageRemoval(id, button) {
+    if (armedRemove !== button) {
+      cancelImageRemoval();
+      armedRemove = button;
+      button.dataset.originalLabel = button.getAttribute('aria-label');
+      button.classList.add('is-confirming');
+      button.innerHTML = '<span class="remove-label">Remove</span>';
+      button.setAttribute('aria-label', `Confirm removal of ${catalog.get(id).alt.toLowerCase()}`);
+      removeResetTimer = setTimeout(cancelImageRemoval, 5000);
+      return;
+    }
+    const card = button.closest('.selected-card');
+    const next = card.nextElementSibling || card.previousElementSibling;
+    cancelImageRemoval();
+    state.selected = state.selected.filter(imageId => imageId !== id);
+    state.completed = false;
+    save(); renderPanel(); sendSelection();
+    (next?.querySelector('.expand-image') || $('#edit-question')).focus({preventScroll:true});
+    announce('Image removed from the session.');
+  }
+  document.addEventListener('pointerdown', event => {
+    if (armedRemove && !armedRemove.contains(event.target)) cancelImageRemoval();
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && armedRemove) { event.preventDefault(); cancelImageRemoval(); }
+  });
 
   function openDialog(dialog, opener = document.activeElement) {
     dialogOpener = opener;
@@ -298,18 +360,12 @@
   dialogs.forEach(dialog => {
     dialog.querySelectorAll('[data-close]').forEach(button => button.addEventListener('click', () => closeDialog(dialog)));
     dialog.addEventListener('close', () => {
-      if (dialog.id === 'question-dialog') {
-        document.body.classList.remove('question-selecting');
-        renderPanel();
-      }
       if (dialog.id === 'discussion-dialog') {
         activeImage = null;
-        document.body.classList.remove('discussion-open');
-        if (expandedBeforeDiscussion) {
-          expanded = true;
-          applyExpansion();
-          expandedBeforeDiscussion = false;
-        }
+        renderPanel();
+      }
+      if (dialog.id === 'question-dialog') {
+        document.body.classList.remove('question-selecting');
         renderPanel();
       }
       if (dialog.returnValue !== 'switch' && !dialogs.some(other => other.open)) {
@@ -340,6 +396,7 @@
     } else newSession();
   }
   function newSession() {
+    closeDiscussion(false);
     archiveCurrent();
     state = freshSession();
     settingsOpen = false;
@@ -391,6 +448,7 @@
     $('#current-question').textContent = choice;
   }
   function openQuestionPicker() {
+    closeDiscussion(false);
     if (expanded) { expanded = false; applyExpansion(); }
     const choices = [...document.querySelectorAll('#question-form input[name=question]')];
     const choice = choices.find(input => input.value === state.question) || choices[0];
@@ -424,6 +482,7 @@
     $('#selection-hint').textContent = expanded ? 'Choose an image to talk about.' : 'Select an image to discuss it.';
   }
   function toggleExpansion() {
+    if (activeImage) { closeDiscussion(); return; }
     const cards = [...$('#selected-images').children];
     const before = new Map(cards.map(card => [card, card.getBoundingClientRect()]));
     expanded = !expanded;
@@ -448,7 +507,9 @@
   $('#expand-session').addEventListener('click', toggleExpansion);
   $('#back-to-board').addEventListener('click', toggleExpansion);
   document.addEventListener('keydown', event => {
-    if (event.key === 'Escape' && settingsOpen && !dialogs.some(dialog => dialog.open)) {
+    if (event.key === 'Escape' && activeImage && !dialogs.some(dialog => dialog.open)) {
+      event.preventDefault(); closeDiscussion();
+    } else if (event.key === 'Escape' && settingsOpen && !dialogs.some(dialog => dialog.open)) {
       event.preventDefault();
       closeSettings();
     } else if (event.key === 'Escape' && expanded && !dialogs.some(dialog => dialog.open)) {
@@ -458,9 +519,7 @@
   });
 
   function openDiscussion(id, opener) {
-    expandedBeforeDiscussion = expanded;
-    if (expanded) { expanded = false; applyExpansion(); }
-    document.body.classList.add('discussion-open');
+    const from = (opener?.closest('.selected-card')?.querySelector('img') || opener?.querySelector('img'))?.getBoundingClientRect();
     activeImage = id;
     const image = catalog.get(id);
     $('#discussion-image').src = image.src;
@@ -468,19 +527,76 @@
     $('#image-notes').value = String(state.notes[id] || '');
     setNotesVisible(Boolean($('#image-notes').value.trim()), false);
     renderPanel();
-    openDialog($('#discussion-dialog'), opener);
-  }
-  function setNotesVisible(visible, focus = true) {
-    $('#discussion-dialog').classList.toggle('has-notes', visible);
-    $('#notes-field').hidden = !visible;
-    $('#toggle-notes').setAttribute('aria-expanded', String(visible));
-    $('#toggle-notes span').textContent = visible ? 'Hide notes' : 'Add notes';
-    if (visible && focus) {
-      $('#image-notes').focus({ preventScroll: true });
-      if (matchMedia('(max-width: 600px)').matches) requestAnimationFrame(() => $('#image-notes').scrollIntoView({ block: 'nearest' }));
+    const dialog = $('#discussion-dialog');
+    openDialog(dialog, opener);
+    if (from?.width && !reduced.matches) {
+      // Use the original thumbnail's screen position as the starting frame.
+      dialog.getAnimations().forEach(animation => animation.cancel());
+      const hero = $('#discussion-image');
+      const to = hero.getBoundingClientRect();
+      hero.animate([
+        {transformOrigin:'top left', transform:`translate(${from.left-to.left}px,${from.top-to.top}px) scale(${from.width/to.width},${from.height/to.height})`},
+        {transformOrigin:'top left', transform:'none'}
+      ], {duration:480,easing:'cubic-bezier(.22,.75,.25,1)'});
+      $('#discussion-dialog .discussion-actions').animate([{opacity:0},{opacity:1}],{duration:360,delay:120,fill:'backwards'});
     }
   }
-  $('#toggle-notes').addEventListener('click', () => setNotesVisible($('#notes-field').hidden));
+  function closeDiscussion() {
+    closeDialog($('#discussion-dialog'));
+  }
+  let notesAnimation;
+  let notesContentAnimation;
+  function setNotesVisible(visible, focus = true) {
+    const surface = $('#discussion-dialog .discussion-actions');
+    const field = $('#notes-field');
+    const from = surface.getBoundingClientRect();
+    notesAnimation?.cancel();
+    notesContentAnimation?.cancel();
+    $('#discussion-dialog').classList.toggle('has-notes', visible);
+    $('#toggle-notes').setAttribute('aria-expanded', String(visible));
+    field.inert = !visible;
+    field.hidden = !visible;
+    if (focus && !reduced.matches) {
+      const to = surface.getBoundingClientRect();
+      notesAnimation = surface.animate([
+        {width:`${from.width}px`,height:`${from.height}px`},
+        {width:`${to.width}px`,height:`${to.height}px`}
+      ], {duration:420,easing:'cubic-bezier(.22,.75,.25,1)'});
+      if (visible) notesContentAnimation = field.animate([
+        {opacity:0,transform:'translateY(-6px)'},
+        {opacity:1,transform:'none'}
+      ], {duration:260,delay:100,fill:'backwards',easing:'ease-out'});
+    }
+    if (visible && focus && document.documentElement.dataset.input === 'keyboard') {
+      $('#image-notes').focus({ preventScroll: true });
+    }
+  }
+  $('#toggle-notes').addEventListener('click', () => setNotesVisible($('#toggle-notes').getAttribute('aria-expanded') !== 'true'));
+  $('#notes-done').addEventListener('click', () => {
+    $('#toggle-notes').focus({ preventScroll: true });
+    setNotesVisible(false);
+  });
+  function positionDiscussionNotes() {
+    const image = $('#discussion-image');
+    const dialog = $('#discussion-dialog');
+    dialog.style.setProperty('--notes-left', `${image.parentElement.offsetLeft + image.offsetLeft + image.offsetWidth + (window.innerWidth <= 600 ? 10 : 20)}px`);
+    dialog.style.setProperty('--notes-top', `${image.parentElement.offsetTop + image.offsetTop}px`);
+    const rightSpace = window.innerWidth - dialog.offsetLeft - image.parentElement.offsetLeft - image.offsetLeft - image.offsetWidth - 36;
+    dialog.style.setProperty('--notes-width', `${Math.max(104, Math.min(440, rightSpace))}px`);
+  }
+  const discussionResize = new ResizeObserver(positionDiscussionNotes);
+  discussionResize.observe($('#discussion-image'));
+  discussionResize.observe($('#discussion-dialog .discussion-image'));
+  $('#discussion-image').addEventListener('load', positionDiscussionNotes);
+  const protectedDiscussionTarget = target => target.closest('#discussion-image, .discussion-actions');
+  let discussionOutsidePress = false;
+  $('#discussion-dialog').addEventListener('pointerdown', event => {
+    discussionOutsidePress = !protectedDiscussionTarget(event.target);
+  });
+  $('#discussion-dialog').addEventListener('click', event => {
+    if (discussionOutsidePress && !protectedDiscussionTarget(event.target)) closeDiscussion();
+    discussionOutsidePress = false;
+  });
   $('#image-notes').addEventListener('input', event => {
     if (!activeImage) return;
     state.notes[activeImage] = event.target.value;
@@ -493,6 +609,7 @@
     openSettings();
   });
   function openSettings() {
+    closeDiscussion(false);
     $('#settings-name').value = state.name;
     $('#client-name').value = state.client;
     $('#session-notes').value = state.sessionNotes;

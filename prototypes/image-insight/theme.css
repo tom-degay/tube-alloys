@@ -1,5 +1,6 @@
 /* Palette from dark mode.svg: charcoal, translucent teal, and pale cyan. */
 :root{--surface:#fff;--page:#efefef;--photo-hover:.35}
+html:not([data-theme=dark]) .session-panel{--surface:#f6f7f7;background:var(--surface)}
 .rail .brand{opacity:.5}
 .theme-toggle{perspective:240px;display:grid;place-items:center;width:44px;height:44px;padding:10px;border:0;border-radius:12px;background:transparent;color:inherit}
 .theme-toggle:hover{background:#ffffff28}
@@ -109,3 +110,24 @@ html[data-theme=dark]{color-scheme:dark;--accent:#72e0fc;--accent-ink:#72e0fc;--
 }
 
 .profile > span{color:var(--muted)}
+html:not([data-theme=dark]) .profile > span{color:#fff}
+
+/* Image actions sit in opposite right-hand corners. */
+.selected-card .remove-image{top:auto;bottom:max(3px,calc(6% - 6px));padding:0}
+.selected-card .image-button{cursor:default}
+.expand-image{position:absolute;z-index:3;right:max(3px,calc(6% - 6px));top:max(3px,calc(6% - 6px));width:44px;height:44px;padding:0;display:grid;place-items:center;border:0;background:transparent;color:#fff;isolation:isolate;opacity:0;pointer-events:none;transition:opacity 160ms}
+.expand-image::before{content:'';position:absolute;inset:6px;border-radius:50%;corner-shape:round;background:rgb(0 0 0 / 50%);z-index:-1;transition:background 160ms}
+.expand-image:hover::before{background:rgb(0 0 0 / 70%)}
+.selected-card:is(:hover,:focus-within) .expand-image{opacity:1;pointer-events:auto}
+.expand-image svg{width:28px;height:28px}
+.expand-image .arrow-turn{transform:rotate(180deg)}
+.expand-image .arrow-offset{transition:transform 280ms cubic-bezier(.2,.75,.25,1)}
+.expand-image:is(:hover,:focus-visible) .arrow-offset{transform:translate(var(--dx),var(--dy))}
+@media(hover:none){.expand-image{opacity:1;pointer-events:auto}}
+@media(prefers-reduced-motion:reduce){.expand-image .arrow-offset{transition:none}}
+
+/* Reveal confirmation text inside the expanding lozenge. */
+.remove-image{overflow:hidden;white-space:nowrap}
+.remove-image .remove-label{display:block;max-width:100%;overflow:hidden;animation:remove-label-in 120ms ease 100ms both}
+@keyframes remove-label-in{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){.remove-image{transition:none}.remove-image .remove-label{animation:none}}

@@ -34,7 +34,7 @@ button:focus-visible, input:focus-visible { outline: 2px solid #18768b; outline-
 .session-mode .photo::before { corner-shape: round; }
 .session-mode input[type="range"]::-webkit-slider-thumb { corner-shape: round; }
 .session-mode input[type="range"]::-moz-range-thumb { corner-shape: round; }
-.session-mode .scene { --toolbar-bottom: 66px; }
+.session-mode .scene { --toolbar-bottom: var(--session-toolbar-bottom, 22px); }
 .session-mode .viewport { inset: 22px 18px 0; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; }
 .session-mode .photo { padding: 0; border: 0; background: transparent; cursor: pointer; }
 /* Avoid a pale underpaint showing through the antialiased photo edge. */
@@ -45,8 +45,8 @@ button:focus-visible, input:focus-visible { outline: 2px solid #18768b; outline-
 .photo img { border-radius: 0; clip-path: url(#photo-squircle-clip); }
 .photo-ring { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 1; color: #fff; opacity: 0; transition: opacity 160ms ease, color 160ms ease; }
 .session-mode .photo:hover .photo-ring { color: #47b3cf; opacity: .5; }
-.session-mode .photo[aria-pressed="true"] .photo-ring { color: #47b3cf; opacity: 1; }
-.session-mode .photo[aria-pressed="true"]::before { content: attr(data-selection); position: absolute; z-index: 2; right: max(9px, 6%); top: max(9px, 6%); display: grid; place-items: center; width: 28px; height: 28px; border: 2px solid white; border-radius: 50%; background: #47b3cf; color: white; font-size: 14px; pointer-events: none; }
+.session-mode .photo[data-selected="true"] .photo-ring { color: #47b3cf; opacity: 1; }
+.session-mode .photo[data-selected="true"]::before { content: attr(data-selection); position: absolute; z-index: 2; right: max(9px, 6%); top: max(9px, 6%); display: grid; place-items: center; width: 28px; height: 28px; border: 2px solid white; border-radius: 50%; background: #47b3cf; color: white; font-size: 14px; pointer-events: none; }
 .session-mode .photo:focus-visible { outline: 3px solid #18768b; outline-offset: 4px; }
 html.session-mode[data-input="pointer"] :is(button,input[type="range"]):focus { outline: none; }
 .try-bubble { position: absolute; z-index: 1; top: 22px; left: 50%; transform: translateX(-50%); min-height: 44px; padding: 10px 18px; border: 0; border-radius: 10px; background: #fff; box-shadow: 0 3px 16px #18252d30; font-family: 'Fakt Blond', system-ui, sans-serif; font-weight: 700; font-size: 16px; line-height: 24px; letter-spacing: 0; color: #0e76aa; white-space: nowrap; }
@@ -115,7 +115,7 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
 /* The phone session keeps its controls in one thumb-friendly row.
    This is scoped to the app; the cropped case-study preview keeps its layout. */
 @media (max-width: 600px), (max-width: 900px) and (max-height: 500px) {
- .session-mode .scene { --toolbar-bottom: 12px; }
+ .session-mode .scene { --toolbar-bottom: var(--session-toolbar-bottom, 12px); }
  .session-mode .viewport { inset: 12px 12px 80px; }
  .session-mode .toolbar { width: 580px; max-width: calc(100% - 24px); height: 56px; flex-wrap: nowrap; border-radius: 20px; }
  .session-mode .control { height: 56px; }
@@ -131,7 +131,7 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
  .session-mode input[type="range"] { min-width: 24px; height: 44px; }
  .session-mode .count-input { width: 44px; height: 44px; }
  .session-mode .menu { left: 0; right: auto; bottom: calc(100% + 8px); width: 178px; max-height: calc(100dvh - 88px); }
- .session-mode .undo-notice { bottom: 76px; max-width: calc(100% - 24px); font-size: 13px; }
+ .session-mode .undo-notice { max-width: calc(100% - 24px); font-size: 13px; }
  .session-mode .undo-notice>span { padding: 0 12px; }
  .session-mode .undo-button { padding: 0 12px; }
  .session-mode .undo-notice.is-entering { animation-name: session-undo-rise; }
@@ -146,6 +146,8 @@ input[type="range"]:active::-webkit-slider-thumb { box-shadow: 0 2px 4px #0003, 
  /* A short landscape board has room for the picker over its controls. */
  .session-mode .menu { bottom: 0; max-height: calc(100dvh - 24px); }
 }
+.session-mode .undo-notice { bottom: calc(var(--toolbar-bottom) + 64px); }
+.session-mode .undo-notice.is-entering { animation-name: session-undo-rise; }
 .session-mode.session-mobile-nav .scene { --toolbar-bottom: calc(80px + env(safe-area-inset-bottom)); }
 .session-mode.session-mobile-nav .viewport { inset: 0 12px; }
 .session-mode.session-mobile-nav .toolbar { display: none; width: 580px; max-width: calc(100% - 24px); height: 56px; flex-wrap: nowrap; border-radius: 20px; }
@@ -193,8 +195,8 @@ html.session-mode[data-theme=dark], .session-mode[data-theme=dark] body { backgr
 .session-mode[data-theme=dark] .count-input { background:#131313; color:#ededed; }
 .session-mode[data-theme=dark] .menu { background:#242424f5; border-color:var(--grid-line); }
 .session-mode[data-theme=dark] :is(button,input):focus-visible { outline-color:#d0d0d0; }
-.session-mode[data-theme=dark] .photo:is(:hover,[aria-pressed=true]) .photo-ring { color:#72e0fc; }
-.session-mode[data-theme=dark] .photo[aria-pressed=true]::before { background:#285661; color:#b4f0ff; border:0; }
+.session-mode[data-theme=dark] .photo:is(:hover,[data-selected=true]) .photo-ring { color:#72e0fc; }
+.session-mode[data-theme=dark] .photo[data-selected=true]::before { background:#285661; color:#b4f0ff; border:0; }
 .session-mode[data-theme=dark] input[type=range]::-webkit-slider-runnable-track { background:#131313; }
 .session-mode[data-theme=dark] input[type=range]::-webkit-slider-thumb { background:#e5e5e5; border-color:#f4f4f4; }
 .session-mode[data-theme=dark] input[type=range]::-moz-range-track { background:#131313; }
@@ -207,6 +209,20 @@ html.session-mode[data-theme=dark], .session-mode[data-theme=dark] body { backgr
 .session-mode[data-theme=dark] :is(.control:hover,.control:focus-visible,.undo-button:hover,.undo-button:focus-visible,.option:hover,.option:focus-visible){color:#b7b7b7}
 .session-mode[data-theme=dark] input[type=range]::-webkit-slider-thumb{background:#b7b7b7;border-color:#c5c5c5}
 .session-mode[data-theme=dark] input[type=range]::-moz-range-thumb{background:#b7b7b7;border-color:#c5c5c5}
+
+.session-mode .photo-select{position:absolute;inset:0;width:100%;height:100%;border:0;padding:0;background:transparent;border-radius:inherit;cursor:pointer;z-index:1}
+.session-mode .photo-expand{position:absolute;z-index:3;right:max(3px,calc(6% - 6px));top:max(3px,calc(6% - 6px));width:44px;height:44px;display:grid;place-items:center;border:0;padding:0;background:transparent;color:#fff;cursor:pointer;isolation:isolate}
+.session-mode .photo-expand::before{content:'';position:absolute;inset:6px;border-radius:50%;corner-shape:round;background:rgb(0 0 0 / 50%);z-index:-1;transition:background 160ms}
+.session-mode .photo-expand:hover::before{background:rgb(0 0 0 / 70%)}
+.session-mode .photo-expand{opacity:0;pointer-events:none;transition:opacity 160ms ease}
+.session-mode .photo:is(:hover,:focus-within) .photo-expand{opacity:1;pointer-events:auto}
+.session-mode .photo-expand svg{width:28px;height:28px}
+.session-mode .photo-expand .arrow-turn{transform:rotate(180deg)}
+.session-mode .photo-expand .arrow-offset{transition:transform 280ms cubic-bezier(.2,.75,.25,1)}
+.session-mode .photo-expand:is(:hover,:focus-visible) .arrow-offset{transform:translate(var(--dx),var(--dy))}
+.session-mode .photo[data-selected="true"]::before{left:max(9px,6%);right:auto;top:auto;bottom:max(9px,6%)}
+.session-mode .photo-select:focus-visible{outline:3px solid #18768b;outline-offset:4px}
+@media(prefers-reduced-motion:reduce){.session-mode .photo-expand svg{transition:none}}
 </style>
 </head>
 <body>
@@ -358,6 +374,10 @@ html.session-mode[data-theme=dark], .session-mode[data-theme=dark] body { backgr
   grid.setAttribute('role', 'group');
   window.addEventListener('message', event => {
    if (event.origin !== location.origin || event.source !== parent) return;
+   if (event.data?.type === 'ii-session-toolbar-alignment' && Number.isFinite(event.data.bottom)) {
+    scene.style.setProperty('--session-toolbar-bottom', `${Math.max(0, Math.min(100, event.data.bottom))}px`);
+    fit();
+   }
    if (event.data?.type === 'ii-session-theme' && ['light', 'dark'].includes(event.data.theme)) {
     document.documentElement.dataset.theme = event.data.theme;
    }
@@ -444,6 +464,16 @@ html.session-mode[data-theme=dark], .session-mode[data-theme=dark] body { backgr
   grid.addEventListener('click', event => {
    const cell = event.target.closest('.photo');
    if (!cell || cell.dataset.flipping) return;
+   if (event.target.closest('.photo-expand')) {
+    parent.postMessage({ type: 'ii-session-discuss', id: cell.dataset.image }, location.origin);
+    return;
+   }
+   if (!reduced.matches && document.documentElement.dataset.input === 'pointer' && (mobileNavigation || event.pointerType === 'touch')) {
+    cell.tapAnimation?.cancel();
+    cell.tapAnimation = cell.animate([
+     { scale: '1' }, { scale: '.97', offset: .35 }, { scale: '1' }
+    ], { duration: 260, easing: 'cubic-bezier(.22,.75,.25,1)' });
+   }
    parent.postMessage({ type: 'ii-session-toggle', id: cell.dataset.image }, location.origin);
   });
   sendCatalog();
@@ -463,9 +493,11 @@ html.session-mode[data-theme=dark], .session-mode[data-theme=dark] body { backgr
   if (!sessionMode) return;
   cells.forEach(cell => {
    const index = selectedImages.indexOf(cell.dataset.image);
-   cell.setAttribute('aria-pressed', String(index !== -1));
+   cell.dataset.selected = String(index !== -1);
+   cell.querySelector('.photo-select').setAttribute('aria-pressed', String(index !== -1));
    cell.dataset.selection = index + 1;
-   cell.setAttribute('aria-label', `${index === -1 ? 'Select' : 'Deselect'} ${images[cell.dataset.image]}`);
+   cell.querySelector('.photo-select').setAttribute('aria-label', `${index === -1 ? 'Select' : 'Deselect'} ${images[cell.dataset.image]}`);
+   cell.querySelector('.photo-expand').setAttribute('aria-label', `Discuss ${images[cell.dataset.image]}`);
   });
  }
 
@@ -604,10 +636,10 @@ html.session-mode[data-theme=dark], .session-mode[data-theme=dark] body { backgr
   for (let i = 0; i < count; i++) {
    let cell = cells[i];
    if (!cell) {
-    cell = document.createElement(sessionMode ? 'button' : 'div');
+    cell = document.createElement('div');
     cell.className = 'photo';
     cell.hidden = true;
-    if (sessionMode) cell.type = 'button';
+    if (sessionMode) cell.setAttribute('role', 'group');
     else cell.setAttribute('role', 'listitem');
     const img = document.createElement('img');
     img.alt = ''; img.draggable = false; img.decoding = 'async';
@@ -620,6 +652,13 @@ html.session-mode[data-theme=dark], .session-mode[data-theme=dark] body { backgr
      const contour = 'M30 0H70C80.501 0 85.751 0 89.762 2.044C93.29 3.841 96.159 6.71 97.956 10.238C100 14.249 100 19.499 100 30V70C100 80.501 100 85.751 97.956 89.762C96.159 93.29 93.29 96.159 89.762 97.956C85.751 100 80.501 100 70 100H30C19.499 100 14.249 100 10.238 97.956C6.71 96.159 3.841 93.29 2.044 89.762C0 85.751 0 80.501 0 70V30C0 19.499 0 14.249 2.044 10.238C3.841 6.71 6.71 3.841 10.238 2.044C14.249 0 19.499 0 30 0Z';
      ring.innerHTML = `<defs><mask id="photo-ring-${i}" maskUnits="userSpaceOnUse" x="-100" y="-100" width="300" height="300" style="mask-type:luminance"><path d="${contour}" fill="white" stroke="white" stroke-width="16" vector-effect="non-scaling-stroke"/><path d="${contour}" fill="black" stroke="black" stroke-width="10" vector-effect="non-scaling-stroke"/></mask></defs><rect x="-100" y="-100" width="300" height="300" fill="currentColor" mask="url(#photo-ring-${i})"/>`;
      cell.append(ring);
+     const select = document.createElement('button');
+     select.className = 'photo-select'; select.type = 'button';
+     const expand = document.createElement('button');
+     expand.className = 'photo-expand'; expand.type = 'button';
+     expand.innerHTML = "<svg viewBox=\"26.5 33.5 36 34\" fill=\"none\" aria-hidden=\"true\"><g xmlns=\"http://www.w3.org/2000/svg\" class=\"art\" aria-hidden=\"true\"><g class=\"arrow-offset\" style=\"--dx:-1.6px;--dy:-1.6px\"><g class=\"arrow-turn\" style=\"transform-origin:39px 45px\"><path d=\"M42 48L36 42\" stroke-width=\"2\" stroke-linecap=\"round\" stroke=\"currentColor\" />\n<path d=\"M42 43L42 48L37 48\" stroke-width=\"2\" stroke-linecap=\"round\" stroke=\"currentColor\" />\n</g></g><g class=\"arrow-offset\" style=\"--dx:1.6px;--dy:1.6px\"><g class=\"arrow-turn\" style=\"transform-origin:50px 56px\"><path d=\"M47 53.001L53 59.001\" stroke-width=\"2\" stroke-linecap=\"round\" stroke=\"currentColor\" />\n<path d=\"M52 53.001L47 53.001L47 58.001\" stroke-width=\"2\" stroke-linecap=\"round\" stroke=\"currentColor\" />\n</g></g><g class=\"arrow-offset\" style=\"--dx:-1.6px;--dy:1.6px\"><g class=\"arrow-turn\" style=\"transform-origin:39px 56px\"><path d=\"M42 53.0005L36 59.0005\" stroke-width=\"2\" stroke-linecap=\"round\" stroke=\"currentColor\" />\n<path d=\"M37 53.0005L42 53.0005L42 58.0005\" stroke-width=\"2\" stroke-linecap=\"round\" stroke=\"currentColor\" />\n</g></g><g class=\"arrow-offset\" style=\"--dx:1.6px;--dy:-1.6px\"><g class=\"arrow-turn\" style=\"transform-origin:50px 45px\"><path d=\"M47 48.0007L53 42.0007\" stroke-width=\"2\" stroke-linecap=\"round\" stroke=\"currentColor\" />\n<path d=\"M47 43.0007V48.0007H52\" stroke-width=\"2\" stroke-linecap=\"round\" stroke=\"currentColor\" />\n</g></g></g></svg>";
+     [...expand.querySelectorAll('.arrow-offset')].slice(0, 2).forEach(arrow => arrow.remove());
+     cell.append(select, expand);
     }
     cells.push(cell); grid.append(cell);
    }

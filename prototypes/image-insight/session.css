@@ -49,6 +49,7 @@ h3{font-size:20px;line-height:1.5;font-weight:600}
 .settings-toggle[aria-expanded=true] .settings-stem-middle{opacity:0;transform:scaleY(.3)}
 .settings-toggle[aria-expanded=true] .settings-handles{opacity:0;transform:scale(.7)}
 .session-body{min-height:0;overflow:auto;scrollbar-width:thin;flex:1;padding:16px 4px;margin:0 -4px}
+.session-body{-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 var(--scroll-fade-top,0px),#000 calc(100% - var(--scroll-fade-bottom,0px)),transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 var(--scroll-fade-top,0px),#000 calc(100% - var(--scroll-fade-bottom,0px)),transparent 100%)}
 .question-heading{display:flex;align-items:flex-start;gap:12px;text-align:left;padding:0;background:none;border:0;width:100%;font-size:19px;line-height:1.5}
 .question-heading svg{width:18px;height:18px;flex:none;margin-top:6px;opacity:0;transition:opacity 160ms}
 .question-heading:is(:hover,:focus-visible) svg{opacity:.6}
@@ -427,4 +428,70 @@ input[aria-invalid=true]{border-color:#c73352}
 }
 @media (min-width:901px){
  .rail{top:var(--edge);bottom:var(--edge)}
+}
+
+/* Keep the image geometry fixed while the independent notes area opens. */
+#discussion-dialog{position:fixed;inset:0;margin:auto;width:min(1100px,calc(100vw - 64px));height:min(82dvh,900px);max-width:none;max-height:calc(100dvh - 40px);padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible;color:var(--ink)}
+#discussion-dialog[open]{display:grid;grid-template-columns:minmax(0,1fr) min(380px,38vw);align-items:center;gap:20px;animation:discussion-modal-in 320ms var(--ease)}
+#discussion-dialog::backdrop{background:rgb(235 238 238 / 70%);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
+html[data-theme=dark] #discussion-dialog::backdrop{background:rgb(15 15 15 / 72%);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
+#discussion-dialog .discussion-image{position:relative;height:100%;min-height:0;display:flex;align-items:center;justify-content:flex-end}
+#discussion-dialog .discussion-image img{width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain;filter:drop-shadow(0 12px 30px #0002)}
+#discussion-dialog .discussion-actions{position:absolute;left:var(--notes-left);top:var(--notes-top);width:min(380px,38vw);display:flex;flex-direction:column;align-items:stretch;gap:12px;min-width:0;max-height:100%;overflow:visible}
+#discussion-dialog .quiet{align-self:flex-start;justify-content:flex-start;gap:10px;min-height:44px;padding:10px 8px;font-size:14px;font-weight:400;color:var(--muted);background:transparent;border:0}
+#discussion-dialog .quiet:hover{color:var(--ink);background:rgb(128 128 128 / 12%)}
+#discussion-dialog .quiet svg{width:20px;height:20px}
+#discussion-dialog .notes-field{margin:0;overflow:hidden}
+#discussion-dialog .notes-field textarea{height:220px;min-height:100px;resize:none;font-size:16px;background:var(--surface);border-color:var(--line)}
+html[data-input=pointer] #image-notes:focus{outline:none}
+@keyframes discussion-modal-in{from{opacity:0;transform:translateY(8px) scale(.985)}to{opacity:1;transform:none}}
+@media(max-width:600px){
+ #discussion-dialog{width:calc(100vw - 24px);height:calc(var(--app-height,100dvh) - 48px);max-height:calc(100dvh - 48px)}
+ #discussion-dialog[open]{grid-template-columns:minmax(0,1fr) 82px;gap:10px}
+ #discussion-dialog .discussion-actions{width:82px}
+ #discussion-dialog .quiet{padding:8px 4px;font-size:13px;flex-wrap:wrap;gap:5px}
+ #discussion-dialog .quiet svg{width:18px;height:18px}
+ #discussion-dialog .notes-field{position:absolute;right:0;top:64px;width:calc(100vw - 32px);z-index:1}
+ #discussion-dialog .notes-field textarea{height:150px}
+}
+@media(prefers-reduced-motion:reduce){#discussion-dialog[open]{animation:none}}
+
+/* Keep textarea focus inside its edge, including after typing changes input mode. */
+#discussion-dialog #image-notes:focus{outline:none;box-shadow:none;border-color:var(--muted)}
+#discussion-dialog #notes-done{display:flex;margin:8px auto 0 0;padding-inline:24px}
+
+
+.remove-image{transition:width 180ms var(--ease),opacity 160ms}
+.remove-image.is-confirming{width:96px;opacity:1!important;font:600 13px 'Open Sans',sans-serif;padding:6px 16px;border-radius:999px;corner-shape:round}
+.remove-image.is-confirming::before{border-radius:999px;background:#ff0040}
+#discussion-dialog :is(#toggle-notes,#notes-done){background:rgb(128 128 128 / 16%);border:1px solid rgb(128 128 128 / 16%);border-radius:10px}
+#discussion-dialog :is(#toggle-notes,#notes-done):hover{background:rgb(128 128 128 / 26%)}
+
+/* The Notes button and editor share a single expanding surface. */
+#discussion-dialog .discussion-actions{width:104px;gap:0;max-height:calc(100% - var(--notes-top));overflow:hidden;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:0 4px 18px #0001}
+#discussion-dialog.has-notes .discussion-actions{width:min(380px,38vw)}
+#discussion-dialog #toggle-notes{width:100%;min-height:44px;margin:0;padding:10px 14px;border:0;border-radius:0;background:transparent;flex-wrap:nowrap;white-space:nowrap}
+#discussion-dialog #toggle-notes:hover{background:rgb(128 128 128 / 10%)}
+#discussion-dialog .notes-field{position:static;width:100%;padding:0 12px 12px;overflow:auto}
+#discussion-dialog #image-notes{background:transparent;border:0;border-radius:0;padding:8px 2px;height:320px}
+#discussion-dialog #image-notes:focus{outline:none;box-shadow:none;border:0}
+#discussion-dialog .discussion-actions:focus-within{border-color:var(--muted)}
+#discussion-dialog #notes-done{margin:8px 0 0;padding-inline:24px;background:transparent;border:0}
+#discussion-dialog #notes-done:hover{background:rgb(128 128 128 / 12%)}
+@media(max-width:600px){
+ #discussion-dialog .discussion-actions{left:auto;right:0;width:82px;z-index:2}
+ #discussion-dialog.has-notes .discussion-actions{width:calc(100vw - 24px)}
+ #discussion-dialog #toggle-notes{padding:10px 8px;gap:5px}
+ #discussion-dialog #image-notes{height:240px}
+}
+
+/* Reserve room for the full notes surface before it opens, with the photo centred. */
+#discussion-dialog[open]{display:block}
+#discussion-dialog .discussion-image{justify-content:center}
+#discussion-dialog{--notes-reserved-width:clamp(180px,27vw,440px)}
+#discussion-dialog .discussion-image img{max-width:min(100%,calc(100vw - 2 * (var(--notes-reserved-width) + 36px)))}
+#discussion-dialog.has-notes .discussion-actions{width:var(--notes-width,280px)}
+@media(max-width:600px){
+ #discussion-dialog .discussion-image img{max-width:calc(100% - 164px)}
+ #discussion-dialog.has-notes .discussion-actions{width:calc(100vw - 24px)}
 }

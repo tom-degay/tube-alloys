@@ -24,10 +24,10 @@
   <meta name="twitter:image:alt" content="Image Insight interactive prototype: a grid of photographs with a lake image selected. Choose an image. Explore a different perspective.">
   <link rel="icon" href="/case-studies/media/image-insight-logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/prototypes/image-insight/icons.css">
-  <link rel="stylesheet" href="/prototypes/image-insight/session.css?v=20261022-rail-alignment">
-  <link rel="stylesheet" href="/prototypes/image-insight/theme.css?v=20261023-final">
+  <link rel="stylesheet" href="/prototypes/image-insight/session.css?v=20261023-notes-space">
+  <link rel="stylesheet" href="/prototypes/image-insight/theme.css?v=20261023-notes-space">
   <script src="/prototypes/image-insight/icons.js" defer></script>
-  <script src="/prototypes/image-insight/session.js?v=20261022-selection-badge" defer></script>
+  <script src="/prototypes/image-insight/session.js?v=20261023-notes-space" defer></script>
 </head>
 <body>
   <svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs>
@@ -66,7 +66,7 @@
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
     <main class="board-shell" aria-label="Image board">
-      <iframe id="image-board" title="Choose images — image grid controls" src="/case-studies/media/image-insight-grid-interactive.html?mode=session&amp;hints=off&amp;v=20261023-curated"></iframe>
+      <iframe id="image-board" title="Choose images — image grid controls" src="/case-studies/media/image-insight-grid-interactive.html?mode=session&amp;hints=off&amp;v=20261023-notes-space"></iframe>
     </main>
     <div class="expand-shade" aria-hidden="true"></div>
     <aside class="session-panel" id="session-panel" aria-label="Current session">
@@ -89,6 +89,7 @@
         </div>
       </header>
       <div class="session-body">
+
         <section class="welcome" id="welcome">
           <div class="welcome-mark" aria-hidden="true"><img src="/case-studies/media/image-insight-logo.svg" alt=""></div>
           <h2>Make space for reflection</h2>
@@ -137,11 +138,16 @@
     </form>
   </dialog>
 
+
+
   <dialog class="discussion-dialog" id="discussion-dialog" aria-labelledby="discussion-title">
-    <div class="dialog-heading"><h2 id="discussion-title"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M4 4h20a1 1 0 0 1 1 1v14H10l-5 5v-5H3V5a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>Let’s discuss this image</h2><button class="icon-button close" data-close aria-label="Close image discussion">×</button></div>
+    <h2 class="sr-only" id="discussion-title">Discuss this image</h2>
+
     <div class="discussion-image"><img id="discussion-image" alt=""></div>
-    <div class="notes-field" id="notes-field" hidden><label class="sr-only" for="image-notes">Notes and insights for this image</label><textarea id="image-notes" placeholder="Add notes and insights"></textarea></div>
-    <div class="dialog-footer"><button class="secondary" id="toggle-notes" aria-expanded="false" aria-controls="notes-field"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16l-4-3H4zM7 8h10M7 11h10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Add notes</span></button><button class="primary" data-close>Done</button></div>
+    <aside class="discussion-actions" aria-label="Image discussion controls">
+      <button class="quiet" id="toggle-notes" aria-expanded="false" aria-controls="notes-field"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16l-4-3H4zM7 8h10M7 11h10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Notes</span></button>
+      <div class="notes-field" id="notes-field" hidden><label class="sr-only" for="image-notes">Notes and insights for this image</label><textarea id="image-notes" placeholder="Add notes and insights"></textarea><button class="quiet" id="notes-done" type="button">Done</button></div>
+    </aside>
   </dialog>
 
   <dialog class="review-dialog" id="review-dialog" aria-labelledby="review-title">
@@ -177,6 +183,7 @@
     <div id="saved-list"></div>
     <p class="storage-note">Sessions are available only until you refresh or close this page.</p>
   </dialog>
+
 
   <dialog class="confirm-dialog" id="confirm-dialog" aria-labelledby="confirm-title">
     <h2 id="confirm-title">Start a new session?</h2>
