@@ -168,3 +168,6 @@ html:not([data-theme=dark]) .profile > span{color:#fff}
 }
 .avatar-trigger:focus-visible img{border-color:var(--accent);box-shadow:0 0 0 2px rgb(71 179 207 / 25%)}
 @media(prefers-reduced-motion:reduce){.avatar-trigger img{transition:none}}
+
+/* Optical weight correction for the session header on dark surfaces. */
+[data-theme=dark] #session-tools :is(.arrow-turn path,.settings-stem path,.settings-handles){stroke-width:1.8}

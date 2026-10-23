@@ -415,8 +415,11 @@ html.slider-dragging{user-select:none;-webkit-user-select:none}
    if (event.data?.type === 'ii-session-connect') sendCatalog();
   });
   boardViewport.addEventListener('scroll', () => {
-   const top = Math.max(0, boardViewport.scrollTop);
-   const delta = top - lastScrollTop;
+   // Safari rubber-banding can report positions beyond either scroll boundary.
+   // Clamp both readings so the rebound is not mistaken for an upward scroll.
+   const limit = Math.max(0, boardViewport.scrollHeight - boardViewport.clientHeight);
+   const top = Math.min(limit, Math.max(0, boardViewport.scrollTop));
+   const delta = top - Math.min(limit, Math.max(0, lastScrollTop));
    lastScrollTop = top;
    if (ignoredScrollTop !== null && Math.abs(top - ignoredScrollTop) < 1) {
     ignoredScrollTop = null;
