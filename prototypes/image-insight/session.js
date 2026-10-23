@@ -319,9 +319,10 @@
   }
   function renderPanel() {
     $('#workspace').classList.toggle('is-settings-open', settingsOpen);
-    $('#mobile-session-name').textContent = state.name.trim() || 'Untitled session';
+    const mobileQuestion = state.question || 'Choose a question';
+    $('#mobile-session-question').textContent = mobileQuestion;
     $('#mobile-session-count').textContent = state.selected.length;
-    $('#mobile-session-bar').setAttribute('aria-label', `${state.name.trim() || 'Untitled session'}, ${state.selected.length} images selected. Open session`);
+    $('#mobile-session-bar').setAttribute('aria-label', `${mobileQuestion} ${state.selected.length} ${state.selected.length === 1 ? 'image' : 'images'} selected. Open session`);
     $('#session-title').textContent = settingsOpen ? 'Settings' : state.started ? (state.name.trim() || 'Untitled session') : 'New session';
     $('#welcome').hidden = state.started || settingsOpen;
     $('#session-content').hidden = !state.started || settingsOpen;
@@ -670,6 +671,7 @@
   }
   $('#expand-session').addEventListener('click', toggleExpansion);
   $('#back-to-board').addEventListener('click', toggleExpansion);
+  $('#empty-back-to-board').addEventListener('click', () => { if (expanded) toggleExpansion(); });
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape' && activeImage && !dialogs.some(dialog => dialog.open)) {
       event.preventDefault(); closeDiscussion();
@@ -701,18 +703,79 @@
     $('#toggle-notes').setAttribute('aria-label',hasNotes ? 'Notes — notes added' : 'Notes');
     $('#discussion-note-indicator').hidden = !hasNotes;
   }
-  function openDiscussion(id, opener) {
-    const from = (opener?.closest('.selected-card')?.querySelector('img') || opener?.querySelector('img'))?.getBoundingClientRect();
+  // A focus view is one browser-history step, regardless of image navigation.
+  // Session data remains in memory; stale entries after a reload are not restored.
+  const focusHistoryKey = 'imageInsightFocus';
+  const focusHistoryPage = crypto.randomUUID();
+  let focusBackPending = false;
+  let focusCloseAnimation = null;
+  function focusRoute() {
+    const route = window.history.state?.[focusHistoryKey];
+    return route?.page === focusHistoryPage ? route : null;
+  }
+  function writeFocusRoute(route, push = false) {
+    const entry = {...window.history.state, [focusHistoryKey]: {page:focusHistoryPage, ...route}};
+    window.history[push ? 'pushState' : 'replaceState'](entry, '', location.href);
+  }
+  writeFocusRoute({view:'board'});
+  function rememberFocusRoute(id) {
+    const route = focusRoute();
+    if (route?.view === 'focus') writeFocusRoute({...route, image:id});
+  }
+  function leaveFocusHistory() {
+    if (focusRoute()?.view !== 'focus') return false;
+    if (!focusBackPending) {
+      focusBackPending = true;
+      window.history.back();
+    }
+    return true;
+  }
+  window.addEventListener('popstate', () => {
+    focusBackPending = false;
+    const route = focusRoute();
+    if (route?.view === 'focus') {
+      if (route.session !== state.id || !state.selected.includes(route.image) || !catalog.has(route.image)) {
+        writeFocusRoute({view:'board'});
+        if ($('#discussion-dialog').open) closeDiscussion(true);
+        return;
+      }
+      // Forward may be pressed before the previous closing animation finishes.
+      focusCloseAnimation?.cancel();
+      focusCloseAnimation = null;
+      discussionClosing = false;
+      $('#discussion-dialog').classList.remove('is-closing');
+      expanded = route.expanded;
+      applyExpansion();
+      restoreViewPosition(route.position);
+      const card = [...$('#selected-images').children].find(item => item.dataset.id === route.image);
+      const opener = route.source === 'board' ? board : card?.querySelector('.expand-image') || $('#expand-session');
+      openDiscussion(route.image, opener, true);
+      viewPositions.set($('#discussion-dialog'), route.position);
+    } else if ($('#discussion-dialog').open) {
+      closeDiscussion(true);
+    }
+  });
+  $('#discussion-dialog').addEventListener('close', () => {
+    // Covers programmatic view changes as well as Escape/outside dismissal.
+    leaveFocusHistory();
+  });
+  function openDiscussion(id, opener, fromHistory = false) {
+    const from = !fromHistory && (opener?.closest('.selected-card')?.querySelector('img') || opener?.querySelector('img'))?.getBoundingClientRect();
     activeImage = id;
     const image = catalog.get(id);
     $('#discussion-image').src = image.src;
     $('#discussion-image').alt = image.alt;
     $('#image-notes').value = String(state.notes[id] || '');
     restoreNotesCursor(); updateNotesIndicator();
-    setNotesVisible(Boolean($('#image-notes').value.trim()), false);
+    setNotesVisible(!phoneLayout.matches && Boolean($('#image-notes').value.trim()), false);
     renderPanel();
     const dialog = $('#discussion-dialog');
-    openDialog(dialog, opener);
+    if (!dialog.open) openDialog(dialog, opener);
+    else dialogOpener = opener;
+    if (!fromHistory) {
+      const route = {view:'focus',session:state.id,image:id,expanded,source:opener === board ? 'board' : 'session',position:viewPositions.get(dialog) || captureViewPosition()};
+      writeFocusRoute(route, focusRoute()?.view !== 'focus');
+    }
     updateDiscussionNavigation();
     if (from?.width && !reduced.matches) {
       // Use the original thumbnail's screen position as the starting frame.
@@ -729,15 +792,25 @@
   function updateDiscussionNavigation() {
     const multiple = state.selected.length > 1;
     $('#discussion-prev').hidden = $('#discussion-next').hidden = !multiple;
-    $('#discussion-position').textContent = multiple ? `${state.selected.indexOf(activeImage) + 1} of ${state.selected.length}` : '';
+    const position = $('#discussion-position');
+    position.replaceChildren();
+    position.setAttribute('aria-label', `Image ${state.selected.indexOf(activeImage) + 1} of ${state.selected.length}`);
+    state.selected.forEach(id => {
+      const dot = document.createElement('span');
+      dot.className = 'position-dot';
+      dot.classList.toggle('is-current',id === activeImage);
+      dot.setAttribute('aria-hidden','true');
+      position.append(dot);
+    });
     $('#discussion-position').hidden = !multiple;
     positionDiscussionNotes();
   }
-  function navigateDiscussion(direction, swipe = false) {
+  function navigateDiscussion(direction, swipe = false, settled = false) {
     if (state.selected.length < 2) return;
     rememberNotesCursor();
     const index = state.selected.indexOf(activeImage);
     activeImage = state.selected[(index + direction + state.selected.length) % state.selected.length];
+    rememberFocusRoute(activeImage);
     const photo = catalog.get(activeImage);
     const hero = $('#discussion-image');
     hero.src = photo.src;
@@ -746,7 +819,7 @@
     restoreNotesCursor(); updateNotesIndicator();
     renderPanel();
     updateDiscussionNavigation();
-    if (!reduced.matches) {
+    if (!reduced.matches && !settled) {
       hero.getAnimations().forEach(animation => animation.cancel());
       hero.animate([{opacity:.4,transform:`translateX(${direction * (swipe ? 64 : 16)}px)`},{opacity:1,transform:'none'}],{duration:320,easing:'cubic-bezier(.22,.75,.25,1)'});
     }
@@ -758,22 +831,24 @@
     event.preventDefault(); navigateDiscussion(event.key === 'ArrowRight' ? 1 : -1);
   });
   let swipeStart = null;
+  let swipePreview = null;
+  let swipeSettling = false;
   const swipeHero = $('#discussion-image');
   function resetDiscussionDrag(animate = false) {
     const transform = swipeHero.style.transform;
-    const opacity = swipeHero.style.opacity;
     swipeHero.style.removeProperty('transform');
     swipeHero.style.removeProperty('opacity');
+    swipePreview?.remove(); swipePreview = null;
     if (animate && transform && !reduced.matches) swipeHero.animate([
-      {transform,opacity},{transform:'none',opacity:1}
+      {transform},{transform:'none'}
     ],{duration:300,easing:'cubic-bezier(.22,.75,.25,1)'});
     swipeStart = null;
   }
   swipeHero.addEventListener('pointerdown', event => {
-    if (event.pointerType === 'mouse' || !event.isPrimary || state.selected.length < 2) return;
+    if (event.pointerType === 'mouse' || !event.isPrimary || state.selected.length < 2 || swipeSettling) return;
     swipeHero.getAnimations().forEach(animation => animation.cancel());
     resetDiscussionDrag();
-    swipeStart = {id:event.pointerId,x:event.clientX,y:event.clientY,dx:0,horizontal:false};
+    swipeStart = {id:event.pointerId,x:event.clientX,y:event.clientY,dx:0,horizontal:false,direction:0};
     swipeHero.setPointerCapture(event.pointerId);
   });
   swipeHero.addEventListener('pointermove', event => {
@@ -784,27 +859,52 @@
       if (Math.abs(dx) < 8 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
       swipeStart.horizontal = true;
     }
-    swipeStart.dx = dx;
-    if (!reduced.matches) {
-      const distance = Math.max(-swipeHero.clientWidth * .6, Math.min(swipeHero.clientWidth * .6, dx));
-      swipeHero.style.transform = `translateX(${distance}px)`;
-      swipeHero.style.opacity = String(1 - Math.min(.25, Math.abs(distance) / swipeHero.clientWidth * .4));
+    const travel = swipeHero.clientWidth + 24;
+    swipeStart.dx = Math.max(-travel,Math.min(travel,dx));
+    const direction = dx < 0 ? 1 : -1;
+    if (reduced.matches) return;
+    if (!swipePreview || direction !== swipeStart.direction) {
+      swipePreview?.remove();
+      swipePreview = document.createElement('img');
+      swipePreview.className = 'swipe-preview';
+      swipePreview.alt = ''; swipePreview.setAttribute('aria-hidden','true');
+      const index = (state.selected.indexOf(activeImage) + direction + state.selected.length) % state.selected.length;
+      swipePreview.src = catalog.get(state.selected[index]).src;
+      Object.assign(swipePreview.style,{left:`${swipeHero.offsetLeft}px`,top:`${swipeHero.offsetTop}px`,width:`${swipeHero.offsetWidth}px`,height:`${swipeHero.offsetHeight}px`});
+      swipeHero.parentElement.append(swipePreview);
     }
+    swipeStart.direction = direction;
+    swipeHero.style.transform = `translateX(${swipeStart.dx}px)`;
+    swipePreview.style.transform = `translateX(${swipeStart.dx + direction * travel}px)`;
   });
   swipeHero.addEventListener('pointerup', event => {
     if (!swipeStart || swipeStart.id !== event.pointerId) return;
     const {dx,horizontal} = swipeStart;
     const commit = horizontal && Math.abs(dx) > Math.min(64, swipeHero.clientWidth * .2);
-    resetDiscussionDrag(!commit);
-    if (commit) navigateDiscussion(dx < 0 ? 1 : -1, true);
+    const direction = dx < 0 ? 1 : -1;
+    if (!swipePreview || reduced.matches) {
+      resetDiscussionDrag(!commit);
+      if (commit) navigateDiscussion(direction,true);
+      return;
+    }
+    const preview = swipePreview, travel = swipeHero.clientWidth + 24;
+    swipeStart = null; swipeSettling = true;
+    const options = {duration:300,easing:'cubic-bezier(.22,.75,.25,1)',fill:'forwards'};
+    const outgoing = swipeHero.animate([{transform:swipeHero.style.transform},{transform:`translateX(${commit ? -direction * travel : 0}px)`}],options);
+    const incoming = preview.animate([{transform:preview.style.transform},{transform:`translateX(${commit ? 0 : direction * travel}px)`}],options);
+    outgoing.finished.then(() => {
+      if (commit && $('#discussion-dialog').open) navigateDiscussion(direction,true,true);
+      resetDiscussionDrag(); outgoing.cancel(); incoming.cancel(); swipeSettling = false;
+    },() => { resetDiscussionDrag(); incoming.cancel(); swipeSettling = false; });
   });
   swipeHero.addEventListener('pointercancel', () => resetDiscussionDrag(true));
   swipeHero.addEventListener('lostpointercapture', () => { if (swipeStart) resetDiscussionDrag(true); });
-  $('#discussion-dialog').addEventListener('close', () => resetDiscussionDrag());
+  $('#discussion-dialog').addEventListener('close', () => { swipeHero.getAnimations().forEach(animation => animation.cancel()); resetDiscussionDrag(); });
   let discussionClosing = false;
-  function closeDiscussion() {
+  function closeDiscussion(fromHistory = false) {
     const dialog = $('#discussion-dialog');
     if (!dialog.open || discussionClosing) return;
+    if (!fromHistory && leaveFocusHistory()) return;
     rememberNotesCursor();
     if (reduced.matches) { closeDialog(dialog); return; }
     discussionClosing = true;
@@ -832,10 +932,16 @@
       {transformOrigin:'top left',transform:'none',opacity:1},
       {transformOrigin:'top left',transform:visible ? `translate(${target.left-from.left}px,${target.top-from.top}px) scale(${target.width/from.width},${target.height/from.height})` : 'scale(.98)',opacity:visible ? .25 : 0}
     ],{duration:360,easing:'cubic-bezier(.4,0,.2,1)',fill:'forwards'});
+    focusCloseAnimation = animation;
     const finish = () => {
+      focusCloseAnimation = null;
       closeDialog(dialog); animation.cancel(); dialog.classList.remove('is-closing'); discussionClosing = false;
     };
-    animation.finished.then(finish, () => { discussionClosing = false; dialog.classList.remove('is-closing'); });
+    animation.finished.then(finish, () => {
+      if (focusCloseAnimation === animation) {
+        focusCloseAnimation = null; discussionClosing = false; dialog.classList.remove('is-closing');
+      }
+    });
   }
   $('#discussion-dialog').addEventListener('cancel', event => { event.preventDefault(); closeDiscussion(); });
   let notesAnimation;
@@ -852,6 +958,9 @@
     field.hidden = !visible;
     if (visible) restoreNotesCursor();
     updateNotesIndicator();
+    const positioningUntil = performance.now() + 360;
+    const followLayout = () => { positionDiscussionNotes(); if (performance.now() < positioningUntil) requestAnimationFrame(followLayout); };
+    requestAnimationFrame(followLayout);
     if (focus && !reduced.matches) {
       const to = surface.getBoundingClientRect();
       notesAnimation = surface.animate([
@@ -1093,9 +1202,11 @@
   }
   $('#prototype-continue').addEventListener('click', () => closeDialog($('#prototype-intro')));
   $('#prototype-intro').addEventListener('close', () => {
-    $('#new-session').focus({ preventScroll: true });
+    showMobileSessionBar(true);
+    $(phoneLayout.matches ? '#mobile-session-bar' : '#new-session').focus({ preventScroll: true });
   });
   renderPanel();
+  showMobileSessionBar(true);
   openDialog($('#prototype-intro'), $('#new-session'));
   board.contentWindow.postMessage({ type: 'ii-session-connect' }, location.origin);
 })();

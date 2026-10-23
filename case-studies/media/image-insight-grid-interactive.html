@@ -323,7 +323,7 @@ html.slider-dragging{user-select:none;-webkit-user-select:none}
  const originalCollections = Object.fromEntries(Object.entries(collections).map(([name, ids]) => [name, [...ids]]));
  {
   try {
-   const response = await fetch('image-insight-grid/session-library.json?v=20261023-curated');
+   const response = await fetch('image-insight-grid/session-library.json?v=20261023-family');
    if (!response.ok) throw new Error('Photo library unavailable');
    const library = await response.json();
    for (const photo of library.photos) images[photo.id] = photo.alt;

@@ -55,7 +55,11 @@ h3{font-size:20px;line-height:1.5;font-weight:600}
 .question-heading:is(:hover,:focus-visible) svg{opacity:.6}
 .selection-hint{font-size:12px;color:var(--muted);margin-top:12px}
 .empty-selection{display:grid;gap:9px;text-align:center;background:#f6f7f7;border-radius:20px;padding:24px 22px;margin-top:26px;font-size:14px;line-height:1.7}
-.empty-selection strong{font-weight:600}
+.empty-board-button{display:none}
+@media (max-width:600px), (max-width:900px) and (max-height:500px){
+ .empty-selection-label{display:none}
+ .empty-board-button{display:inline-flex;align-items:center;justify-content:center;max-width:100%;white-space:normal}
+}
 .selected-images{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;margin:25px auto 15px;width:100%;max-width:250px}
 .selected-card{position:relative;min-width:0;animation:card-arrive 300ms var(--ease) both}
 .selected-card .image-button{width:100%;aspect-ratio:1;display:block;padding:0;border:0;background:transparent;border-radius:0;position:relative}
@@ -408,9 +412,9 @@ input[aria-invalid=true]{border-color:#c73352}
  .new-session-menu{position:absolute;top:auto;bottom:calc(100% + 12px);left:0;right:0}
  .board-shell{inset:0}
  .workspace:not(.is-expanded) .session-panel:not(.is-settings){display:none}
- .mobile-session-bar{display:flex;align-items:center;position:absolute;z-index:4;top:calc(12px + env(safe-area-inset-top));left:50%;right:auto;width:580px;max-width:calc(100% - 24px);height:56px;min-height:0;padding:0 12px 0 18px;gap:12px;border:0;border-radius:20px;background:transparent;box-shadow:0 3px 18px #18252d20;isolation:isolate;color:var(--ink);text-align:left;transform:translate(-50%,calc(-100% - 24px - env(safe-area-inset-top)));opacity:0;visibility:hidden;pointer-events:none;transition:transform 300ms var(--ease),opacity 200ms,visibility 300ms}
+ .mobile-session-bar{display:flex;align-items:center;position:absolute;z-index:4;top:calc(12px + env(safe-area-inset-top));left:50%;right:auto;width:580px;max-width:calc(100% - 24px);height:auto;min-height:56px;padding:12px 12px 12px 18px;gap:12px;border:0;border-radius:20px;background:transparent;box-shadow:0 3px 18px #18252d20;isolation:isolate;color:var(--ink);text-align:left;transform:translate(-50%,calc(-100% - 24px - env(safe-area-inset-top)));opacity:0;visibility:hidden;pointer-events:none;transition:transform 300ms var(--ease),opacity 200ms,visibility 300ms}
  .mobile-session-visible .mobile-session-bar{transform:translateX(-50%);opacity:1;visibility:visible;pointer-events:auto}
- #mobile-session-name{flex:1;min-width:0;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ #mobile-session-question{flex:1;min-width:0;font-size:16px;line-height:1.4;white-space:normal;overflow-wrap:anywhere}
  .mobile-session-count{display:grid;place-items:center;flex:none;min-width:32px;height:32px;border-radius:50%;corner-shape:round;background:var(--accent);color:#fff;font-size:14px;font-variant-numeric:tabular-nums}
  .mobile-session-bar>svg{width:18px;height:18px;flex:none}
  .is-expanded .mobile-session-bar,.is-settings-open .mobile-session-bar,.is-expanded .rail,.is-settings-open .rail{display:none}
@@ -592,3 +596,17 @@ html[data-theme=dark] .profile-menu{background:#242424f5;border-color:#444;color
 @keyframes discussion-backdrop-out{to{opacity:0}}
 @media(hover:hover) and (pointer:fine){#discussion-dialog .discussion-nav{transition:opacity 300ms ease}}
 @media(prefers-reduced-motion:reduce){#discussion-dialog :is(.discussion-actions,.discussion-nav,.discussion-position,.discussion-note-indicator){transition:none}}
+
+.discussion-position{top:calc(var(--hero-bottom,100%) + 12px);display:flex;align-items:center;gap:6px;max-width:80%;padding:3px 0;background:none;height:12px;overflow:hidden}
+.position-dot{display:block;flex:0 0 5px;width:5px;height:5px;border-radius:50%;corner-shape:round;background:var(--muted);opacity:.3;transition:opacity 200ms ease,transform 200ms ease}
+.position-dot.is-current{opacity:1;transform:scale(1.2)}
+#discussion-dialog .discussion-image:has(.swipe-preview){overflow:hidden}
+#discussion-dialog .discussion-image .swipe-preview{position:absolute;max-width:none;max-height:none;object-fit:contain;pointer-events:none}
+@media(max-width:600px),(max-width:900px) and (max-height:500px){
+ #discussion-dialog .discussion-image{transition:margin-top 320ms cubic-bezier(.22,.75,.25,1)}
+ #discussion-dialog:not(.has-notes) .discussion-image{margin-top:max(0px,calc((var(--app-height,100dvh) - 24px - clamp(160px,45dvh,360px)) / 2))}
+ #discussion-dialog.has-notes .discussion-image{margin-top:0}
+ #discussion-dialog .discussion-actions{margin-top:40px}
+ .keyboard-open #discussion-dialog.has-notes .discussion-image{margin-top:0}
+}
+@media(prefers-reduced-motion:reduce){#discussion-dialog .discussion-image,.position-dot{transition:none}}

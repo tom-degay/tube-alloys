@@ -24,10 +24,10 @@
   <meta name="twitter:image:alt" content="Image Insight interactive prototype: a grid of photographs with a lake image selected. Choose an image. Explore a different perspective.">
   <link rel="icon" href="/case-studies/media/image-insight-logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/prototypes/image-insight/icons.css">
-  <link rel="stylesheet" href="/prototypes/image-insight/session.css?v=20261023-motion-returns">
+  <link rel="stylesheet" href="/prototypes/image-insight/session.css?v=20261023-empty-board">
   <link rel="stylesheet" href="/prototypes/image-insight/theme.css?v=20261023-toolbar-weight">
   <script src="/prototypes/image-insight/icons.js" defer></script>
-  <script src="/prototypes/image-insight/session.js?v=20261023-motion-returns" defer></script>
+  <script src="/prototypes/image-insight/session.js?v=20261023-empty-board" defer></script>
 </head>
 <body>
 <div class="profile-menu" id="profile-menu" role="group" aria-label="Profile menu" hidden>
@@ -68,11 +68,11 @@
       <div class="profile"><button class="theme-toggle" data-theme-toggle aria-label="Dark mode" aria-pressed="false" title="Switch to dark mode"><svg class="theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.3 15.4A8.7 8.7 0 0 1 8.6 3.7 8.7 8.7 0 1 0 20.3 15.4Z"/></svg><svg class="theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.4 1.4m11.2 11.2L19 19M5 19l1.4-1.4M17.6 6.4 19 5"/></svg></button><button class="avatar-trigger" data-profile-menu aria-label="Profile menu" aria-expanded="false" aria-controls="profile-menu"><img src="/case-studies/media/image-insight-grid/forest.webp" alt=""></button><span>Tom</span></div>
     </nav>
     <button class="mobile-session-bar" id="mobile-session-bar" aria-expanded="false" aria-controls="session-panel">
-      <span id="mobile-session-name"></span><span class="mobile-session-count" id="mobile-session-count">0</span>
+      <span id="mobile-session-question"></span><span class="mobile-session-count" id="mobile-session-count">0</span>
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
     <main class="board-shell" aria-label="Image board">
-      <iframe id="image-board" title="Choose images — image grid controls" src="/case-studies/media/image-insight-grid-interactive.html?mode=session&amp;hints=off&amp;v=20261023-toolbar-weight"></iframe>
+      <iframe id="image-board" title="Choose images — image grid controls" src="/case-studies/media/image-insight-grid-interactive.html?mode=session&amp;hints=off&amp;v=20261023-family"></iframe>
     </main>
     <div class="expand-shade" aria-hidden="true"></div>
     <aside class="session-panel" id="session-panel" aria-label="Current session">
@@ -109,7 +109,7 @@
 <rect x="1" y="16" width="13" height="2" rx="1" fill="#979797"/>
 </svg></button>
           <p class="selection-hint" id="selection-hint">Choose images from the board.</p>
-          <div class="empty-selection" id="empty-selection"><strong>No images selected</strong><span>Select an image from the board.</span></div>
+          <div class="empty-selection" id="empty-selection"><span class="empty-selection-label">Select an image from the board</span><button class="secondary empty-board-button" id="empty-back-to-board" type="button">Select an image from the board</button></div>
           <div class="selected-images" id="selected-images"></div>
         </div>
         <section class="settings-content" id="settings-content" aria-label="Session settings" hidden>
@@ -122,7 +122,7 @@
       </div>
       <footer class="session-footer" id="session-footer" hidden>
         <button class="primary" id="review-session" disabled>Review session</button>
-        <button class="quiet squares" id="back-to-board" hidden><span data-icon="squares" aria-hidden="true"></span><span>Back to image board</span></button>
+        <button class="quiet" id="back-to-board" hidden><svg viewBox="-4 -4 24 24" fill="currentColor" aria-hidden="true"><rect x="0" y="0" width="4" height="4" rx="1"/><rect x="6" y="0" width="4" height="4" rx="1"/><rect x="12" y="0" width="4" height="4" rx="1"/><rect x="0" y="6" width="4" height="4" rx="1"/><rect x="6" y="6" width="4" height="4" rx="1"/><rect x="12" y="6" width="4" height="4" rx="1"/><rect x="0" y="12" width="4" height="4" rx="1"/><rect x="6" y="12" width="4" height="4" rx="1"/><rect x="12" y="12" width="4" height="4" rx="1"/></svg><span>Image board</span></button>
       </footer>
       <footer class="settings-footer" id="settings-footer" hidden><button class="primary" id="settings-done">Done</button></footer>
     </aside>

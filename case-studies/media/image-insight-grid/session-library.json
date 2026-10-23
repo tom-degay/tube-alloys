@@ -1737,14 +1737,6 @@
       "originalHeight": 1803
     },
     {
-      "id": "session-photo-31",
-      "alt": "Feet resting in a moment of relaxation",
-      "author": "How-Soon Ngu",
-      "url": "https://unsplash.com/photos/7Vz3DtQDT3Q",
-      "originalWidth": 3264,
-      "originalHeight": 4912
-    },
-    {
       "id": "session-photo-39",
       "alt": "A record player",
       "author": "Luke Chesser",
@@ -2407,6 +2399,20 @@
       "url": "https://unsplash.com/photos/CNzh2A9_jwE",
       "originalWidth": 3264,
       "originalHeight": 1830
+    },
+    {
+      "id": "family-hands",
+      "alt": "Hands held across generations",
+      "author": "Thomas Griggs",
+      "url": "https://unsplash.com/photos/mwGrAl1X514",
+      "license": "https://unsplash.com/license"
+    },
+    {
+      "id": "family-embrace",
+      "alt": "A parent holding a child in soft evening light",
+      "author": "Matt Hoffman",
+      "url": "https://unsplash.com/photos/vL300WiTaMs",
+      "license": "https://unsplash.com/license"
     }
   ],
   "collections": {
@@ -2689,7 +2695,7 @@
     "Leisure": [
       "session-photo-23",
       "session-photo-24",
-      "session-photo-31",
+      "family-hands",
       "session-photo-39",
       "session-photo-42",
       "session-photo-45",
@@ -2813,7 +2819,8 @@
       "session-photo-428",
       "session-photo-430",
       "session-photo-494",
-      "session-photo-692"
+      "session-photo-692",
+      "family-embrace"
     ],
     "Standard": [
       "session-photo-10",
@@ -3033,7 +3040,7 @@
       "session-photo-694",
       "session-photo-23",
       "session-photo-24",
-      "session-photo-31",
+      "family-hands",
       "session-photo-39",
       "session-photo-42",
       "session-photo-50",
@@ -3116,7 +3123,8 @@
       "session-photo-758",
       "session-photo-766",
       "session-photo-770",
-      "session-photo-780"
+      "session-photo-780",
+      "family-embrace"
     ]
   },
   "opening": {
@@ -3129,13 +3137,14 @@
       "session-photo-602",
       "session-photo-220",
       "session-photo-430",
-      "session-photo-31",
+      "family-hands",
       "session-photo-442",
       "session-photo-130",
       "session-photo-75",
       "session-photo-139",
       "session-photo-22",
       "session-photo-196",
+      "family-embrace",
       "session-photo-345",
       "session-photo-124",
       "session-photo-291",
@@ -3143,8 +3152,7 @@
       "session-photo-494",
       "session-photo-279",
       "session-photo-637",
-      "session-photo-248",
-      "session-photo-508"
+      "session-photo-248"
     ],
     "Nature": [
       "session-photo-123",
@@ -3202,7 +3210,7 @@
       "session-photo-660",
       "session-photo-758",
       "session-photo-602",
-      "session-photo-31",
+      "family-hands",
       "session-photo-442",
       "session-photo-39",
       "session-photo-124",
@@ -3214,6 +3222,7 @@
       "session-photo-177",
       "session-photo-194",
       "session-photo-203",
+      "family-embrace",
       "session-photo-250",
       "session-photo-319",
       "session-photo-325",
@@ -3221,8 +3230,7 @@
       "session-photo-338",
       "session-photo-361",
       "session-photo-365",
-      "session-photo-390",
-      "session-photo-399"
+      "session-photo-390"
     ]
   }
 }
