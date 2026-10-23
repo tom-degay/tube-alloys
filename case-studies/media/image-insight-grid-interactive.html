@@ -304,6 +304,8 @@ html.slider-dragging{user-select:none;-webkit-user-select:none}
  let mobileNavigation = false;
  let mobileImageScale = 1;
  let gridPinch = null;
+ let pinchFrame = 0;
+ const pinchReflows = new Map();
  let suppressGridClickUntil = 0;
  let controlsOpen = false;
  let lastScrollTop = 0;
@@ -496,23 +498,51 @@ html.slider-dragging{user-select:none;-webkit-user-select:none}
    document.documentElement.classList.add('grid-pinching');
    touchPosition = null;
   }, {passive:false});
+  function applyGridPinch(distance, midpoint) {
+   if (!gridPinch) return;
+   const area = scene.clientWidth - 48, base = (area - 40) / 3;
+   // Reach an exact four-column layout even on the narrowest supported phone.
+   const minimum = ((area - 60) / 4) / base;
+   mobileImageScale = Math.max(minimum, Math.min(area/base,gridPinch.scale*distance/gridPinch.distance));
+   const size = Math.min(area,base*mobileImageScale);
+   const nextColumns = Math.min(count,4,Math.max(1,Math.floor((area+20+.01)/(size+20))));
+   const reflow = nextColumns !== Number(grid.dataset.columns);
+   const before = reflow && !reduced.matches
+    ? cells.filter(cell => !cell.hidden).map(cell => ({cell,rect:cell.getBoundingClientRect()})) : [];
+   if (reflow) { pinchReflows.forEach(animation => animation.cancel()); pinchReflows.clear(); }
+   render();
+   const anchor = gridPinch.anchor;
+   if (anchor) {
+    // Use the destination layout, rather than an in-flight animation, for anchoring.
+    const top = Number.parseFloat(anchor.cell.style.transform.split(',')[1]);
+    const gridTop = grid.getBoundingClientRect().top;
+    boardViewport.scrollTop += gridTop + top + size * anchor.fraction - midpoint;
+    ignoredScrollTop = lastScrollTop = boardViewport.scrollTop;
+   }
+   for (const {cell,rect} of before) {
+    const to = cell.getBoundingClientRect();
+    const animation = cell.animate([
+     {transform:`translate(${rect.left-to.left}px,${rect.top-to.top}px)`},
+     {transform:'translate(0px,0px)'}
+    ], {duration:280,easing:'cubic-bezier(.22,1,.36,1)',composite:'add'});
+    pinchReflows.set(cell,animation);
+    animation.finished.then(() => {if(pinchReflows.get(cell)===animation) pinchReflows.delete(cell);},()=>{});
+   }
+  }
   boardViewport.addEventListener('touchmove', event => {
    if (!gridPinch) return;
    event.preventDefault();
    if (event.touches.length !== 2) return;
-   const area = scene.clientWidth - 48, base = (area - 40) / 3;
-   mobileImageScale = Math.max(.72,Math.min(area/base,gridPinch.scale*pinchDistance(event.touches)/gridPinch.distance));
-   render();
-   const anchor = gridPinch.anchor;
-   if (anchor) {
-    const rect = anchor.cell.getBoundingClientRect();
-    const midpoint = (event.touches[0].clientY + event.touches[1].clientY) / 2;
-    boardViewport.scrollTop += rect.top + rect.height * anchor.fraction - midpoint;
-    ignoredScrollTop = lastScrollTop = boardViewport.scrollTop;
-   }
+   gridPinch.pending = {distance:pinchDistance(event.touches),midpoint:(event.touches[0].clientY+event.touches[1].clientY)/2};
+   if (!pinchFrame) pinchFrame = requestAnimationFrame(() => {
+    pinchFrame = 0;
+    if (gridPinch?.pending) applyGridPinch(gridPinch.pending.distance,gridPinch.pending.midpoint);
+   });
   }, {passive:false});
   const finishGridPinch = event => {
    if (!gridPinch || event.touches.length !== 0) return;
+   if (pinchFrame) { cancelAnimationFrame(pinchFrame); pinchFrame = 0; }
+   if (gridPinch.pending) applyGridPinch(gridPinch.pending.distance,gridPinch.pending.midpoint);
    gridPinch = null;
    suppressGridClickUntil = performance.now() + 500;
    document.documentElement.classList.remove('grid-pinching');
@@ -659,7 +689,7 @@ html.slider-dragging{user-select:none;-webkit-user-select:none}
   const availableColumns = mobileNavigation ? 3 : Math.max(1, Math.floor((scene.clientWidth - 36) / 140));
   const mobileArea = scene.clientWidth - 48;
   const mobileSize = Math.min(mobileArea, (mobileArea - 40) / 3 * mobileImageScale);
-  const columns = mobileNavigation ? Math.min(count, Math.max(1, Math.floor((mobileArea + 20 + .01) / (mobileSize + 20)))) : sessionMode ? Math.min(Math.ceil(Math.sqrt(count)), availableColumns) : Math.ceil(Math.sqrt(count));
+  const columns = mobileNavigation ? Math.min(count, 4, Math.max(1, Math.floor((mobileArea + 20 + .01) / (mobileSize + 20)))) : sessionMode ? Math.min(Math.ceil(Math.sqrt(count)), availableColumns) : Math.ceil(Math.sqrt(count));
   // Keep the larger working area centred behind the crop and toolbar.
   // Six images use three columns: their 478px tiles are the size ceiling.
   // Each selection ring extends 8px beyond its image; 22px leaves 6px clear.
@@ -675,6 +705,7 @@ html.slider-dragging{user-select:none;-webkit-user-select:none}
   const desktopFit = sessionMode && !mobileNavigation && !compactSession && count <= 9;
   const heightLimit = desktopFit ? Math.max(1, (boardSpace - 64 - (rows - 1) * gap) / rows) : Infinity;
   const size = mobileNavigation ? mobileSize : sessionMode ? Math.min(478, heightLimit, (area - (ceilingColumns - 1) * gap) / ceilingColumns, (area - (columns - 1) * gap) / columns) : Math.min((1494 - 2 * 30) / 3, (1494 - (columns - 1) * 30) / columns);
+  grid.dataset.columns = String(columns);
   const width = columns * size + (columns - 1) * gap;
   const height = rows * size + (rows - 1) * gap;
   const offset = sessionMode ? Math.max(12, (boardSpace - height) / 2) : Math.max(-size * .365, 475 - height);
