@@ -267,9 +267,9 @@ html.slider-dragging{user-select:none;-webkit-user-select:none}
   <div class="density">
    <svg class="density-icon" viewBox="0 0 18 18" fill="currentColor" aria-hidden="true"><rect width="4" height="4" rx="1"/><rect y="6" width="4" height="4" rx="1"/><rect y="12" width="4" height="4" rx="1"/><rect x="6" width="4" height="4" rx="1"/><rect x="6" y="6" width="4" height="4" rx="1"/><rect x="6" y="12" width="4" height="4" rx="1"/><rect x="12" width="4" height="4" rx="1"/><rect x="12" y="6" width="4" height="4" rx="1"/><rect x="12" y="12" width="4" height="4" rx="1"/></svg>
    <label class="sr-only" for="image-count">Number of images</label>
-   <input id="image-count" type="range" min="1" max="30" step="1" value="25" aria-valuetext="25 images">
-   <input class="count-input" id="image-count-value" type="number" inputmode="numeric" min="1" max="30" step="1" value="25" aria-label="Image count" aria-describedby="count-help">
-   <span class="sr-only" id="count-help">Enter a whole number from 1 to 30. Press Enter or leave the field to apply. Press Escape to cancel.</span>
+   <input id="image-count" type="range" min="1" max="60" step="1" value="9" aria-valuetext="9 images">
+   <input class="count-input" id="image-count-value" type="number" inputmode="numeric" min="1" max="60" step="1" value="9" aria-label="Image count" aria-describedby="count-help">
+   <span class="sr-only" id="count-help">Enter a whole number from 1 to 60. Press Enter or leave the field to apply. Press Escape to cancel.</span>
   </div>
  </div>
  <div class="undo-notice" hidden>
@@ -277,7 +277,7 @@ html.slider-dragging{user-select:none;-webkit-user-select:none}
   <button class="undo-button" type="button" aria-label="Undo refresh"><span>Undo</span></button>
  </div>
  <div class="canvas"><div class="viewport"><div class="photos" id="image-gallery" role="list" aria-label="Visible images in the Standard collection"></div></div></div>
- <p class="sr-only" role="status" aria-live="polite" aria-atomic="true">25 images in the Standard collection.</p>
+ <p class="sr-only" role="status" aria-live="polite" aria-atomic="true">9 images in the Standard collection.</p>
 </main>
 <script>
 (async () => {
@@ -323,7 +323,7 @@ html.slider-dragging{user-select:none;-webkit-user-select:none}
  const originalCollections = Object.fromEntries(Object.entries(collections).map(([name, ids]) => [name, [...ids]]));
  {
   try {
-   const response = await fetch('image-insight-grid/session-library.json?v=20261023-family');
+   const response = await fetch('image-insight-grid/session-library.json?v=20261023-sixty');
    if (!response.ok) throw new Error('Photo library unavailable');
    const library = await response.json();
    for (const photo of library.photos) images[photo.id] = photo.alt;
@@ -599,7 +599,7 @@ html.slider-dragging{user-select:none;-webkit-user-select:none}
  function render(animate = false, flipDirection = -1) {
   {
    count = Math.min(count, deck.length);
-   range.max = countInput.max = String(Math.min(30, deck.length));
+   range.max = countInput.max = String(Math.min(60, deck.length));
    const current = galleryState(collection);
    current.deck = deck;
    deck.slice(0, count).forEach(id => current.seen.add(id));
@@ -628,7 +628,7 @@ html.slider-dragging{user-select:none;-webkit-user-select:none}
   const viewport = canvas.querySelector('.viewport');
   const compactSession = sessionMode && (mobileNavigation || compactSessionLayout.matches);
   const boardSpace = sessionMode ? (compactSession ? viewport.clientHeight : toolbar.offsetTop - viewport.offsetTop - 24) : 0;
-  const offset = sessionMode ? Math.max(mobileNavigation ? 0 : 12, (boardSpace - height) / 2) : Math.max(-size * .365, 475 - height);
+  const offset = sessionMode ? Math.max(12, (boardSpace - height) / 2) : Math.max(-size * .365, 475 - height);
   if (sessionMode) {
    const endPadding = mobileNavigation ? 92 : compactSession ? 12 : scene.clientHeight - toolbar.offsetTop + 24;
    grid.style.height = `${Math.max(viewport.clientHeight, offset + height + endPadding)}px`;
@@ -893,11 +893,11 @@ html.slider-dragging{user-select:none;-webkit-user-select:none}
  function commitCount() {
   if (!countDirty) return;
   const value = countInput.valueAsNumber;
-  const corrected = !Number.isInteger(value) || value < 1 || value > 30;
-  if (Number.isFinite(value)) count = Math.min(30, Math.max(1, Math.round(value)));
+  const corrected = !Number.isInteger(value) || value < 1 || value > 60;
+  if (Number.isFinite(value)) count = Math.min(60, Math.max(1, Math.round(value)));
   countDirty = false;
   countInput.value = String(count);
-  render(); announce(false, corrected ? 'Use a whole number from 1 to 30. ' : '');
+  render(); announce(false, corrected ? 'Use a whole number from 1 to 60. ' : '');
  }
  countInput.addEventListener('blur', () => { editingCount = false; commitCount(); });
  countInput.addEventListener('keydown', event => {

@@ -24,7 +24,7 @@
       button.setAttribute('aria-pressed', String(theme === 'dark'));
       button.title = `Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`;
     });
-    document.querySelectorAll('[data-theme-label]').forEach(label => { label.textContent = `Dark mode ${theme === 'dark' ? 'on' : 'off'}`; });
+    document.querySelectorAll('[data-theme-label]').forEach(label => { label.textContent = 'Dark mode'; });
     board.contentWindow.postMessage({ type: 'ii-session-theme', theme }, location.origin);
   }
   document.querySelectorAll('[data-theme-toggle]').forEach(button => button.addEventListener('click', () => {
@@ -869,6 +869,15 @@
       swipePreview.className = 'swipe-preview';
       swipePreview.alt = ''; swipePreview.setAttribute('aria-hidden','true');
       const index = (state.selected.indexOf(activeImage) + direction + state.selected.length) % state.selected.length;
+      const loadingPreview = swipePreview;
+      swipePreview.onload = () => {
+        // Match the incoming photo's own aspect ratio before it reaches centre.
+        if (!phoneLayout.matches || swipePreview !== loadingPreview || !loadingPreview.naturalWidth) return;
+        const frame = swipeHero.parentElement;
+        const scale = Math.min(frame.clientWidth / swipePreview.naturalWidth, frame.clientHeight / swipePreview.naturalHeight);
+        const width = swipePreview.naturalWidth * scale, height = swipePreview.naturalHeight * scale;
+        Object.assign(swipePreview.style, {width:`${width}px`,height:`${height}px`,left:`${(frame.clientWidth-width)/2}px`,top:`${(frame.clientHeight-height)/2}px`});
+      };
       swipePreview.src = catalog.get(state.selected[index]).src;
       Object.assign(swipePreview.style,{left:`${swipeHero.offsetLeft}px`,top:`${swipeHero.offsetTop}px`,width:`${swipeHero.offsetWidth}px`,height:`${swipeHero.offsetHeight}px`});
       swipeHero.parentElement.append(swipePreview);
@@ -892,8 +901,12 @@
     const options = {duration:300,easing:'cubic-bezier(.22,.75,.25,1)',fill:'forwards'};
     const outgoing = swipeHero.animate([{transform:swipeHero.style.transform},{transform:`translateX(${commit ? -direction * travel : 0}px)`}],options);
     const incoming = preview.animate([{transform:preview.style.transform},{transform:`translateX(${commit ? 0 : direction * travel}px)`}],options);
-    outgoing.finished.then(() => {
-      if (commit && $('#discussion-dialog').open) navigateDiscussion(direction,true,true);
+    outgoing.finished.then(async () => {
+      if (commit && $('#discussion-dialog').open) {
+        navigateDiscussion(direction,true,true);
+        // Keep the already-painted, masked preview until the main image is ready.
+        try { await swipeHero.decode(); } catch {}
+      }
       resetDiscussionDrag(); outgoing.cancel(); incoming.cancel(); swipeSettling = false;
     },() => { resetDiscussionDrag(); incoming.cancel(); swipeSettling = false; });
   });
@@ -976,22 +989,40 @@
       $('#image-notes').focus({ preventScroll: true });
     }
   }
-  $('#image-notes').addEventListener('blur', rememberNotesCursor);
+  $('#image-notes').addEventListener('blur', event => {
+    rememberNotesCursor();
+    // Safari's keyboard Done/tick ends editing without focusing a page control.
+    // Defer until focus has settled so moving to another control is unaffected.
+    if (!phoneLayout.matches || event.relatedTarget) return;
+    requestAnimationFrame(() => {
+      const focused = document.activeElement;
+      if ($('#discussion-dialog').open && $('#discussion-dialog').classList.contains('has-notes') &&
+          (focused === document.body || focused === document.documentElement)) finishNotes();
+    });
+  });
   $('#image-notes').addEventListener('select', rememberNotesCursor);
   $('#toggle-notes').addEventListener('click', () => {
     const opening = $('#toggle-notes').getAttribute('aria-expanded') !== 'true';
     if (!opening) rememberNotesCursor();
     setNotesVisible(opening);
   });
-  $('#notes-done').addEventListener('click', () => {
-    $('#toggle-notes').focus({ preventScroll: true });
+  // Keep the editor focused until activation: blurring on pointerdown dismisses
+  // the mobile keyboard and moves Done before the browser can deliver its click.
+  $('#notes-done').addEventListener('pointerdown', event => {
+    if (event.isPrimary && event.button === 0) event.preventDefault();
+  });
+  function finishNotes() {
+    if (!$('#discussion-dialog').classList.contains('has-notes')) return;
+    rememberNotesCursor();
     setNotesVisible(false);
+    $('#toggle-notes').focus({ preventScroll: true });
     renderPanel();
     if (String(state.notes[activeImage] || '').trim()) {
       announce('Notes added to this image.');
       if (!reduced.matches) $('#discussion-note-indicator').animate([{opacity:0,scale:'.85'},{opacity:1,scale:'1'}],{duration:250,easing:'ease-out'});
     }
-  });
+  }
+  $('#notes-done').addEventListener('click', finishNotes);
   function positionDiscussionNotes() {
     const image = $('#discussion-image');
     const dialog = $('#discussion-dialog');
