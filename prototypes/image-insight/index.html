@@ -24,12 +24,17 @@
   <meta name="twitter:image:alt" content="Image Insight interactive prototype: a grid of photographs with a lake image selected. Choose an image. Explore a different perspective.">
   <link rel="icon" href="/case-studies/media/image-insight-logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/prototypes/image-insight/icons.css">
-  <link rel="stylesheet" href="/prototypes/image-insight/session.css?v=20261023-keyboard-thumbnail">
-  <link rel="stylesheet" href="/prototypes/image-insight/theme.css?v=20261023-mobile-toolbar-border">
+  <link rel="stylesheet" href="/prototypes/image-insight/session.css?v=20261023-focus-hover">
+  <link rel="stylesheet" href="/prototypes/image-insight/theme.css?v=20261023-grey-moon">
   <script src="/prototypes/image-insight/icons.js" defer></script>
-  <script src="/prototypes/image-insight/session.js?v=20261023-keyboard-thumbnail" defer></script>
+  <script src="/prototypes/image-insight/session.js?v=20261023-focus-navigation" defer></script>
 </head>
 <body>
+<div class="profile-menu" id="profile-menu" role="group" aria-label="Profile menu" hidden>
+<button class="profile-appearance" data-theme-toggle aria-pressed="false"><span class="appearance-icons"><svg class="theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.3 15.4A8.7 8.7 0 0 1 8.6 3.7 8.7 8.7 0 1 0 20.3 15.4Z"/></svg><svg class="theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.4 1.4m11.2 11.2L19 19M5 19l1.4-1.4M17.6 6.4 19 5"/></svg></span><span data-theme-label>Dark mode off</span></button>
+<button disabled><svg viewBox="23 23 22 20" aria-hidden="true"><path d="M41 40.1755C40.9999 38.0094 39.069 36.1549 36.3296 35.3846C37.3443 34.3449 38.0005 32.708 38.0005 30.8652C38.0005 27.7229 36.3472 26.1755 34 26.1755C31.6529 26.1757 29.5001 27.723 29.5001 30.8652C29.5001 32.6478 30.1134 34.238 31.0719 35.2812C28.1216 35.9772 26.0001 37.9051 26 40.1755" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><span>Profile</span></button>
+<button id="profile-logout"><svg viewBox="23 52 22 20" aria-hidden="true"><path d="M28.5034 58.5701C27.5619 59.7074 27 61.1438 27 62.7054C27 66.3934 30.134 69.3831 34 69.3831C37.866 69.3831 41 66.3934 41 62.7054C41 61.0569 40.3738 59.5479 39.3359 58.3831" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M33 55.4285C33 54.8511 33.4681 54.3831 34.0455 54.3831V54.3831C34.6228 54.3831 35.0909 54.8511 35.0909 55.4285V61.2467C35.0909 61.8241 34.6228 62.2921 34.0455 62.2921V62.2921C33.4681 62.2921 33 61.8241 33 61.2467V55.4285Z" fill="currentColor"/></svg><span>Log out</span></button>
+</div>
   <svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs>
     <path id="session-photo-contour" d="M24 0H76C84.4008 0 88.6008 0 91.8096 1.6352C94.632 3.0728 96.9272 5.368 98.3648 8.1904C100 11.3992 100 15.5992 100 24V76C100 84.4008 100 88.6008 98.3648 91.8096C96.9272 94.632 94.632 96.9272 91.8096 98.3648C88.6008 100 84.4008 100 76 100H24C15.5992 100 11.3992 100 8.1904 98.3648C5.368 96.9272 3.0728 94.632 1.6352 91.8096C0 88.6008 0 84.4008 0 76V24C0 15.5992 0 11.3992 1.6352 8.1904C3.0728 5.368 5.368 3.0728 8.1904 1.6352C11.3992 0 15.5992 0 24 0Z"/>
     <clipPath id="session-photo-clip" clipPathUnits="objectBoundingBox"><path d="M0.24 0H0.76C0.844008 0 0.886008 0 0.918096 0.016352C0.94632 0.030728 0.969272 0.05368 0.983648 0.081904C1 0.113992 1 0.155992 1 0.24V0.76C1 0.844008 1 0.886008 0.983648 0.918096C0.969272 0.94632 0.94632 0.969272 0.918096 0.983648C0.886008 1 0.844008 1 0.76 1H0.24C0.155992 1 0.113992 1 0.081904 0.983648C0.05368 0.969272 0.030728 0.94632 0.016352 0.918096C0 0.886008 0 0.844008 0 0.76V0.24C0 0.155992 0 0.113992 0.016352 0.081904C0.030728 0.05368 0.05368 0.030728 0.081904 0.016352C0.113992 0 0.155992 0 0.24 0Z"/></clipPath>
@@ -39,7 +44,7 @@
     <nav class="rail" aria-label="Session navigation">
       <img class="brand" src="/prototypes/image-insight/nav-logo.svg" alt="Image Insight">
       <div class="rail-tools">
-        <span class="mobile-profile"><img src="/case-studies/media/image-insight-grid/forest.webp" alt="Tom’s profile"></span>
+        <button class="mobile-profile avatar-trigger" data-profile-menu aria-label="Profile menu" aria-expanded="false" aria-controls="profile-menu"><img src="/case-studies/media/image-insight-grid/forest.webp" alt=""></button>
         <div class="new-session-control">
           <button class="icon rail-button plus" id="new-session" aria-label="New session options" aria-expanded="false" aria-controls="new-session-menu" title="New session"><span data-icon="plus" aria-hidden="true"></span><span class="rail-label">New session</span></button>
           <div class="new-session-menu" id="new-session-menu" role="group" aria-label="New session options" hidden>
@@ -60,14 +65,14 @@
         <button class="icon rail-button squares mobile-control" id="mobile-grid-controls" aria-label="Grid controls" aria-expanded="false" title="Grid controls"><span data-icon="squares" aria-hidden="true"></span><span class="rail-label">Grid</span></button>
         <button class="icon rail-button refresh mobile-control" id="mobile-refresh" aria-label="Refresh images" title="Refresh images"><span data-icon="refresh" aria-hidden="true"></span><span class="rail-label">Refresh</span></button>
       </div>
-      <div class="profile"><button class="theme-toggle" data-theme-toggle aria-label="Dark mode" aria-pressed="false" title="Switch to dark mode"><svg class="theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.3 15.4A8.7 8.7 0 0 1 8.6 3.7 8.7 8.7 0 1 0 20.3 15.4Z"/></svg><svg class="theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.4 1.4m11.2 11.2L19 19M5 19l1.4-1.4M17.6 6.4 19 5"/></svg></button><img src="/case-studies/media/image-insight-grid/forest.webp" alt=""><span>Tom</span></div>
+      <div class="profile"><button class="theme-toggle" data-theme-toggle aria-label="Dark mode" aria-pressed="false" title="Switch to dark mode"><svg class="theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.3 15.4A8.7 8.7 0 0 1 8.6 3.7 8.7 8.7 0 1 0 20.3 15.4Z"/></svg><svg class="theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.4 1.4m11.2 11.2L19 19M5 19l1.4-1.4M17.6 6.4 19 5"/></svg></button><button class="avatar-trigger" data-profile-menu aria-label="Profile menu" aria-expanded="false" aria-controls="profile-menu"><img src="/case-studies/media/image-insight-grid/forest.webp" alt=""></button><span>Tom</span></div>
     </nav>
     <button class="mobile-session-bar" id="mobile-session-bar" aria-expanded="false" aria-controls="session-panel">
       <span id="mobile-session-name"></span><span class="mobile-session-count" id="mobile-session-count">0</span>
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
     <main class="board-shell" aria-label="Image board">
-      <iframe id="image-board" title="Choose images — image grid controls" src="/case-studies/media/image-insight-grid-interactive.html?mode=session&amp;hints=off&amp;v=20261023-grid-no-numbers"></iframe>
+      <iframe id="image-board" title="Choose images — image grid controls" src="/case-studies/media/image-insight-grid-interactive.html?mode=session&amp;hints=off&amp;v=20261023-focus-navigation"></iframe>
     </main>
     <div class="expand-shade" aria-hidden="true"></div>
     <aside class="session-panel" id="session-panel" aria-label="Current session">
@@ -148,7 +153,10 @@
   <dialog class="discussion-dialog" id="discussion-dialog" aria-labelledby="discussion-title">
     <h2 class="sr-only" id="discussion-title">Discuss this image</h2>
 
-    <div class="discussion-image"><img id="discussion-image" alt=""></div>
+    <div class="discussion-image"><img id="discussion-image" alt="" draggable="false"></div>
+    <button class="discussion-nav discussion-prev" id="discussion-prev" aria-label="Previous selected image" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 6-6 6 6 6"/></svg></button>
+    <button class="discussion-nav discussion-next" id="discussion-next" aria-label="Next selected image" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 6 6 6-6 6"/></svg></button>
+    <span class="sr-only" id="discussion-position" role="status" aria-live="polite"></span>
     <aside class="discussion-actions" aria-label="Image discussion controls">
       <button class="quiet" id="toggle-notes" aria-expanded="false" aria-controls="notes-field"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16l-4-3H4zM7 8h10M7 11h10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Notes</span></button>
       <div class="notes-field" id="notes-field" hidden><label class="sr-only" for="image-notes">Notes and insights for this image</label><textarea id="image-notes" placeholder="Add notes and insights"></textarea><button class="quiet" id="notes-done" type="button">Done</button></div>

@@ -10,6 +10,7 @@ html:not([data-theme=dark]) .session-panel{--surface:#f6f7f7;background:var(--su
 .theme-toggle .theme-moon{transform:rotateY(-180deg)}
 [data-theme=dark] .theme-toggle .theme-sun{transform:rotateY(180deg)}
 [data-theme=dark] .theme-toggle .theme-moon{transform:rotateY(0deg)}
+[data-theme=dark] .theme-moon{color:var(--muted)}
 .mobile-appearance{display:none}
 /* Photo actions match Picture states.svg in either appearance. */
 .selected-card:is(:hover,:focus-within) .image-button .selected-photo-ring{opacity:var(--photo-hover)}

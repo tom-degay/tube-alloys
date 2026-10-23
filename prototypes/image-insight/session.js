@@ -24,6 +24,7 @@
       button.setAttribute('aria-pressed', String(theme === 'dark'));
       button.title = `Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`;
     });
+    document.querySelectorAll('[data-theme-label]').forEach(label => { label.textContent = `Dark mode ${theme === 'dark' ? 'on' : 'off'}`; });
     board.contentWindow.postMessage({ type: 'ii-session-theme', theme }, location.origin);
   }
   document.querySelectorAll('[data-theme-toggle]').forEach(button => button.addEventListener('click', () => {
@@ -69,6 +70,12 @@
   document.addEventListener('focusout', updateVisibleScreen);
   updateVisibleScreen();
 
+  for (const type of ['pointerdown','click']) document.addEventListener(type, event => {
+    if (document.body.classList.contains('grid-slider-dragging') && event.target !== board) {
+      event.preventDefault(); event.stopImmediatePropagation();
+    }
+  }, true);
+  board.addEventListener('load', () => document.body.classList.remove('grid-slider-dragging'));
   const catalog = new Map();
   const dialogs = [...document.querySelectorAll('dialog')];
   const defaultSessionName = () => `Session ${new Intl.DateTimeFormat('en-GB', {
@@ -177,6 +184,9 @@
   });
   window.addEventListener('message', event => {
     if (event.origin !== location.origin || event.source !== board.contentWindow) return;
+    if (event.data?.type === 'ii-session-slider-drag') {
+      document.body.classList.toggle('grid-slider-dragging', event.data.active === true);
+    }
     if (event.data?.type === 'ii-session-input' && ['pointer', 'keyboard'].includes(event.data.mode)) {
       setInputMode(event.data.mode, false);
     }
@@ -452,6 +462,36 @@
     sendSelection();
   }
   $('#start-session').addEventListener('click', startSession);
+  const profileMenu = $('#profile-menu');
+  let profileAnchor;
+  function closeProfileMenu(restore = false) {
+    profileMenu.hidden = true;
+    document.querySelectorAll('[data-profile-menu]').forEach(button => button.setAttribute('aria-expanded', 'false'));
+    if (restore) profileAnchor?.focus({preventScroll:true});
+  }
+  document.querySelectorAll('[data-profile-menu]').forEach(button => button.addEventListener('click', () => {
+    const opening = profileMenu.hidden || profileAnchor !== button;
+    closeProfileMenu();
+    if (!opening) return;
+    closeNewSessionMenu();
+    profileAnchor = button;
+    const rect = button.getBoundingClientRect();
+    const mobile = button.classList.contains('mobile-profile');
+    profileMenu.hidden = false;
+    profileMenu.style.left = `${mobile ? Math.max(12, rect.left) : rect.right + 16}px`;
+    profileMenu.style.top = `${Math.max(12, mobile ? rect.top - profileMenu.offsetHeight - 10 : rect.bottom - profileMenu.offsetHeight)}px`;
+    button.setAttribute('aria-expanded', 'true');
+    if (document.documentElement.dataset.input === 'keyboard') profileMenu.querySelector('button:not(:disabled):not(.profile-appearance)')?.focus();
+  }));
+  document.addEventListener('pointerdown', event => {
+    if (!event.target.closest('#profile-menu,[data-profile-menu]')) closeProfileMenu();
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && !profileMenu.hidden) { event.preventDefault(); closeProfileMenu(true); }
+  });
+  window.addEventListener('resize', () => closeProfileMenu());
+  window.addEventListener('blur', () => setTimeout(() => { if (document.activeElement === board) closeProfileMenu(); }, 0));
+  $('#profile-logout').addEventListener('click', () => location.reload());
   const newSessionMenu = $('#new-session-menu');
   function closeNewSessionMenu(restoreFocus = false) {
     newSessionMenu.hidden = true;
@@ -574,6 +614,7 @@
     renderPanel();
     const dialog = $('#discussion-dialog');
     openDialog(dialog, opener);
+    updateDiscussionNavigation();
     if (from?.width && !reduced.matches) {
       // Use the original thumbnail's screen position as the starting frame.
       dialog.getAnimations().forEach(animation => animation.cancel());
@@ -586,6 +627,47 @@
       $('#discussion-dialog .discussion-actions').animate([{opacity:0},{opacity:1}],{duration:360,delay:120,fill:'backwards'});
     }
   }
+  function updateDiscussionNavigation() {
+    const multiple = state.selected.length > 1;
+    $('#discussion-prev').hidden = $('#discussion-next').hidden = !multiple;
+    $('#discussion-position').textContent = multiple ? `Image ${state.selected.indexOf(activeImage) + 1} of ${state.selected.length}` : '';
+    positionDiscussionNotes();
+  }
+  function navigateDiscussion(direction) {
+    if (state.selected.length < 2) return;
+    const index = state.selected.indexOf(activeImage);
+    activeImage = state.selected[(index + direction + state.selected.length) % state.selected.length];
+    const photo = catalog.get(activeImage);
+    const hero = $('#discussion-image');
+    hero.src = photo.src;
+    hero.alt = photo.alt;
+    $('#image-notes').value = String(state.notes[activeImage] || '');
+    renderPanel();
+    updateDiscussionNavigation();
+    if (!reduced.matches) {
+      hero.getAnimations().forEach(animation => animation.cancel());
+      hero.animate([{opacity:.4,transform:`translateX(${direction * 16}px)`},{opacity:1,transform:'none'}],{duration:240,easing:'ease-out'});
+    }
+  }
+  $('#discussion-prev').addEventListener('click', () => navigateDiscussion(-1));
+  $('#discussion-next').addEventListener('click', () => navigateDiscussion(1));
+  $('#discussion-dialog').addEventListener('keydown', event => {
+    if (event.target.closest('textarea,input') || !['ArrowLeft','ArrowRight'].includes(event.key)) return;
+    event.preventDefault(); navigateDiscussion(event.key === 'ArrowRight' ? 1 : -1);
+  });
+  let swipeStart = null;
+  $('#discussion-image').addEventListener('pointerdown', event => {
+    if (event.pointerType === 'mouse') return;
+    swipeStart = {id:event.pointerId,x:event.clientX,y:event.clientY};
+    event.currentTarget.setPointerCapture(event.pointerId);
+  });
+  $('#discussion-image').addEventListener('pointerup', event => {
+    if (!swipeStart || swipeStart.id !== event.pointerId) return;
+    const dx = event.clientX - swipeStart.x, dy = event.clientY - swipeStart.y;
+    swipeStart = null;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) navigateDiscussion(dx < 0 ? 1 : -1);
+  });
+  $('#discussion-image').addEventListener('pointercancel', () => { swipeStart = null; });
   function closeDiscussion() {
     closeDialog($('#discussion-dialog'));
   }
@@ -626,6 +708,9 @@
     const dialog = $('#discussion-dialog');
     dialog.style.setProperty('--notes-left', `${image.parentElement.offsetLeft + image.offsetLeft + image.offsetWidth + (window.innerWidth <= 600 ? 10 : 20)}px`);
     dialog.style.setProperty('--notes-top', `${image.parentElement.offsetTop + image.offsetTop}px`);
+    dialog.style.setProperty('--hero-left', `${image.parentElement.offsetLeft + image.offsetLeft}px`);
+    dialog.style.setProperty('--hero-width', `${image.offsetWidth}px`);
+    dialog.style.setProperty('--hero-middle', `${image.parentElement.offsetTop + image.offsetTop + image.offsetHeight / 2}px`);
     const rightSpace = window.innerWidth - dialog.offsetLeft - image.parentElement.offsetLeft - image.offsetLeft - image.offsetWidth - 36;
     dialog.style.setProperty('--notes-width', `${Math.max(104, Math.min(440, rightSpace))}px`);
   }
@@ -633,7 +718,7 @@
   discussionResize.observe($('#discussion-image'));
   discussionResize.observe($('#discussion-dialog .discussion-image'));
   $('#discussion-image').addEventListener('load', positionDiscussionNotes);
-  const protectedDiscussionTarget = target => target.closest('#discussion-image, .discussion-actions');
+  const protectedDiscussionTarget = target => target.closest('#discussion-image, .discussion-actions, .discussion-nav');
   let discussionOutsidePress = false;
   $('#discussion-dialog').addEventListener('pointerdown', event => {
     discussionOutsidePress = !protectedDiscussionTarget(event.target);

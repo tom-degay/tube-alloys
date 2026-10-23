@@ -230,6 +230,8 @@ html.session-mode[data-theme=dark], .session-mode[data-theme=dark] body { backgr
 .session-mode.session-mobile-nav .photo-expand{display:none}
 .session-mode .photo[data-selected="true"]::before{display:none}
 .session-mode.session-mobile-nav .photo[data-selected="true"] .photo-expand{display:grid;opacity:1;pointer-events:auto}
+html.slider-dragging .toolbar button,html.slider-dragging .photo{pointer-events:none}
+html.slider-dragging{user-select:none;-webkit-user-select:none}
 </style>
 </head>
 <body>
@@ -605,14 +607,14 @@ html.session-mode[data-theme=dark], .session-mode[data-theme=dark] body { backgr
    return box.left < sceneBox.right && box.right > sceneBox.left && box.top < sceneBox.bottom && box.bottom > sceneBox.top;
   }) : []);
   const availableColumns = mobileNavigation ? 3 : Math.max(1, Math.floor((scene.clientWidth - 36) / 140));
-  const columns = mobileNavigation ? Math.min(count, 3) : sessionMode ? Math.min(Math.ceil(Math.sqrt(count)), availableColumns) : Math.ceil(Math.sqrt(count));
+  const columns = mobileNavigation ? Math.min(3, Math.ceil(Math.sqrt(count))) : sessionMode ? Math.min(Math.ceil(Math.sqrt(count)), availableColumns) : Math.ceil(Math.sqrt(count));
   // Keep the larger working area centred behind the crop and toolbar.
   // Six images use three columns: their 478px tiles are the size ceiling.
   // Each selection ring extends 8px beyond its image; 22px leaves 6px clear.
   const gap = mobileNavigation ? 20 : sessionMode ? 32 : 30;
   // Mobile outer margins are 24px, wider than the 20px gutters.
   const area = mobileNavigation ? scene.clientWidth - 48 : sessionMode ? Math.max(240, scene.clientWidth - 54) : 1494;
-  const ceilingColumns = Math.min(3, availableColumns);
+  const ceilingColumns = mobileNavigation ? columns : Math.min(3, availableColumns);
   const size = sessionMode ? Math.min(478, (area - (ceilingColumns - 1) * gap) / ceilingColumns, (area - (columns - 1) * gap) / columns) : Math.min((1494 - 2 * 30) / 3, (1494 - (columns - 1) * 30) / columns);
   const width = columns * size + (columns - 1) * gap;
   const rows = Math.ceil(count / columns);
@@ -859,6 +861,25 @@ html.session-mode[data-theme=dark], .session-mode[data-theme=dark] body { backgr
   if (!event.target.closest('.collection')) closeMenu();
  });
  window.addEventListener('blur', () => closeMenu());
+ let sliderDragging = false;
+ function setSliderDragging(active) {
+  if (sliderDragging === active) return;
+  sliderDragging = active;
+  document.documentElement.classList.toggle('slider-dragging', active);
+  if (sessionMode) parent.postMessage({type:'ii-session-slider-drag', active}, location.origin);
+ }
+ range.addEventListener('pointerdown', event => {
+  if (event.pointerType === 'touch' || mobileNavigation) {
+   range.setPointerCapture(event.pointerId);
+   setSliderDragging(true);
+  }
+ });
+ for (const type of ['pointerup','pointercancel','lostpointercapture']) range.addEventListener(type, () => setSliderDragging(false));
+ window.addEventListener('blur', () => setSliderDragging(false));
+ document.addEventListener('visibilitychange', () => { if (document.hidden) setSliderDragging(false); });
+ for (const type of ['pointerdown','click']) document.addEventListener(type, event => {
+  if (sliderDragging && event.target !== range) { event.preventDefault(); event.stopImmediatePropagation(); }
+ }, true);
  range.addEventListener('input', () => { count = Number(range.value); closeMenu(); render(); });
  range.addEventListener('change', () => announce());
  countInput.addEventListener('focus', () => { editingCount = true; countInput.select(); });
