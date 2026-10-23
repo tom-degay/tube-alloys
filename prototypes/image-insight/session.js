@@ -724,6 +724,43 @@
       });
     }
   }
+  // A downward swipe at the top of the mobile panel returns to the board.
+  const swipeSessionPanel = $('#session-panel');
+  let panelSwipe = null;
+  let panelSwipeClickUntil = 0;
+  swipeSessionPanel.addEventListener('touchstart', event => {
+    panelSwipe = null;
+    if (!phoneLayout.matches || !expanded || settingsOpen || activeImage || event.touches.length !== 1 || sessionScroller.scrollTop > 1) return;
+    if (event.target.closest('input,textarea,select,button:not(.image-button),a,[contenteditable]')) return;
+    const touch = event.touches[0];
+    panelSwipe = {x:touch.clientX,y:touch.clientY,dy:0,axis:null};
+  }, {passive:true});
+  swipeSessionPanel.addEventListener('touchmove', event => {
+    if (!panelSwipe) return;
+    if (event.touches.length !== 1) { panelSwipe = null; return; }
+    const dx = event.touches[0].clientX - panelSwipe.x;
+    const dy = event.touches[0].clientY - panelSwipe.y;
+    if (!panelSwipe.axis && Math.max(Math.abs(dx),Math.abs(dy)) > 10) {
+      if (dy > 0 && dy > Math.abs(dx) * 1.5) panelSwipe.axis = 'down';
+      else { panelSwipe = null; return; }
+    }
+    if (panelSwipe.axis === 'down') {
+      event.preventDefault();
+      panelSwipe.dy = dy;
+    }
+  }, {passive:false});
+  swipeSessionPanel.addEventListener('touchend', () => {
+    if (panelSwipe?.axis === 'down') {
+      panelSwipeClickUntil = performance.now() + 500;
+      if (panelSwipe.dy > 64 && expanded) toggleExpansion();
+    }
+    panelSwipe = null;
+  });
+  swipeSessionPanel.addEventListener('touchcancel', () => { panelSwipe = null; });
+  swipeSessionPanel.addEventListener('click', event => {
+    if (performance.now() < panelSwipeClickUntil) { event.preventDefault(); event.stopImmediatePropagation(); }
+  }, true);
+
   $('#expand-session').addEventListener('click', toggleExpansion);
   $('#back-to-board').addEventListener('click', toggleExpansion);
   $('#empty-back-to-board').addEventListener('click', () => { if (expanded) toggleExpansion(); });
