@@ -660,7 +660,7 @@ html.slider-dragging{user-select:none;-webkit-user-select:none}
      ring.setAttribute('viewBox', '0 0 100 100');
      ring.setAttribute('aria-hidden', 'true');
      const contour = 'M30 0H70C80.501 0 85.751 0 89.762 2.044C93.29 3.841 96.159 6.71 97.956 10.238C100 14.249 100 19.499 100 30V70C100 80.501 100 85.751 97.956 89.762C96.159 93.29 93.29 96.159 89.762 97.956C85.751 100 80.501 100 70 100H30C19.499 100 14.249 100 10.238 97.956C6.71 96.159 3.841 93.29 2.044 89.762C0 85.751 0 80.501 0 70V30C0 19.499 0 14.249 2.044 10.238C3.841 6.71 6.71 3.841 10.238 2.044C14.249 0 19.499 0 30 0Z';
-     ring.innerHTML = `<defs><mask id="photo-ring-${i}" maskUnits="userSpaceOnUse" x="-100" y="-100" width="300" height="300" style="mask-type:luminance"><path d="${contour}" fill="white" stroke="white" stroke-width="16" vector-effect="non-scaling-stroke"/><path d="${contour}" fill="black" stroke="black" stroke-width="10" vector-effect="non-scaling-stroke"/></mask></defs><rect x="-100" y="-100" width="300" height="300" fill="currentColor" mask="url(#photo-ring-${i})"/>`;
+     ring.innerHTML = `<defs><mask id="photo-ring-${i}" maskUnits="userSpaceOnUse" x="-100" y="-100" width="300" height="300" style="mask-type:luminance"><path d="${contour}" fill="white" stroke="white" stroke-width="14" vector-effect="non-scaling-stroke"/><path d="${contour}" fill="black" stroke="black" stroke-width="10" vector-effect="non-scaling-stroke"/></mask></defs><rect x="-100" y="-100" width="300" height="300" fill="currentColor" mask="url(#photo-ring-${i})"/>`;
      cell.append(ring);
      const select = document.createElement('button');
      select.className = 'photo-select'; select.type = 'button';
