@@ -374,7 +374,7 @@
         const indicator = document.createElement('span');
         indicator.className = 'note-indicator';
         indicator.setAttribute('aria-label', 'Notes added');
-        indicator.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 3v-3a2 2 0 0 1-2-2V7a2 2 0 0 1 3-2Z" fill="currentColor"/><path d="M6 9h12M6 12h9" stroke="#354856" stroke-width="1.5" stroke-linecap="round"/></svg>';
+        indicator.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v13H9l-4 3V4Zm3 4h8M8 11h8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
         button.append(indicator);
         const remove = document.createElement('button');
@@ -630,13 +630,31 @@
     const boardPosition = captureViewPosition().board;
     const cards = [...$('#selected-images').children];
     const before = new Map(cards.map(card => [card, card.getBoundingClientRect()]));
+    const expandingFromBar = phoneLayout.matches && !expanded && !reduced.matches;
+    const barBounds = expandingFromBar ? $('#mobile-session-bar').getBoundingClientRect() : null;
     expanded = !expanded;
     applyExpansion();
     requestAnimationFrame(() => restoreViewPosition({panel:panelPositions[expanded ? 'expanded' : 'collapsed'],board:boardPosition}));
     if (phoneLayout.matches) {
       $(expanded ? '#expand-session' : '#mobile-session-bar').focus({ preventScroll: true });
     }
-    if (!reduced.matches) {
+    if (expandingFromBar) {
+      const panel = $('#session-panel');
+      const bounds = panel.getBoundingClientRect();
+      const inset = [barBounds.top-bounds.top, bounds.right-barBounds.right,
+        bounds.bottom-barBounds.bottom, barBounds.left-bounds.left].map(value => `${Math.max(0,value)}px`).join(' ');
+      panel.getAnimations().forEach(animation => animation.cancel());
+      panel.animate([
+        {clipPath:`inset(${inset} round 20px)`},
+        {clipPath:'inset(0px round 0px)'}
+      ], {duration:480,easing:'cubic-bezier(.22,1,.36,1)'});
+      // Reveal content after the surface starts opening; keep text at its final size.
+      for (const child of panel.children) {
+        child.animate([{opacity:0,transform:'translateY(8px)'},{opacity:1,transform:'none'}],
+          {duration:300,delay:100,fill:'backwards',easing:'cubic-bezier(.22,1,.36,1)'});
+      }
+    }
+    if (!reduced.matches && !phoneLayout.matches) {
       // FLIP preserves the cards' positions while the sidebar grows into the session.
       requestAnimationFrame(() => {
         cards.forEach(card => {
@@ -682,7 +700,6 @@
     const hasNotes = Boolean(String(state.notes[activeImage] || '').trim());
     $('#toggle-notes').classList.toggle('has-content',hasNotes);
     $('#toggle-notes').setAttribute('aria-label',hasNotes ? 'Notes — notes added' : 'Notes');
-    $('#discussion-note-indicator').hidden = !hasNotes;
   }
   // A focus view is one browser-history step, regardless of image navigation.
   // Session data remains in memory; stale entries after a reload are not restored.
@@ -1022,7 +1039,6 @@
     renderPanel();
     if (String(state.notes[activeImage] || '').trim()) {
       announce('Notes added to this image.');
-      if (!reduced.matches) $('#discussion-note-indicator').animate([{opacity:0,scale:'.85'},{opacity:1,scale:'1'}],{duration:250,easing:'ease-out'});
     }
   }
   $('#notes-done').addEventListener('click', finishNotes);

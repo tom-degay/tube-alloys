@@ -24,10 +24,10 @@
   <meta name="twitter:image:alt" content="Image Insight interactive prototype: a grid of photographs with a lake image selected. Choose an image. Explore a different perspective.">
   <link rel="icon" href="/case-studies/media/image-insight-logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/prototypes/image-insight/icons.css">
-  <link rel="stylesheet" href="/prototypes/image-insight/session.css?v=20261023-session-actions">
-  <link rel="stylesheet" href="/prototypes/image-insight/theme.css?v=20261023-session-actions">
+  <link rel="stylesheet" href="/prototypes/image-insight/session.css?v=20261023-notes-panel">
+  <link rel="stylesheet" href="/prototypes/image-insight/theme.css?v=20261023-notes-panel">
   <script src="/prototypes/image-insight/icons.js" defer></script>
-  <script src="/prototypes/image-insight/session.js?v=20261023-mobile-gestures" defer></script>
+  <script src="/prototypes/image-insight/session.js?v=20261023-notes-panel" defer></script>
 </head>
 <body>
 <div class="profile-menu" id="profile-menu" role="group" aria-label="Profile menu" hidden>
@@ -157,7 +157,6 @@
     <div class="discussion-image"><img id="discussion-image" alt="" draggable="false"></div>
     <button class="discussion-nav discussion-prev" id="discussion-prev" aria-label="Previous selected image" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 6-6 6 6 6"/></svg></button>
     <button class="discussion-nav discussion-next" id="discussion-next" aria-label="Next selected image" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 6 6 6-6 6"/></svg></button>
-    <span id="discussion-note-indicator" class="discussion-note-indicator" aria-label="Notes added" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v13H9l-4 3V4Zm3 4h8M8 11h8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="discussion-position" id="discussion-position" role="status" aria-live="polite"></span>
     <aside class="discussion-actions" aria-label="Image discussion controls">
       <button class="quiet" id="toggle-notes" aria-expanded="false" aria-controls="notes-field"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16l-4-3H4zM7 8h10M7 11h10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>Notes</span></button>

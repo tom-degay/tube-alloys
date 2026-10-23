@@ -420,7 +420,7 @@ input[aria-invalid=true]{border-color:#c73352}
  .is-expanded .mobile-session-bar,.is-settings-open .mobile-session-bar,.is-expanded .rail,.is-settings-open .rail{display:none}
  .is-expanded .session-panel,.session-panel.is-settings{display:flex;inset:0;width:100%;height:100%;padding:calc(12px + env(safe-area-inset-top)) 20px calc(12px + env(safe-area-inset-bottom));border-radius:0;z-index:6}
  .keyboard-open.board-editing .board-shell{bottom:0}
- @media(prefers-reduced-motion:no-preference){.is-expanded .session-panel{animation:mobile-session-in 300ms var(--ease)}}
+
 }
 @keyframes mobile-session-in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 
@@ -614,4 +614,16 @@ html[data-theme=dark] .profile-menu{background:#242424f5;border-color:#444;color
 /* Reserve image gestures for focus navigation; notes retain normal scrolling. */
 @media (max-width:600px), (max-width:900px) and (max-height:500px){
  #discussion-image{touch-action:pinch-zoom}
+}
+
+/* Fit the expanded editor inside the visible phone viewport, not below it. */
+@media(max-width:600px),(max-width:900px) and (max-height:500px){
+ #discussion-dialog.has-notes[open]{display:flex;flex-direction:column;overflow:hidden;padding-bottom:env(safe-area-inset-bottom)}
+ #discussion-dialog.has-notes .discussion-image{height:min(40%,360px);min-height:0;flex:0 0 auto}
+ #discussion-dialog.has-notes .discussion-actions{flex:1 1 0;min-height:0;max-height:100%;margin-top:40px}
+ #discussion-dialog.has-notes .notes-field{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden}
+ #discussion-dialog.has-notes .notes-field[hidden]{display:none}
+ #discussion-dialog.has-notes #image-notes{height:0;min-height:0;flex:1;overflow-y:auto;resize:none}
+ #discussion-dialog.has-notes :is(#toggle-notes,#notes-done){flex-shrink:0}
+ .keyboard-open #discussion-dialog.has-notes[open]{padding-bottom:0}
 }

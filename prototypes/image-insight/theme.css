@@ -194,3 +194,8 @@ html:not([data-theme=dark]) .profile > span{color:#fff}
  .is-expanded .session-footer{width:clamp(180px,24vw,330px);max-width:100%}
 }
 @media(min-width:1600px){.workspace:not(.is-expanded) .session-footer{max-width:280px}}
+
+/* Notes use the same inset circular treatment as the session image controls. */
+.selected-card .note-indicator{left:auto;right:max(9px,6%);bottom:max(9px,6%);z-index:4;width:32px;height:32px;padding:0;border:0;border-radius:50%;corner-shape:round;background:rgb(0 0 0 / 50%);color:#fff;display:grid;place-items:center}
+.selected-card .note-indicator svg{width:20px;height:20px}
+.selected-card .note-indicator[hidden]{display:none}
