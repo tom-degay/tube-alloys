@@ -835,10 +835,17 @@
   swipeHero.addEventListener('pointermove', event => {
     if (!swipeStart || swipeStart.id !== event.pointerId) return;
     const dx = event.clientX - swipeStart.x, dy = event.clientY - swipeStart.y;
-    if (swipeStart.vertical) { swipeStart.dy = dy; return; }
+    if (swipeStart.vertical) {
+      swipeStart.dy = dy;
+      if (!reduced.matches) swipeHero.style.transform = `translateY(${Math.max(0, dy)}px)`;
+      return;
+    }
     if (!swipeStart.horizontal) {
       if (Math.abs(dy) > 10 && Math.abs(dy) > Math.abs(dx) * 1.5) {
-        if (phoneLayout.matches && dy > 0) { swipeStart.vertical = true; swipeStart.dy = dy; }
+        if (phoneLayout.matches && dy > 0) {
+          swipeStart.vertical = true; swipeStart.dy = dy;
+          if (!reduced.matches) swipeHero.style.transform = `translateY(${dy}px)`;
+        }
         else resetDiscussionDrag();
         return;
       }
@@ -877,8 +884,11 @@
     if (!swipeStart || swipeStart.id !== event.pointerId) return;
     const {dx,dy,horizontal,vertical} = swipeStart;
     if (vertical) {
-      resetDiscussionDrag();
-      if (dy > 64) closeDiscussion();
+      if (dy > 64) {
+        // Retain the dragged position while history returns to the previous view.
+        swipeStart = null;
+        closeDiscussion();
+      } else resetDiscussionDrag(true);
       return;
     }
     const commit = horizontal && Math.abs(dx) > Math.min(64, swipeHero.clientWidth * .2);
@@ -913,6 +923,7 @@
     rememberNotesCursor();
     if (reduced.matches) { closeDialog(dialog); return; }
     discussionClosing = true;
+    const dragTransform = swipeHero.style.transform || 'none';
     resetDiscussionDrag();
     const hero = $('#discussion-image');
     const from = hero.getBoundingClientRect();
@@ -934,7 +945,7 @@
     dialog.classList.add('is-closing');
     hero.getAnimations().forEach(animation => animation.cancel());
     const animation = hero.animate([
-      {transformOrigin:'top left',transform:'none',opacity:1},
+      {transformOrigin:'top left',transform:dragTransform,opacity:1},
       {transformOrigin:'top left',transform:visible ? `translate(${target.left-from.left}px,${target.top-from.top}px) scale(${target.width/from.width},${target.height/from.height})` : 'scale(.98)',opacity:visible ? .25 : 0}
     ],{duration:360,easing:'cubic-bezier(.4,0,.2,1)',fill:'forwards'});
     focusCloseAnimation = animation;
