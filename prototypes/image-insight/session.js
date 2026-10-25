@@ -2,6 +2,7 @@
   'use strict';
   const $ = selector => document.querySelector(selector);
   const board = $('#image-board');
+  let introDismissed = false;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const sessionScroller = $('.session-body');
   function updateScrollFades() {
@@ -222,6 +223,7 @@
     board.contentWindow.postMessage({ type: 'ii-session-selection', ids: state.selected }, location.origin);
   }
   board.addEventListener('load', () => {
+    if (introDismissed) board.contentWindow.postMessage({type:'ii-session-enter'}, location.origin);
     board.contentWindow.postMessage({ type: 'ii-session-connect' }, location.origin);
     setInputMode(document.documentElement.dataset.input);
   });
@@ -1490,6 +1492,10 @@
   }
   $('#prototype-continue').addEventListener('click', () => closeDialog($('#prototype-intro')));
   $('#prototype-intro').addEventListener('close', () => {
+    if (!introDismissed) {
+      introDismissed = true;
+      board.contentWindow.postMessage({type:'ii-session-enter'}, location.origin);
+    }
     showMobileSessionBar(true);
     $(phoneLayout.matches ? '#mobile-session-bar' : '#new-session').focus({ preventScroll: true });
   });

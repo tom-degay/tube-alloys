@@ -7,10 +7,11 @@
 <script>
 const gridParams = new URLSearchParams(location.search);
 if (gridParams.get("hints") === "off") document.documentElement.classList.add("hide-hints");
-if (gridParams.get("mode") === "session") document.documentElement.classList.add("session-mode");
+if (gridParams.get("mode") === "session") document.documentElement.classList.add("session-mode", "session-awaiting-intro");
 </script>
 <style>
 .hide-hints .try-bubble { display: none; }
+.session-awaiting-intro .photos { visibility: hidden; pointer-events: none; }
 @font-face { font-family: 'Open Sans'; src: url('fonts/zonefully-open-sans-semibold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
 @font-face { font-family: 'Fakt Blond'; src: url('../../FaktProBlond.woff2') format('woff2'); font-weight: 400; font-display: swap; }
 @font-face { font-family: 'Fakt Blond'; src: url('../../FaktProSemiBold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
@@ -417,6 +418,7 @@ html.slider-dragging{user-select:none;-webkit-user-select:none}
    if (event.data?.type === 'ii-session-controls' && typeof event.data.open === 'boolean') {
     setControlsOpen(event.data.open, false);
    }
+   if (event.data?.type === 'ii-session-enter') revealInitialImages();
    if (event.data?.type === 'ii-session-refresh') {
     setControlsOpen(false);
     refreshImages();
@@ -629,6 +631,31 @@ html.slider-dragging{user-select:none;-webkit-user-select:none}
   flip.image.style.visibility = '';
   delete cell.dataset.flipping;
  }
+ let initialImagesRevealed = false;
+ function revealInitialImages() {
+  if (initialImagesRevealed) return;
+  initialImagesRevealed = true;
+  if (reduced.matches) { document.documentElement.classList.remove('session-awaiting-intro'); return; }
+  const bounds = scene.getBoundingClientRect();
+  const entering = cells.filter(cell => {
+   const box = cell.getBoundingClientRect();
+   return !cell.hidden && box.bottom > bounds.top && box.top < bounds.bottom && box.right > bounds.left && box.left < bounds.right;
+  }).map(cell => cell.querySelector('img'));
+  entering.forEach(image => { image.style.visibility = 'hidden'; });
+  Promise.all(entering.map(image => image.decode().catch(() => {}))).then(() => {
+   document.documentElement.classList.remove('session-awaiting-intro');
+   entering.forEach((image, index) => {
+    image.style.visibility = '';
+    if (reduced.matches) return;
+    const animation = image.animate([
+     {opacity:0,transform:'perspective(1200px) rotateY(-85deg)'},
+     {opacity:1,transform:'perspective(1200px) rotateY(0deg)'}
+    ], {duration:1600,delay:120 + Math.min(index * 100,800),easing:'cubic-bezier(.25,.1,.25,1)',fill:'backwards'});
+    animation.finished.then(() => animation.cancel()).catch(() => {});
+   });
+  });
+ }
+
  function playFlips(flips) {
   // Decode the incoming faces before turning any card, so slow images
   // cannot leave a blank back. All visible cards share one start time.
