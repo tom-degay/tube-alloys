@@ -657,7 +657,6 @@
   $('#complete-new').addEventListener('click', newSession);
   function previewQuestion() {
     const choice = $('#question-form input[name=question]:checked').value;
-    $('#question-preview').value = choice;
     $('#current-question').textContent = choice;
   }
   function openQuestionPicker() {
@@ -1255,7 +1254,7 @@
     const start = readNotesMotion();
     const y = value => new DOMMatrix(value === 'none' ? undefined : value).m42;
     notesDrag = {
-      open, progress:0, distance:Math.max(100,size * .4),
+      open, progress:0, velocity:0, lastMove:performance.now(), distance:Math.max(100,size * .4),
       start:[y(start[0].transform),parseFloat(start[1].top),parseFloat(start[1].height),y(start[1].transform),parseFloat(start[2]['padding-top']),y(start[3].transform)],
       end:[open ? 0 : -.4*size,frameHeight/2-.62*size,1.12*size,open ? 44 : .4*size,.32*size+16,open ? 44 : .4*size]
     };
@@ -1268,8 +1267,16 @@
   function moveNotesDrag(dy) {
     if (!notesDrag) return;
     const drag = notesDrag;
-    drag.progress = Math.max(0,Math.min(1,(drag.open ? dy : -dy)/drag.distance));
-    const values = drag.start.map((start,index) => start+(drag.end[index]-start)*drag.progress);
+    const raw = (drag.open ? dy : -dy)/drag.distance;
+    // Track the finger directly between stops, with soft resistance beyond them.
+    // A hard clamp here made a long swipe feel locked before the finger lifted.
+    const rubber = excess => .28 * (1 - Math.exp(-excess/.55));
+    const progress = raw < 0 ? -rubber(-raw) : raw > 1 ? 1+rubber(raw-1) : raw;
+    const now = performance.now(), dt = Math.max(8,now-drag.lastMove);
+    drag.velocity = .6*drag.velocity + .4*(progress-drag.progress)*1000/dt;
+    drag.lastMove = now;
+    drag.progress = progress;
+    const values = drag.start.map((start,index) => start+(drag.end[index]-start)*progress);
     const [frame,surface,field,dots] = notesMotionNodes();
     frame.style.transform = `translateY(${values[0]}px)`;
     surface.style.top = `${values[1]}px`;
@@ -1280,8 +1287,9 @@
   }
   function settleNotesDrag(release) {
     if (!notesDrag) return;
-    const drag = notesDrag, from = readNotesMotion();
-    const change = release && drag.progress >= .4;
+    const drag = notesDrag;
+    const velocity = release && performance.now()-drag.lastMove < 100 ? Math.max(-4,Math.min(4,drag.velocity)) : 0;
+    const change = release && drag.progress + velocity*.12 >= .4;
     const open = change ? !drag.open : drag.open;
     notesDrag = null;
     suppressNotesClickUntil = performance.now()+500;
@@ -1299,14 +1307,39 @@
     const finish = () => {
       notesMotionAnimations.forEach(animation => animation.cancel());
       notesMotionAnimations = [];
+      $('#notes-field').hidden = !open;
+      $('#notes-field').inert = !open;
       $('#discussion-dialog').classList.remove('notes-dragging');
       notesSettling = false;
     };
     if (reduced.matches) { finish(); return; }
+    // Keep the writing surface painted until it has slipped behind the photo.
+    $('#notes-field').hidden = false;
+    $('#notes-field').inert = true;
     notesSettling = true;
-    const keyframe = values => Object.fromEntries(Object.entries(values).map(([key,value]) => [key.replace(/-([a-z])/g,(_,letter) => letter.toUpperCase()),value]));
-    notesMotionAnimations = nodes.map((node,index) => node.animate([keyframe(from[index]),keyframe(to[index])],
-      {duration:460,easing:'cubic-bezier(.22,1.18,.36,1)',fill:'both'}));
+    const target = change ? 1 : 0;
+    const displacement = drag.progress-target;
+    const damping = 14, frequency = 13;
+    const keyframes = nodes.map(() => []);
+    // A damped spring carries the release velocity into a small, soft overshoot.
+    // Sample it for Web Animations so Safari and Chromium use the same motion.
+    for (let step=0;step<=48;step++) {
+      const time = step/48*.68;
+      const progress = target+Math.exp(-damping*time)*(displacement*Math.cos(frequency*time)+
+        (velocity+damping*displacement)/frequency*Math.sin(frequency*time));
+      const values = drag.start.map((start,index) => start+(drag.end[index]-start)*progress);
+      const frames = [
+        {transform:`translateY(${values[0]}px)`},
+        {top:`${values[1]}px`,height:`${values[2]}px`,transform:`translateY(${values[3]}px)`},
+        {paddingTop:`${values[4]}px`},
+        {transform:`translate(-50%,${values[5]}px)`}
+      ];
+      nodes.forEach((node,index) => keyframes[index].push(step===48
+        ? Object.fromEntries(Object.entries(to[index]).map(([key,value]) => [key.replace(/-([a-z])/g,(_,letter)=>letter.toUpperCase()),value]))
+        : frames[index]));
+    }
+    notesMotionAnimations = nodes.map((node,index) => node.animate(keyframes[index],
+      {duration:680,easing:'linear',fill:'both'}));
     Promise.all(notesMotionAnimations.map(animation => animation.finished)).then(finish,finish);
   }
   notesSurface.addEventListener('touchstart', event => {

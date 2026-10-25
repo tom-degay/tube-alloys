@@ -414,7 +414,7 @@ html:not([data-theme=dark]) .icon.icon-button .tile{fill-opacity:0}
   top:calc(var(--sheet-frame-height) / 2 - var(--sheet-image-size) * .3 - var(--sheet-overlap));
   width:calc(var(--sheet-image-size) - 4px);height:calc(var(--sheet-image-size) * .8 + var(--sheet-overlap));
   min-height:0;max-height:none;margin:0;padding:0;gap:0;border:0;box-shadow:none;
-  border-radius:0 0 calc(var(--sheet-image-size) * .16) calc(var(--sheet-image-size) * .16);
+  border-radius:calc(var(--sheet-image-size) * .16);
   background:var(--surface);overflow:hidden;clip-path:inset(55% 0 0);opacity:1;
   transform:translateY(44px);
   transition:transform 520ms cubic-bezier(.22,1,.36,1),top 520ms cubic-bezier(.22,1,.36,1),height 520ms cubic-bezier(.22,1,.36,1),opacity 200ms ease;
