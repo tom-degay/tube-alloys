@@ -962,6 +962,9 @@
   let swipeNotesPreview = null;
   let swipeSettling = false;
   const swipeHero = $('#discussion-image');
+  // The mobile swipe lane spans the screen; clear it, including the card shadow.
+  const discussionSwipeTravel = () => phoneLayout.matches
+    ? swipeHero.parentElement.clientWidth + 32 : swipeHero.clientWidth + 24;
   function resetDiscussionDrag(animate = false) {
     const transform = swipeHero.style.transform;
     swipeHero.style.removeProperty('transform');
@@ -1010,7 +1013,7 @@
       if (Math.abs(dx) < 8 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
       swipeStart.horizontal = true;
     }
-    const travel = swipeHero.clientWidth + 24;
+    const travel = discussionSwipeTravel();
     swipeStart.dx = Math.max(-travel,Math.min(travel,dx));
     const direction = dx < 0 ? 1 : -1;
     if (reduced.matches) return;
@@ -1071,7 +1074,7 @@
       if (commit) navigateDiscussion(direction,true);
       return;
     }
-    const preview = swipePreview, travel = swipeHero.clientWidth + 24;
+    const preview = swipePreview, travel = discussionSwipeTravel();
     swipeStart = null; swipeSettling = true;
     const options = {duration:300,easing:'cubic-bezier(.22,.75,.25,1)',fill:'forwards'};
     const outgoing = swipeHero.animate([{transform:swipeHero.style.transform},{transform:`translateX(${commit ? -direction * travel : 0}px)`}],options);
