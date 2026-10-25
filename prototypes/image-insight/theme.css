@@ -307,3 +307,17 @@ html:not([data-theme=dark]) .profile > span{color:#fff}
 
 .secondary{transition:color 180ms ease,border-color 180ms ease}
 html:not([data-theme=dark]) .secondary:not(:disabled):hover{background:transparent;color:#389fb9;border-color:#389fb9}
+
+/* White writing surfaces in light mode. */
+html:not([data-theme=dark]) :is(.settings-content input:not([type=radio]),.settings-content textarea,#discussion-dialog #image-notes){background:#fff}
+html:not([data-theme=dark]) #review-actions .action-row{background:#fff}
+html:not([data-theme=dark]) #review-actions .action-row input{background:transparent}
+@media(hover:hover){html:not([data-theme=dark]) #review-actions .action-row:hover{background:#f6f7f7}}
+
+/* Keep the welcome message centred without an empty header above it. */
+#session-panel:has(#welcome:not([hidden])) .session-header{display:none}
+#session-panel:has(#welcome:not([hidden])) .session-body{display:flex;flex-direction:column}
+#session-panel #welcome{display:flex;flex:1;flex-direction:column;align-items:center;justify-content:safe center;min-height:0;height:auto;text-align:center;gap:18px;padding-block:16px}
+#session-panel #welcome .welcome-mark{display:grid;place-items:center;width:48px;height:48px;margin:0 0 -6px;background:transparent;border-radius:0;color:var(--accent);opacity:.8}
+#session-panel #welcome .welcome-mark svg{display:block;width:48px;height:48px}
+#session-panel #welcome h2{display:block}
