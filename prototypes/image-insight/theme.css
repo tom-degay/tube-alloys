@@ -458,7 +458,9 @@ html:not([data-theme=dark]) .icon.icon-button .tile{fill-opacity:0}
   top:0;transform:translateY(0);height:100%;border-radius:20px;
  }
  body:is(.keyboard-open,:not(.keyboard-open)) #discussion-dialog.has-notes.notes-editing .notes-field{padding-top:20px}
- #discussion-dialog.has-notes .notes-field{animation:sheet-content-in 300ms 150ms both}
+ /* The sheet already follows the gesture; restarting its content fade on
+    release makes the placeholder disappear once after opening. */
+ #discussion-dialog.has-notes .notes-field{animation:none}
  #discussion-dialog.is-closing .discussion-actions{opacity:0}
  @media(prefers-reduced-motion:reduce){
   body:is(.keyboard-open,:not(.keyboard-open)) #discussion-dialog :is(.discussion-image,.discussion-actions,.notes-field,.discussion-position){transition:none;animation:none}

@@ -63,23 +63,32 @@
   let keyboardBaseline = window.visualViewport?.height || window.innerHeight;
   let keyboardWidth = window.innerWidth;
   let keyboardVisible = false;
-  let reviewFocusFrame = 0;
-  function keepReviewFieldVisible() {
-    if (reviewFocusFrame) return;
-    reviewFocusFrame = requestAnimationFrame(() => {
-      reviewFocusFrame = 0;
+  let editingFocusFrame = 0;
+  function keepEditingFieldVisible() {
+    if (editingFocusFrame) return;
+    editingFocusFrame = requestAnimationFrame(() => {
+      editingFocusFrame = 0;
       if (!matchMedia('(max-width:600px), (max-width:900px) and (max-height:500px)').matches) return;
-      const dialog = $('#review-dialog'), field = document.activeElement;
-      if (!dialog.open || !field?.matches('input,textarea') || !dialog.contains(field)) return;
+      const field = document.activeElement;
+      if (!field?.matches('input:not([type=radio]),textarea')) return;
+      const review = $('#review-dialog');
+      const settings = $('#session-panel').classList.contains('is-settings') && $('#settings-content').contains(field);
+      if (!settings && !(review.open && review.contains(field))) return;
+      const scroller = settings ? sessionScroller : review;
       const viewport = window.visualViewport;
-      const bounds = dialog.getBoundingClientRect(), rect = field.getBoundingClientRect();
-      const heading = dialog.querySelector('.dialog-heading').getBoundingClientRect();
-      const top = Math.max(bounds.top, viewport?.offsetTop || 0, heading.bottom) + 12;
-      const bottom = Math.min(bounds.bottom, (viewport?.offsetTop || 0) + (viewport?.height || innerHeight)) - 16;
-      if (rect.top < top) dialog.scrollTop += rect.top - top;
-      else if (rect.bottom > bottom) dialog.scrollTop += Math.min(rect.bottom-bottom, rect.top-top);
+      const bounds = scroller.getBoundingClientRect(), rect = field.getBoundingClientRect();
+      const headingBottom = settings ? bounds.top : review.querySelector('.dialog-heading').getBoundingClientRect().bottom;
+      // Settings have their own scroller between the header and Continue button.
+      // Scroll that container, never the page, as Safari pans/resizes its viewport.
+      const margin = settings ? 24 : 12;
+      const top = Math.max(bounds.top, viewport?.offsetTop || 0, headingBottom) + margin;
+      const bottom = Math.min(bounds.bottom, (viewport?.offsetTop || 0) + (viewport?.height || innerHeight)) - (settings ? 24 : 16);
+      if (rect.top < top) scroller.scrollTop += rect.top - top;
+      else if (rect.bottom > bottom) scroller.scrollTop += Math.min(rect.bottom-bottom, rect.top-top);
     });
   }
+  const editingViewportResize = new ResizeObserver(keepEditingFieldVisible);
+  editingViewportResize.observe(sessionScroller);
   function updateVisibleScreen() {
     const viewport = window.visualViewport;
     const height = viewport ? viewport.height : window.innerHeight;
@@ -102,7 +111,7 @@
     const keyboardOpen = Boolean((editing || keyboardVisible) && keyboardOcclusion > (keyboardVisible ? 80 : 120));
     keyboardVisible = keyboardOpen;
     document.body.classList.toggle('keyboard-open', keyboardOpen);
-    keepReviewFieldVisible();
+    keepEditingFieldVisible();
     if (keyboardOpen && document.activeElement?.id === 'image-notes') {
       const dialog = document.getElementById('discussion-dialog');
       dialog.scrollTop = 0;
@@ -1297,7 +1306,7 @@
     notesSettling = true;
     const keyframe = values => Object.fromEntries(Object.entries(values).map(([key,value]) => [key.replace(/-([a-z])/g,(_,letter) => letter.toUpperCase()),value]));
     notesMotionAnimations = nodes.map((node,index) => node.animate([keyframe(from[index]),keyframe(to[index])],
-      {duration:380,easing:'cubic-bezier(.22,1,.36,1)',fill:'both'}));
+      {duration:460,easing:'cubic-bezier(.22,1.18,.36,1)',fill:'both'}));
     Promise.all(notesMotionAnimations.map(animation => animation.finished)).then(finish,finish);
   }
   notesSurface.addEventListener('touchstart', event => {
@@ -1455,7 +1464,7 @@
       const notes = document.createElement('textarea');
       notes.id = label.htmlFor;
       notes.value = String(state.notes[id] || '');
-      notes.placeholder = 'Add insights';
+      notes.placeholder = 'Add notes and insights';
       notes.addEventListener('input', () => { state.notes[id] = notes.value; state.completed = false; save(); });
       row.append(makeImage(id), label, notes);
       $('#review-images').append(row);
