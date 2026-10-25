@@ -420,28 +420,37 @@ html:not([data-theme=dark]) .icon.icon-button .tile{fill-opacity:0}
   transition:transform 520ms cubic-bezier(.22,1,.36,1),top 520ms cubic-bezier(.22,1,.36,1),height 520ms cubic-bezier(.22,1,.36,1),opacity 200ms ease;
  }
  body:is(.keyboard-open,:not(.keyboard-open)) #discussion-dialog.has-notes .discussion-actions{clip-path:none;transform:translateY(calc(var(--sheet-image-size) * .4))}
- #discussion-dialog #toggle-notes{
+ #discussion-dialog :is(#toggle-notes,[data-preview-id="toggle-notes"]){
   position:absolute;inset:auto 0 0;width:100%;height:44px;min-height:44px;padding:0;
   display:flex;align-items:center;justify-content:center;flex-wrap:nowrap;
   color:var(--accent);background:transparent;border-radius:0;z-index:1;
  }
- #discussion-dialog #toggle-notes:hover{color:var(--accent);background:transparent}
- #discussion-dialog #toggle-notes svg{width:23px;height:23px;margin:0;flex:none}
- #discussion-dialog #toggle-notes span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
- #discussion-dialog #toggle-notes:focus{outline:none;box-shadow:none}
- #discussion-dialog #toggle-notes:focus-visible svg{outline:2px solid var(--accent);outline-offset:4px;border-radius:4px}
- html[data-input=pointer] #discussion-dialog #toggle-notes:focus svg{outline:none}
- #discussion-dialog.has-notes #toggle-notes{visibility:visible;pointer-events:auto}
+ #discussion-dialog :is(#toggle-notes,[data-preview-id="toggle-notes"]):hover{color:var(--accent);background:transparent}
+ #discussion-dialog :is(#toggle-notes,[data-preview-id="toggle-notes"]) svg{width:23px;height:23px;margin:0;flex:none}
+ #discussion-dialog :is(#toggle-notes,[data-preview-id="toggle-notes"]) span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+ #discussion-dialog :is(#toggle-notes,[data-preview-id="toggle-notes"]):focus{outline:none;box-shadow:none}
+ #discussion-dialog :is(#toggle-notes,[data-preview-id="toggle-notes"]):focus-visible svg{outline:2px solid var(--accent);outline-offset:4px;border-radius:4px}
+ html[data-input=pointer] #discussion-dialog :is(#toggle-notes,[data-preview-id="toggle-notes"]):focus svg{outline:none}
+ #discussion-dialog.has-notes :is(#toggle-notes,[data-preview-id="toggle-notes"]){visibility:visible;pointer-events:auto}
  body:is(.keyboard-open,:not(.keyboard-open)) #discussion-dialog .notes-field{
   position:static;width:100%;height:100%;min-height:0;display:flex;flex-direction:column;gap:8px;margin:0;
   padding:calc(var(--sheet-overlap) + 16px) 20px 48px;overflow:hidden;
   transition:padding-top 520ms cubic-bezier(.22,1,.36,1);
  }
  body:is(.keyboard-open,:not(.keyboard-open)) #discussion-dialog .notes-field[hidden]{display:none}
- body:is(.keyboard-open,:not(.keyboard-open)) #discussion-dialog #image-notes{flex:1;min-height:0;width:100%;height:0;padding:4px;background:transparent;resize:none;overflow-y:auto}
- #discussion-dialog #notes-done{flex:none;margin:0 auto;padding:10px 26px;border-radius:12px;background:rgb(128 128 128 / 10%)}
- #discussion-dialog #notes-done:hover{background:rgb(128 128 128 / 18%)}
- #discussion-dialog .discussion-position{z-index:0;transform:translate(-50%,var(--sheet-shift));transition:transform 520ms cubic-bezier(.22,1,.36,1)}
+ body:is(.keyboard-open,:not(.keyboard-open)) #discussion-dialog :is(#image-notes,[data-preview-id="image-notes"]){flex:1;min-height:0;width:100%;height:0;padding:4px;border:0;border-radius:0;background:transparent;resize:none;overflow-y:auto}
+ #discussion-dialog :is(#notes-done,[data-preview-id="notes-done"]){display:flex;align-self:center;border:0;flex:none;margin:0 auto;padding:10px 26px;border-radius:12px;background:rgb(128 128 128 / 10%)}
+ #discussion-dialog :is(#notes-done,[data-preview-id="notes-done"]):hover{background:rgb(128 128 128 / 18%)}
+ #discussion-dialog .discussion-position{z-index:0;transform:translate(-50%,44px);transition:transform 520ms cubic-bezier(.22,1,.36,1)}
+ #discussion-dialog.has-notes .discussion-position{transform:translate(-50%,calc(var(--sheet-image-size) * .4))}
+ #discussion-dialog.notes-editing .discussion-position{opacity:0}
+ #discussion-dialog .discussion-actions{touch-action:auto}
+ #discussion-dialog .discussion-actions button{touch-action:none}
+ #discussion-dialog #image-notes{touch-action:pan-y}
+ #discussion-dialog .swipe-notes-preview{pointer-events:none}
+ #discussion-dialog .swipe-notes-preview .notes-field{animation:none}
+ body #discussion-dialog.notes-dragging:is(.has-notes,:not(.has-notes)) :is(.discussion-image,.discussion-actions,.notes-field,.discussion-position){transition:none;animation:none}
+ body #discussion-dialog.notes-dragging:is(.has-notes,:not(.has-notes)) .discussion-actions{clip-path:none}
  /* Editing lifts the unchanged photo clear of the visible screen. The sheet
     then occupies the visual viewport above the native keyboard. */
  #discussion-dialog.has-notes.notes-editing{--sheet-shift:calc(var(--sheet-frame-height) / -2 - var(--sheet-image-size) / 2 - 24px)}
@@ -455,3 +464,7 @@ html:not([data-theme=dark]) .icon.icon-button .tile{fill-opacity:0}
   body:is(.keyboard-open,:not(.keyboard-open)) #discussion-dialog :is(.discussion-image,.discussion-actions,.notes-field,.discussion-position){transition:none;animation:none}
  }
 }
+
+/* Keep appearance status secondary to its label in either theme. */
+[data-theme-state]{color:#858585}
+[data-theme=dark] [data-theme-state]{color:#adadad}

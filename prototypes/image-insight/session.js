@@ -44,7 +44,7 @@
       button.setAttribute('aria-pressed', String(theme === 'dark'));
       button.title = `Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`;
     });
-    document.querySelectorAll('[data-theme-label]').forEach(label => { label.textContent = 'Dark mode'; });
+    document.querySelectorAll('[data-theme-state]').forEach(label => { label.textContent = theme === 'dark' ? 'On' : 'Off'; });
     board.contentWindow.postMessage({ type: 'ii-session-theme', theme }, location.origin);
   }
   document.querySelectorAll('[data-theme-toggle]').forEach(button => button.addEventListener('click', () => {
@@ -951,6 +951,7 @@
   });
   let swipeStart = null;
   let swipePreview = null;
+  let swipeNotesPreview = null;
   let swipeSettling = false;
   const swipeHero = $('#discussion-image');
   function resetDiscussionDrag(animate = false) {
@@ -958,13 +959,20 @@
     swipeHero.style.removeProperty('transform');
     swipeHero.style.removeProperty('opacity');
     swipePreview?.remove(); swipePreview = null;
+    swipeNotesPreview?.remove(); swipeNotesPreview = null;
+    const sheet = $('#discussion-dialog .discussion-actions');
+    const sheetTravel = sheet.style.translate;
+    sheet.style.removeProperty('translate');
+    if (animate && sheetTravel && !reduced.matches) sheet.animate([{translate:sheetTravel},{translate:'0px 0px'}],
+      {duration:300,easing:'cubic-bezier(.22,.75,.25,1)'});
+    if (notesDrag) settleNotesDrag(false);
     if (animate && transform && !reduced.matches) swipeHero.animate([
       {transform},{transform:'none'}
     ],{duration:300,easing:'cubic-bezier(.22,.75,.25,1)'});
     swipeStart = null;
   }
   swipeHero.addEventListener('pointerdown', event => {
-    if (event.pointerType === 'mouse' || !event.isPrimary || (!phoneLayout.matches && state.selected.length < 2) || swipeSettling) return;
+    if (event.pointerType === 'mouse' || !event.isPrimary || (!phoneLayout.matches && state.selected.length < 2) || swipeSettling || notesSettling) return;
     swipeHero.getAnimations().forEach(animation => animation.cancel());
     resetDiscussionDrag();
     swipeStart = {id:event.pointerId,x:event.clientX,y:event.clientY,dx:0,dy:0,horizontal:false,vertical:false,direction:0};
@@ -975,14 +983,17 @@
     const dx = event.clientX - swipeStart.x, dy = event.clientY - swipeStart.y;
     if (swipeStart.vertical) {
       swipeStart.dy = dy;
-      if (!reduced.matches) swipeHero.style.transform = `translateY(${dy > 0 ? dy : Math.max(-48, dy * .35)}px)`;
+      if (swipeStart.notes) moveNotesDrag(dy);
+      else if (!reduced.matches) swipeHero.style.transform = `translateY(${Math.max(0,dy)}px)`;
       return;
     }
     if (!swipeStart.horizontal) {
       if (Math.abs(dy) > 10 && Math.abs(dy) > Math.abs(dx) * 1.5) {
         if (phoneLayout.matches) {
           swipeStart.vertical = true; swipeStart.dy = dy;
-          if (!reduced.matches) swipeHero.style.transform = `translateY(${dy > 0 ? dy : Math.max(-48, dy * .35)}px)`;
+          swipeStart.notes = dy < 0 || $('#discussion-dialog').classList.contains('has-notes');
+          if (swipeStart.notes) { beginNotesDrag(); moveNotesDrag(dy); }
+          else if (!reduced.matches) swipeHero.style.transform = `translateY(${Math.max(0,dy)}px)`;
         }
         else resetDiscussionDrag();
         return;
@@ -1004,19 +1015,38 @@
       swipePreview.src = catalog.get(state.selected[index]).src;
       Object.assign(swipePreview.style,{left:`${swipeHero.offsetLeft}px`,top:`${swipeHero.offsetTop}px`,width:`${swipeHero.offsetWidth}px`,height:`${swipeHero.offsetHeight}px`});
       swipeHero.parentElement.append(swipePreview);
+      if (phoneLayout.matches) {
+        swipeNotesPreview?.remove();
+        // A non-interactive copy travels with the incoming photo, including its
+        // own note text. Remove IDs so it never shadows the live editor.
+        swipeNotesPreview = $('#discussion-dialog .discussion-actions').cloneNode(true);
+        swipeNotesPreview.classList.add('swipe-notes-preview');
+        swipeNotesPreview.inert = true;
+        swipeNotesPreview.setAttribute('aria-hidden','true');
+        for (const node of swipeNotesPreview.querySelectorAll('[id]')) {
+          node.dataset.previewId = node.id; node.removeAttribute('id');
+          node.removeAttribute('aria-controls');
+        }
+        for (const node of swipeNotesPreview.querySelectorAll('[for]')) node.removeAttribute('for');
+        swipeNotesPreview.querySelector('textarea').value = String(state.notes[state.selected[index]] || '');
+        $('#discussion-dialog').append(swipeNotesPreview);
+      }
     }
     swipeStart.direction = direction;
     swipeHero.style.transform = `translateX(${swipeStart.dx}px)`;
     swipePreview.style.transform = `translateX(${swipeStart.dx + direction * travel}px)`;
+    if (phoneLayout.matches) {
+      $('#discussion-dialog .discussion-actions').style.translate = `${swipeStart.dx}px 0px`;
+      swipeNotesPreview.style.translate = `${swipeStart.dx + direction * travel}px 0px`;
+    }
   });
   swipeHero.addEventListener('pointerup', event => {
     if (!swipeStart || swipeStart.id !== event.pointerId) return;
     const {dx,dy,horizontal,vertical} = swipeStart;
     if (vertical) {
-      if (dy < -64) {
-        resetDiscussionDrag();
-        setNotesVisible(true);
-        $('#image-notes').focus({preventScroll:true});
+      if (swipeStart.notes) {
+        swipeStart = null;
+        settleNotesDrag(true);
         return;
       }
       if (dy > 64) {
@@ -1038,14 +1068,20 @@
     const options = {duration:300,easing:'cubic-bezier(.22,.75,.25,1)',fill:'forwards'};
     const outgoing = swipeHero.animate([{transform:swipeHero.style.transform},{transform:`translateX(${commit ? -direction * travel : 0}px)`}],options);
     const incoming = preview.animate([{transform:preview.style.transform},{transform:`translateX(${commit ? 0 : direction * travel}px)`}],options);
+    const sheetAnimations = [];
+    if (swipeNotesPreview) {
+      const sheet = $('#discussion-dialog .discussion-actions');
+      sheetAnimations.push(sheet.animate([{translate:sheet.style.translate},{translate:`${commit ? -direction * travel : 0}px 0px`}],options));
+      sheetAnimations.push(swipeNotesPreview.animate([{translate:swipeNotesPreview.style.translate},{translate:`${commit ? 0 : direction * travel}px 0px`}],options));
+    }
     outgoing.finished.then(async () => {
       if (commit && $('#discussion-dialog').open) {
         navigateDiscussion(direction,true,true);
         // Keep the already-painted, masked preview until the main image is ready.
         try { await swipeHero.decode(); } catch {}
       }
-      resetDiscussionDrag(); outgoing.cancel(); incoming.cancel(); swipeSettling = false;
-    },() => { resetDiscussionDrag(); incoming.cancel(); swipeSettling = false; });
+      resetDiscussionDrag(); outgoing.cancel(); incoming.cancel(); sheetAnimations.forEach(animation => animation.cancel()); swipeSettling = false;
+    },() => { resetDiscussionDrag(); incoming.cancel(); sheetAnimations.forEach(animation => animation.cancel()); swipeSettling = false; });
   });
   swipeHero.addEventListener('pointercancel', () => resetDiscussionDrag(true));
   swipeHero.addEventListener('lostpointercapture', () => { if (swipeStart) resetDiscussionDrag(true); });
@@ -1190,42 +1226,121 @@
   $('#notes-done').addEventListener('click', finishNotes);
   const notesSurface = $('#discussion-dialog .discussion-actions');
   let notesSwipe = null;
+  let notesDrag = null;
+  let notesSettling = false;
+  let notesMotionAnimations = [];
   let suppressNotesClickUntil = 0;
+  const notesMotionNodes = () => [swipeHero.parentElement, notesSurface, $('#notes-field'), $('#discussion-position')];
+  const notesMotionProperties = [['transform'],['top','height','transform'],['padding-top'],['transform']];
+  function readNotesMotion() {
+    return notesMotionNodes().map((node,index) => {
+      const style = getComputedStyle(node);
+      return Object.fromEntries(notesMotionProperties[index].map(key => [key,style.getPropertyValue(key)]));
+    });
+  }
+  function beginNotesDrag() {
+    const dialog = $('#discussion-dialog');
+    const open = dialog.classList.contains('has-notes');
+    const size = swipeHero.offsetWidth;
+    const frameHeight = swipeHero.parentElement.offsetHeight;
+    const start = readNotesMotion();
+    const y = value => new DOMMatrix(value === 'none' ? undefined : value).m42;
+    notesDrag = {
+      open, progress:0, distance:Math.max(100,size * .4),
+      start:[y(start[0].transform),parseFloat(start[1].top),parseFloat(start[1].height),y(start[1].transform),parseFloat(start[2]['padding-top']),y(start[3].transform)],
+      end:[open ? 0 : -.4*size,frameHeight/2-.62*size,1.12*size,open ? 44 : .4*size,.32*size+16,open ? 44 : .4*size]
+    };
+    dialog.classList.add('notes-dragging');
+    // Reveal the writing surface during the pull, but don't focus it or summon
+    // the keyboard until the user actually taps into the editor.
+    $('#notes-field').hidden = false;
+    $('#notes-field').inert = true;
+  }
+  function moveNotesDrag(dy) {
+    if (!notesDrag) return;
+    const drag = notesDrag;
+    drag.progress = Math.max(0,Math.min(1,(drag.open ? dy : -dy)/drag.distance));
+    const values = drag.start.map((start,index) => start+(drag.end[index]-start)*drag.progress);
+    const [frame,surface,field,dots] = notesMotionNodes();
+    frame.style.transform = `translateY(${values[0]}px)`;
+    surface.style.top = `${values[1]}px`;
+    surface.style.height = `${values[2]}px`;
+    surface.style.transform = `translateY(${values[3]}px)`;
+    field.style.paddingTop = `${values[4]}px`;
+    dots.style.transform = `translate(-50%,${values[5]}px)`;
+  }
+  function settleNotesDrag(release) {
+    if (!notesDrag) return;
+    const drag = notesDrag, from = readNotesMotion();
+    const change = release && drag.progress >= .4;
+    const open = change ? !drag.open : drag.open;
+    notesDrag = null;
+    suppressNotesClickUntil = performance.now()+500;
+    rememberNotesCursor();
+    if (change) {
+      setNotesVisible(open,false);
+      if (!open) $('#toggle-notes').focus({preventScroll:true});
+    } else {
+      $('#notes-field').hidden = !open;
+      $('#notes-field').inert = !open;
+    }
+    const nodes = notesMotionNodes();
+    nodes.forEach((node,index) => notesMotionProperties[index].forEach(key => node.style.removeProperty(key)));
+    const to = readNotesMotion();
+    const finish = () => {
+      notesMotionAnimations.forEach(animation => animation.cancel());
+      notesMotionAnimations = [];
+      $('#discussion-dialog').classList.remove('notes-dragging');
+      notesSettling = false;
+    };
+    if (reduced.matches) { finish(); return; }
+    notesSettling = true;
+    const keyframe = values => Object.fromEntries(Object.entries(values).map(([key,value]) => [key.replace(/-([a-z])/g,(_,letter) => letter.toUpperCase()),value]));
+    notesMotionAnimations = nodes.map((node,index) => node.animate([keyframe(from[index]),keyframe(to[index])],
+      {duration:380,easing:'cubic-bezier(.22,1,.36,1)',fill:'both'}));
+    Promise.all(notesMotionAnimations.map(animation => animation.finished)).then(finish,finish);
+  }
   notesSurface.addEventListener('touchstart', event => {
-    notesSwipe = null;
-    if (!phoneLayout.matches || notesClosing || event.touches.length !== 1 ||
-        !$('#discussion-dialog').classList.contains('has-notes') || event.target.closest('textarea,input')) return;
-    notesSwipe = {x:event.touches[0].clientX,y:event.touches[0].clientY,dy:0,dragging:false};
-  }, {passive:true});
+    if (!phoneLayout.matches || event.touches.length !== 1 || notesClosing ||
+        notesSettling || swipeSettling || event.target.closest('textarea,input')) return;
+    // Keep native textarea scrolling intact; only the surrounding sheet owns
+    // the drag. Prevent an editor blur while touching its controls or margins.
+    event.preventDefault();
+    const touch = event.touches[0];
+    notesSwipe = {x:touch.clientX,y:touch.clientY,dragging:false,button:event.target.closest('button')};
+  }, {passive:false});
   notesSurface.addEventListener('touchmove', event => {
     if (!notesSwipe) return;
-    if (event.touches.length !== 1) { notesSwipe = null; return; }
-    const dx = event.touches[0].clientX-notesSwipe.x;
-    const dy = event.touches[0].clientY-notesSwipe.y;
+    if (event.touches.length !== 1) { notesSwipe=null; settleNotesDrag(false); return; }
+    const dx = event.touches[0].clientX-notesSwipe.x, dy = event.touches[0].clientY-notesSwipe.y;
     if (!notesSwipe.dragging) {
       if (Math.abs(dx)>10 && Math.abs(dx)>Math.abs(dy)) { notesSwipe=null; return; }
-      if (dy<10 || dy<Math.abs(dx)*1.5) return;
+      if (Math.abs(dy)<10 || Math.abs(dy)<Math.abs(dx)*1.5) return;
       notesSwipe.dragging = true;
+      beginNotesDrag();
     }
     event.preventDefault();
-    notesSwipe.dy = dy;
+    moveNotesDrag(dy);
   }, {passive:false});
   notesSurface.addEventListener('touchend', event => {
     if (!notesSwipe) return;
+    event.preventDefault();
     const swipe = notesSwipe;
     notesSwipe = null;
-    if (swipe.dragging) {
-      event.preventDefault();
-      suppressNotesClickUntil = performance.now()+500;
-      if (swipe.dy>64) finishNotes();
-    }
+    if (swipe.dragging) settleNotesDrag(true);
+    else swipe.button?.click();
   }, {passive:false});
-  notesSurface.addEventListener('touchcancel', () => { notesSwipe=null; });
-  notesSurface.addEventListener('click', event => {
+  notesSurface.addEventListener('touchcancel', () => { notesSwipe=null; settleNotesDrag(false); });
+  $('#discussion-dialog').addEventListener('click', event => {
     if (performance.now()<suppressNotesClickUntil) {
       event.preventDefault(); event.stopImmediatePropagation();
     }
   }, true);
+  $('#discussion-dialog').addEventListener('close', () => {
+    notesSwipe = null;
+    settleNotesDrag(false);
+    notesMotionAnimations.forEach(animation => animation.cancel());
+  });
 
   function positionDiscussionNotes() {
     const image = $('#discussion-image');
