@@ -659,13 +659,13 @@ html.slider-dragging{user-select:none;-webkit-user-select:none}
 
  function playFlips(flips) {
   // Decode the incoming faces before turning any card, so slow images
-  // cannot leave a blank back. All visible cards share one start time.
+  // cannot leave a blank back. Stagger visible cards from the same clock.
   Promise.all(flips.map(flip => flip.image.decode().catch(() => {}))).then(() => {
    const start = document.timeline.currentTime;
-   flips.forEach(flip => {
+   flips.forEach((flip, index) => {
     if (cardFlips.get(flip.cell) !== flip) return;
     if (reduced.matches) { finishFlip(flip.cell); return; }
-    const timing = { duration: 640, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'both' };
+    const timing = { duration: 1100, delay: Math.min(index * 85, 680), easing: 'cubic-bezier(.4,0,.2,1)', fill: 'both' };
     flip.image.style.visibility = '';
     flip.cell.dataset.flipping = 'true';
     flip.animations = [
