@@ -25,9 +25,9 @@
   <link rel="icon" href="/case-studies/media/image-insight-logo.svg?v=20261025-latest-logo" type="image/svg+xml">
   <link rel="stylesheet" href="/prototypes/image-insight/icons.css?v=20261023-trash-hover">
   <link rel="stylesheet" href="/prototypes/image-insight/session.css?v=20261025-round-ui">
-  <link rel="stylesheet" href="/prototypes/image-insight/theme.css?v=20261025-welcome">
+  <link rel="stylesheet" href="/prototypes/image-insight/theme.css?v=20261025-sessions-motion">
   <script src="/prototypes/image-insight/icons.js" defer></script>
-  <script src="/prototypes/image-insight/session.js?v=20261025-theme-fade" defer></script>
+  <script src="/prototypes/image-insight/session.js?v=20261025-popup-offset" defer></script>
   <script src="/prototypes/image-insight/theme-fade.js?v=20261025-1"></script>
 </head>
 <body>
@@ -79,7 +79,7 @@
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
     <main class="board-shell" aria-label="Image board">
-      <iframe id="image-board" title="Choose images — image grid controls" src="/case-studies/media/image-insight-grid-interactive.html?mode=session&amp;hints=off&amp;v=20261025-refresh-stagger"></iframe>
+      <iframe id="image-board" title="Choose images — image grid controls" src="/case-studies/media/image-insight-grid-interactive.html?mode=session&amp;hints=off&amp;v=20261025-refresh-lightweight"></iframe>
     </main>
     <div class="expand-shade" aria-hidden="true"></div>
     <aside class="session-panel" id="session-panel" aria-label="Current session">
@@ -208,7 +208,6 @@
   <dialog class="saved-dialog" id="saved-dialog" aria-labelledby="saved-title">
     <div class="dialog-heading"><h2 id="saved-title">Your sessions</h2><button class="icon-button close" data-close aria-label="Close saved sessions">×</button></div>
     <div id="saved-list"></div>
-    <p class="storage-note">Sessions are available only until you refresh or close this page.</p>
   </dialog>
 
 

@@ -594,7 +594,7 @@
     const rect = button.getBoundingClientRect();
     const mobile = button.classList.contains('mobile-profile');
     profileMenu.hidden = false;
-    profileMenu.style.left = `${mobile ? Math.max(12, rect.left) : rect.right + 16}px`;
+    profileMenu.style.left = `${mobile ? Math.max(12, rect.left) : $('.rail').getBoundingClientRect().right + 6}px`;
     profileMenu.style.top = `${Math.max(12, mobile ? rect.top - profileMenu.offsetHeight - 10 : rect.bottom - profileMenu.offsetHeight)}px`;
     button.setAttribute('aria-expanded', 'true');
     if (document.documentElement.dataset.input === 'keyboard') profileMenu.querySelector('button:not(:disabled):not(.profile-appearance)')?.focus();

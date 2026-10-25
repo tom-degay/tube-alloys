@@ -30,6 +30,10 @@ button:focus-visible, input:focus-visible { outline: 2px solid #18768b; outline-
 .photo { position: absolute; margin: 0; border-radius: 13%; transition: width 440ms cubic-bezier(.22,1,.36,1), height 440ms cubic-bezier(.22,1,.36,1), transform 440ms cubic-bezier(.22,1,.36,1); }
 .photo img { display: block; width: 100%; height: 100%; object-fit: cover; background: #e3e7e7; border-radius: inherit; backface-visibility: hidden; -webkit-backface-visibility: hidden; user-select: none; -webkit-user-drag: none; }
 .photo .photo-previous { position: absolute; inset: 0; pointer-events: none; }
+.photo[data-flipping] { isolation:isolate; }
+.photo[data-flipping] > img { will-change:transform; }
+.photo-flip-shadow { position:absolute;inset:0;z-index:-1;pointer-events:none;backface-visibility:hidden;-webkit-backface-visibility:hidden;filter:blur(5px); }
+.photo-flip-shadow>div { width:100%;height:100%;background:#000;clip-path:url(#photo-squircle-clip);transform:translate(2px,6px); }
 /* The standalone session uses the same controls and motion on a full board. */
 .session-mode *,.session-mode *::before,.session-mode *::after { corner-shape: round; }
 .session-mode .photo::before { corner-shape: round; }
@@ -627,6 +631,8 @@ html.slider-dragging{user-select:none;-webkit-user-select:none}
   const flip = cardFlips.get(cell);
   if (!flip) return;
   cardFlips.delete(cell);
+  clearTimeout(flip.decodeTimer);
+  flip.shadows?.forEach(shadow => shadow.remove());
   flip.animations.forEach(animation => animation.cancel());
   flip.previous.remove();
   flip.image.style.visibility = '';
@@ -658,31 +664,84 @@ html.slider-dragging{user-select:none;-webkit-user-select:none}
  }
 
  function playFlips(flips) {
-  // Decode the incoming faces before turning any card, so slow images
-  // cannot leave a blank back. Stagger visible cards from the same clock.
-  Promise.all(flips.map(flip => flip.image.decode().catch(() => {}))).then(() => {
-   const start = document.timeline.currentTime;
-   flips.forEach((flip, index) => {
+  // Shuffle the order, then spread every card across the full stagger window.
+  // Do not cap index * delay: that makes the remaining cards turn in one batch.
+  const order = [...flips];
+  for (let i = order.length - 1; i > 0; i--) {
+   const j = Math.floor(Math.random() * (i + 1));
+   [order[i], order[j]] = [order[j], order[i]];
+  }
+  // Keep dense boards to two composited face rotations per card. Blurred
+  // silhouettes and animated brightness are small details at this tile size,
+  // but multiply the layers and animation work across a large visible grid.
+  const detailed = order.length <= 24;
+  const start = document.timeline.currentTime;
+  order.forEach((flip, index) => {
+   if (cardFlips.get(flip.cell) !== flip) return;
+   if (reduced.matches) { finishFlip(flip.cell); return; }
+   let decoded = false;
+   const delay = order.length > 1 ? index * 680 / (order.length - 1) : 0;
+   const duration = 1200;
+   const timing = {duration,delay,easing:'linear',fill:'both'};
+   const rotation = start => [
+    {transform:`perspective(1200px) rotateY(${start}deg)`,offset:0,easing:'cubic-bezier(.35,0,.25,1)'},
+    {transform:`perspective(1200px) rotateY(${start + flip.direction * 184}deg)`,offset:.86,easing:'ease-in-out'},
+    {transform:`perspective(1200px) rotateY(${start + flip.direction * 180}deg)`,offset:1}
+   ];
+   flip.cell.dataset.flipping = 'true';
+   // Both faces share one uninterrupted rotation clock, including the midpoint.
+   const outgoing = flip.previous.animate(rotation(0), timing);
+   const incoming = flip.image.animate(rotation(-flip.direction * 180), timing);
+   const light = [
+    {filter:'brightness(1)',offset:0},
+    {filter:'brightness(.82)',offset:.34},
+    {filter:'brightness(.88)',offset:.58},
+    {filter:'brightness(1)',offset:.86},
+    {filter:'brightness(1)',offset:1}
+   ];
+   // Give each face its own silhouette: the shadow turns with the image,
+   // rather than outlining the stationary layout tile.
+   const makeShadow = startAngle => {
+    const shadow = document.createElement('div');
+    shadow.className = 'photo-flip-shadow';
+    shadow.setAttribute('aria-hidden','true');
+    shadow.innerHTML = '<div></div>';
+    flip.cell.append(shadow);
+    return {element:shadow,animations:[
+     shadow.animate(rotation(startAngle),timing),
+     shadow.animate([
+      {opacity:0,offset:0},
+      {opacity:.13,offset:.3},
+      {opacity:.1,offset:.65},
+      {opacity:0,offset:1}
+     ],timing)
+    ]};
+   };
+   const shadows = detailed ? [makeShadow(0),makeShadow(-flip.direction * 180)] : [];
+   flip.shadows = shadows.map(shadow => shadow.element);
+   flip.animations = [outgoing,incoming];
+   if (detailed) flip.animations.push(
+    flip.previous.animate(light,timing),flip.image.animate(light,timing),
+    ...shadows.flatMap(shadow => shadow.animations)
+   );
+   if (start !== null) flip.animations.forEach(animation => { animation.startTime = start; });
+   // On a slow connection, hold before the edge rather than reveal a blank face.
+   // Cached images never pause, and the first movement does not wait for decoding.
+   flip.decodeTimer = setTimeout(() => {
+    if (!decoded && cardFlips.get(flip.cell) === flip) flip.animations.forEach(animation => {
+     animation.pause(); animation.currentTime = delay + duration * .22;
+    });
+   }, delay + duration * .22);
+   flip.image.decode().catch(() => {}).then(() => {
+    decoded = true;
+    clearTimeout(flip.decodeTimer);
     if (cardFlips.get(flip.cell) !== flip) return;
-    if (reduced.matches) { finishFlip(flip.cell); return; }
-    const timing = { duration: 1100, delay: Math.min(index * 85, 680), easing: 'cubic-bezier(.4,0,.2,1)', fill: 'both' };
     flip.image.style.visibility = '';
-    flip.cell.dataset.flipping = 'true';
-    flip.animations = [
-     flip.previous.animate([
-      { transform: 'perspective(1200px) rotateY(0deg)' },
-      { transform: `perspective(1200px) rotateY(${flip.direction * 180}deg)` }
-     ], timing),
-     flip.image.animate([
-      { transform: `perspective(1200px) rotateY(${-flip.direction * 180}deg)` },
-      { transform: 'perspective(1200px) rotateY(0deg)' }
-     ], timing)
-    ];
-    if (start !== null) flip.animations.forEach(animation => { animation.startTime = start; });
-    flip.animations[1].finished.then(() => {
-     if (cardFlips.get(flip.cell) === flip) finishFlip(flip.cell);
-    }, () => {});
+    flip.animations.forEach(animation => { if (animation.playState === 'paused') animation.play(); });
    });
+   incoming.finished.then(() => {
+    if (cardFlips.get(flip.cell) === flip) finishFlip(flip.cell);
+   }).catch(() => {});
   });
  }
  reduced.addEventListener('change', () => {

@@ -321,3 +321,9 @@ html:not([data-theme=dark]) #review-actions .action-row input{background:transpa
 #session-panel #welcome .welcome-mark{display:grid;place-items:center;width:48px;height:48px;margin:0 0 -6px;background:transparent;border-radius:0;color:var(--accent);opacity:.8}
 #session-panel #welcome .welcome-mark svg{display:block;width:48px;height:48px}
 #session-panel #welcome h2{display:block}
+
+@media(min-width:901px),(min-width:601px) and (min-height:501px){
+ .new-session-menu{left:calc(50% + var(--rail) / 2 + 6px)}
+}
+
+@media(prefers-reduced-motion:no-preference){#saved-dialog[open]{animation-duration:300ms}}
