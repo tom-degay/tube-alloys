@@ -160,7 +160,7 @@ html:not([data-theme=dark]) .profile > span{color:#fff}
 }
 
 /* Lift the dark artwork off the charcoal disclaimer surface. */
-[data-theme=dark] .prototype-intro .intro-logo{filter:brightness(0) saturate(100%) invert(86%) sepia(34%) saturate(1100%) hue-rotate(155deg);opacity:1}
+.prototype-intro .intro-logo{color:var(--accent);filter:none;opacity:.8;margin-bottom:14px}
 
 .avatar-trigger img{transition:border-color 200ms ease,box-shadow 200ms ease}
 @media(hover:hover){

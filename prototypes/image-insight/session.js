@@ -38,7 +38,7 @@
   let themeOverridden = ['light', 'dark'].includes(requestedTheme);
   let theme = themeOverridden ? requestedTheme : deviceTheme.matches ? 'dark' : 'light';
   function applyTheme() {
-    document.documentElement.dataset.theme = theme;
+    window.setImageInsightTheme(theme);
     document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#1c1c1c' : '#47b3cf';
     document.querySelectorAll('[data-theme-toggle]').forEach(button => {
       button.setAttribute('aria-pressed', String(theme === 'dark'));
@@ -123,7 +123,7 @@
   const catalog = new Map();
   const dialogs = [...document.querySelectorAll('dialog')];
   const defaultSessionName = () => `Session ${new Intl.DateTimeFormat('en-GB', {
-    day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/London'
+    day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Europe/London'
   }).format(new Date())}`;
   // View changes keep a useful focus target, without inheriting keyboard
   // rings from an automatically focused dialog field after a pointer click.

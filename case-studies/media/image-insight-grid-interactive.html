@@ -238,6 +238,7 @@ html.slider-dragging{user-select:none;-webkit-user-select:none}
 .session-mode[data-theme=dark] .toolbar :is(.square-front,.square-middle,.square-back){stroke-width:.2}
 .grid-pinching .photo,.grid-pinching .photos{transition:none!important}
 </style>
+<script src="/prototypes/image-insight/theme-fade.js?v=20261025-1"></script>
 </head>
 <body>
 <svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs><filter id="toolbar-lighten-stroke" color-interpolation-filters="sRGB"><feMorphology in="SourceGraphic" operator="erode" radius="0.1"/></filter>
@@ -398,7 +399,7 @@ html.slider-dragging{user-select:none;-webkit-user-select:none}
     fit();
    }
    if (event.data?.type === 'ii-session-theme' && ['light', 'dark'].includes(event.data.theme)) {
-    document.documentElement.dataset.theme = event.data.theme;
+    window.setImageInsightTheme(event.data.theme);
    }
    if (event.data?.type === 'ii-session-input' && ['pointer', 'keyboard'].includes(event.data.mode)) {
     setInputMode(event.data.mode, false);
