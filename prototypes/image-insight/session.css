@@ -325,7 +325,7 @@ input[aria-invalid=true]{border-color:#c73352}
  .is-expanded .selected-card{width:auto;min-width:0}
  .is-expanded .number-badge{width:28px;height:28px;min-width:28px;font-size:13px}
  .remove-image{width:44px;height:44px;right:0;top:0;opacity:1;background:#ffffffe8}.remove-image svg{width:24px;height:24px}
- .is-expanded .session-footer{display:grid;grid-template-columns:1fr 1fr;width:100%;max-width:none;padding-top:12px;background:#fff;gap:8px}
+ .is-expanded .session-footer{display:grid;grid-template-columns:1fr 1fr;width:100%;max-width:none;padding-top:12px;background:var(--surface);gap:8px}
  .is-expanded .session-footer .primary,.is-expanded .session-footer .quiet{min-height:48px;font-size:14px;padding:10px}
  .is-expanded .selection-count{grid-column:1/-1;text-align:center}
  .settings-content{padding-top:8px;min-height:0}.settings-content #settings-name{font-size:18px;padding:12px}

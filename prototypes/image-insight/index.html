@@ -24,10 +24,10 @@
   <meta name="twitter:image:alt" content="Image Insight interactive prototype: a grid of photographs with a lake image selected. Choose an image. Explore a different perspective.">
   <link rel="icon" href="/case-studies/media/image-insight-logo.svg?v=20261025-latest-logo" type="image/svg+xml">
   <link rel="stylesheet" href="/prototypes/image-insight/icons.css?v=20261023-trash-hover">
-  <link rel="stylesheet" href="/prototypes/image-insight/session.css?v=20261025-question-layout">
-  <link rel="stylesheet" href="/prototypes/image-insight/theme.css?v=20261025-notes-follow">
+  <link rel="stylesheet" href="/prototypes/image-insight/session.css?v=20261025-panel-surface">
+  <link rel="stylesheet" href="/prototypes/image-insight/theme.css?v=20261025-status-muted">
   <script src="/prototypes/image-insight/icons.js" defer></script>
-  <script src="/prototypes/image-insight/session.js?v=20261025-notes-follow" defer></script>
+  <script src="/prototypes/image-insight/session.js?v=20261025-swipe-edges" defer></script>
   <script src="/prototypes/image-insight/theme-fade.js?v=20261025-1"></script>
 </head>
 <body>
@@ -79,7 +79,7 @@
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
     <main class="board-shell" aria-label="Image board">
-      <iframe id="image-board" title="Choose images — image grid controls" src="/case-studies/media/image-insight-grid-interactive.html?mode=session&amp;hints=off&amp;v=20261025-refresh-lightweight"></iframe>
+      <iframe id="image-board" title="Choose images — image grid controls" src="/case-studies/media/image-insight-grid-interactive.html?mode=session&amp;hints=off&amp;v=20261025-mobile-count-inset"></iframe>
     </main>
     <div class="expand-shade" aria-hidden="true"></div>
     <aside class="session-panel" id="session-panel" aria-label="Current session">
@@ -157,7 +157,7 @@
 
   <dialog class="question-dialog" id="question-dialog" aria-labelledby="question-title">
     <form method="dialog" id="question-form">
-      <div class="dialog-heading"><h2 id="question-title">Select a question</h2><button class="icon-button close" type="button" data-close aria-label="Close question picker">×</button></div>
+      <div class="dialog-heading"><h2 id="question-title">Select a question</h2></div>
       <fieldset class="question-options"><legend class="sr-only">Choose a question</legend>
         <label class="question-choice"><input type="radio" name="question" value="What is important to you?" checked><span>What is important to you?</span></label>
         <label class="question-choice"><input type="radio" name="question" value="What is your super-power?"><span>What is your super-power?</span></label>

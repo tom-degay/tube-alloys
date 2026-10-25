@@ -1390,7 +1390,7 @@
     const frame = image.parentElement;
     // Reserve the sheet's full 80% width from the outset: opening only moves
     // the photograph, keeping its size stable and the combined pair centred.
-    const availableWidth = phoneLayout.matches ? frame.clientWidth : frame.clientWidth / 1.8;
+    const availableWidth = phoneLayout.matches ? Math.max(0,frame.clientWidth - 24) : frame.clientWidth / 1.8;
     // The mobile photo keeps its unfocused size even when the keyboard shrinks
     // the visual viewport. The sheet and photo move as layers, never scale.
     const availableHeight = phoneLayout.matches ? Math.min(360, keyboardBaseline * .45) : frame.clientHeight;
