@@ -36,7 +36,7 @@ h3{font-size:20px;line-height:1.5;font-weight:600}
 .session-header{display:flex;align-items:center;justify-content:space-between;gap:8px;flex:none}
 .session-header h1{color:var(--accent);font-size:20px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .header-tools{display:flex;align-items:center;margin-right:-8px;gap:0}
-.icon-button{display:grid;place-items:center;width:36px;height:40px;flex:none;padding:0;border:0;border-radius:9px;background:transparent}
+.icon-button{display:grid;place-items:center;width:36px;height:40px;flex:none;padding:0;border:0;border-radius:12px;background:transparent}
 .icon-button:hover{background:#eef6f8}
 .icon-button svg{width:36px;height:34px;display:block}
 .settings-stem{transition:transform 320ms var(--ease),opacity 180ms ease}
@@ -79,7 +79,7 @@ h3{font-size:20px;line-height:1.5;font-weight:600}
 .secondary{background:transparent;border-color:var(--accent);color:var(--accent)}
 .secondary:hover{background:transparent}
 .secondary svg{width:20px;height:20px}
-.quiet{background:transparent;border:0;padding:8px 12px;display:inline-flex;align-items:center;justify-content:center;gap:3px;border-radius:9px;min-height:42px}
+.quiet{background:transparent;border:0;padding:8px 12px;display:inline-flex;align-items:center;justify-content:center;gap:3px;border-radius:12px;min-height:42px}
 .quiet:hover{background:#eff7f8}
 .quiet svg{width:28px;height:28px;display:block}
 .welcome{display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;height:100%;min-height:350px;gap:21px}
@@ -272,8 +272,8 @@ input[aria-invalid=true]{border-color:#c73352}
 
 #discussion-image,.swipe-preview{border-radius:0;clip-path:url(#discussion-photo-clip);backface-visibility:hidden}
 
-/* Keep the same continuous-corner treatment across the app's UI surfaces. */
-*,*::before,*::after{corner-shape:squircle}
+/* Standard rounded UI corners; image contours use their SVG clips. */
+*,*::before,*::after{corner-shape:round}
 .profile img,.number-badge,.complete-mark,.rail-button.plus::before{corner-shape:round}
 .review-image-row img,.complete-images img,.saved-session img{border-radius:0;clip-path:url(#session-photo-clip)}
 
@@ -468,7 +468,7 @@ html[data-input=pointer] #image-notes:focus{outline:none}
 .remove-image{transition:width 180ms var(--ease),opacity 160ms}
 .remove-image.is-confirming{width:96px;opacity:1!important;font:600 13px 'Open Sans',sans-serif;padding:6px 16px;border-radius:999px;corner-shape:round}
 .remove-image.is-confirming::before{border-radius:999px;background:#ff0040}
-#discussion-dialog :is(#toggle-notes,#notes-done){background:rgb(128 128 128 / 16%);border:1px solid rgb(128 128 128 / 16%);border-radius:10px}
+#discussion-dialog :is(#toggle-notes,#notes-done){background:rgb(128 128 128 / 16%);border:1px solid rgb(128 128 128 / 16%);border-radius:12px}
 #discussion-dialog :is(#toggle-notes,#notes-done):hover{background:rgb(128 128 128 / 26%)}
 
 /* The Notes button and editor share a single expanding surface. */

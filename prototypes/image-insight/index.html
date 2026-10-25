@@ -22,10 +22,10 @@
   <meta name="twitter:description" content="Choose an image. Explore a different perspective. Try the interactive Image Insight prototype by Tom de Gay.">
   <meta name="twitter:image" content="https://tomdegay.com/case-studies/media/image-insight-prototype-og.png">
   <meta name="twitter:image:alt" content="Image Insight interactive prototype: a grid of photographs with a lake image selected. Choose an image. Explore a different perspective.">
-  <link rel="icon" href="/case-studies/media/image-insight-logo.svg" type="image/svg+xml">
+  <link rel="icon" href="/case-studies/media/image-insight-logo.svg?v=20261025-latest-logo" type="image/svg+xml">
   <link rel="stylesheet" href="/prototypes/image-insight/icons.css?v=20261023-trash-hover">
-  <link rel="stylesheet" href="/prototypes/image-insight/session.css?v=20261023-mobile-completion">
-  <link rel="stylesheet" href="/prototypes/image-insight/theme.css?v=20261023-avatar-mobile">
+  <link rel="stylesheet" href="/prototypes/image-insight/session.css?v=20261025-round-ui">
+  <link rel="stylesheet" href="/prototypes/image-insight/theme.css?v=20261025-round-ui">
   <script src="/prototypes/image-insight/icons.js" defer></script>
   <script src="/prototypes/image-insight/session.js?v=20261025-image-entrance" defer></script>
 </head>
@@ -42,11 +42,15 @@
   </defs></svg>
   <div class="workspace" id="workspace">
     <nav class="rail" aria-label="Session navigation">
-      <img class="brand" src="/prototypes/image-insight/nav-logo.svg" alt="Image Insight">
+      <img class="brand" src="/prototypes/image-insight/nav-logo.svg?v=20261025-latest-logo" alt="Image Insight"><img class="desktop-nav-logo" src="/prototypes/image-insight/nav-logo-desktop.svg?v=20261025-opacity" width="42" height="42" alt="Image Insight">
       <div class="rail-tools">
         <button class="mobile-profile avatar-trigger" data-profile-menu aria-label="Profile menu" aria-expanded="false" aria-controls="profile-menu"><img src="/prototypes/image-insight/tom-avatar.jpeg" alt=""></button>
         <div class="new-session-control">
-          <button class="icon rail-button plus" id="new-session" aria-label="New session options" aria-expanded="false" aria-controls="new-session-menu" title="New session"><span data-icon="plus" aria-hidden="true"></span><span class="rail-label">New session</span></button>
+          <button class="icon rail-button plus" id="new-session" aria-label="New session options" aria-expanded="false" aria-controls="new-session-menu" title="New session"><span data-icon="plus" aria-hidden="true"></span><span class="rail-label">New session</span><span class="desktop-nav-art" aria-hidden="true"><svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g class="desktop-plus-art"><path d="M17 7C17 9.7929 17 11.1893 16.6072 12.312C15.9036 14.3227 14.3227 15.9036 12.312 16.6072C11.1893 17 9.7929 17 7 17" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#4BC6E5"/>
+<path d="M17 20V27M20 17H27" stroke-width="2" stroke-linecap="round" stroke="#4BC6E5"/>
+</g><path d="M33 17C33 25.8366 25.8366 33 17 33C8.16344 33 1 25.8366 1 17C1 8.16344 8.16344 1 17 1C25.8366 1 33 8.16344 33 17Z" stroke-width="2" stroke="#4BC6E5"/>
+</svg></span></button>
           <div class="new-session-menu" id="new-session-menu" role="group" aria-label="New session options" hidden>
             <button class="session-menu-item" id="new-session-choice">
               <span class="icon plus" aria-hidden="true"><svg viewBox="110 147 22 22" fill="none" aria-hidden="true"><g class="plus-art" style="transform-origin:121px 158px"><path d="M121 151V153C121 155.761 118.761 158 116 158H114" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" />
@@ -61,7 +65,9 @@
             </button>
           </div>
         </div>
-        <button class="icon rail-button folder" id="saved-sessions" aria-label="Saved sessions" title="Saved sessions"><span data-icon="folder" aria-hidden="true"></span><span class="rail-label">Folder</span></button>
+        <button class="icon rail-button folder" id="saved-sessions" aria-label="Saved sessions" title="Saved sessions"><span data-icon="folder" aria-hidden="true"></span><span class="rail-label">Folder</span><span class="desktop-nav-art" aria-hidden="true"><svg width="32" height="28" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M15.4718 2.82743C15.4718 1.81817 14.6619 1 13.6628 1H2.80898C1.80991 1 1 1.81817 1 2.82743L1.00016 24.2059" stroke-width="2" stroke-linecap="round" stroke="#4BC6E5"/><path class="desktop-folder-front" d="M1.00016 24.2059C1.00016 25.2151 1.81006 26.0333 2.80913 26.0333H26.5842C27.5833 26.0333 28.3932 25.2151 28.3932 24.2059L30 11C30.3314 8.4023 29 7 27 7L10.1804 6.99999C8.65073 7 7.37318 8.15093 7.20564 9.67142L6.05888 20.0788" stroke-width="2" stroke-linecap="round" stroke="#4BC6E5"/>
+</svg></span></button>
         <button class="icon rail-button squares mobile-control" id="mobile-grid-controls" aria-label="Grid controls" aria-expanded="false" title="Grid controls"><span data-icon="squares" aria-hidden="true"></span><span class="rail-label">Grid</span></button>
         <button class="icon rail-button refresh mobile-control" id="mobile-refresh" aria-label="Refresh images" title="Refresh images"><span data-icon="refresh" aria-hidden="true"></span><span class="rail-label">Refresh</span></button>
       </div>
@@ -72,7 +78,7 @@
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
     <main class="board-shell" aria-label="Image board">
-      <iframe id="image-board" title="Choose images — image grid controls" src="/case-studies/media/image-insight-grid-interactive.html?mode=session&amp;hints=off&amp;v=20261025-image-entrance"></iframe>
+      <iframe id="image-board" title="Choose images — image grid controls" src="/case-studies/media/image-insight-grid-interactive.html?mode=session&amp;hints=off&amp;v=20261025-round-ui"></iframe>
     </main>
     <div class="expand-shade" aria-hidden="true"></div>
     <aside class="session-panel" id="session-panel" aria-label="Current session">
@@ -97,7 +103,7 @@
       <div class="session-body">
 
         <section class="welcome" id="welcome">
-          <div class="welcome-mark" aria-hidden="true"><img src="/case-studies/media/image-insight-logo.svg" alt=""></div>
+          <div class="welcome-mark" aria-hidden="true"><img src="/case-studies/media/image-insight-logo.svg?v=20261025-latest-logo" alt=""></div>
           <h2>Make space for reflection</h2>
           <p>Start with a question. Choose the images that speak to you, then explore what they mean.</p>
           <button class="primary" id="start-session">Create new session</button>
@@ -203,7 +209,7 @@
     <div class="dialog-footer"><button class="secondary" data-close>Keep working</button><button class="primary" id="confirm-new">New session</button></div>
   </dialog>
   <dialog class="prototype-intro" id="prototype-intro" aria-labelledby="prototype-intro-title">
-    <img class="intro-logo" src="/case-studies/media/image-insight-logo.svg" width="56" height="56" alt="Image Insight">
+    <img class="intro-logo" src="/case-studies/media/image-insight-logo.svg?v=20261025-latest-logo" width="56" height="56" alt="Image Insight">
     <h2 id="prototype-intro-title">Image Insight prototype</h2>
     <p class="intro-lede">Prototypes are tools for learning.</p>
     <p>This work in progress explores Image Insight’s interactions and navigation. It’s a prototype, not a finished app: some details are still being refined, and not every feature works.</p>
