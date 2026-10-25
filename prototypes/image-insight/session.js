@@ -97,6 +97,7 @@
     // Blur happens before the keyboard retracts. Keep its compact layout until
     // the visible viewport has actually recovered, avoiding a premature jump.
     if (!editing && !keyboardVisible) keyboardBaseline = Math.max(height, window.innerHeight);
+    document.documentElement.style.setProperty('--unfocused-height', `${keyboardBaseline}px`);
     const keyboardOcclusion = Math.max(keyboardBaseline, window.innerHeight) - height;
     const keyboardOpen = Boolean((editing || keyboardVisible) && keyboardOcclusion > (keyboardVisible ? 80 : 120));
     keyboardVisible = keyboardOpen;
@@ -434,8 +435,10 @@
       card.querySelector('.number-badge').textContent = index + 1;
       card.querySelector('.note-indicator').hidden = !String(state.notes[id] || '').trim();
       card.classList.toggle('is-active', activeImage === id);
-      // append moves nodes into selection order without replacing them.
-      container.append(card);
+      // Leave correctly ordered thumbnails attached. Re-appending the whole
+      // list can restart card-arrive and invalidate painted images in Safari.
+      const slot = container.children[index];
+      if (slot !== card) container.insertBefore(card, slot || null);
     });
   }
 
@@ -815,6 +818,7 @@
   }
   function updateNotesIndicator() {
     const hasNotes = Boolean(String(state.notes[activeImage] || '').trim());
+    $('#discussion-dialog').classList.toggle('has-saved-notes',hasNotes);
     $('#toggle-notes').classList.toggle('has-content',hasNotes);
     $('#toggle-notes').setAttribute('aria-label',hasNotes ? 'Notes — notes added' : 'Notes');
   }
@@ -882,7 +886,7 @@
     $('#discussion-image').alt = image.alt;
     $('#image-notes').value = String(state.notes[id] || '');
     restoreNotesCursor(); updateNotesIndicator();
-    setNotesVisible(!phoneLayout.matches && Boolean($('#image-notes').value.trim()), false);
+    setNotesVisible(false, false);
     renderPanel();
     const dialog = $('#discussion-dialog');
     if (!dialog.open) openDialog(dialog, opener);
@@ -1054,10 +1058,16 @@
     rememberNotesCursor();
     if (reduced.matches) { closeDialog(dialog); return; }
     discussionClosing = true;
-    const dragTransform = swipeHero.style.transform || 'none';
-    resetDiscussionDrag();
     const hero = $('#discussion-image');
+    // Capture the painted position before cancelling a swipe/entrance animation.
     const from = hero.getBoundingClientRect();
+    const frame = hero.parentElement;
+    const frameTransform = getComputedStyle(frame).transform;
+    const heldFrame = frame.animate([{transform:frameTransform},{transform:frameTransform}],
+      {duration:360,fill:'forwards'});
+    ++notesCloseGeneration;
+    notesClosing = false;
+    resetDiscussionDrag();
     let target;
     if (dialogOpener === board) {
       const source = [...board.contentDocument.querySelectorAll('.photo')].find(cell => cell.dataset.image === activeImage)?.querySelector('img');
@@ -1075,38 +1085,40 @@
     const visible = target?.width && target.top >= 0 && target.top + target.height <= window.innerHeight;
     dialog.classList.add('is-closing');
     hero.getAnimations().forEach(animation => animation.cancel());
+    const base = hero.getBoundingClientRect();
+    const current = `translate(${from.left-base.left}px,${from.top-base.top}px) scale(${from.width/base.width},${from.height/base.height})`;
+    const destination = visible ? `translate(${target.left-base.left}px,${target.top-base.top}px) scale(${target.width/base.width},${target.height/base.height})` : current;
     const animation = hero.animate([
-      {transformOrigin:'top left',transform:dragTransform,opacity:1},
-      {transformOrigin:'top left',transform:visible ? `translate(${target.left-from.left}px,${target.top-from.top}px) scale(${target.width/from.width},${target.height/from.height})` : 'scale(.98)',opacity:visible ? .25 : 0}
+      {transformOrigin:'top left',transform:current,opacity:1},
+      {transformOrigin:'top left',transform:destination,opacity:0}
     ],{duration:360,easing:'cubic-bezier(.4,0,.2,1)',fill:'forwards'});
     focusCloseAnimation = animation;
     const finish = () => {
       focusCloseAnimation = null;
-      closeDialog(dialog); animation.cancel(); dialog.classList.remove('is-closing'); discussionClosing = false;
+      closeDialog(dialog); animation.cancel(); heldFrame.cancel(); dialog.classList.remove('is-closing'); discussionClosing = false;
     };
     animation.finished.then(finish, () => {
+      heldFrame.cancel();
       if (focusCloseAnimation === animation) {
         focusCloseAnimation = null; discussionClosing = false; dialog.classList.remove('is-closing');
       }
     });
   }
   $('#discussion-dialog').addEventListener('cancel', event => { event.preventDefault(); closeDiscussion(); });
-  let notesAnimation;
   let notesContentAnimation;
   let notesCloseGeneration = 0;
   let notesClosing = false;
   function setNotesVisible(visible, focus = true) {
-    const surface = $('#discussion-dialog .discussion-actions');
     const field = $('#notes-field');
     const dialog = $('#discussion-dialog');
-    if (!visible && focus && phoneLayout.matches && !reduced.matches && dialog.classList.contains('has-notes')) {
+    if (!visible && focus && phoneLayout.matches && !reduced.matches && dialog.classList.contains('notes-editing')) {
       if (notesClosing) return;
       notesClosing = true;
       const generation = ++notesCloseGeneration;
-      notesAnimation?.cancel(); notesContentAnimation?.cancel();
+      notesContentAnimation?.cancel();
       notesContentAnimation = field.animate([{opacity:1},{opacity:0}],{duration:160,fill:'forwards',easing:'ease-out'});
       $('#toggle-notes').focus({preventScroll:true});
-      // Let the keyboard finish retracting before measuring the final position.
+      // Let the keyboard retract before sliding the full-size photo back in.
       const started = performance.now();
       let previousHeight = window.visualViewport?.height || innerHeight, stableFrames = 0;
       const settle = () => {
@@ -1117,22 +1129,7 @@
         if (performance.now()-started < 180 || ((keyboardVisible || stableFrames < 3) && performance.now()-started < 750)) {
           requestAnimationFrame(settle); return;
         }
-        const hero = $('#discussion-image');
-        const oldImage = hero.getBoundingClientRect(), oldSurface = surface.getBoundingClientRect();
-        dialog.classList.add('notes-settling');
         setNotesVisible(false,false);
-        positionDiscussionNotes();
-        const newImage = hero.getBoundingClientRect(), newSurface = surface.getBoundingClientRect();
-        const options = {duration:420,easing:'cubic-bezier(.22,1,.36,1)'};
-        hero.animate([
-          {transformOrigin:'top left',transform:`translate(${oldImage.left-newImage.left}px,${oldImage.top-newImage.top}px) scale(${oldImage.width/newImage.width})`},
-          {transformOrigin:'top left',transform:'none'}
-        ],options);
-        notesAnimation = surface.animate([
-          {width:`${oldSurface.width}px`,height:`${oldSurface.height}px`,transform:`translate(${oldSurface.left-newSurface.left}px,${oldSurface.top-newSurface.top}px)`},
-          {width:`${newSurface.width}px`,height:`${newSurface.height}px`,transform:'none'}
-        ],options);
-        notesAnimation.finished.then(() => dialog.classList.remove('notes-settling'),() => dialog.classList.remove('notes-settling'));
         notesClosing = false;
       };
       requestAnimationFrame(settle);
@@ -1140,33 +1137,24 @@
     }
     ++notesCloseGeneration;
     notesClosing = false;
-    const from = surface.getBoundingClientRect();
-    notesAnimation?.cancel();
     notesContentAnimation?.cancel();
-    $('#discussion-dialog').classList.toggle('has-notes', visible);
+    dialog.classList.toggle('has-notes', visible);
+    if (!visible) dialog.classList.remove('notes-editing');
     $('#toggle-notes').setAttribute('aria-expanded', String(visible));
     field.inert = !visible;
     field.hidden = !visible;
     if (visible) restoreNotesCursor();
     updateNotesIndicator();
-    const positioningUntil = performance.now() + 360;
+    const positioningUntil = performance.now() + 560;
     const followLayout = () => { positionDiscussionNotes(); if (performance.now() < positioningUntil) requestAnimationFrame(followLayout); };
     requestAnimationFrame(followLayout);
-    if (focus && !reduced.matches) {
-      const to = surface.getBoundingClientRect();
-      notesAnimation = surface.animate([
-        {width:`${from.width}px`,height:`${from.height}px`},
-        {width:`${to.width}px`,height:`${to.height}px`}
-      ], {duration:420,easing:'cubic-bezier(.22,.75,.25,1)'});
-      if (visible) notesContentAnimation = field.animate([
-        {opacity:0,transform:'translateY(-6px)'},
-        {opacity:1,transform:'none'}
-      ], {duration:260,delay:100,fill:'backwards',easing:'ease-out'});
-    }
-    if (visible && focus && document.documentElement.dataset.input === 'keyboard') {
+    if (visible && focus && (!phoneLayout.matches || document.documentElement.dataset.input === 'keyboard')) {
       $('#image-notes').focus({ preventScroll: true });
     }
   }
+  $('#image-notes').addEventListener('focus', () => {
+    if (phoneLayout.matches) $('#discussion-dialog').classList.add('notes-editing');
+  });
   $('#image-notes').addEventListener('blur', event => {
     rememberNotesCursor();
     // Safari's keyboard Done/tick ends editing without focusing a page control.
@@ -1243,10 +1231,15 @@
     const image = $('#discussion-image');
     const dialog = $('#discussion-dialog');
     const frame = image.parentElement;
-    const reserved = Math.max(180, Math.min(440, window.innerWidth * .27));
-    const availableWidth = phoneLayout.matches ? frame.clientWidth : Math.min(frame.clientWidth, window.innerWidth - 2 * (reserved + 36));
-    const size = Math.max(0, Math.min(availableWidth, frame.clientHeight));
+    // Reserve the sheet's full 80% width from the outset: opening only moves
+    // the photograph, keeping its size stable and the combined pair centred.
+    const availableWidth = phoneLayout.matches ? frame.clientWidth : frame.clientWidth / 1.8;
+    // The mobile photo keeps its unfocused size even when the keyboard shrinks
+    // the visual viewport. The sheet and photo move as layers, never scale.
+    const availableHeight = phoneLayout.matches ? Math.min(360, keyboardBaseline * .45) : frame.clientHeight;
+    const size = Math.max(0, Math.min(availableWidth, availableHeight));
     image.style.width = image.style.height = `${size}px`;
+    dialog.style.setProperty('--sheet-image-size', `${size}px`);
     if (swipePreview) Object.assign(swipePreview.style, {
       width:`${size}px`,height:`${size}px`,left:`${(frame.clientWidth-size)/2}px`,top:`${(frame.clientHeight-size)/2}px`
     });

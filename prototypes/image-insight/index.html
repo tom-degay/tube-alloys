@@ -25,9 +25,9 @@
   <link rel="icon" href="/case-studies/media/image-insight-logo.svg?v=20261025-latest-logo" type="image/svg+xml">
   <link rel="stylesheet" href="/prototypes/image-insight/icons.css?v=20261023-trash-hover">
   <link rel="stylesheet" href="/prototypes/image-insight/session.css?v=20261025-round-ui">
-  <link rel="stylesheet" href="/prototypes/image-insight/theme.css?v=20261025-sessions-motion">
+  <link rel="stylesheet" href="/prototypes/image-insight/theme.css?v=20261025-mobile-notes-sheet">
   <script src="/prototypes/image-insight/icons.js" defer></script>
-  <script src="/prototypes/image-insight/session.js?v=20261025-popup-offset" defer></script>
+  <script src="/prototypes/image-insight/session.js?v=20261025-mobile-notes-sheet" defer></script>
   <script src="/prototypes/image-insight/theme-fade.js?v=20261025-1"></script>
 </head>
 <body>
@@ -89,9 +89,21 @@
           <button class="icon icon-button arrows" data-icon="arrows" id="expand-session" aria-label="Expand session" aria-expanded="false" title="Expand session"></button>
           <button class="icon icon-button sliders settings-toggle" id="session-settings" aria-label="Session settings" aria-controls="settings-content" aria-expanded="false" title="Session settings">
             <svg viewBox="77 33.5 36 34" fill="none" aria-hidden="true">
+              <defs>
+                <mask id="settings-stem-mask" maskUnits="userSpaceOnUse" x="77" y="33.5" width="36" height="34" style="mask-type:luminance">
+                  <rect x="77" y="33.5" width="36" height="34" fill="white"/>
+                  <g class="settings-handles" stroke="none">
+                    <circle class="handle handle-low" cx="87" cy="54" r="3"/>
+                    <circle class="handle handle-high" cx="95" cy="47" r="3"/>
+                    <circle class="handle handle-low" cx="103" cy="54" r="3"/>
+                  </g>
+                </mask>
+              </defs>
+              <g mask="url(#settings-stem-mask)">
               <g class="settings-stem settings-stem-left"><path d="M87 40V61" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></g>
               <g class="settings-stem settings-stem-middle"><path d="M95 40V61" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></g>
               <g class="settings-stem settings-stem-right"><path d="M103 40V61" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></g>
+              </g>
               <g class="settings-handles" stroke="currentColor" stroke-width="2">
                 <circle class="handle handle-low" cx="87" cy="54" r="3"/>
                 <circle class="handle handle-high" cx="95" cy="47" r="3"/>
