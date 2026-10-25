@@ -682,7 +682,18 @@
   });
 
   function applyExpansion() {
-    $('#workspace').classList.toggle('is-expanded', expanded);
+    const workspace = $('#workspace');
+    if (phoneLayout.matches && expanded && !workspace.classList.contains('is-expanded')) {
+      // Keep the same chevron centre even when the question wraps onto several lines.
+      const chevron = $('#mobile-session-bar > svg').getBoundingClientRect();
+      const origin = workspace.getBoundingClientRect();
+      if (chevron.width && chevron.height) {
+        workspace.style.setProperty('--session-bar-height', `${$('#mobile-session-bar').offsetHeight}px`);
+        workspace.style.setProperty('--session-chevron-x', `${chevron.left + chevron.width / 2 - origin.left}px`);
+        workspace.style.setProperty('--session-chevron-top', `${chevron.top + chevron.height / 2 - origin.top - 20}px`);
+      }
+    }
+    workspace.classList.toggle('is-expanded', expanded);
     $('#mobile-session-bar').setAttribute('aria-expanded', String(expanded));
     $('#mobile-session-bar').setAttribute('aria-label', expanded ? 'Collapse session' : `${state.question || 'Choose a question'} Open session`);
     setMobileControls(false);

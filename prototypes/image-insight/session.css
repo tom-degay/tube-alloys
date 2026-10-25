@@ -417,8 +417,10 @@ input[aria-invalid=true]{border-color:#c73352}
  .is-settings-open .mobile-session-bar,.is-expanded .rail,.is-settings-open .rail{display:none}
  .mobile-session-bar>svg{transition:transform 350ms var(--ease)}
  .mobile-session-bar[aria-expanded=true]>svg{transform:rotate(180deg)}
- .is-expanded .mobile-session-bar{display:flex;z-index:7;left:calc(100% - 33px);width:42px;min-height:40px;height:40px;padding:0;justify-content:center;box-shadow:none;color:var(--muted,var(--ink))}
+ .workspace.is-expanded #mobile-session-bar{display:flex;z-index:7;left:var(--session-chevron-x,calc(100% - 33px));top:var(--session-chevron-top,calc(20px + env(safe-area-inset-top)));width:42px;min-height:40px;height:40px;padding:0;justify-content:center;border:0;border-radius:0;background:transparent;box-shadow:none;color:var(--muted,var(--ink))}
  .is-expanded .mobile-session-bar::before,.is-expanded .mobile-session-bar>span{display:none}
+ .is-expanded .session-header{min-height:var(--session-bar-height,56px)}
+ .is-expanded .question-heading svg{transform:translateY(2px)}
  .is-expanded .header-tools{padding-right:44px}
  #expand-session{display:none}
  .is-expanded .session-panel,.session-panel.is-settings{display:flex;inset:0;width:100%;height:100%;padding:calc(12px + env(safe-area-inset-top)) 20px calc(12px + env(safe-area-inset-bottom));border-radius:0;z-index:6}

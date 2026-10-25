@@ -262,6 +262,10 @@ html:not([data-theme=dark]) .profile > span{color:#fff}
 
 #empty-selection .empty-selection-label{display:block;color:var(--muted)}
 #empty-selection .empty-board-button{display:none}
+@media(max-width:600px),(max-width:900px) and (max-height:500px){
+ #empty-selection .empty-selection-label{display:none}
+ #empty-selection .empty-board-button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 12px;border:0;background:transparent;box-shadow:none;color:var(--muted);font:inherit}
+}
 
 @media(max-width:600px),(max-width:900px) and (max-height:500px){
  .rail-button.plus::before{display:none}
