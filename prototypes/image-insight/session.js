@@ -13,7 +13,7 @@
   sessionScroller.addEventListener('scroll', updateScrollFades, { passive: true });
   const scrollFadeResize = new ResizeObserver(updateScrollFades);
   [sessionScroller, $('#session-content'), $('#selected-images'), $('#settings-content')].forEach(element => scrollFadeResize.observe(element));
-  const reviewScrollers = [$('.review-columns'), $('#review-images')];
+  const reviewScrollers = [$('#review-dialog'), $('.review-columns'), $('#review-images')];
   function updateReviewFades() {
     const question = $('#review-question');
     const section = $('.review-images-section');
