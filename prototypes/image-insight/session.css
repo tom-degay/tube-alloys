@@ -414,7 +414,13 @@ input[aria-invalid=true]{border-color:#c73352}
  #mobile-session-question{flex:1;min-width:0;font-size:16px;line-height:1.4;white-space:normal;overflow-wrap:anywhere}
  .mobile-session-count{display:grid;place-items:center;flex:none;min-width:32px;height:32px;border-radius:50%;corner-shape:round;background:var(--accent);color:#fff;font-size:14px;font-variant-numeric:tabular-nums}
  .mobile-session-bar>svg{width:18px;height:18px;flex:none}
- .is-expanded .mobile-session-bar,.is-settings-open .mobile-session-bar,.is-expanded .rail,.is-settings-open .rail{display:none}
+ .is-settings-open .mobile-session-bar,.is-expanded .rail,.is-settings-open .rail{display:none}
+ .mobile-session-bar>svg{transition:transform 350ms var(--ease)}
+ .mobile-session-bar[aria-expanded=true]>svg{transform:rotate(180deg)}
+ .is-expanded .mobile-session-bar{display:flex;z-index:7;left:calc(100% - 33px);width:42px;min-height:40px;height:40px;padding:0;justify-content:center;box-shadow:none;color:var(--muted,var(--ink))}
+ .is-expanded .mobile-session-bar::before,.is-expanded .mobile-session-bar>span{display:none}
+ .is-expanded .header-tools{padding-right:44px}
+ #expand-session{display:none}
  .is-expanded .session-panel,.session-panel.is-settings{display:flex;inset:0;width:100%;height:100%;padding:calc(12px + env(safe-area-inset-top)) 20px calc(12px + env(safe-area-inset-bottom));border-radius:0;z-index:6}
  .keyboard-open.board-editing .board-shell{bottom:0}
 
@@ -654,9 +660,16 @@ input:not([type=radio]):not([type=checkbox]):not([type=range]):focus,textarea:fo
 @media(max-width:600px),(max-width:900px) and (max-height:500px){
  #review-dialog{
   overflow-y:auto;
-  -webkit-mask-image:linear-gradient(to bottom,transparent,#000 var(--scroll-fade-top,0px),#000 calc(100% - var(--scroll-fade-bottom,0px)),transparent);
-  mask-image:linear-gradient(to bottom,transparent,#000 var(--scroll-fade-top,0px),#000 calc(100% - var(--scroll-fade-bottom,0px)),transparent);
+  -webkit-mask-image:linear-gradient(to bottom,#000,#000 calc(100% - var(--scroll-fade-bottom,0px)),transparent);
+  mask-image:linear-gradient(to bottom,#000,#000 calc(100% - var(--scroll-fade-bottom,0px)),transparent);
  }
+ /* The upper scroll boundary sits beneath the sticky heading, not at the screen edge. */
+ #review-form>.dialog-heading::after{
+  content:"";position:absolute;top:100%;left:-20px;right:-20px;
+  height:var(--scroll-fade-top,0px);pointer-events:none;
+  background:linear-gradient(to bottom,var(--review-fade-surface,#fff),transparent);
+ }
+ [data-theme=dark] #review-form>.dialog-heading{--review-fade-surface:var(--surface)}
  #review-form{height:auto;max-height:none}
  #review-form>.review-columns{flex:none;overflow:visible}
  #review-form>.review-footer{position:static;margin-top:20px}

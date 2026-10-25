@@ -479,3 +479,9 @@ html:not([data-theme=dark]) .icon.icon-button .tile{fill-opacity:0}
 /* Keep appearance status secondary to its label in either theme. */
 [data-theme-state]{color:#858585;opacity:.75}
 [data-theme=dark] [data-theme-state]{color:#adadad}
+
+/* A small optical weight increase for the mobile toolbar plus. */
+@media(max-width:600px),(max-width:900px) and (max-height:500px){
+ .rail #new-session>[data-icon=plus] svg path{stroke-width:2.1}
+ [data-theme=dark] .rail #new-session>[data-icon=plus] svg path{stroke-width:1.9}
+}

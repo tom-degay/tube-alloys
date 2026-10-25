@@ -181,7 +181,7 @@
   $('#mobile-session-bar').addEventListener('click', () => {
     setMobileControls(false);
     if (!state.started) startSession();
-    else if (!expanded) toggleExpansion();
+    else toggleExpansion();
   });
   document.addEventListener('pointerdown', event => {
     if (!event.target.closest('#mobile-grid-controls')) setMobileControls(false);
@@ -377,7 +377,7 @@
     const mobileQuestion = state.question || 'Choose a question';
     $('#mobile-session-question').textContent = mobileQuestion;
     $('#mobile-session-count').textContent = state.selected.length;
-    $('#mobile-session-bar').setAttribute('aria-label', `${mobileQuestion} ${state.selected.length} ${state.selected.length === 1 ? 'image' : 'images'} selected. Open session`);
+    $('#mobile-session-bar').setAttribute('aria-label', expanded ? 'Collapse session' : `${mobileQuestion} ${state.selected.length} ${state.selected.length === 1 ? 'image' : 'images'} selected. Open session`);
     $('#session-title').textContent = settingsOpen ? 'Settings' : state.started ? (state.name.trim() || 'Untitled session') : 'New session';
     $('#welcome').hidden = state.started || settingsOpen;
     $('#session-content').hidden = !state.started || settingsOpen;
@@ -684,6 +684,7 @@
   function applyExpansion() {
     $('#workspace').classList.toggle('is-expanded', expanded);
     $('#mobile-session-bar').setAttribute('aria-expanded', String(expanded));
+    $('#mobile-session-bar').setAttribute('aria-label', expanded ? 'Collapse session' : `${state.question || 'Choose a question'} Open session`);
     setMobileControls(false);
     if (!expanded) showMobileSessionBar(true);
     $('#expand-session').setAttribute('aria-expanded', String(expanded));
@@ -693,7 +694,32 @@
     $('#image-board').inert = expanded;
     $('#selection-hint').textContent = '';
   }
-  function toggleExpansion() {
+  let mobilePanelBarBounds = null;
+  let mobilePanelClosing = false;
+  function toggleExpansion(finishClosing = false) {
+    if (mobilePanelClosing) return;
+    if (phoneLayout.matches && expanded && !activeImage && !reduced.matches && finishClosing !== true) {
+      mobilePanelClosing = true;
+      const panel = $('#session-panel');
+      const bounds = panel.getBoundingClientRect();
+      const bar = mobilePanelBarBounds || {top:12,right:bounds.right-12,bottom:68,left:12};
+      const inset = [Math.max(0,bar.top),Math.max(0,innerWidth-bar.right),
+        Math.max(0,panel.offsetHeight-bar.bottom),Math.max(0,bar.left)].map(value => `${value}px`).join(' ');
+      $('#mobile-session-bar').setAttribute('aria-expanded','false');
+      const motion = panel.animate([
+        {clipPath:'inset(0px round 0px)',transform:getComputedStyle(panel).transform},
+        {clipPath:`inset(${inset} round 20px)`,transform:'none'}
+      ], {duration:480,easing:'cubic-bezier(.22,1,.36,1)',fill:'both'});
+      const contentMotions = [...panel.children].map(child => child.animate(
+        [{opacity:1},{opacity:0}],{duration:180,fill:'both'}));
+      motion.onfinish = () => {
+        mobilePanelClosing = false;
+        toggleExpansion(true);
+        motion.cancel();
+        contentMotions.forEach(animation => animation.cancel());
+      };
+      return;
+    }
     if (activeImage) { closeDiscussion(); return; }
     panelPositions[expanded ? 'expanded' : 'collapsed'] = sessionScroller.scrollTop;
     const boardPosition = captureViewPosition().board;
@@ -701,11 +727,12 @@
     const before = new Map(cards.map(card => [card, card.getBoundingClientRect()]));
     const expandingFromBar = phoneLayout.matches && !expanded && !reduced.matches;
     const barBounds = expandingFromBar ? $('#mobile-session-bar').getBoundingClientRect() : null;
+    if (barBounds) mobilePanelBarBounds = barBounds;
     expanded = !expanded;
     applyExpansion();
     requestAnimationFrame(() => restoreViewPosition({panel:panelPositions[expanded ? 'expanded' : 'collapsed'],board:boardPosition}));
     if (phoneLayout.matches) {
-      $(expanded ? '#expand-session' : '#mobile-session-bar').focus({ preventScroll: true });
+      $('#mobile-session-bar').focus({ preventScroll: true });
     }
     if (expandingFromBar) {
       const panel = $('#session-panel');
@@ -751,6 +778,13 @@
       swipeSessionPanel.style.removeProperty('will-change');
       panelSwipeSettling = false;
     };
+    if (dismiss && !reduced.matches) {
+      // Retract into the bar from the finger's current position instead of exiting below the screen.
+      if (expanded) toggleExpansion();
+      swipeSessionPanel.style.removeProperty('transform');
+      swipeSessionPanel.style.removeProperty('will-change');
+      return;
+    }
     if (!distance || reduced.matches) { finish(); return; }
     panelSwipeSettling = true;
     const destination = dismiss ? Math.max(innerHeight, swipeSessionPanel.offsetHeight) : 0;
