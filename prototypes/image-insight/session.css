@@ -114,15 +114,15 @@ body:has(#question-dialog[open]) .board-shell,.discussion-open .board-shell{filt
 .dialog-footer>.primary,.dialog-footer>.secondary{min-width:150px}
 .question-dialog{width:min(740px,calc(100vw - var(--panel) - var(--rail) - 72px));margin-left:calc(var(--rail) + (100vw - var(--rail) - var(--panel) - min(740px,100vw - var(--panel) - var(--rail) - 72px)) / 2 - 12px)}
 .question-dialog h2{color:var(--accent)}
-.question-options{border:0;padding:0;margin:0;min-width:0;max-height:48dvh;overflow:auto;scrollbar-width:thin}
-.question-choice{-webkit-tap-highlight-color:transparent;touch-action:manipulation;position:relative;display:block;border-radius:12px;padding:9px 12px;margin:0;cursor:pointer;font-weight:600;font-size:20px;color:#5e707c}
+.question-options{position:relative;border:0;padding:0;margin:0;min-width:0;max-height:48dvh;overflow:auto;scrollbar-width:thin}
+.question-choice{-webkit-tap-highlight-color:transparent;touch-action:manipulation;position:relative;display:block;border-radius:12px;padding:9px 12px;margin:0 0 4px;cursor:pointer;font-weight:600;font-size:20px;color:#5e707c;transition:background-color 300ms ease}
 @media(hover:hover) and (pointer:fine){.question-choice:hover{background:#def4fa}}
 .question-choice:has(input:checked){background:#c7edf7}
 .question-choice:has(input:focus-visible){outline:2px solid var(--accent-ink);outline-offset:-2px}
 .question-choice input{position:absolute;width:1px;height:1px;opacity:0}
 .question-dialog .dialog-footer{margin-top:20px}
 .question-dialog .dialog-footer .primary{min-width:170px}
-.question-selecting .question-heading{background:#def4fa;border-radius:15px;padding:9px 12px}
+.question-selecting .question-heading{background:#def4fa;border-radius:12px}
 .question-selecting .question-heading svg{opacity:.5}
 .discussion-dialog{width:min(700px,calc(100vw - var(--panel) - 160px));margin-left:calc(var(--rail) + (100vw - var(--rail) - var(--panel) - min(700px,100vw - var(--panel) - 160px)) / 2 - 12px);padding:26px 28px 24px}
 .discussion-dialog .dialog-heading{margin-bottom:20px}
@@ -717,3 +717,25 @@ input:not([type=radio]):not([type=checkbox]):not([type=range]):focus,textarea:fo
  .prototype-intro .intro-steps strong{font-size:17px}
  .prototype-intro .intro-steps p{font-size:14px}
 }
+
+/* Give desktop review content the full height above a compact action footer. */
+@media(min-width:901px){
+ #review-dialog{height:calc(var(--app-height,100dvh) - 24px);max-height:calc(var(--app-height,100dvh) - 24px);padding:24px 32px 20px}
+ #review-form{height:100%;max-height:none;display:grid;grid-template-columns:minmax(0,1.7fr) minmax(270px,1fr);grid-template-rows:auto minmax(0,1fr) auto;column-gap:34px}
+ #review-form>.dialog-heading{grid-column:1/-1}
+ #review-form>.review-columns{display:contents}
+ #review-form>.review-footer{grid-column:2;grid-row:3;margin-top:16px;padding-top:0}
+ #review-dialog .review-images-section{grid-column:1;grid-row:2 / 4;display:flex;flex-direction:column;min-height:0}
+ #review-dialog .review-images{flex:1;min-height:0;max-height:none;align-content:start}
+ #review-dialog .review-details{grid-column:2;grid-row:2;min-height:0;overflow:auto;scrollbar-width:thin;-webkit-mask-image:linear-gradient(to bottom,transparent,#000 var(--scroll-fade-top,0px),#000 calc(100% - var(--scroll-fade-bottom,0px)),transparent);mask-image:linear-gradient(to bottom,transparent,#000 var(--scroll-fade-top,0px),#000 calc(100% - var(--scroll-fade-bottom,0px)),transparent)}
+ #review-summary{min-height:180px}
+}
+@media(min-width:901px) and (max-width:1050px){
+ #review-form{grid-template-columns:minmax(0,1.25fr) minmax(230px,1fr);column-gap:24px}
+}
+
+.question-choice:last-child{margin-bottom:0}
+.question-selection-indicator{position:absolute;top:0;left:0;width:100%;border-radius:12px;background:#c7edf7;pointer-events:none}
+[data-theme=dark] .question-selection-indicator{background:var(--teal-hover)}
+#question-form .has-selection-indicator .question-choice:has(input:checked){background:transparent}
+@media(prefers-reduced-motion:reduce){.question-choice{transition:none}}

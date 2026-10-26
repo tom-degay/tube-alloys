@@ -13,14 +13,18 @@
   sessionScroller.addEventListener('scroll', updateScrollFades, { passive: true });
   const scrollFadeResize = new ResizeObserver(updateScrollFades);
   [sessionScroller, $('#session-content'), $('#selected-images'), $('#settings-content')].forEach(element => scrollFadeResize.observe(element));
-  const reviewScrollers = [$('#review-dialog'), $('.review-columns'), $('#review-images')];
+  const reviewScrollers = [$('#review-dialog'), $('.review-columns'), $('#review-images'), $('.review-details')];
   function updateReviewFades() {
     const question = $('#review-question');
     const section = $('.review-images-section');
     if (question.getClientRects().length) {
       const questionRect = question.getBoundingClientRect();
-      $('#review-form').style.setProperty('--review-heading-offset', `${questionRect.top - section.getBoundingClientRect().top}px`);
-      $('#review-form').style.setProperty('--review-heading-height', `${questionRect.height}px`);
+      const headingHeight = parseFloat(getComputedStyle(question).height);
+      const scale = questionRect.height / headingHeight || 1;
+      $('#review-form').style.setProperty('--review-heading-offset', `${(questionRect.top - section.getBoundingClientRect().top) / scale}px`);
+      $('#review-form').style.setProperty('--review-heading-height', `${headingHeight}px`);
+      const firstNote = $('#review-images textarea');
+      if (firstNote) $('#review-form').style.setProperty('--review-note-height', getComputedStyle(firstNote).height);
     }
     reviewScrollers.forEach(element => {
       const remaining = element.scrollHeight - element.clientHeight - element.scrollTop;
@@ -372,6 +376,49 @@
     image.decoding = 'async';
     return image;
   }
+  let emptySelectionFade = null;
+  function updateEmptySelection() {
+    const placeholder = $('#empty-selection');
+    const clearFade = () => {
+      placeholder.classList.remove('is-leaving');
+      placeholder.style.removeProperty('top');
+      placeholder.style.removeProperty('left');
+      placeholder.style.removeProperty('width');
+      placeholder.style.removeProperty('height');
+      placeholder.inert = false;
+    };
+    if (!state.selected.length) {
+      emptySelectionFade?.cancel();
+      emptySelectionFade = null;
+      clearFade();
+      placeholder.hidden = false;
+      return;
+    }
+    if (placeholder.hidden || emptySelectionFade) return;
+    const rect = placeholder.getBoundingClientRect();
+    if (reduced.matches || !rect.width || !rect.height) {
+      placeholder.hidden = true;
+      return;
+    }
+    const parent = $('#session-content').getBoundingClientRect();
+    Object.assign(placeholder.style, {
+      top: `${rect.top - parent.top}px`, left: `${rect.left - parent.left}px`,
+      width: `${rect.width}px`, height: `${rect.height}px`
+    });
+    placeholder.classList.add('is-leaving');
+    placeholder.inert = true;
+    const animation = placeholder.animate([{opacity:1}, {opacity:0}], {
+      duration:350, easing:'ease-out', fill:'forwards'
+    });
+    emptySelectionFade = animation;
+    animation.onfinish = () => {
+      if (emptySelectionFade !== animation) return;
+      placeholder.hidden = true;
+      clearFade();
+      animation.cancel();
+      emptySelectionFade = null;
+    };
+  }
   function renderPanel() {
     $('#workspace').classList.toggle('is-settings-open', settingsOpen);
     const mobileQuestion = state.question || 'Choose a question';
@@ -393,7 +440,7 @@
     $('#session-panel').classList.toggle('is-settings', settingsOpen);
     $('#current-question').textContent = $('#question-dialog').open
       ? $('#question-form input[name=question]:checked').value : state.question || 'Choose a question';
-    $('#empty-selection').hidden = state.selected.length > 0;
+    updateEmptySelection();
     $('#selection-hint').hidden = true;
     $('#selection-hint').textContent = '';
     $('#review-session').disabled = state.selected.length === 0;
@@ -655,9 +702,39 @@
   });
   $('#confirm-new').addEventListener('click', newSession);
   $('#complete-new').addEventListener('click', newSession);
-  function previewQuestion() {
+  const questionOptions = $('.question-options');
+  const questionIndicator = document.createElement('div');
+  questionIndicator.className = 'question-selection-indicator';
+  questionIndicator.setAttribute('aria-hidden', 'true');
+  questionIndicator.hidden = true;
+  questionOptions.insertBefore(questionIndicator, questionOptions.querySelector('.question-choice'));
+  let questionIndicatorMotion = null;
+  function positionQuestionIndicator(animate = false) {
+    const selected = questionOptions.querySelector('input:checked')?.closest('.question-choice');
+    if (!selected || !selected.getClientRects().length) return;
+    const previous = getComputedStyle(questionIndicator);
+    const from = {transform:previous.transform,height:previous.height};
+    const hadPosition = !questionIndicator.hidden;
+    questionIndicatorMotion?.cancel();
+    const rect = selected.getBoundingClientRect();
+    const top = rect.top - questionOptions.getBoundingClientRect().top + questionOptions.scrollTop;
+    const to = {transform:`translateY(${top}px)`,height:`${rect.height}px`};
+    Object.assign(questionIndicator.style, to);
+    questionIndicator.hidden = false;
+    questionOptions.classList.add('has-selection-indicator');
+    if (animate && hadPosition && !reduced.matches) {
+      questionIndicatorMotion = questionIndicator.animate([from,to], {
+        duration:320,easing:'cubic-bezier(.22,.75,.25,1)'
+      });
+    }
+  }
+  const questionIndicatorResize = new ResizeObserver(() => positionQuestionIndicator());
+  questionIndicatorResize.observe(questionOptions);
+  questionOptions.querySelectorAll('.question-choice').forEach(choice => questionIndicatorResize.observe(choice));
+  function previewQuestion(event) {
     const choice = $('#question-form input[name=question]:checked').value;
     $('#current-question').textContent = choice;
+    positionQuestionIndicator(event?.type === 'change');
   }
   function openQuestionPicker() {
     closeDiscussion(false);
@@ -1559,6 +1636,7 @@
   });
   $('#review-session').addEventListener('click', openReview);
   $('#reopen-review').addEventListener('click', openReview);
+  $('#edit-review-name').addEventListener('click', () => { $('#review-name').focus(); $('#review-name').select(); });
   $('#review-name').addEventListener('input', event => {
     state.name = event.target.value;
     if (state.name.trim()) { $('#name-error').hidden = true; event.target.removeAttribute('aria-invalid'); }
@@ -1692,6 +1770,9 @@
   $('#prototype-intro').addEventListener('close', () => {
     if (!introDismissed) {
       introDismissed = true;
+      const emptyArtwork = $('.empty-selection-art');
+      emptyArtwork.classList.remove('is-waiting');
+      emptyArtwork.classList.add('is-entering');
       board.contentWindow.postMessage({type:'ii-session-enter'}, location.origin);
     }
     showMobileSessionBar(true);

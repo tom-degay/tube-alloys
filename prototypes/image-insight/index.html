@@ -24,10 +24,10 @@
   <meta name="twitter:image:alt" content="Image Insight interactive prototype: a grid of photographs with a lake image selected. Choose an image. Explore a different perspective.">
   <link rel="icon" href="/prototypes/image-insight/favicon.svg?v=20261026-browser-theme" type="image/svg+xml">
   <link rel="stylesheet" href="/prototypes/image-insight/icons.css?v=20261023-trash-hover">
-  <link rel="stylesheet" href="/prototypes/image-insight/session.css?v=20261026-intro-numbers-2">
-  <link rel="stylesheet" href="/prototypes/image-insight/theme.css?v=20261026-grey-notes">
+  <link rel="stylesheet" href="/prototypes/image-insight/session.css?v=20261026-review-title">
+  <link rel="stylesheet" href="/prototypes/image-insight/theme.css?v=20261026-placeholder-behind">
   <script src="/prototypes/image-insight/icons.js" defer></script>
-  <script src="/prototypes/image-insight/session.js?v=20261025-header-alignment" defer></script>
+  <script src="/prototypes/image-insight/session.js?v=20261026-placeholder-exit" defer></script>
   <script src="/prototypes/image-insight/theme-fade.js?v=20261025-1"></script>
 </head>
 <body>
@@ -136,7 +136,21 @@
 <rect x="1" y="16" width="13" height="2" rx="1" fill="#979797"/>
 </svg></button>
           <p class="selection-hint" id="selection-hint" hidden></p>
-          <div class="empty-selection" id="empty-selection"><span class="empty-selection-label">Select on image board</span><button class="empty-board-button" id="empty-back-to-board" type="button">Select on image board</button></div>
+          <div class="empty-selection" id="empty-selection"><svg class="empty-selection-art is-waiting" aria-hidden="true" width="328" height="328" viewBox="0 0 328 328" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="115.718" y="230.438" width="96.5615" height="96.5615" rx="27" stroke="#4BC6E5" stroke-opacity="0.3" stroke-width="2" class="empty-tile empty-tile-outer" style="--dx:0.001px;--dy:-82.597px"/>
+<rect x="180.694" y="180.693" width="96.5615" height="96.5615" rx="27" stroke="#4BC6E5" stroke-opacity="0.7" stroke-width="2" class="empty-tile empty-tile-inner" style="--dx:-46.782px;--dy:-46.781px"/>
+<rect x="50.4353" y="180.693" width="96.5615" height="96.5615" rx="27" stroke="#4BC6E5" stroke-opacity="0.7" stroke-width="2" class="empty-tile empty-tile-inner" style="--dx:47.004px;--dy:-46.781px"/>
+<rect x="230.436" y="115.72" width="96.5615" height="96.5615" rx="27" stroke="#4BC6E5" stroke-opacity="0.3" stroke-width="2" class="empty-tile empty-tile-outer" style="--dx:-82.596px;--dy:-0.001px"/>
+<rect x="1" y="115.72" width="96.5615" height="96.5615" rx="27" stroke="#4BC6E5" stroke-opacity="0.3" stroke-width="2" class="empty-tile empty-tile-outer" style="--dx:82.598px;--dy:-0.001px"/>
+<rect x="115.718" y="1" width="96.5615" height="96.5615" rx="27" stroke="#4BC6E5" stroke-opacity="0.3" stroke-width="2" class="empty-tile empty-tile-outer" style="--dx:0.001px;--dy:82.598px"/>
+<rect x="180.694" y="50.4355" width="96.5615" height="96.5615" rx="27" stroke="#4BC6E5" stroke-opacity="0.7" stroke-width="2" class="empty-tile empty-tile-inner" style="--dx:-46.782px;--dy:47.004px"/>
+<rect x="50.4353" y="50.4355" width="96.5615" height="96.5615" rx="27" stroke="#4BC6E5" stroke-opacity="0.7" stroke-width="2" class="empty-tile empty-tile-inner" style="--dx:47.004px;--dy:47.004px"/>
+<mask id="stroke0_764_1308" fill="white">
+<path d="M114.718 159.52C114.718 143.838 114.718 135.998 117.77 130.008C120.454 124.739 124.738 120.456 130.006 117.772C135.996 114.72 143.836 114.72 159.518 114.72H168.479C184.161 114.72 192.001 114.72 197.991 117.772C203.26 120.456 207.543 124.739 210.227 130.008C213.279 135.998 213.279 143.838 213.279 159.52V168.481C213.279 184.163 213.279 192.003 210.227 197.993C207.543 203.261 203.26 207.545 197.991 210.229C192.001 213.281 184.161 213.281 168.479 213.281H159.518C143.836 213.281 135.996 213.281 130.006 210.229C124.738 207.545 120.454 203.261 117.77 197.993C114.718 192.003 114.718 184.163 114.718 168.481V159.52Z"/>
+</mask>
+<path class="empty-tile empty-tile-centre" d="M159.518 213.281H168.479C184.161 213.281 192.001 213.281 197.991 210.229C203.26 207.545 207.543 203.261 210.227 197.993C213.279 192.003 213.279 184.163 213.279 168.481V159.52C213.279 143.838 213.279 135.998 210.227 130.008C207.543 124.739 203.26 120.456 197.991 117.772C192.001 114.72 184.161 114.72 168.479 114.72H159.518C143.836 114.72 135.996 114.72 130.006 117.772C124.738 120.456 120.454 124.739 117.77 130.008C114.718 135.998 114.718 143.838 114.718 159.52V168.481C114.718 184.163 114.718 192.003 117.77 197.993C120.454 203.261 124.738 207.545 130.006 210.229C135.996 213.281 143.836 213.281 159.518 213.281Z" stroke-width="4" stroke="#4BC6E5" mask="url(#stroke0_764_1308)"/>
+</svg>
+<span class="empty-selection-label">Select images<br>from the board</span><button class="empty-board-button" id="empty-back-to-board" type="button"><span>Select images<br>from the board</span></button></div>
           <div class="selected-images" id="selected-images"></div>
         </div>
         <section class="settings-content" id="settings-content" aria-label="Session settings" hidden>
@@ -190,13 +204,22 @@
 
   <dialog class="review-dialog" id="review-dialog" aria-labelledby="review-title">
     <form id="review-form" novalidate>
-      <div class="dialog-heading"><h2 id="review-title">Session review</h2><button class="icon-button close" type="button" data-close aria-label="Close session review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
-      <div class="review-columns">
-        <section class="review-images-section"><p class="question-number">Question 1</p><h3 id="review-question"></h3><div id="review-images" class="review-images"></div></section>
-        <section class="review-details" aria-label="Session details">
-          <label class="field review-name-field"><span class="review-name-heading">Session name</span><input id="review-name" maxlength="100" placeholder="Name this session" required aria-describedby="name-error"></label>
+      <div class="dialog-heading"><h2 id="review-title">Session review</h2>
+        <div class="review-title-editor">
+          <label class="sr-only" for="review-name">Session name</label>
+          <input id="review-name" maxlength="100" placeholder="Name this session" required aria-describedby="name-error">
+          <button class="review-name-edit" id="edit-review-name" type="button" aria-label="Edit session name" title="Edit session name"><svg aria-hidden="true" width="15" height="18" viewBox="0 0 15 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M2.73193 9.83545L11.4743 1.09304C12.0779 0.489501 13.0564 0.489501 13.6599 1.09304V1.09304C14.2635 1.69658 14.2635 2.6751 13.6599 3.27864L4.91754 12.0211L2.73193 9.83545Z" fill="#979797"/>
+<path d="M1.0928 13.6597L1.6392 10.9277L3.8248 13.1133L1.0928 13.6597Z" fill="#979797"/>
+<rect x="1" y="16" width="13" height="2" rx="1" fill="#979797"/>
+</svg></button>
           <p id="name-error" class="error" hidden>Give your session a name to continue.</p>
-          <label class="field">Summary<textarea id="review-summary" placeholder="Add a summary of the session"></textarea></label>
+        </div>
+        <button class="icon-button close" type="button" data-close aria-label="Close session review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+      <div class="review-columns">
+        <section class="review-images-section"><h3 id="review-question"></h3><div id="review-images" class="review-images"></div></section>
+        <section class="review-details" aria-label="Session details">
+          <label class="field review-summary-field"><span class="review-summary-heading">Summary</span><textarea id="review-summary" placeholder="Add a summary of the session"></textarea></label>
           <div class="actions-heading"><h3>Actions</h3></div>
           <div id="review-actions" class="review-actions"></div>
           <button class="quiet icon plus" type="button" id="add-action"><span data-icon="plus"></span>Add action</button>
