@@ -1006,6 +1006,19 @@
       renderPanel();
       sendSelection();
     }
+    if (route?.view === 'review') {
+      openReview(true);
+      return;
+    }
+    if (route?.view === 'session') {
+      dialogs.forEach(dialog => { if (dialog.open) dialog.close('switch'); });
+      settingsOpen = false;
+      expanded = true;
+      applyExpansion();
+      renderPanel();
+      restoreViewPosition(route.position);
+      return;
+    }
     if (route?.view === 'sessions') {
       openSavedSessions(true);
       return;
@@ -1645,8 +1658,13 @@
     state.profile = input.value; save();
   }));
 
-  function openReview() {
+  function openReview(fromHistory = false) {
     if (!state.selected.length) return;
+    if (phoneLayout.matches && fromHistory !== true && focusRoute()?.view !== 'review') {
+      sessionRouteStates.set(state.id, structuredClone(state));
+      writeFocusRoute({view:'session',session:state.id,position:captureViewPosition()});
+      writeFocusRoute({view:'review',session:state.id}, true);
+    }
     $('#review-question').textContent = state.question;
     $('#review-name').value = state.name;
     $('#review-summary').value = state.summary;
@@ -1674,6 +1692,9 @@
   }
   $('#discuss-images').addEventListener('click', () => {
     if (state.selected.length) openDiscussion(state.selected[0], $('#discuss-images'));
+  });
+  $('#review-dialog').addEventListener('close', () => {
+    if (focusRoute()?.view === 'review' && !dialogs.some(dialog => dialog.open)) window.history.back();
   });
   $('#review-session').addEventListener('click', openReview);
   $('#reopen-review').addEventListener('click', openReview);
