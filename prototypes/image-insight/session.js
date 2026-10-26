@@ -794,8 +794,19 @@
   }
   let mobilePanelBarBounds = null;
   let mobilePanelClosing = false;
-  function toggleExpansion(finishClosing = false) {
+  let panelHistoryBackPending = false;
+  function toggleExpansion(finishClosing = false, fromHistory = false) {
     if (mobilePanelClosing) return;
+    if (phoneLayout.matches && !fromHistory && finishClosing !== true && !activeImage) {
+      if (expanded && focusRoute()?.view === 'session') {
+        if (!panelHistoryBackPending) {
+          panelHistoryBackPending = true;
+          window.history.back();
+        }
+        return;
+      }
+      if (!expanded) ensureSessionRoute();
+    }
     if (phoneLayout.matches && expanded && !activeImage && !reduced.matches && finishClosing !== true) {
       mobilePanelClosing = true;
       const panel = $('#session-panel');
@@ -812,7 +823,7 @@
         [{opacity:1},{opacity:0}],{duration:180,fill:'both'}));
       motion.onfinish = () => {
         mobilePanelClosing = false;
-        toggleExpansion(true);
+        toggleExpansion(true, true);
         motion.cancel();
         contentMotions.forEach(animation => animation.cancel());
       };
@@ -978,6 +989,13 @@
     window.history[push ? 'pushState' : 'replaceState'](entry, '', location.href);
   }
   writeFocusRoute({view:'board',session:state.id});
+  function ensureSessionRoute() {
+    if (focusRoute()?.view === 'session') return;
+    sessionRouteStates.set(state.id, structuredClone(state));
+    const position = captureViewPosition();
+    writeFocusRoute({view:'board',session:state.id,position});
+    writeFocusRoute({view:'session',session:state.id,position}, true);
+  }
   function rememberFocusRoute(id) {
     const route = focusRoute();
     if (route?.view === 'focus') writeFocusRoute({...route, image:id});
@@ -992,6 +1010,7 @@
   }
   window.addEventListener('popstate', () => {
     focusBackPending = false;
+    panelHistoryBackPending = false;
     const route = focusRoute();
     // Setup is a real navigation step; Back restores the session it interrupted.
     if (route?.session && route.session !== state.id && sessionRouteStates.has(route.session)) {
@@ -1029,9 +1048,9 @@
     }
     if (route?.view === 'board' && !$('#discussion-dialog').open) {
       settingsOpen = false;
-      expanded = false;
       dialogs.forEach(dialog => { if (dialog.open) dialog.close('switch'); });
-      applyExpansion();
+      if (phoneLayout.matches && expanded) toggleExpansion(false, true);
+      else { expanded = false; applyExpansion(); }
       renderPanel();
       showMobileSessionBar(true);
       restoreViewPosition(route.position);
@@ -1661,7 +1680,7 @@
   function openReview(fromHistory = false) {
     if (!state.selected.length) return;
     if (phoneLayout.matches && fromHistory !== true && focusRoute()?.view !== 'review') {
-      sessionRouteStates.set(state.id, structuredClone(state));
+      ensureSessionRoute();
       writeFocusRoute({view:'session',session:state.id,position:captureViewPosition()});
       writeFocusRoute({view:'review',session:state.id}, true);
     }
