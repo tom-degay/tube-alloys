@@ -262,7 +262,7 @@
       applyTheme();
     }
     if (event.data?.type === 'ii-session-scroll' && ['down','up'].includes(event.data.direction) && phoneLayout.matches && !expanded && !settingsOpen) {
-      showMobileSessionBar(event.data.direction === 'down');
+      showMobileSessionBar(event.data.direction === 'up');
     }
     if (event.data?.type === 'ii-session-controls-state') {
       mobileControlsOpen = Boolean(event.data.open);
@@ -1005,6 +1005,10 @@
       $('#selected-images').replaceChildren();
       renderPanel();
       sendSelection();
+    }
+    if (route?.view === 'sessions') {
+      openSavedSessions(true);
+      return;
     }
     if (route?.view === 'setup') {
       resumeSetup();
@@ -1822,8 +1826,14 @@
     savedSwipeMotion?.cancel();
     savedSwipeMotion = null;
     savedPanel.style.removeProperty('transform');
+    if (focusRoute()?.view === 'sessions') window.history.back();
   });
-  $('#saved-sessions').addEventListener('click', () => {
+  function openSavedSessions(fromHistory = false) {
+    if (phoneLayout.matches && !fromHistory && !savedPanel.open) {
+      sessionRouteStates.set(state.id, structuredClone(state));
+      writeFocusRoute({view:'board',session:state.id,position:captureViewPosition()});
+      writeFocusRoute({view:'sessions',session:state.id}, true);
+    }
     const list = $('#saved-list');
     list.replaceChildren();
     const sessions = state.started ? [state, ...history.filter(item => item.id !== state.id)] : history;
@@ -1852,13 +1862,18 @@
         expanded = false; applyExpansion();
         $('#selected-images').replaceChildren();
         save(); renderPanel(); sendSelection();
+        if (focusRoute()?.view === 'sessions') {
+          sessionRouteStates.set(state.id, structuredClone(state));
+          writeFocusRoute({view:state.setupStep === 'complete' ? 'board' : 'setup',session:state.id});
+        }
         closeDialog($('#saved-dialog'));
         resumeSetup();
       });
       list.append(button);
     });
     openDialog($('#saved-dialog'));
-  });
+  }
+  $('#saved-sessions').addEventListener('click', () => openSavedSessions());
   function resumeSetup() {
     if (state.started && state.setupStep === 'settings') {
       expanded = true;
