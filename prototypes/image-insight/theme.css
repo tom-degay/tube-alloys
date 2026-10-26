@@ -489,3 +489,6 @@ html:not([data-theme=dark]) .icon.icon-button .tile{fill-opacity:0}
  .rail #new-session>[data-icon=plus] svg path{stroke-width:2.1}
  [data-theme=dark] .rail #new-session>[data-icon=plus] svg path{stroke-width:1.9}
 }
+
+/* Keep the focus notes glyph neutral, including saved notes and swipe previews. */
+#discussion-dialog :is(#toggle-notes,[data-preview-id="toggle-notes"]) svg{color:var(--muted)}
