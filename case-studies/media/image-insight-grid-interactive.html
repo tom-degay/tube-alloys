@@ -51,6 +51,11 @@ button:focus-visible, input:focus-visible { outline: 2px solid #18768b; outline-
 .photo-ring { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 1; color: #fff; opacity: 0; transition: opacity 160ms ease, color 160ms ease; }
 .session-mode .photo:hover .photo-ring { color: #47b3cf; opacity: .5; }
 .session-mode .photo[data-selected="true"] .photo-ring { color: #47b3cf; opacity: 1; }
+/* A ring belongs to a painted photo, never its empty/loading slot. */
+.session-mode.session-awaiting-intro .photo :is(.photo-ring,.photo-expand),
+.session-mode .photo:not([data-image-ready="true"]) :is(.photo-ring,.photo-expand),
+.session-mode .photo[data-entering] :is(.photo-ring,.photo-expand) { visibility:hidden; opacity:0; pointer-events:none; }
+
 .session-mode .photo[data-selected="true"]::before { content: attr(data-selection); position: absolute; z-index: 2; right: max(9px, 6%); top: max(9px, 6%); display: grid; place-items: center; width: 28px; height: 28px; border: 2px solid white; border-radius: 50%; background: #47b3cf; color: white; font-size: 14px; pointer-events: none; }
 .session-mode .photo:focus-visible { outline: 3px solid #18768b; outline-offset: 4px; }
 html.session-mode[data-input="pointer"] :is(button,input[type="range"]):focus { outline: none; }
@@ -648,17 +653,19 @@ html.slider-dragging{user-select:none;-webkit-user-select:none}
    const box = cell.getBoundingClientRect();
    return !cell.hidden && box.bottom > bounds.top && box.top < bounds.bottom && box.right > bounds.left && box.left < bounds.right;
   }).map(cell => cell.querySelector('img'));
-  entering.forEach(image => { image.style.visibility = 'hidden'; });
+  entering.forEach(image => { image.style.visibility = 'hidden'; image.parentElement.dataset.entering = 'true'; });
   Promise.all(entering.map(image => image.decode().catch(() => {}))).then(() => {
    document.documentElement.classList.remove('session-awaiting-intro');
    entering.forEach((image, index) => {
     image.style.visibility = '';
-    if (reduced.matches) return;
+    if (reduced.matches) { delete image.parentElement.dataset.entering; return; }
     const animation = image.animate([
      {opacity:0,transform:'perspective(1200px) rotateY(-85deg)'},
      {opacity:1,transform:'perspective(1200px) rotateY(0deg)'}
     ], {duration:1600,delay:120 + Math.min(index * 100,800),easing:'cubic-bezier(.25,.1,.25,1)',fill:'backwards'});
-    animation.finished.then(() => animation.cancel()).catch(() => {});
+    const card = image.parentElement;
+    const finishEntrance = () => { delete card.dataset.entering; };
+    animation.finished.then(() => { finishEntrance(); animation.cancel(); }, finishEntrance);
    });
   });
  }
@@ -930,8 +937,16 @@ html.slider-dragging{user-select:none;-webkit-user-select:none}
      cell.prepend(img);
     }
     cell.dataset.image = name;
+    cell.dataset.imageReady = 'false';
     img.src = source(name);
     img.alt = images[name];
+    const loadingImage = img;
+    const loadingSource = img.src;
+    img.decode().then(() => {
+     if (cell.firstElementChild === loadingImage && loadingImage.src === loadingSource && loadingImage.naturalWidth > 0) {
+      cell.dataset.imageReady = 'true';
+     }
+    }).catch(() => {});
     if (previous) {
      previous.className = 'photo-previous';
      previous.alt = '';

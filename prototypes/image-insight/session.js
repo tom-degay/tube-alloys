@@ -421,6 +421,7 @@
   }
   function renderPanel() {
     $('#workspace').classList.toggle('is-settings-open', settingsOpen);
+    $('#workspace').classList.toggle('is-session-setup', settingsOpen && state.setupStep === 'settings');
     const mobileQuestion = state.question || 'Choose a question';
     $('#mobile-session-question').textContent = mobileQuestion;
     $('#mobile-session-count').textContent = state.selected.length;
@@ -627,6 +628,10 @@
   }
   function newSession() {
     closeDiscussion(false);
+    if (phoneLayout.matches) {
+      sessionRouteStates.set(state.id, structuredClone(state));
+      writeFocusRoute({view:'board',session:state.id,position:captureViewPosition()});
+    }
     archiveCurrent();
     state = freshSession();
     settingsOpen = false;
@@ -635,6 +640,10 @@
     $('#selected-images').replaceChildren();
     startSession();
     sendSelection();
+    if (phoneLayout.matches) {
+      sessionRouteStates.set(state.id, structuredClone(state));
+      writeFocusRoute({view:'setup',session:state.id}, true);
+    }
   }
   $('#start-session').addEventListener('click', startSession);
   const profileMenu = $('#profile-menu');
@@ -751,6 +760,7 @@
     event.preventDefault();
     state.question = $('#question-form input[name=question]:checked').value;
     state.setupStep = 'complete';
+    if (focusRoute()?.view === 'setup') writeFocusRoute({view:'board',session:state.id});
     save();
     closeDialog($('#question-dialog'));
     renderPanel();
@@ -954,6 +964,7 @@
   }
   // A focus view is one browser-history step, regardless of image navigation.
   // Session data remains in memory; stale entries after a reload are not restored.
+  const sessionRouteStates = new Map();
   const focusHistoryKey = 'imageInsightFocus';
   const focusHistoryPage = crypto.randomUUID();
   let focusBackPending = false;
@@ -966,7 +977,7 @@
     const entry = {...window.history.state, [focusHistoryKey]: {page:focusHistoryPage, ...route}};
     window.history[push ? 'pushState' : 'replaceState'](entry, '', location.href);
   }
-  writeFocusRoute({view:'board'});
+  writeFocusRoute({view:'board',session:state.id});
   function rememberFocusRoute(id) {
     const route = focusRoute();
     if (route?.view === 'focus') writeFocusRoute({...route, image:id});
@@ -982,6 +993,32 @@
   window.addEventListener('popstate', () => {
     focusBackPending = false;
     const route = focusRoute();
+    // Setup is a real navigation step; Back restores the session it interrupted.
+    if (route?.session && route.session !== state.id && sessionRouteStates.has(route.session)) {
+      sessionRouteStates.set(state.id, structuredClone(state));
+      archiveCurrent();
+      state = structuredClone(sessionRouteStates.get(route.session));
+      settingsOpen = false;
+      expanded = false;
+      dialogs.forEach(dialog => { if (dialog.open) dialog.close('switch'); });
+      applyExpansion();
+      $('#selected-images').replaceChildren();
+      renderPanel();
+      sendSelection();
+    }
+    if (route?.view === 'setup') {
+      resumeSetup();
+      return;
+    }
+    if (route?.view === 'board' && !$('#discussion-dialog').open) {
+      settingsOpen = false;
+      expanded = false;
+      dialogs.forEach(dialog => { if (dialog.open) dialog.close('switch'); });
+      applyExpansion();
+      renderPanel();
+      showMobileSessionBar(true);
+      restoreViewPosition(route.position);
+    }
     if (route?.view === 'focus') {
       if (route.session !== state.id || !state.selected.includes(route.image) || !catalog.has(route.image)) {
         writeFocusRoute({view:'board'});
@@ -1723,6 +1760,69 @@
     completeBackdropPressed = false;
   });
 
+  // Pull down from the top of Your sessions to return to the mobile board.
+  const savedPanel = $('#saved-dialog');
+  let savedSwipe = null;
+  let savedSwipeMotion = null;
+  let savedSwipeClickUntil = 0;
+  function settleSavedSwipe(dismiss = false) {
+    const distance = savedSwipe?.dy || 0;
+    savedSwipe = null;
+    const finish = () => {
+      savedPanel.style.removeProperty('transform');
+      savedSwipeMotion = null;
+      if (dismiss) {
+        closeDialog(savedPanel);
+        if (settingsOpen) closeSettings();
+        if (expanded) toggleExpansion();
+        showMobileSessionBar(true);
+      }
+    };
+    if (!distance || reduced.matches) { finish(); return; }
+    const motion = savedPanel.animate([
+      {transform:`translateY(${distance}px)`,opacity:1},
+      {transform:`translateY(${dismiss ? innerHeight : 0}px)`,opacity:dismiss ? 0 : 1}
+    ], {duration:dismiss ? 280 : 380,easing:'cubic-bezier(.22,1,.36,1)',fill:'both'});
+    savedSwipeMotion = motion;
+    motion.onfinish = () => { finish(); motion.cancel(); };
+  }
+  savedPanel.addEventListener('touchstart', event => {
+    savedSwipe = null;
+    if (!phoneLayout.matches || !savedPanel.open || savedSwipeMotion || event.touches.length !== 1 || savedPanel.scrollTop > 1 || $('#saved-list').scrollTop > 1) return;
+    const touch = event.touches[0];
+    savedSwipe = {x:touch.clientX,y:touch.clientY,dy:0,down:false};
+  }, {passive:true});
+  savedPanel.addEventListener('touchmove', event => {
+    if (!savedSwipe) return;
+    if (event.touches.length !== 1) { settleSavedSwipe(); return; }
+    const dx = event.touches[0].clientX - savedSwipe.x;
+    const dy = event.touches[0].clientY - savedSwipe.y;
+    if (!savedSwipe.down && Math.max(Math.abs(dx),Math.abs(dy)) > 10) {
+      if (dy > 0 && dy > Math.abs(dx) * 1.5) savedSwipe.down = true;
+      else { savedSwipe = null; return; }
+    }
+    if (savedSwipe.down) {
+      event.preventDefault();
+      savedSwipe.dy = Math.max(0,dy);
+      savedPanel.style.transform = `translateY(${savedSwipe.dy}px)`;
+    }
+  }, {passive:false});
+  savedPanel.addEventListener('touchend', () => {
+    if (savedSwipe?.down) {
+      savedSwipeClickUntil = performance.now() + 500;
+      settleSavedSwipe(savedSwipe.dy > 64);
+    } else savedSwipe = null;
+  });
+  savedPanel.addEventListener('touchcancel', () => settleSavedSwipe());
+  savedPanel.addEventListener('click', event => {
+    if (performance.now() < savedSwipeClickUntil) { event.preventDefault(); event.stopImmediatePropagation(); }
+  }, true);
+  savedPanel.addEventListener('close', () => {
+    savedSwipe = null;
+    savedSwipeMotion?.cancel();
+    savedSwipeMotion = null;
+    savedPanel.style.removeProperty('transform');
+  });
   $('#saved-sessions').addEventListener('click', () => {
     const list = $('#saved-list');
     list.replaceChildren();

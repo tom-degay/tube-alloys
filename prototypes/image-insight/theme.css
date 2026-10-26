@@ -604,3 +604,8 @@ html body #review-actions .action-row input{background:transparent;border:0}
 #empty-selection.is-leaving{position:absolute;z-index:2;pointer-events:none;margin:0;min-height:0;max-width:none}
 
 #session-content:has(#empty-selection.is-leaving) .selected-images{position:relative;z-index:3}
+
+/* New-session setup is completed via Continue, not the panel chevron. */
+@media(max-width:600px),(max-width:900px) and (max-height:500px){
+ .workspace.is-session-setup :is(#mobile-session-bar,#session-settings){display:none}
+}
