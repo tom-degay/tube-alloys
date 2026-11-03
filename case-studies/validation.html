@@ -322,11 +322,7 @@
   .corrections-chart-plot { position: relative; padding: 0 32px 0 42px; }
   .corrections-chart-y-axis { position: absolute; left: 0; top: 0; width: 34px; height: calc(100% - 28px); font: 11px "IBM Plex Mono", monospace; color: #00d8aa; }
   .corrections-chart-y-axis span { position: absolute; right: 0; transform: translateY(-50%); }
-  .corrections-chart-y-axis--right { left: auto; right: 0; width: 25px; color: #fff; }
-  .corrections-chart-y-axis--right span { left: 0; right: auto; }
-  .corrections-chart-line.corrections-chart-line--rules { stroke: #fff; }
   .corrections-chart-legend { display: flex; justify-content: space-between; gap: 8px 24px; margin-bottom: 20px; font-size: 12px; color: #00d8aa; }
-  .corrections-chart-legend span:last-child { color: #fff; text-align: right; }
   .corrections-chart-point { cursor: pointer; stroke: transparent; stroke-width: 12; pointer-events: all; transition: r 160ms ease; }
   .corrections-chart-point:hover, .corrections-chart-point:focus-visible { r: 6px; }
   @media (prefers-reduced-motion: reduce) { .corrections-chart-point { transition: none; } }
@@ -2568,30 +2564,21 @@
           <cite>Quantemplate user-client at major US insurance carrier</cite>
         </blockquote>
         <figure class="corrections-chart" aria-labelledby="corrections-chart-title">
-          <h3 id="corrections-chart-title">830,132 cells corrected</h3>
+          <h3 id="corrections-chart-title">65 rules corrected</h3>
           <p class="corrections-chart-subtitle">Cumulative corrections · 28 Oct 2026</p>
-          <div class="corrections-chart-legend"><span>Cells corrected</span><span>Rules corrected</span></div>
+          <div class="corrections-chart-legend"><span>Rules corrected</span></div>
           <div class="corrections-chart-plot">
-            <div class="corrections-chart-y-axis" aria-hidden="true"><span style="top:10%">900k</span><span style="top:36.6667%">600k</span><span style="top:63.3333%">300k</span><span style="top:90%">0</span></div>
-            <div class="corrections-chart-y-axis corrections-chart-y-axis--right" aria-hidden="true"><span style="top:10%">70</span><span style="top:50%">35</span><span style="top:90%">0</span></div>
-            <svg viewBox="0 0 640 240" role="group" aria-label="Cumulative corrections through 28 October 2026. Cells, left axis: zero until 17 August, 23,418 on 21 September, 23,429 on 8 October and 830,132 on 28 October. Rules, right axis: zero on 17 August, 29 on 21 September, 39 on 8 October and 65 on 28 October.">
-              <defs><linearGradient id="corrections-area-gradient" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#00d8aa" stop-opacity="0.18"/><stop offset="100%" stop-color="#00d8aa" stop-opacity="0"/></linearGradient><linearGradient id="corrections-rules-gradient" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff" stop-opacity="0.14"/><stop offset="100%" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
-              <path class="corrections-chart-area" d="M44.706 216L254.454 216.000L437.983 211.004L527.126 211.002L632.000 38.905V216Z" fill="url(#corrections-area-gradient)"/>
-              <path class="corrections-chart-area" d="M254.454 216.000L437.983 136.457L527.126 109.029L632.000 37.714V216Z" fill="url(#corrections-rules-gradient)"/>
-              <path d="M8 24H632 M8 88H632 M8 152H632 M8 216H632" fill="none" stroke="white" stroke-opacity="0.08" vector-effect="non-scaling-stroke"/>
+            <div class="corrections-chart-y-axis" aria-hidden="true"><span style="top:10%">70</span><span style="top:50%">35</span><span style="top:90%">0</span></div>
+            <svg viewBox="0 0 640 240" role="group" aria-label="Cumulative rules corrected through 28 October 2026. Left axis: zero from 8 July through 17 August, 29 on 21 September, 39 on 8 October and 65 on 28 October.">
+              <defs><linearGradient id="corrections-rules-gradient" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#00d8aa" stop-opacity="0.14"/><stop offset="100%" stop-color="#00d8aa" stop-opacity="0"/></linearGradient></defs>
+              <path class="corrections-chart-area" d="M44.706 216.000L254.454 216.000L437.983 136.457L527.126 109.029L632.000 37.714V216Z" fill="url(#corrections-rules-gradient)"/>
+              <path d="M8 24H632 M8 120H632 M8 216H632" fill="none" stroke="white" stroke-opacity="0.08" vector-effect="non-scaling-stroke"/>
               <g class="corrections-chart-series">
-                <path class="corrections-chart-line corrections-chart-line--rules" d="M254.454 216.000L437.983 136.457L527.126 109.029L632.000 37.714"/>
-                <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="17 Aug 2026 · 0 cells · 0 rules" data-tooltip="17 Aug 2026 · 0 cells · 0 rules" cx="254.454" cy="216.000" r="4" fill="#fff"><title>17 Aug 2026: 0 rules corrected</title></circle>
-                <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="21 Sept 2026 · 23,418 cells · 29 rules" data-tooltip="21 Sept 2026 · 23,418 cells · 29 rules" cx="437.983" cy="136.457" r="4" fill="#fff"><title>21 Sept 2026: 29 rules corrected</title></circle>
-                <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="8 Oct 2026 · 23,429 cells · 39 rules" data-tooltip="8 Oct 2026 · 23,429 cells · 39 rules" cx="527.126" cy="109.029" r="4" fill="#fff"><title>8 Oct 2026: 39 rules corrected</title></circle>
-                <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="28 Oct 2026 · 830,132 cells · 65 rules · 52 pipeline runs" data-tooltip="28 Oct 2026 · 830,132 cells · 65 rules · 52 pipeline runs" cx="632.000" cy="37.714" r="4" fill="#fff"><title>28 Oct 2026: 65 rules corrected</title></circle>
-              </g>
-              <g class="corrections-chart-series">
-                <path class="corrections-chart-line" d="M44.706 216L254.454 216.000L437.983 211.004L527.126 211.002L632.000 38.905"/>
-                <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="17 Aug 2026 · 0 cells · 0 rules" data-tooltip="17 Aug 2026 · 0 cells · 0 rules" cx="254.454" cy="216.000" r="4" fill="#00d8aa"><title>17 Aug 2026: 0 cells corrected</title></circle>
-                <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="21 Sept 2026 · 23,418 cells · 29 rules" data-tooltip="21 Sept 2026 · 23,418 cells · 29 rules" cx="437.983" cy="211.004" r="4" fill="#00d8aa"><title>21 Sept 2026: 23,418 cells corrected</title></circle>
-                <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="8 Oct 2026 · 23,429 cells · 39 rules" data-tooltip="8 Oct 2026 · 23,429 cells · 39 rules" cx="527.126" cy="211.002" r="4" fill="#00d8aa"><title>8 Oct 2026: 23,429 cells corrected</title></circle>
-                <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="28 Oct 2026 · 830,132 cells · 65 rules · 52 pipeline runs" data-tooltip="28 Oct 2026 · 830,132 cells · 65 rules · 52 pipeline runs" cx="632.000" cy="38.905" r="4" fill="#00d8aa"><title>28 Oct 2026: 830,132 cells corrected</title></circle>
+                <path class="corrections-chart-line corrections-chart-line--rules" d="M44.706 216.000L254.454 216.000L437.983 136.457L527.126 109.029L632.000 37.714"/>
+                <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="17 Aug 2026 · 0 rules" data-tooltip="17 Aug 2026 · 0 rules" cx="254.454" cy="216.000" r="4" fill="#00d8aa"><title>17 Aug 2026: 0 rules corrected</title></circle>
+                <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="21 Sept 2026 · 29 rules" data-tooltip="21 Sept 2026 · 29 rules" cx="437.983" cy="136.457" r="4" fill="#00d8aa"><title>21 Sept 2026: 29 rules corrected</title></circle>
+                <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="8 Oct 2026 · 39 rules" data-tooltip="8 Oct 2026 · 39 rules" cx="527.126" cy="109.029" r="4" fill="#00d8aa"><title>8 Oct 2026: 39 rules corrected</title></circle>
+                <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="28 Oct 2026 · 65 rules · 52 pipeline runs" data-tooltip="28 Oct 2026 · 65 rules · 52 pipeline runs" cx="632.000" cy="37.714" r="4" fill="#00d8aa"><title>28 Oct 2026: 65 rules corrected</title></circle>
               </g>
             </svg>
             <div class="corrections-chart-tooltip" role="tooltip" hidden></div>
