@@ -819,6 +819,56 @@
 
   .ii-reel-dial { margin: 4px auto 0; }
 
+
+  /* Mobile walkthrough and screenshots share the same front-on device. */
+  .ii-mobile { margin-top: clamp(36px, 5vw, 64px); }
+  .ii-mobile-track {
+    --mobile-width: min(380px, 82vw);
+    position: relative;
+    display: flex;
+    gap: clamp(16px, 2vw, 28px);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    padding: 0 max(0px, calc(100% - var(--mobile-width))) 8px 0;
+  }
+  .ii-mobile-track::-webkit-scrollbar { display: none; }
+  .ii-mobile-track:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+  .ii-mobile-slide { flex: 0 0 var(--mobile-width); min-width: 0; margin: 0; scroll-snap-align: start; }
+  .ii-mobile .ii-mobile-stage {
+    position: relative; aspect-ratio: 9 / 16; overflow: hidden; border-radius: 0; background: transparent;
+    -webkit-mask: url("media/image-insight-mobile/device-mask.svg") center / 100% 100% no-repeat;
+    mask: url("media/image-insight-mobile/device-mask.svg") center / 100% 100% no-repeat;
+  }
+  .ii-mobile-stage .ii-mobile-screen {
+    /* Bleed two source pixels under the bezel to avoid subpixel gaps at the aperture. */
+    position: absolute; left: 16.29630%; top: 8.95833%; width: 67.40741%; height: 82.18750%;
+    display: block; max-width: none; object-fit: fill; border-radius: 0;
+  }
+  .ii-mobile-stage--still::before {
+    content: ""; position: absolute; inset: 0; z-index: 1;
+    background: url("media/image-insight-mobile/device-frame.png?v=2") center / 100% 100% no-repeat;
+    pointer-events: none;
+  }
+  .ii-mobile-stage--still::after {
+    content: ""; position: absolute; z-index: 2;
+    left: 35.09%; top: 10.36%; width: 28.7%; height: 3.48%;
+    background: #000; border-radius: 999px; pointer-events: none;
+  }
+  .ii-mobile-stage.ui-video { max-width: none; margin: 0; }
+  .ii-mobile-stage video { display: block; width: 100%; height: 100%; border-radius: 0; }
+  .ii-mobile-controls { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 16px; }
+  .ii-mobile-controls .reel-dots { margin: 0; }
+  .ii-mobile-arrow {
+    display: grid; place-items: center; width: 44px; height: 44px; padding: 0;
+    border: 1px solid rgba(var(--ink), .16); border-radius: 50%; background: rgba(255,255,255,.62);
+    color: rgb(var(--ink)); cursor: pointer;
+  }
+  .ii-mobile-arrow:hover { background: #fff; }
+  .ii-mobile-arrow:disabled { opacity: .3; cursor: default; }
+  .ii-mobile-arrow:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
 </style>
 <link rel="stylesheet" href="/case-studies/case-study-v2.css?v=20261017f">
 <style>
@@ -1343,6 +1393,47 @@
         </div>
         <figcaption>1-minute demo: choosing a question, picking images together, then reviewing the session and exporting its summary.</figcaption>
       </figure>
+
+      <div class="ii-mobile" id="mobile-views" role="region" aria-roledescription="carousel" aria-label="Image Insight on mobile">
+        <h3 class="eyebrow">On mobile</h3>
+        <div class="ii-mobile-track" id="ii-mobile-track" tabindex="0" aria-label="Mobile videos and screenshots. Use left and right arrows to browse.">
+          <figure class="ii-mobile-slide" role="group" aria-roledescription="slide" aria-label="1 of 4: Mobile walkthrough">
+            <div class="ii-mobile-stage ui-video">
+              <video autoplay muted loop playsinline preload="metadata" width="1080" height="1920" poster="media/image-insight-mobile/walkthrough-poster.jpg" tabindex="0" role="button" aria-label="Pause mobile walkthrough">
+                <source src="media/image-insight-mobile/walkthrough.mp4" type="video/mp4">
+              </video>
+            </div>
+          </figure>
+          <figure class="ii-mobile-slide" role="group" aria-roledescription="slide" aria-label="2 of 4: Dark mode and account menu">
+            <div class="ii-mobile-stage ii-mobile-stage--still">
+              <img class="ii-mobile-screen" src="media/image-insight-mobile/view-1.jpg" width="1206" height="2622" alt="Image Insight on iPhone with the dark mode and account menu open over the image grid." loading="lazy" draggable="false">
+            </div>
+          </figure>
+          <figure class="ii-mobile-slide" role="group" aria-roledescription="slide" aria-label="3 of 4: Reviewing selected images">
+            <div class="ii-mobile-stage ii-mobile-stage--still">
+              <img class="ii-mobile-screen" src="media/image-insight-mobile/view-3.jpg" width="1206" height="2622" alt="Image Insight on iPhone showing the session’s selected images and a remove action." loading="lazy" draggable="false">
+            </div>
+          </figure>
+          <figure class="ii-mobile-slide" role="group" aria-roledescription="slide" aria-label="4 of 4: Focusing on a single image">
+            <div class="ii-mobile-stage ui-video">
+              <video autoplay muted loop playsinline preload="metadata" width="1080" height="1920" poster="media/image-insight-mobile/focus-poster.jpg" tabindex="0" role="button" aria-label="Play focused image video">
+                <source src="media/image-insight-mobile/focus-video.mp4" type="video/mp4">
+              </video>
+            </div>
+          </figure>
+        </div>
+        <div class="ii-mobile-controls">
+          <button class="ii-mobile-arrow" type="button" data-mobile-prev aria-label="Previous mobile view" aria-controls="ii-mobile-track"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m14 5-7 7 7 7"/></svg></button>
+          <div class="reel-dots" role="group" aria-label="Choose a mobile view">
+            <button class="reel-dot" type="button" aria-label="Mobile walkthrough" aria-controls="ii-mobile-track" aria-current="true"></button>
+            <button class="reel-dot" type="button" aria-label="Dark mode and account menu" aria-controls="ii-mobile-track" aria-current="false"></button>
+            <button class="reel-dot" type="button" aria-label="Reviewing selected images" aria-controls="ii-mobile-track" aria-current="false"></button>
+            <button class="reel-dot" type="button" aria-label="Focusing on a single image" aria-controls="ii-mobile-track" aria-current="false"></button>
+          </div>
+          <button class="ii-mobile-arrow" type="button" data-mobile-next aria-label="Next mobile view" aria-controls="ii-mobile-track"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m10 5 7 7-7 7"/></svg></button>
+        </div>
+      </div>
+
     </section>
 
     <hr class="rule">
@@ -1776,5 +1867,89 @@
   connect();
 }());
 </script>
+
+  <script>
+    (function () {
+      var root = document.querySelector('.ii-mobile');
+      var track = root.querySelector('.ii-mobile-track');
+      var slides = Array.from(root.querySelectorAll('.ii-mobile-slide'));
+      var dots = Array.from(root.querySelectorAll('.reel-dot'));
+      var prev = root.querySelector('[data-mobile-prev]');
+      var next = root.querySelector('[data-mobile-next]');
+      var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+      var players = Array.from(root.querySelectorAll('video')).map(function (video) {
+        var player = { video: video, visible: false, manuallyPaused: false,
+          index: slides.indexOf(video.closest('.ii-mobile-slide')),
+          label: video.getAttribute('aria-label').replace(/^(Play|Pause) /, '') };
+        function togglePlayback() {
+          player.manuallyPaused = !video.paused;
+          if (video.paused) video.play().catch(function () {});
+          else video.pause();
+        }
+        video.addEventListener('click', togglePlayback);
+        video.addEventListener('keydown', function (event) {
+          if (event.key !== 'Enter' && event.key !== ' ') return;
+          event.preventDefault(); togglePlayback();
+        });
+        function playbackState() {
+          video.setAttribute('aria-label', (video.paused ? 'Play ' : 'Pause ') + player.label);
+        }
+        video.addEventListener('play', playbackState);
+        video.addEventListener('pause', playbackState);
+        return player;
+      });
+      function syncPlayback() {
+        players.forEach(function (player) {
+          var video = player.video;
+          if (player.visible && current() === player.index && !reduced.matches && !player.manuallyPaused) {
+            if (video.paused) video.play().catch(function () {});
+          } else video.pause();
+        });
+      }
+      function current() {
+        var nearest = 0;
+        slides.forEach(function (slide, i) {
+          if (Math.abs(slide.offsetLeft - track.scrollLeft) < Math.abs(slides[nearest].offsetLeft - track.scrollLeft)) nearest = i;
+        });
+        return nearest;
+      }
+      function paint() {
+        var index = current();
+        dots.forEach(function (dot, i) { dot.setAttribute('aria-current', String(i === index)); });
+        prev.disabled = index === 0;
+        next.disabled = index === slides.length - 1;
+        syncPlayback();
+      }
+      function go(index) {
+        index = Math.max(0, Math.min(slides.length - 1, index));
+        track.scrollTo({ left: slides[index].offsetLeft, behavior: reduced.matches ? 'auto' : 'smooth' });
+      }
+      dots.forEach(function (dot, i) { dot.addEventListener('click', function () { go(i); }); });
+      prev.addEventListener('click', function () { go(current() - 1); });
+      next.addEventListener('click', function () { go(current() + 1); });
+      track.addEventListener('keydown', function (event) {
+        if (event.target !== track) return;
+        var keys = { ArrowLeft: current() - 1, ArrowRight: current() + 1, Home: 0, End: slides.length - 1 };
+        if (!(event.key in keys)) return;
+        event.preventDefault(); go(keys[event.key]);
+      });
+      track.addEventListener('scroll', paint, { passive: true });
+      window.addEventListener('resize', paint);
+      if ('IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            var player = players.find(function (p) { return p.video === entry.target; });
+            player.visible = entry.isIntersecting;
+          });
+          syncPlayback();
+        }, { threshold: 0.2 });
+        players.forEach(function (player) { observer.observe(player.video); });
+      } else {
+        players.forEach(function (player) { player.visible = true; });
+      }
+      paint();
+    })();
+  </script>
+
 </body>
 </html>
