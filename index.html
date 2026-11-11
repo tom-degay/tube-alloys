@@ -698,8 +698,8 @@
     main > section > .case-blocks.approach-blocks { grid-template-columns: subgrid; }
     main > section > .case-blocks > .case-block { grid-column: span 6; }
     main > section > .case-blocks.approach-blocks > .case-block { grid-column: span 4; }
-    main > section > .case-blocks.approach-blocks.experiments-blocks { grid-template-columns: subgrid; }
-    main > section > .case-blocks.experiments-blocks > .case-block { grid-column: span 6; }
+    main > section > .case-blocks.experiments-blocks { grid-template-columns: subgrid; }
+    main > section > .case-blocks.experiments-blocks > .project-card { grid-column: span 6; }
   }
 
   /* -- Horizontal cards run from 800px, well below the 1024px the rest of
@@ -1032,9 +1032,112 @@
   @media (pointer: coarse) { .reel-dots, .reel-dot { height: 44px; } }
 
 
-  /* Smaller projects: two image cards, in the Approach cards' style. */
+  /* Smaller projects: two cards on the site's standard dark card, a still
+     of the app over the full title and description. The picture is the
+     only bright thing; each product's colour is kept to its label. Image
+     Insight adds a "Try the prototype" pill. It is a second link, so it
+     sits beside the card's link rather than inside it (a link can't hold
+     another), positioned over the card's foot; the card reserves room for
+     it. No lift on hover, so the card and the pill stay together. */
+  .project-card { position: relative; display: flex; }
+  .project-card > .case-block { flex: 1; margin: 0; padding-bottom: 26px; }
+  .project-card > .case-block:hover,
+  .project-card > .case-block:focus-visible { transform: none; }
+  /* the pill sits over the card but outside its link, so hovering it would
+     drop the card's hover state; key the card's hover off the wrapper too */
+  .project-card:hover > .case-block {
+    background-color: rgb(48, 48, 48);
+    border-color: rgb(48, 48, 48);
+  }
+  .project-card.is-ii .case-block-kicker { color: #4bc6e5; }
+  .project-card.is-zf .case-block-kicker { color: #ff406e; }
+  .project-card .case-block-title { font-size: clamp(20px, 2.2vw, 26px); line-height: 1.2; }
+  .project-card .case-block-subtitle { font-size: clamp(15px, 1.3vw, 17px); }
+  .project-card .case-block.has-image .case-block-text { padding: 0 clamp(18px, 2vw, 28px); }
+
+  /* the card picture: a close-up still of the app's interface */
+  /* edge to edge across the top of the card; the card's own rounded
+     corners and overflow clip it */
+  .project-media {
+    display: block;
+    margin: 0 0 clamp(18px, 2vw, 24px);
+    overflow: hidden;
+  }
+  .project-card .case-block-media {
+    height: auto;
+    aspect-ratio: 16 / 10;
+    margin: 0;
+    object-position: center;
+  }
+  /* Image Insight on a phone: a framed still from the mobile walkthrough,
+     cut to the phone's outline by the same mask the case study uses,
+     standing large on black and running off its bottom edge */
+  .project-media.is-phone {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    background: #000;
+  }
+  .project-phone {
+    position: absolute;
+    left: 50%;
+    top: -2%;
+    width: auto;
+    height: 165%;
+    transform: translateX(-50%);
+    -webkit-mask: url("/case-studies/media/image-insight-mobile/device-mask.svg") center / 100% 100% no-repeat;
+    mask: url("/case-studies/media/image-insight-mobile/device-mask.svg") center / 100% 100% no-repeat;
+    transition: transform 0.4s cubic-bezier(.22, 1, .36, 1);
+  }
+  .project-card:hover .project-phone,
+  .project-card .case-block:focus-visible .project-phone { transform: translateX(-50%) translateY(-3%); }
+
+  /* Zonefully: the screenshot sits in from the top and left on its own
+     surface colour, so the app gets breathing room and runs off the right
+     and bottom edges like a window */
+  .project-card.is-zf .project-media {
+    box-sizing: border-box;
+    aspect-ratio: 16 / 10;
+    padding: 4.5% 0 0 5%;
+    background: #191919; /* the screenshot's own surface, measured */
+  }
+  .project-card.is-zf .case-block-media {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+    object-fit: cover;
+    object-position: left top;
+    transform-origin: left top;
+  }
+
+  .project-card:hover .case-block-media,
+  .project-card .case-block.has-image:focus-visible .case-block-media { transform: scale(1.03); }
+
+  .project-card.is-ii > .case-block { padding-bottom: calc(26px + 44px + 14px); }
+  /* two classes: styles.css gives every a[target="_blank"] position: relative */
+  .project-card > .project-try {
+    position: absolute;
+    left: clamp(18px, 2vw, 28px);
+    bottom: 26px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 10px 18px 9px;
+    border: 0;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff;
+    font: 600 16px/24px "Fakt Blond SemiBold", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    transition: background-color 0.15s ease;
+  }
+  .project-try::after { content: none !important; }
+  .project-card > .project-try:hover,
+  .project-card > .project-try:focus-visible { background: rgba(255, 255, 255, 0.24); border: 0; }
+  .reveal-armed .project-try { opacity: 0; transition: opacity 0.8s ease 0.3s; }
+  .reveal-armed .case-block.is-revealed + .project-try { opacity: 1; }
+
   @media (min-width: 820px) {
-    .case-blocks.approach-blocks.experiments-blocks { grid-template-columns: repeat(2, 1fr); }
+    .case-blocks.experiments-blocks { grid-template-columns: repeat(2, 1fr); }
   }
   /* The laptop's caption: small, in Fakt. Stacked below
      1024px (statement above the laptop, caption under it). */
@@ -1369,7 +1472,7 @@
 <noscript>
   <style>
     .hero-armed .about-statement { opacity: 1 !important; transform: none !important; }
-    .reveal-armed .case-blocks .case-block { opacity: 1 !important; }
+    .reveal-armed .case-blocks .case-block, .reveal-armed .project-try { opacity: 1 !important; }
     .reveal-armed .case-pair blockquote::before,
     .reveal-armed .case-pair blockquote cite,
     .reveal-armed .case-pair blockquote .word { opacity: 1 !important; transform: none !important; }
@@ -1567,20 +1670,33 @@
     <section aria-labelledby="other-work-heading">
       <h2 class="eyebrow" id="other-work-heading">Smaller projects</h2>
       <p class="section-intro">Visual craft, design details and interactions.</p>
-      <div class="case-blocks approach-blocks experiments-blocks">
-        <a class="case-block has-image" href="/case-studies/image-insight">
-          <img class="case-block-media" src="/case-studies/media/image-insight-card.jpg" width="1484" height="916" alt="The Image Insight logo over a blurred grid of session images." loading="lazy">
-          <span class="case-block-text">
-            <span class="case-block-title">Image Insight</span>
-          </span>
-        </a>
+      <div class="case-blocks experiments-blocks">
+        <div class="project-card is-ii">
+          <a class="case-block has-image" href="/case-studies/image-insight">
+            <span class="project-media is-phone">
+              <img class="project-phone" src="/case-studies/media/image-insight-card-phone.jpg?v=2" width="1080" height="1920" alt="Image Insight on an iPhone in dark mode: a grid of photographs under the question &lsquo;What is important to you?&rsquo;, with four images chosen." loading="lazy">
+            </span>
+            <span class="case-block-text">
+              <span class="case-block-kicker">Image Insight</span>
+              <span class="case-block-title">Making space for deeper reflection</span>
+              <span class="case-block-subtitle">A coaching tool that uses images to help people talk things through, online or face to face.</span>
+            </span>
+          </a>
+          <a class="project-try" href="/case-studies/image-insight/prototype" target="_blank" rel="noopener noreferrer" aria-label="Try the Image Insight prototype (opens in a new tab)">Try the prototype</a>
+        </div>
 
-        <a class="case-block has-image" href="/case-studies/zonefully">
-          <img class="case-block-media" src="/case-studies/media/zonefully-card.jpg" width="1484" height="916" alt="The Zonefully logo over a blurred app screenshot." loading="lazy">
-          <span class="case-block-text">
-            <span class="case-block-title">Zonefully</span>
-          </span>
-        </a>
+        <div class="project-card is-zf">
+          <a class="case-block has-image" href="/case-studies/zonefully">
+            <span class="project-media">
+              <img class="case-block-media" src="/case-studies/media/zonefully-card-detail.jpg?v=5" width="1200" height="750" alt="Detail of Zonefully&rsquo;s Programs screen in dark mode: a list of training and breakfast programs beside a new, untitled program waiting to be assigned to an activity." loading="lazy">
+            </span>
+            <span class="case-block-text">
+              <span class="case-block-kicker">Zonefully</span>
+              <span class="case-block-title">Connecting long-term goals to routines</span>
+              <span class="case-block-subtitle">A planning app that connects personal goals with recurring routines and a calendar to put them into practice.</span>
+            </span>
+          </a>
+        </div>
       </div>
     </section>
 
