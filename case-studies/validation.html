@@ -2106,7 +2106,7 @@
         </g>
       </svg>
       <h1 class="display">Closing the loop on data&nbsp;quality</h1>
-      <p class="subtitle">Enabled users to fix data errors where they find them, with rules-based corrections and a full audit trail. Over 830,000 cells corrected in the first four months.</p>
+      <p class="subtitle">Enabled users to fix data errors where they find them, with repeatable corrections and a full audit trail. Over 830,000 cells corrected in the first four months.</p>
       <p class="val-watch-row"><a class="val-watch" href="#video">Watch the demo</a> <a class="val-watch" href="../slides/validation.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>View slides</a></p>
     </div>
   </div>
@@ -2149,9 +2149,9 @@
       <div class="problem-layout">
         <div class="problem-main">
 
-          <p>Quantemplate takes data from hundreds of suppliers, harmonises them into a consistent format and flags errors. These could be simple things like an invalid date, or more complex business rules.</p>
+          <p>Quantemplate takes data from hundreds of suppliers, harmonises them into a consistent format and flags errors. These could be simple things like an invalid date, or failures against more complex validation rules.</p>
 
-          <p>Quantemplate had a validation report that gave business analysts row-level reporting of their data. But making a correction meant writing custom rules in the upstream process. We&rsquo;d also introduced automated validation checks, and now clients had hundreds of them. The original validation report didn&rsquo;t scale well to this usage and the workflow had become inefficient.</p>
+          <p>Quantemplate had a validation report that gave business analysts row-level reporting of their data. But making a correction meant writing custom transformations in the upstream process. We&rsquo;d also introduced automated validation checks, and now clients had hundreds of them. The original validation report didn&rsquo;t scale well to this usage and the workflow had become inefficient.</p>
         </div>
         <aside class="problem-side" aria-label="Supporting material">
         <button class="side-card" type="button" aria-haspopup="dialog" aria-controls="evidence-modal">
@@ -2175,7 +2175,7 @@
 
       <p class="display problem-statement"><span class="step-label">Step 1</span>Improve the&nbsp;workflow</p>
 
-      <p>With hundreds of rules in a single pipeline, every extra step between finding a failure and fixing it was repeated hundreds of times. I streamlined the route through the report by compacting navigation steps and filtering out surplus information.</p>
+      <p>With hundreds of validation rules in a single pipeline, every extra step between finding a failure and fixing it was repeated hundreds of times. I streamlined the route through the report by compacting navigation steps and filtering out surplus information.</p>
 
       <figure class="figure figure-big wf-figure">
         <svg class="wf-diagram" viewBox="0 0 725 335" fill="none" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Validation workflow: original and improved">
@@ -2302,7 +2302,7 @@
               <details class="kd-more">
                 <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 14.5l9-9M10.5 5.5h4v4M5.5 10.5v4h4"/></svg></summary>
                 <div class="kd-more-body">
-                  <p>Passed rules are filtered out by default when viewing the report for the first time, helping users focus on their actionable task: reviewing the failures and warnings.</p>
+                  <p>Passed validation rules are filtered out by default when viewing the report for the first time, helping users focus on their actionable task: reviewing the failures and warnings.</p>
 
                 </div>
               </details>
@@ -2343,13 +2343,13 @@
             </figure>
             <div class="kd-text">
               <p class="kd-num" aria-hidden="true">03</p>
-              <h4 class="kd-title">Add direct rule navigation</h4>
-              <p class="kd-strap">Move between rules without leaving the grid</p>
+              <h4 class="kd-title">Add direct validation rule navigation</h4>
+              <p class="kd-strap">Move between validation rules without leaving the grid</p>
               <details class="kd-more">
                 <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 14.5l9-9M10.5 5.5h4v4M5.5 10.5v4h4"/></svg></summary>
                 <div class="kd-more-body">
-                  <p>Adding buttons to navigate between rules within the data grid view, without returning to the report, removed three fiddly steps from the user&rsquo;s workflow. Multiplied over hundreds of validation rules every month, that&rsquo;s a significant time saving.</p>
-                  <p>A rule navigator also allows instant navigation between any rule.</p>
+                  <p>Adding buttons to navigate between validation rules within the data grid view, without returning to the report, removed three fiddly steps from the user&rsquo;s workflow. Multiplied over hundreds of validation rules every month, that&rsquo;s a significant time saving.</p>
+                  <p>The navigator also lets users jump straight to any validation rule.</p>
                   <figure class="figure">
                     <div class="figure-portrait-frame">
                       <img src="media/direct-rule-navigation.png" width="924" height="580" alt="Previous rule and Next rule buttons above the data grid, for moving between validation rules without returning to the report." loading="lazy">
@@ -2374,7 +2374,7 @@
              each picture big, its headline and strapline beneath, the
              rest of the text in a collapsing section. -->
         <h3 class="display kd-heading" id="keydecisions-heading"><span class="step-label">Step 2</span>Fix errors where you find&nbsp;them</h3>
-        <p class="kd-intro">Correcting errors in the data was not as simple as it sounds. Rather than editing cells, Quantemplate pipelines apply batch changes to the data using rules, and these rules needed to be applied at the point the data was checked. Five design principles underpinned the solution.</p>
+        <p class="kd-intro">Correcting an error needed to feel as straightforward as editing a cell. But a correction in Quantemplate is a repeatable transformation: it applies to matching data each time the pipeline runs. The challenge was to make corrections easy to enter while keeping their scope and effect clear.</p>
         <div class="kd-reel">
           <div class="kd-reel-track" id="kd-reel-track" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Applying corrections: design decisions">
           <div class="kd-slide is-current" id="kd-entering" role="group" aria-roledescription="slide" aria-label="1 of 5">
@@ -2388,7 +2388,7 @@
               <details class="kd-more">
                 <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 14.5l9-9M10.5 5.5h4v4M5.5 10.5v4h4"/></svg></summary>
                 <div class="kd-more-body">
-                  <p>Corrections are shown beside the original submitted values. I chose this side-by-side layout to preserve the source data and make it clear that users are creating a mapping, rather than editing the original cell.</p>
+                  <p>Corrections are shown beside the original submitted values. I chose this side-by-side layout to preserve the source data and make it clear that users are creating a correction, rather than editing the original cell.</p>
                   <p>Corrected values stand out in bright green. If no correction has been applied, the placeholder text shows the current value. This helps the user understand exactly what the output data will be.</p>
 
                   <details class="evidence-card evidence-disclosure framing-card">
@@ -2434,7 +2434,7 @@
               <details class="kd-more">
                 <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 14.5l9-9M10.5 5.5h4v4M5.5 10.5v4h4"/></svg></summary>
                 <div class="kd-more-body">
-                  <p>Quantemplate applies corrections to bulk data rather than isolated cells, so we needed to make this clear. When a user selects a field, it opens a popup where they enter the correction. The UI makes it clear that corrections can apply to every matching value or use conditions, such as correcting Premium only for a specific Policy Number.</p>
+                  <p>Users already understood that pipelines apply repeatable changes to data. Rather than introduce another technical concept, I kept the interface focused on their immediate decision: 'Change all matching errors' or 'Change when a condition is met'. Showing the original and corrected values side by side made the effect visible, while the popup made the scope explicit.</p>
                   <p>I added a formula bar, so users could derive a value from another column. For example, if a date is missing, take the date from another column and subtract one month. Based on what I&rsquo;d observed in production pipelines, this would be a necessary addition.</p>
 
                   <details class="evidence-card evidence-disclosure framing-card">
@@ -2487,7 +2487,7 @@
               <details class="kd-more">
                 <summary aria-haspopup="dialog"><span class="kd-more-open">More</span><svg class="kd-more-icon" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 14.5l9-9M10.5 5.5h4v4M5.5 10.5v4h4"/></svg></summary>
                 <div class="kd-more-body">
-                  <p>Corrections are applied to the output on the next pipeline run. Rather than wait for the run to complete to find out if a correction will now pass, after a field is completed, the system checks that the entered value will pass the rule, and warns if it&rsquo;s still a fail.</p>
+                  <p>Corrections are applied to the output on the next pipeline run. Rather than wait for the run to complete to find out if a correction will now pass, after a field is completed, the system checks that the entered value will pass the validation rule, and warns if it&rsquo;s still a fail.</p>
 
                 </div>
               </details>
@@ -2495,7 +2495,7 @@
           </div>
           <div class="kd-slide" id="impl-ordering" role="group" aria-roledescription="slide" aria-label="5 of 5">
             <figure class="figure kd-media">
-              <img src="media/validation-correction-log.jpg" width="2000" height="1206" alt="A table of all corrections attached to one validation rule, with columns for order, column, the correction rule, last editor and last edit date.">
+              <img src="media/validation-correction-log.jpg" width="2000" height="1206" alt="A table of all corrections attached to one validation rule, with columns for order, column, the correction, last editor and last edit date.">
             </figure>
             <div class="kd-text">
               <p class="kd-num" aria-hidden="true">05</p>
@@ -2514,7 +2514,7 @@
                   <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
                           </summary>
                           <div class="evidence-body">
-                  <p>Corrections aren&rsquo;t edits to cells: they&rsquo;re rules, applied in sequence each time the pipeline runs. When two rules match the same value, the later one wins, so the system can&rsquo;t settle the conflict on its own. Order had to become something users could see and control.</p>
+                  <p>Corrections are applied in sequence each time the pipeline runs. When two corrections match the same value, the later one wins, so the system can&rsquo;t settle the conflict on its own. Order had to become something users could see and control.</p>
                           </div>
                         </details>
 
@@ -2564,21 +2564,21 @@
           <cite>Quantemplate user-client at major US insurance carrier</cite>
         </blockquote>
         <figure class="corrections-chart" aria-labelledby="corrections-chart-title">
-          <h3 id="corrections-chart-title">65 rules corrected</h3>
+          <h3 id="corrections-chart-title">65 validation rules with corrections</h3>
           <p class="corrections-chart-subtitle">Cumulative corrections · 28 Oct 2026</p>
-          <div class="corrections-chart-legend"><span>Rules corrected</span></div>
+          <div class="corrections-chart-legend"><span>Validation rules with corrections</span></div>
           <div class="corrections-chart-plot">
             <div class="corrections-chart-y-axis" aria-hidden="true"><span style="top:10%">70</span><span style="top:50%">35</span><span style="top:90%">0</span></div>
-            <svg viewBox="0 0 640 240" role="group" aria-label="Cumulative rules corrected through 28 October 2026. Left axis: zero from 8 July through 17 August, 29 on 21 September, 39 on 8 October and 65 on 28 October.">
+            <svg viewBox="0 0 640 240" role="group" aria-label="Cumulative validation rules with corrections through 28 October 2026. Left axis: zero from 8 July through 17 August, 29 on 21 September, 39 on 8 October and 65 on 28 October.">
               <defs><linearGradient id="corrections-rules-gradient" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#00d8aa" stop-opacity="0.14"/><stop offset="100%" stop-color="#00d8aa" stop-opacity="0"/></linearGradient></defs>
               <path class="corrections-chart-area" d="M44.706 216.000L254.454 216.000L437.983 136.457L527.126 109.029L632.000 37.714V216Z" fill="url(#corrections-rules-gradient)"/>
               <path d="M8 24H632 M8 120H632 M8 216H632" fill="none" stroke="white" stroke-opacity="0.08" vector-effect="non-scaling-stroke"/>
               <g class="corrections-chart-series">
                 <path class="corrections-chart-line corrections-chart-line--rules" d="M44.706 216.000L254.454 216.000L437.983 136.457L527.126 109.029L632.000 37.714"/>
-                <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="17 Aug 2026 · 0 rules" data-tooltip="17 Aug 2026 · 0 rules" cx="254.454" cy="216.000" r="4" fill="#00d8aa"><title>17 Aug 2026: 0 rules corrected</title></circle>
-                <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="21 Sept 2026 · 29 rules" data-tooltip="21 Sept 2026 · 29 rules" cx="437.983" cy="136.457" r="4" fill="#00d8aa"><title>21 Sept 2026: 29 rules corrected</title></circle>
-                <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="8 Oct 2026 · 39 rules" data-tooltip="8 Oct 2026 · 39 rules" cx="527.126" cy="109.029" r="4" fill="#00d8aa"><title>8 Oct 2026: 39 rules corrected</title></circle>
-                <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="28 Oct 2026 · 65 rules · 52 pipeline runs" data-tooltip="28 Oct 2026 · 65 rules · 52 pipeline runs" cx="632.000" cy="37.714" r="4" fill="#00d8aa"><title>28 Oct 2026: 65 rules corrected</title></circle>
+                <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="17 Aug 2026 · 0 validation rules with corrections" data-tooltip="17 Aug 2026 · 0 validation rules with corrections" cx="254.454" cy="216.000" r="4" fill="#00d8aa"><title>17 Aug 2026: 0 validation rules with corrections</title></circle>
+                <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="21 Sept 2026 · 29 validation rules with corrections" data-tooltip="21 Sept 2026 · 29 validation rules with corrections" cx="437.983" cy="136.457" r="4" fill="#00d8aa"><title>21 Sept 2026: 29 validation rules with corrections</title></circle>
+                <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="8 Oct 2026 · 39 validation rules with corrections" data-tooltip="8 Oct 2026 · 39 validation rules with corrections" cx="527.126" cy="109.029" r="4" fill="#00d8aa"><title>8 Oct 2026: 39 validation rules with corrections</title></circle>
+                <circle class="corrections-chart-point" tabindex="0" role="img" aria-label="28 Oct 2026 · 65 validation rules with corrections · 52 pipeline runs" data-tooltip="28 Oct 2026 · 65 validation rules with corrections · 52 pipeline runs" cx="632.000" cy="37.714" r="4" fill="#00d8aa"><title>28 Oct 2026: 65 validation rules with corrections</title></circle>
               </g>
             </svg>
             <div class="corrections-chart-tooltip" role="tooltip" hidden></div>
@@ -2588,7 +2588,7 @@
             <dl>
               <div><dt>Pipeline runs with corrections</dt><dd>52</dd></div>
               <div><dt>Cells fixed</dt><dd>830,132</dd></div>
-              <div><dt>Rules corrected</dt><dd>65</dd></div>
+              <div><dt>Validation rules with corrections</dt><dd>65</dd></div>
             </dl>
           </div>
         </figure>
@@ -2627,7 +2627,7 @@
         <img class="case-block-thumb" src="media/youtube-validation-corrections.jpg" width="800" height="450" alt="Thumbnail for the YouTube video &lsquo;Validation corrections: find and fix data errors&rsquo;" loading="lazy">
         <span class="case-block-text">
           <span class="case-block-title">Validation corrections: find and fix data errors</span>
-          <span class="case-block-subtitle">Using the Validation Report to identify data quality issues and create instant correction rules, each with a full history of who changed what and when.</span>
+          <span class="case-block-subtitle">Using the Validation Report to identify data quality issues and create instant corrections, each with a full history of who changed what and when.</span>
           <span class="case-block-watch">Watch on YouTube</span>
         </span>
       </a>
@@ -2681,18 +2681,18 @@
           <figcaption>Desire lines in the product: an ad hoc correction added by a user to a pipeline, modifying the Accident State for a specific policy number.</figcaption>
         </figure>
 
-        <p>We had made it easier to add validation rules and implementations had become ambitious: clients had hundreds of rules and users spent days in the report analysing the results. There were aspects of the navigation and interaction that were proving cumbersome. I set out to fix this.</p>
+        <p>We had made it easier to add validation rules and implementations had become ambitious: clients had hundreds of validation rules and users spent days in the report analysing the results. There were aspects of the navigation and interaction that were proving cumbersome. I set out to fix this.</p>
 
           <ul class="evidence-list">
             <li>Users making ad hoc corrections in the pipeline</li>
             <li>Specifically mentioned in sales process loss analysis</li>
             <li>User feedback like &lsquo;I don&rsquo;t care about seeing the passed rules&rsquo; and &lsquo;When I go back to the report view after looking at a rule, my scroll position is lost&rsquo;.</li>
-            <li>Production pipelines had hundreds of rules, we&rsquo;d planned for dozens.</li>
+            <li>Production pipelines had hundreds of validation rules, we&rsquo;d planned for dozens.</li>
           </ul>
 
         <figure class="figure">
           <div class="figure-portrait-frame">
-            <img src="media/validation-report-passed.png" width="1416" height="1085" alt="An excerpt from a client&rsquo;s validation report: three pipeline stages of 0.9 to 2.8 million rows, each with a long list of rules that all passed." loading="lazy">
+            <img src="media/validation-report-passed.png" width="1416" height="1085" alt="An excerpt from a client&rsquo;s validation report: three pipeline stages of 0.9 to 2.8 million rows, each with a long list of validation rules that all passed." loading="lazy">
           </div>
           <figcaption>Validation reports had grown beyond the original design capacity. Excerpt from a client report.</figcaption>
         </figure>
@@ -2711,13 +2711,13 @@
           <p class="framing-term">Client feedback</p>
           <p class="framing-quote">&lsquo;I just want to edit the failed cell&rsquo;</p>
           <p class="framing-term">Engineering constraint</p>
-          <p>Quantemplate is designed around rules-based transformations to data, so cell-level editing is not possible. Instead, I needed to make adding a rule as easy as editing a cell, and make its effect obvious.</p>
+          <p>Quantemplate applies repeatable transformations to data, so cell-level editing is not possible. Instead, I needed to make adding a correction as easy as editing a cell, and make its effect obvious.</p>
         </div>
         <div class="framing-pair">
           <p class="framing-term">Client feedback</p>
           <p class="framing-quote">&lsquo;When I go back to the report view after looking at a rule, my scroll position is lost&rsquo;.</p>
           <p class="framing-term">Workflow analysis</p>
-          <p>The root problem isn&rsquo;t just the scroll position, but having to go back to the report to navigate to the next rule.</p>
+          <p>The root problem isn&rsquo;t just the scroll position, but having to go back to the report to navigate to the next validation rule.</p>
         </div>
       </div>
     </div>
