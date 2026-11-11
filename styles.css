@@ -1802,3 +1802,144 @@ the body script adds .is-revealed per card with a per-row --reveal-delay. */
 .is-flow-reset .green-stage [fill], .is-flow-reset .green-stage [stroke] {
   transition: none !important;
 }
+
+/* -- project cards (Image Insight, Zonefully): the home page's Independent
+   work cards and the "Next project" cards at the foot of the case studies.
+   On the site's standard dark card, a still
+   of the app over the full title and description. The picture is the
+   only bright thing; each product's colour is kept to its label. Image
+   Insight adds a "Try the prototype" pill. It is a second link, so it
+   sits beside the card's link rather than inside it (a link can't hold
+   another), positioned over the card's foot; the card reserves room for
+   it. No lift on hover, so the card and the pill stay together. */
+.project-card { position: relative; display: flex; }
+.project-card > .case-block { flex: 1; margin: 0; padding-bottom: 26px; }
+.project-card > .case-block:hover,
+.project-card > .case-block:focus-visible { transform: none; }
+/* the pill sits over the card but outside its link, so hovering it would
+   drop the card's hover state; key the card's hover off the wrapper too */
+.project-card:hover > .case-block {
+  background-color: rgb(48, 48, 48);
+  border-color: rgb(48, 48, 48);
+}
+.project-card.is-ii .case-block-kicker { color: #4bc6e5; }
+.project-card.is-zf .case-block-kicker { color: #ff406e; }
+.project-card .case-block-title { font-size: clamp(20px, 2.2vw, 26px); line-height: 1.2; }
+.project-card .case-block-subtitle { font-size: clamp(15px, 1.3vw, 17px); }
+.project-card .case-block.has-image .case-block-text { padding: 0 clamp(18px, 2vw, 28px); }
+
+/* the card picture: a close-up still of the app's interface */
+/* edge to edge across the top of the card; the card's own rounded
+   corners and overflow clip it */
+.project-media {
+  display: block;
+  margin: 0 0 clamp(18px, 2vw, 24px);
+  overflow: hidden;
+}
+.project-card .case-block-media {
+  height: auto;
+  aspect-ratio: 16 / 10;
+  margin: 0;
+  object-position: center;
+}
+/* Image Insight on a phone: a framed still from the mobile walkthrough,
+   cut to the phone's outline by the same mask the case study uses,
+   standing large on black and running off its bottom edge */
+.project-media.is-phone {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  background: #000;
+}
+.project-phone {
+  position: absolute;
+  left: 50%;
+  top: -2%;
+  width: auto;
+  height: 165%;
+  transform: translateX(-50%);
+  -webkit-mask: url("/case-studies/media/image-insight-mobile/device-mask.svg") center / 100% 100% no-repeat;
+  mask: url("/case-studies/media/image-insight-mobile/device-mask.svg") center / 100% 100% no-repeat;
+  transition: transform 0.4s cubic-bezier(.22, 1, .36, 1);
+}
+.project-card:hover .project-phone,
+.project-card .case-block:focus-visible .project-phone { transform: translateX(-50%) translateY(-3%); }
+
+/* Zonefully: the screenshot sits in from the top and left on its own
+   surface colour, so the app gets breathing room and runs off the right
+   and bottom edges like a window */
+.project-card.is-zf .project-media {
+  box-sizing: border-box;
+  aspect-ratio: 16 / 10;
+  padding: 3.5% 0 0 3.75%;
+  background: #191919; /* the screenshot's own surface, measured */
+}
+.project-card.is-zf .case-block-media {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  object-fit: cover;
+  object-position: left top;
+  transform-origin: left top;
+}
+
+.project-card:hover .case-block-media,
+.project-card .case-block.has-image:focus-visible .case-block-media { transform: scale(1.03); }
+
+/* "Try the prototype" is the card's secondary action: a plain text link
+   styled like the page's other links (Fakt, white, the 0.22 underline)
+   under the description, so the
+   card itself stays the main click. Padded to a 44px tap target. */
+.project-card.is-ii > .case-block { padding-bottom: calc(26px + 36px); }
+/* two classes: styles.css gives every a[target="_blank"] position: relative */
+.project-card > .project-try {
+  position: absolute;
+  left: clamp(18px, 2vw, 28px);
+  bottom: 16px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #fff;
+  font-family: "Fakt Blond", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+/* the underline is a border on the label, so it runs under the arrow too */
+.project-try-label {
+  display: inline-flex;
+  align-items: center;
+  padding-bottom: 1px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+  transition: border-color 0.15s ease;
+}
+.project-try:hover .project-try-label,
+.project-try:focus-visible .project-try-label { border-color: rgba(255, 255, 255, 0.8); }
+/* the diagonal arrow says it opens in a new tab; it nudges out on hover */
+.project-try svg { margin-left: 1px; flex: 0 0 auto; transition: transform 0.2s ease; }
+.project-try:hover svg, .project-try:focus-visible svg { transform: translate(2px, -2px); }
+.project-try::after { content: none !important; }
+.project-card > .project-try:hover,
+.project-card > .project-try:focus-visible { border: 0; }
+.reveal-armed .project-try { opacity: 0; transition: opacity 0.8s ease 0.3s; }
+.reveal-armed .case-block.is-revealed + .project-try { opacity: 1; }
+
+/* As a "Next project" card at the foot of a case study: the same column
+   width the old card had on the wide twelve-column pages. */
+@media (min-width: 1024px) {
+  .content .case-footer > .project-card { max-width: var(--span7, none); }
+}
+
+/* Light variant, for a light page (the Zonefully card at the foot of the
+   pale Image Insight case study): a white card in the page ink, with the
+   light screenshot on its own measured surface. */
+.project-card.is-light > .case-block { background-color: #fff; border-color: #fff; }
+.project-card.is-light:hover > .case-block,
+.project-card.is-light > .case-block:focus-visible { background-color: rgb(238, 238, 238); border-color: rgb(238, 238, 238); }
+.project-card.is-light .case-block-title { color: #131313; }
+.project-card.is-light .case-block-subtitle { color: rgba(19, 19, 19, 0.68); }
+.project-card.is-light.is-zf .case-block-kicker { color: #e8336a; }
+.project-card.is-light.is-zf .project-media { background: #f7f7f7; }
