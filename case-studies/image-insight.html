@@ -838,11 +838,16 @@
     scroll-snap-type: x mandatory;
     overscroll-behavior-x: contain;
     scrollbar-width: none;
-    padding: 0 max(0px, calc(100% - var(--mobile-width))) 8px 0;
+    /* no trailing padding: scrolling stops once the last phone reaches
+       the right edge of the content column, rather than running on until
+       only one is left on screen */
+    padding: 0 0 8px;
   }
   .ii-mobile-track::-webkit-scrollbar { display: none; }
   .ii-mobile-track:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
   .ii-mobile-slide { flex: 0 0 var(--mobile-width); min-width: 0; margin: 0; scroll-snap-align: start; }
+  .ii-mobile-slide:last-child { scroll-snap-align: end; }
+  .ii-mobile-controls[hidden] { display: none; }
   .ii-mobile .ii-mobile-stage {
     position: relative; aspect-ratio: 9 / 16; overflow: hidden; border-radius: 0; background: transparent;
     -webkit-mask: url("media/image-insight-mobile/device-mask.svg") center / 100% 100% no-repeat;
@@ -1918,18 +1923,44 @@
         video.addEventListener('pause', playbackState);
         return player;
       });
+      // a phone plays only while most of it is inside the strip's visible part
+      function inStrip(i) {
+        var a = slides[i].offsetLeft - slides[0].offsetLeft - track.scrollLeft;
+        var w = slides[i].offsetWidth;
+        return Math.min(a + w, track.clientWidth) - Math.max(a, 0) > w * 0.6;
+      }
       function syncPlayback() {
         players.forEach(function (player) {
           var video = player.video;
-          if (player.visible && current() === player.index && !reduced.matches && !player.manuallyPaused) {
+          if (player.visible && inStrip(player.index) && !reduced.matches && !player.manuallyPaused) {
             if (video.paused) video.play().catch(function () {});
           } else video.pause();
         });
       }
+      // The strip stops when the last phone reaches the right edge, so the
+      // later slides can't all scroll to the left edge. Each dot is a scroll
+      // stop rather than a slide: a slide's left edge, clamped to the end of
+      // the strip, with duplicates dropped. Surplus dots are hidden, and the
+      // controls go entirely when every phone already fits.
+      var stops = [0];
+      function measure() {
+        var max = track.scrollWidth - track.clientWidth;
+        stops = [];
+        slides.forEach(function (slide) {
+          var left = Math.min(slide.offsetLeft - slides[0].offsetLeft, max);
+          if (!stops.length || left - stops[stops.length - 1] > 4) stops.push(left);
+        });
+        if (max > 4 && stops[stops.length - 1] < max - 4) stops.push(max);
+        dots.forEach(function (dot, i) {
+          dot.hidden = i >= stops.length;
+          dot.setAttribute('aria-label', 'View ' + (i + 1) + ' of ' + stops.length);
+        });
+        root.querySelector('.ii-mobile-controls').hidden = stops.length < 2;
+      }
       function current() {
         var nearest = 0;
-        slides.forEach(function (slide, i) {
-          if (Math.abs(slide.offsetLeft - track.scrollLeft) < Math.abs(slides[nearest].offsetLeft - track.scrollLeft)) nearest = i;
+        stops.forEach(function (stop, i) {
+          if (Math.abs(stop - track.scrollLeft) < Math.abs(stops[nearest] - track.scrollLeft)) nearest = i;
         });
         return nearest;
       }
@@ -1937,24 +1968,24 @@
         var index = current();
         dots.forEach(function (dot, i) { dot.setAttribute('aria-current', String(i === index)); });
         prev.disabled = index === 0;
-        next.disabled = index === slides.length - 1;
+        next.disabled = index === stops.length - 1;
         syncPlayback();
       }
       function go(index) {
-        index = Math.max(0, Math.min(slides.length - 1, index));
-        track.scrollTo({ left: slides[index].offsetLeft, behavior: reduced.matches ? 'auto' : 'smooth' });
+        index = Math.max(0, Math.min(stops.length - 1, index));
+        track.scrollTo({ left: stops[index], behavior: reduced.matches ? 'auto' : 'smooth' });
       }
       dots.forEach(function (dot, i) { dot.addEventListener('click', function () { go(i); }); });
       prev.addEventListener('click', function () { go(current() - 1); });
       next.addEventListener('click', function () { go(current() + 1); });
       track.addEventListener('keydown', function (event) {
         if (event.target !== track) return;
-        var keys = { ArrowLeft: current() - 1, ArrowRight: current() + 1, Home: 0, End: slides.length - 1 };
+        var keys = { ArrowLeft: current() - 1, ArrowRight: current() + 1, Home: 0, End: stops.length - 1 };
         if (!(event.key in keys)) return;
         event.preventDefault(); go(keys[event.key]);
       });
       track.addEventListener('scroll', paint, { passive: true });
-      window.addEventListener('resize', paint);
+      window.addEventListener('resize', function () { measure(); paint(); });
       if ('IntersectionObserver' in window) {
         var observer = new IntersectionObserver(function (entries) {
           entries.forEach(function (entry) {
@@ -1967,6 +1998,7 @@
       } else {
         players.forEach(function (player) { player.visible = true; });
       }
+      measure();
       paint();
     })();
   </script>
