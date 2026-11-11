@@ -178,6 +178,11 @@ for i,m in enumerate(re.finditer(r'<div class="subsection">',reflections)):
 
 # Reuse the approved navigation chrome without executing Validation's generator.
 nav=pick(reference,r'<nav class="deck-toolbar"','nav').replace('../case-studies/validation.html','../case-studies/column-mapping.html')
+# Validation no longer has contents; this deck still does.
+if 'contents-button' not in nav:
+    contents_button = '<button id="contents-button" type="button" aria-label="Contents" title="Contents"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12M3 6h1M3 12h1M3 18h1"/></svg></button>'
+    nav = nav.replace('<div>', '<div>' + contents_button, 1)
+
 footer=pick(reference,r'<footer class="deck-footer"','footer').replace('/</span> Validation','/</span> Column mapping')
 page='''<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>Column mapping — slide mode</title><link rel="icon" href="../tdg-favicon.svg"><link rel="stylesheet" href="vendor/reveal/reveal.css"><link rel="stylesheet" href="deck.css?v=42"><link rel="stylesheet" href="column-mapping.css?v=4"></head><body class="mapping-deck">'''+nav+'<main class="reveal"><div class="slides">'+'\n'.join(slides)+'</div></main>'+footer+'\n'.join(dialogs)+'''<noscript>This presentation needs JavaScript. <a href="../case-studies/column-mapping.html">Read the case study</a>.</noscript><script src="vendor/reveal/reveal.js"></script><script src="deck.js?v=42"></script><script src="column-mapping.js?v=2"></script></body></html>'''

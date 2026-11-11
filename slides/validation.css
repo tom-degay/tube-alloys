@@ -1,0 +1,31 @@
+/* Validation's November 2026 article-led revision; other decks keep their layout. */
+.validation-deck .reveal .step-title-slide .eyebrow { display: none; }
+.validation-deck .reveal .step-title-slide .step-label { display: block; color: rgba(255,255,255,.35); }
+.validation-deck .reveal .splash .slide-layout { grid-template-columns: 430px minmax(0,1fr); padding-right: 40px; }
+.validation-deck .reveal .splash h1 { font-size: 58px; }
+.validation-deck .reveal .splash .strap { font-size: 27px; }
+.validation-deck .val-hero-media { width: 100%; position: relative; padding-bottom: 16%; }
+.validation-deck .val-hero-shot { position: relative; }
+.validation-deck .reveal .val-hero-shot > img:first-child { width: 100%; height: auto; border-radius: 16px; }
+.validation-deck .reveal .val-hero-popup { position: absolute; left: calc(168 / 695 * 100%); top: calc(219 / 359 * 100%); width: calc(476 / 695 * 100%); height: auto; max-height: none; border-radius: 16px; filter: drop-shadow(0 12px 24px #0007); }
+.validation-deck .reveal .problem-slide h2 { font-size: 76px; max-width: 1100px; }
+.validation-deck .reveal .step-intro { margin-top: 12px; max-width: 1100px; color: #aaa; font-size: 32px; line-height: 1.42; }
+.validation-deck .reveal .portrait-media .slide-layout { grid-template-columns: 410px minmax(0,1fr); gap: 38px; }
+.validation-deck .reveal .portrait-media h2 { font-size: 50px; }
+.validation-deck .reveal .portrait-media .strap { font-size: 28px; }
+.validation-deck .reveal .slide-layout > header > .validation-trigger { display: flex; margin-top: 16px; }
+.validation-deck .reveal .source-figure figure { width: 100%; height: 100%; margin: 0; padding: 38px 54px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; }
+.validation-deck .reveal .source-figure img { width: auto; height: auto; min-height: 0; max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 16px; }
+.validation-deck .reveal .source-figure figure:has(figcaption) img { max-height: 80%; }
+.validation-deck .reveal .source-figure figcaption { flex: none; font-size: 25px; line-height: 1.35; color: #aaa; text-wrap: pretty; }
+.validation-deck .reveal .full-video > video { width: auto; height: auto; position: absolute; inset: 0; margin: auto; max-width: 100%; max-height: 100%; border-radius: 16px; }
+.validation-deck .reveal .outcome-cards { list-style: none; padding: 0; margin: 12px 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+.validation-deck .reveal .outcome-cards li { padding: 26px; border-radius: 16px; background: #212121; font-size: 33px; line-height: 1.25; }
+.validation-deck .reveal .outcome-num { display: block; margin-bottom: 14px; color: #00d8aa; font: 17px monospace; }
+.validation-deck .reveal .chart-slide h2 { font-size: 47px; }
+.validation-deck .corrections-chart-line.corrections-chart-line--rules { stroke: #00d8aa; }
+.validation-deck .corrections-chart-legend span:last-child { color: #00d8aa; text-align: left; }
+.validation-deck .reveal .reflection-copy p { font-size: 32px; line-height: 1.4; }
+.validation-deck .reveal .framing-slide .evidence-card p { font-size: 30px; }
+.validation-deck .reveal .framing-slide .evidence-card .framing-quote { font-size: 38px; }
+.validation-deck .reveal .framing-slide .evidence-card .framing-term { font-size: 20px; }

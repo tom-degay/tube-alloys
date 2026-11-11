@@ -233,3 +233,44 @@ those files; the rules below explain the intent behind them.
   and check the other decks before changing their appearance or behaviour.
 - Creating/editing a deck doesn't itself authorise publishing. Follow Tom's
   current instruction for deployment; preserve unrelated repository changes.
+
+
+## Validation revision — 11 November 2026
+
+These deck-specific instructions supersede the old 43-slide sequence and copy
+exceptions above; they do not change the Column mapping template.
+
+- Use only content and current assets from `case-studies/validation.html`,
+  including the article hero/title/strapline, current outcome figures, annotated
+  two-minute demo and latest ordering/audit PNG.
+- No key points, contents or section mini-contents. Retain Overview navigation.
+- Old slide 5 (`problem`) becomes the current article's simple problem statement.
+  Its new position is slide 3 after removing key points and contents.
+- Slide 3's Evidence popup replaces its two introductory paragraphs with
+  'Evidence:' followed by the source bullet points; retain its existing heading.
+- Remove the sharing workflow, supplier/API-request slide, sharing evidence,
+  supplier-sharing next-step teaser, and obsolete adoption reflection.
+- Slide 10's extracted workflow SVG must retain the article's hidden Feeds stage
+  and divider in both animation states and the overview thumbnail.
+- Follow Problem → Step 1 (Improve the workflow) → Step 2 (Fix errors where you
+  find them) → Outcome → Next steps (Agentic suggestions).
+- Step 1 and Step 2 title slides use the article's large muted step label above
+  the title, at the same heading size, instead of a small green eyebrow.
+- Use current prototype captions rather than the retired slide-only straplines.
+- Preserve supporting prose verbatim in labelled popups. Ordinary explanation
+  is available via More popups; the Step 2 introduction stays on its section slide.
+- Retain the original-report manual playback/start-at-one-second exception.
+- Slide 9 has two stacked info popups: Technical context contains only the
+  first introduction paragraph; Why prioritise this? contains the second.
+- Regenerate with `build-validation.py`; styling exceptions belong in
+  `validation.css`. Current deck: 34 slides, 16 popups, five videos.
+
+- Slide 25 uses the 01:03–01:23 excerpt of the annotated demo, showing a correction being moved, instead of the static ordering image. Keep the source demo unchanged.
+- Follow it with a title slide: ‘2-minute demo’ / ‘Validation workflow walkthrough’, then the full demo.
+
+- Latest revision: restore a supplier-sharing Next steps preview after Outcome using correction-sharing-popup.png, also included on the article. This supersedes the earlier exclusion of the teaser, without restoring the old sharing workflow slides.
+- In slides only, rename Agentic suggestions to Suggest corrections and Proposed next step: to One solution:.
+- The outcome quote slide (`outcome`, slide 29) has no 'Closing the loop' heading;
+  retain the Outcome label, quote and attribution.
+- Restore the original Adoption rates slide verbatim in a Reflections section
+  after Outcome and before Next steps. This overrides its earlier removal.

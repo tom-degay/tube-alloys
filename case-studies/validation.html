@@ -2173,6 +2173,8 @@
     <section aria-labelledby="approach-heading" class="case-body">
       <h2 class="eyebrow" id="approach-heading">Design decisions</h2>
 
+      <p>Supporting corrections required rebuilding the report on a modern frontend framework. I redesigned the navigation alongside this work, retaining what worked and addressing the interactions that had become inefficient as clients added hundreds of validation rules.</p>
+
       <p class="display problem-statement"><span class="step-label">Step 1</span>Improve the&nbsp;workflow</p>
 
       <p>With hundreds of validation rules in a single pipeline, every extra step between finding a failure and fixing it was repeated hundreds of times. I streamlined the route through the report by compacting navigation steps and filtering out surplus information.</p>
@@ -2445,7 +2447,8 @@
                   <span class="evidence-toggle" aria-hidden="true"><span class="evidence-more">More</span><span class="evidence-less">Less</span><svg class="evidence-chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>
                           </summary>
                           <div class="evidence-body">
-                  <p>I had identified the need for multiple matching conditions, for example to apply one correction across several policy numbers. A walk-through of the design specification with a cohort of expert users confirmed it. Their feedback was that this would be much easier than wrangling Excel-style IF statements, opening corrections up to users with less technical skill.</p>
+                  <p>I advocated for a simple condition builder alongside the formula bar. Formulas could express the necessary logic, but still required users to write it. Based on the technical barriers I&rsquo;d observed in existing correction workflows, and my own design and product experience, I judged that formulas alone would leave the barrier too high.</p>
+                  <p>The builder let users specify when a correction should apply without composing an Excel-style IF statement, while keeping formulas available for more advanced corrections. Walkthroughs with expert users confirmed the need for multiple matching conditions, and their feedback strongly supported this approach.</p>
                           </div>
                         </details>
 
@@ -2601,6 +2604,13 @@
       <h2 class="eyebrow" id="reflections-heading">Next steps</h2>
       <h3>Bringing suppliers into the loop</h3>
       <p>The next stage extends the correction workflow through <a href="/case-studies/feeds">Feeds</a>, so clients can share selected results and suppliers can prepare and submit corrections inside Quantemplate; it&rsquo;s now in limited beta (<a href="/case-studies/validation-sharing">more on supplier sharing</a>).</p>
+
+      <figure class="figure" id="supplier-sharing-preview">
+        <div class="figure-portrait-frame">
+          <img src="media/correction-sharing-popup.png" width="2418" height="2216" alt="The sharing popup: &lsquo;Share with 2 partners&rsquo;, listing each partner organisation with its submitters and the validation results selected to share, with a Review sharing button." loading="lazy">
+        </div>
+        <figcaption>Corrections sharing popup: the user can select which rules to share, which organisations and users to share with.</figcaption>
+      </figure>
 
       <h3>Agentic suggestions</h3>
       <p>Better tools have again changed the scale of the work and exposed the next bottleneck: entering corrections could itself become repetitive.</p>

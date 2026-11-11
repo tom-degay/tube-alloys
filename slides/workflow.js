@@ -189,13 +189,49 @@
         raf = requestAnimationFrame(step);
       }
 
+      var touched = false;
       tabs.forEach(function (t) {
         var to = +t.getAttribute('data-state');
-        t.addEventListener('click', function () { go(to); });
+        t.addEventListener('click', function () { touched = true; go(to); });
         t.addEventListener('keydown', function (e) {
-          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(to); }
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); touched = true; go(to); }
         });
       });
+
+      // Autoplay on a loop: while the diagram is well in view, swap
+      // between the original and improved workflows, holding on each for
+      // a few seconds. Stops for good once the reader picks a tab; pauses
+      // while it's off screen.
+      if (!reduced && 'IntersectionObserver' in window) {
+        var HOLD = 3200, loopTimer = 0, inView = false, intersects = false;
+        function schedule(delay) {
+          clearTimeout(loopTimer);
+          if (touched || !inView) return;
+          loopTimer = setTimeout(function () {
+            if (touched || !inView) return;
+            go(target === 0 ? 1 : 0);
+            schedule(DURATION + HOLD);
+          }, delay);
+        }
+        var main = document.querySelector('main.reveal');
+        function syncSlideVisibility() {
+          var now = intersects && !document.hidden && !main.inert &&
+            main.style.visibility !== 'hidden' && svg.closest('section').classList.contains('present');
+          if (now === inView) return;
+          inView = now;
+          if (inView) schedule(1200); else clearTimeout(loopTimer);
+        }
+        var autoIO = new IntersectionObserver(function (entries) {
+          intersects = entries[0].intersectionRatio >= 0.6;
+          syncSlideVisibility();
+        }, { threshold: [0, 0.6] });
+        autoIO.observe(svg);
+        new MutationObserver(syncSlideVisibility).observe(main, {
+          subtree: true, attributes: true, attributeFilter: ['class', 'inert', 'style']
+        });
+        document.addEventListener('visibilitychange', syncSlideVisibility);
+        tabs.forEach(function (t) { t.addEventListener('click', function () { clearTimeout(loopTimer); }); });
+      }
       tabs.forEach(function (t) {
         var on = +t.getAttribute('data-state') === target;
         t.classList.toggle('is-active', on);

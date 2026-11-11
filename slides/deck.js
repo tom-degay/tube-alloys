@@ -143,7 +143,11 @@
   function navigate(fn) { fn(); document.activeElement?.blur(); }
   previous.addEventListener('click', () => navigate(() => deck.prev()));
   next.addEventListener('click', () => navigate(() => deck.next()));
-  document.querySelector('#contents-button').addEventListener('click', () => navigate(() => { deck.slide(2); deck.toggleOverview(false); }));
+  document.querySelector('#contents-button')?.addEventListener('click', () => navigate(() => {
+    const index = deck.getSlides().findIndex(slide => slide.id === 'contents');
+    if (index >= 0) deck.slide(index);
+    deck.toggleOverview(false);
+  }));
   document.querySelector('#overview-button').addEventListener('click', () => navigate(() => deck.toggleOverview()));
   const fullscreen = document.querySelector('#fullscreen-button');
   if (!document.fullscreenEnabled) fullscreen.hidden = true;

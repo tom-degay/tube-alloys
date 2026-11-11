@@ -44,6 +44,22 @@
     const plot = chart.querySelector('.corrections-chart-plot');
     // Match the percentage-based axes when the slide chart uses a wider plot.
     chart.querySelector('svg')?.setAttribute('preserveAspectRatio', 'none');
+    // Keep markers circular while the plot stretches to align with its axes.
+    if (document.body.classList.contains('validation-deck')) {
+      const svg = chart.querySelector('svg');
+      const roundMarkers = () => {
+        const box = svg.getBoundingClientRect();
+        if (!box.width || !box.height) return;
+        const view = svg.viewBox.baseVal;
+        const correction = (box.height / view.height) / (box.width / view.width);
+        svg.querySelectorAll('.corrections-chart-point').forEach(point => {
+          const x = point.cx.baseVal.value, y = point.cy.baseVal.value;
+          point.setAttribute('transform', `translate(${x} ${y}) scale(${correction} 1) translate(${-x} ${-y})`);
+        });
+      };
+      new ResizeObserver(roundMarkers).observe(svg);
+      roundMarkers();
+    }
     if (plot && tooltip) {
       chart.querySelectorAll('.corrections-chart-point').forEach(point => {
         function show() {
