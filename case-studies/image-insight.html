@@ -547,9 +547,13 @@
     background: linear-gradient(180deg, #131313 0%, #222121 100%);
   }
 
+  /* the screenshot runs 6% past its box, so it is always cut by the
+     window's right edge (html clips the overflow) rather than ending
+     on the grey margin inside the image */
   .ii-hero-media img {
     display: block;
-    width: 100%;
+    width: 106%;
+    max-width: none;
     height: auto;
     border-radius: clamp(6px, 0.7vw, 14px) 0 0 clamp(6px, 0.7vw, 14px);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08), 0 18px 48px rgba(0, 0, 0, 0.14);
@@ -628,7 +632,10 @@
      instead of running off the edge. */
   @media (max-width: 1023.98px) {
     .ii-hero {
-      --hero-inset: calc(max(24px, (100% - 820px) / 2) + 22px);
+      /* vw, not %: a percentage here resolves against the hero in the
+         padding but against the hero's narrower content box in the
+         picture's margin, which left a gap at the right edge above 868px */
+      --hero-inset: calc(max(24px, (100vw - 820px) / 2) + 22px);
       grid-template-columns: minmax(0, 1fr);
       row-gap: clamp(40px, 11vw, 110px);
       padding: clamp(32px, 8.8vw, 88px) var(--hero-inset) clamp(48px, 10vw, 100px);
@@ -935,6 +942,7 @@
      shadow and no border (only the hero picture keeps a hairline);
      carousel dots in ink */
   .theme-light .ii-reel-slide img,
+  .theme-light .ii-reel-slide video,
   .theme-light .ii-grid img,
   .theme-light .ui-video {
     background: #fff;
@@ -1030,8 +1038,11 @@
      part of the image grid; the picture meets the page's right edge. */
   @media (max-width: 640px) {
     .ii-hero { padding-bottom: 48px; }
+    /* 1238 of the screenshot's 2000px, counted from the right: the left
+       edge falls in the gap between the image columns, clear of the
+       selected image's focus ring */
     .ii-hero-media img {
-      aspect-ratio: 1007 / 1212;
+      aspect-ratio: 1238 / 1513;
       object-fit: cover;
       object-position: right center;
       border-radius: 6px 0 0 6px;
@@ -1192,7 +1203,9 @@
     border-radius: 10px;
     container-type: inline-size;
   }
-  .ii-reel .ii-reel-card img {
+  .ii-reel .ii-reel-card video { display: block; }
+  .ii-reel .ii-reel-card img,
+  .ii-reel .ii-reel-card video {
     width: auto;
     height: auto;
     max-width: 100%;
@@ -1209,7 +1222,8 @@
       background: none;
       border-radius: 0;
     }
-    .ii-reel .ii-reel-card img {
+    .ii-reel .ii-reel-card img,
+    .ii-reel .ii-reel-card video {
       width: 100%;
       height: auto;
       max-height: none;
@@ -1335,7 +1349,7 @@
   </nav>
   <div class="ii-hero">
     <div class="ii-hero-media" data-hero-spacing data-spacing-button=".ii-watch-row">
-      <img src="media/image-insight-hero-ui.jpg" width="1630" height="1212" alt="Image Insight&rsquo;s main screen: a scrolling grid of photographs with a floating toolbar, alongside a &lsquo;My session&rsquo; panel holding the coach&rsquo;s question and the participant&rsquo;s chosen images.">
+      <img src="media/image-insight-hero.png" width="2000" height="1513" alt="Image Insight&rsquo;s main screen: a grid of photographs with a floating toolbar, alongside a session panel holding the question &lsquo;What is important to you?&rsquo; and the two images the participant has chosen.">
     </div>
     <div class="ii-hero-text">
       <img class="ii-hero-logo" src="media/image-insight-logo.svg?v=20261025-latest-logo" width="226" height="226" alt="Image Insight">
@@ -1382,17 +1396,52 @@
       <p id="centre-heading">The coach asks a question and the participant picks images to talk about. Reflections and next steps are saved in a downloadable PDF.</p>
       <p>The co-founder brought me in with a working prototype. My role was to bring some finesse to the interface and improve the workflow.</p>
 
-      <h3 class="eyebrow" id="demo-heading">1 minute demo</h3>
+    </section>
 
-      <figure class="figure ii-big" id="video">
-        <div class="ui-video">
-          <video controls playsinline preload="metadata" disablepictureinpicture controlslist="nofullscreen nodownload" width="1600" height="900" poster="media/image-insight-login.jpg">
-            <source src="media/image-insight-hero.mp4" type="video/mp4">
-          </video>
-          <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+    <hr class="rule">
+
+    <section aria-labelledby="approach-heading" class="case-body">
+      <h2 class="eyebrow" id="approach-heading">Approach</h2>
+      <h3 class="display kd-heading">A calm environment for&nbsp;reflection</h3>
+      <p>I kept the original concept, adding more breathing room, softer colours and clearer actions. The aim was to help people focus on the images and feelings.</p>
+
+      <div class="ii-reel">
+        <div class="ii-reel-track" id="ii-reel-track" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Image Insight on desktop">
+          <figure class="figure ii-reel-slide is-current" role="group" aria-roledescription="slide" aria-label="1 of 4: Refreshing and resizing the image grid">
+            <div class="ii-reel-card">
+              <video autoplay muted loop playsinline disablepictureinpicture preload="metadata" width="1600" height="1006" poster="media/image-insight-desktop/desktop-1-poster.jpg" aria-label="Refreshing and resizing the image grid">
+                <source src="media/image-insight-desktop/desktop-1.mp4" type="video/mp4">
+              </video>
+            </div>
+            <figcaption>Refreshing the image grid</figcaption>
+          </figure>
+          <figure class="figure ii-reel-slide" role="group" aria-roledescription="slide" aria-label="2 of 4: Focusing on a single image">
+            <div class="ii-reel-card">
+              <video autoplay muted loop playsinline disablepictureinpicture preload="metadata" width="1600" height="1006" poster="media/image-insight-desktop/desktop-3-poster.jpg" aria-label="Focusing on a single image">
+                <source src="media/image-insight-desktop/desktop-3.mp4" type="video/mp4">
+              </video>
+            </div>
+            <figcaption>Focus mode and adding notes</figcaption>
+          </figure>
+          <figure class="figure ii-reel-slide" role="group" aria-roledescription="slide" aria-label="3 of 4: Session settings and choosing a question">
+            <div class="ii-reel-card">
+              <video autoplay muted loop playsinline disablepictureinpicture preload="metadata" width="1600" height="1006" poster="media/image-insight-desktop/desktop-4-poster.jpg" aria-label="Session settings and choosing a question">
+                <source src="media/image-insight-desktop/desktop-4.mp4" type="video/mp4">
+              </video>
+            </div>
+            <figcaption>Session settings</figcaption>
+          </figure>
+          <figure class="figure ii-reel-slide" role="group" aria-roledescription="slide" aria-label="4 of 4: Switching to dark mode">
+            <div class="ii-reel-card">
+              <video autoplay muted loop playsinline disablepictureinpicture preload="metadata" width="1600" height="1006" poster="media/image-insight-desktop/desktop-5-poster.jpg" aria-label="Switching to dark mode">
+                <source src="media/image-insight-desktop/desktop-5.mp4" type="video/mp4">
+              </video>
+            </div>
+            <figcaption>Dark mode</figcaption>
+          </figure>
         </div>
-        <figcaption>1-minute demo: choosing a question, picking images together, then reviewing the session and exporting its summary.</figcaption>
-      </figure>
+        <div class="ii-reel-dial reel-dots" role="group" aria-label="Choose a screen" hidden></div>
+      </div>
 
       <div class="ii-mobile" id="mobile-views" role="region" aria-roledescription="carousel" aria-label="Image Insight on mobile">
         <h3 class="eyebrow">On mobile</h3>
@@ -1432,47 +1481,6 @@
           </div>
           <button class="ii-mobile-arrow" type="button" data-mobile-next aria-label="Next mobile view" aria-controls="ii-mobile-track"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m10 5 7 7-7 7"/></svg></button>
         </div>
-      </div>
-
-    </section>
-
-    <hr class="rule">
-
-    <section aria-labelledby="approach-heading" class="case-body">
-      <h2 class="eyebrow" id="approach-heading">Approach</h2>
-      <h3 class="display kd-heading">A calm environment for&nbsp;reflection</h3>
-      <p>I kept the original concept, adding more breathing room, softer colours and clearer actions. The aim was to help people focus on the images and feelings.</p>
-
-      <!-- The screens in the order you meet them in the app: signing in,
-           the dashboard, a session, then its review. -->
-      <div class="ii-reel">
-        <div class="ii-reel-track" id="ii-reel-track" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Image Insight screens">
-          <figure class="figure ii-reel-slide is-current" role="group" aria-roledescription="slide" aria-label="1 of 4">
-            <div class="ii-reel-card">
-              <img src="media/image-insight-login.jpg" width="2000" height="1300" alt="Image Insight&rsquo;s sign-in page: a soft card on a pale teal background patterned with the app&rsquo;s rounded image-grid motif, with email and password fields and Google or Azure options." loading="lazy" draggable="false">
-            </div>
-            <figcaption>The sign-in page: the same calm palette and generous whitespace as the rest of the app, and a logo built from the signature image grid.</figcaption>
-          </figure>
-          <figure class="figure ii-reel-slide" role="group" aria-roledescription="slide" aria-label="2 of 4">
-            <div class="ii-reel-card">
-              <img src="media/image-insight-landing.jpg" width="2000" height="1300" alt="Image Insight&rsquo;s dashboard: cards for a new session and past sessions, a count of completed and active sessions, and panels for referrals, tutorials and support." loading="lazy" draggable="false">
-            </div>
-            <figcaption>The dashboard applies the same calm treatment across the app: one clear primary action, a light summary of activity, and help within reach.</figcaption>
-          </figure>
-          <figure class="figure ii-reel-slide" role="group" aria-roledescription="slide" aria-label="3 of 4">
-            <div class="ii-reel-card">
-              <img src="media/image-insight-session-expanded.jpg" width="2000" height="1356" alt="The session opened to full screen: a large &lsquo;What cards represent your weaknesses?&rsquo; heading above three chosen images, with &lsquo;Review session&rsquo; and &lsquo;Add question&rsquo; below." loading="lazy" draggable="false">
-            </div>
-            <figcaption>The redesign in one view: the question and the chosen images hold the centre, and the rest of the interface steps back.</figcaption>
-          </figure>
-          <figure class="figure ii-reel-slide" role="group" aria-roledescription="slide" aria-label="4 of 4">
-            <div class="ii-reel-card">
-              <img src="media/image-insight-session-review.jpg" width="2000" height="1300" alt="Image Insight&rsquo;s session review screen: each chosen image paired with the participant&rsquo;s reflection, and an Actions panel listing next steps to carry forward." loading="lazy" draggable="false">
-            </div>
-            <figcaption>The session review pairs each image with its reflection and foregrounds the actions to take forward, ready to export as a PDF.</figcaption>
-          </figure>
-        </div>
-        <div class="ii-reel-dial reel-dots" role="group" aria-label="Choose a screen" hidden></div>
       </div>
     </section>
 
@@ -1527,6 +1535,18 @@
           </figure>
         </div>
       </div>
+
+      <h3 class="eyebrow" id="demo-heading">1 minute demo</h3>
+
+      <figure class="figure ii-big" id="video">
+        <div class="ui-video">
+          <video controls playsinline preload="metadata" disablepictureinpicture controlslist="nofullscreen nodownload" width="1600" height="900" poster="media/image-insight-login.jpg">
+            <source src="media/image-insight-hero.mp4" type="video/mp4">
+          </video>
+          <button class="ui-video-expand" type="button" aria-label="View full size"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="expand-corner" style="--dx:-1px;--dy:-1px" d="M7 3H3v4"/><path class="expand-corner" style="--dx:1px;--dy:-1px" d="M13 3h4v4"/><path class="expand-corner" style="--dx:1px;--dy:1px" d="M13 17h4v-4"/><path class="expand-corner" style="--dx:-1px;--dy:1px" d="M7 17H3v-4"/></svg></button>
+        </div>
+        <figcaption>1-minute demo: choosing a question, picking images together, then reviewing the session and exporting its summary.</figcaption>
+      </figure>
     </section>
 
     <hr class="rule">
@@ -1623,7 +1643,7 @@
   <script>
     (function () {
       if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        document.querySelectorAll(".ui-video video").forEach(function (v) {
+        document.querySelectorAll(".ui-video video, .ii-reel video").forEach(function (v) {
           v.pause();
           v.removeAttribute("autoplay");
         });
