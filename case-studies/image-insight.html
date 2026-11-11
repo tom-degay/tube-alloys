@@ -536,27 +536,42 @@
     }
   }
 
-  /* Hero follows Zonefully: text on the left, screenshot running off
-     the right edge. Below 1024px the text sits above the picture. */
+  /* Text on the left, the whole screenshot on the right, uncropped and
+     inside the page margins on both sides. Below 1024px the text sits
+     above the picture. */
   .ii-hero {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 53.4vw;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
     align-items: center;
     column-gap: 6.4vw;
-    padding: clamp(40px, 9vw, 180px) 0 clamp(56px, 10vw, 200px) 7.6vw;
+    padding: clamp(40px, 9vw, 180px) 7.6vw clamp(56px, 10vw, 200px);
     background: linear-gradient(180deg, #131313 0%, #222121 100%);
   }
 
-  /* the screenshot runs 6% past its box, so it is always cut by the
-     window's right edge (html clips the overflow) rather than ending
-     on the grey margin inside the image */
   .ii-hero-media img {
     display: block;
-    width: 106%;
-    max-width: none;
+    width: 100%;
     height: auto;
-    border-radius: clamp(6px, 0.7vw, 14px) 0 0 clamp(6px, 0.7vw, 14px);
+    border-radius: clamp(6px, 0.7vw, 14px);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08), 0 18px 48px rgba(0, 0, 0, 0.14);
+  }
+
+  /* the hero picture is the app on a phone: a cut-out with its own
+     transparent surround, so no box, radius or box-shadow, just a soft
+     drop shadow that follows the phone's outline */
+  .ii-hero-media { display: flex; justify-content: center; }
+  .ii-hero-media img.ii-hero-phone,
+  .theme-light .ii-hero-media img.ii-hero-phone {
+    width: auto;
+    max-width: 100%;
+    height: clamp(420px, 44vw, 760px);
+    border-radius: 0;
+    box-shadow: none;
+    filter: drop-shadow(0 2px 6px rgba(16, 40, 46, 0.1)) drop-shadow(0 24px 48px rgba(16, 40, 46, 0.16));
+  }
+  @media (max-width: 1023.98px) {
+    .ii-hero-media img.ii-hero-phone,
+    .theme-light .ii-hero-media img.ii-hero-phone { height: min(620px, 118vw); }
   }
 
   @media (min-width: 1024px) {
@@ -632,9 +647,6 @@
      instead of running off the edge. */
   @media (max-width: 1023.98px) {
     .ii-hero {
-      /* vw, not %: a percentage here resolves against the hero in the
-         padding but against the hero's narrower content box in the
-         picture's margin, which left a gap at the right edge above 868px */
       --hero-inset: calc(max(24px, (100vw - 820px) / 2) + 22px);
       grid-template-columns: minmax(0, 1fr);
       row-gap: clamp(40px, 11vw, 110px);
@@ -643,9 +655,7 @@
 
     .ii-hero-text { grid-row: 1; }
 
-    /* Keep the picture flush with the right edge as the hero stacks. */
-    .ii-hero-media { margin-right: calc(-1 * var(--hero-inset)); }
-    .ii-hero-media img { border-radius: clamp(6px, 1.3vw, 13px) 0 0 clamp(6px, 1.3vw, 13px); }
+    .ii-hero-media img { border-radius: clamp(6px, 1.3vw, 13px); }
 
     .ii-hero h1 { font-size: clamp(32px, 5vw, 56px); line-height: 1.1; max-width: 13.5em; }
 
@@ -1039,19 +1049,8 @@
   body.theme-light .menu-subsection-divider { border-top-color: rgba(var(--ink), 0.14); }
   body.theme-light .menu-subsection-title, body.theme-light .menu-subsection-copy { color: inherit; }
 
-  /* A tall mobile crop keeps the whole session panel visible alongside
-     part of the image grid; the picture meets the page's right edge. */
   @media (max-width: 640px) {
     .ii-hero { padding-bottom: 48px; }
-    /* 1238 of the screenshot's 2000px, counted from the right: the left
-       edge falls in the gap between the image columns, clear of the
-       selected image's focus ring */
-    .ii-hero-media img {
-      aspect-ratio: 1238 / 1513;
-      object-fit: cover;
-      object-position: right center;
-      border-radius: 6px 0 0 6px;
-    }
   }
 
   /* ================================================================
@@ -1354,7 +1353,7 @@
   </nav>
   <div class="ii-hero">
     <div class="ii-hero-media" data-hero-spacing data-spacing-button=".ii-watch-row">
-      <img src="media/image-insight-hero.png" width="2000" height="1513" alt="Image Insight&rsquo;s main screen: a grid of photographs with a floating toolbar, alongside a session panel holding the question &lsquo;What is important to you?&rsquo; and the two images the participant has chosen.">
+      <img class="ii-hero-phone" src="media/image-insight-hero-phone.webp" width="783" height="1619" alt="Image Insight on an iPhone in light mode: a four-column grid of photographs under the question &lsquo;What is important to you?&rsquo;, with three images chosen.">
     </div>
     <div class="ii-hero-text">
       <img class="ii-hero-logo" src="media/image-insight-logo.svg?v=20261025-latest-logo" width="226" height="226" alt="Image Insight">
