@@ -1962,8 +1962,22 @@
     showMobileSessionBar(true);
     $(phoneLayout.matches ? '#mobile-session-bar' : '#new-session').focus({ preventScroll: true });
   });
-  renderPanel();
-  showMobileSessionBar(true);
-  openDialog($('#prototype-intro'), $('#new-session'));
-  board.contentWindow.postMessage({ type: 'ii-session-connect' }, location.origin);
+  if (embeddedNotesDemo) {
+    // Seed one photograph, then use the same focus view, notes state and gestures
+    // as a normal session. No grid catalogue, disclaimer or entrance sequence.
+    const image = {
+      id:'session-photo-218', alt:'Cliffs beside the sea',
+      src:'/case-studies/media/image-insight-grid/session-photo-218.webp?v=2'
+    };
+    introDismissed = true;
+    catalog.set(image.id, image);
+    state.selected = [image.id];
+    $('#discussion-dialog').style.animation = 'none';
+    openDiscussion(image.id, null);
+  } else {
+    renderPanel();
+    showMobileSessionBar(true);
+    openDialog($('#prototype-intro'), $('#new-session'));
+    board.contentWindow.postMessage({ type: 'ii-session-connect' }, location.origin);
+  }
 })();

@@ -894,6 +894,11 @@
 
   .ii-notes-demo iframe { display:block; width:100%; height:440px; border:0; border-radius:10px; }
   @media(max-width:640px) { .ii-notes-demo iframe { height:550px; } }
+  @media(min-width:641px) {
+    .ii-notes-row { align-items:stretch; }
+    .ii-notes-row .ii-geometry { display:flex; }
+    .ii-notes-row .ii-geometry-replay { display:grid; place-items:center; }
+  }
   /* Construction squares remain visible while the heavy symbol draws over them. */
   .ii-geometry-replay { display:block; width:100%; padding:clamp(40px, 5vw, 64px); border:0; border-radius:10px; background:#fff; color:#334857; cursor:pointer; }
   .theme-light .ii-geometry-replay { color:#334857; }
@@ -1534,7 +1539,7 @@
             <iframe src="media/image-insight-grid-interactive.html?v=20261025-refresh-lightweight" width="1059" height="495" title="Interactive image grid: refresh the photos, choose Standard, Nature, Leisure or Urban, and adjust the number of images from 1 to 60" loading="lazy"></iframe>
           </figure>
         </div>
-        <div class="ii-grid-row">
+        <div class="ii-grid-row ii-notes-row">
           <figure class="figure ii-notes-demo" style="--ar: 1.759">
             <iframe src="media/image-insight-notes-demo.html" title="Try adding notes to an Image Insight photograph" loading="lazy"></iframe>
           </figure>
