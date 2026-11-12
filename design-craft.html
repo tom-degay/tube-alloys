@@ -485,6 +485,14 @@
   .craft-icons > object { aspect-ratio: 253 / 141; }
   .craft-square > object { aspect-ratio: 1; }
   .craft-grid > iframe { aspect-ratio: 1; }
+  .craft-focus-phone {
+    width: min(100%, 428.4px); margin-inline: auto; aspect-ratio: 9 / 16;
+    -webkit-mask: url('/case-studies/media/image-insight-mobile/device-mask.svg') center / 100% 100% no-repeat;
+    mask: url('/case-studies/media/image-insight-mobile/device-mask.svg') center / 100% 100% no-repeat;
+  }
+  .craft-focus-phone video { display: block; width: 100%; height: 100%; border-radius: 0; cursor: pointer; }
+  .craft-focus-phone:focus-within { outline: 2px solid #00d8aa; outline-offset: 4px; }
+
   .craft-date-canvas {
     display: grid;
     place-items: center;
@@ -499,7 +507,6 @@
     aspect-ratio: 1;
     filter: drop-shadow(0 8px 14px #0002);
   }
-  .craft-programme > iframe { height: 688px; }
   .craft-widget > figcaption { margin: 10px 0 0; }
   @container (max-width: 480px) {
     .craft-programme > iframe { height: 736px; }
@@ -636,6 +643,45 @@
   .wr-roundel { background: transparent; }
   .wr-roundel svg { display: block; width: 100%; height: auto; aspect-ratio: 1004 / 1003; border: 0; background: transparent; }
   .profile-statistics > svg { display:block; width:100%; height:auto; border-radius:10px; }
+  /* Construction squares remain visible while the heavy symbol draws over them. */
+  .ii-geometry-replay { display:block; width:100%; padding:clamp(40px, 5vw, 64px); border:0; border-radius:10px; background:#fff; color:#334857; cursor:pointer; }
+  .theme-light .ii-geometry-replay { color:#334857; }
+  .ii-geometry-replay svg { display:block; width:100%; height:auto; overflow:visible; }
+  .ii-geometry-replay svg path, .ii-geometry-replay svg circle { stroke-linecap:round; stroke-linejoin:round; }
+  .geometry-symbol { opacity:1; transition:opacity 300ms ease; }
+  .ii-geometry.is-fading .geometry-symbol { opacity:0; }
+  .ii-geometry-replay:focus-visible { outline:2px solid var(--accent,#0e76aa); outline-offset:4px; }
+  .ii-geometry.is-armed .geometry-ink { stroke-dasharray:1; stroke-dashoffset:1; opacity:0; }
+  .ii-geometry.is-playing .geometry-ink { animation:geometry-draw 1.5s cubic-bezier(.4,0,.2,1) 1s both; }
+  .ii-geometry.is-playing .geometry-circle { animation-delay:.55s; animation-duration:1.8s; }
+  @keyframes geometry-draw { 0% { stroke-dashoffset:1; opacity:0; } 1% { opacity:1; } 100% { stroke-dashoffset:0; opacity:1; } }
+  @media(prefers-reduced-motion:reduce) { .geometry-symbol { transition:none; } .ii-geometry.is-armed .geometry-ink { animation:none;stroke-dashoffset:0;opacity:1; } }
+
+
+  .craft-icon-panel { background:#fff; border-radius:10px; overflow:hidden; padding-top:clamp(24px,4vw,48px); }
+  .craft-icon-panel .ii-geometry { width:min(72%,340px); margin:0 auto; }
+  .craft-icon-panel .ii-geometry-replay { padding:clamp(20px,3vw,36px); }
+  .craft-icon-panel > object { display:block; width:100%; height:auto; aspect-ratio:253 / 141; border:0; }
+
+
+  /* Independent columns keep short studies together beside the tall phone. */
+  .poster-digital { display:flex; flex-direction:column; }
+  .craft-right { display:contents; }
+  .poster-digital .p-item { order:var(--craft-order,0); }
+  .craft-focus > figcaption { text-align:center; }
+  .poster-digital .p-fig > .agent-demo {
+    aspect-ratio:1; height:auto; align-content:center;
+  }
+  @media (min-width:1024px) {
+    .poster.poster-digital { display:grid; }
+    .craft-right {
+      display:flex; flex-direction:column; gap:clamp(32px,4vw,48px);
+      grid-column:7 / 13; grid-row:2 / 6; min-width:0; align-self:start;
+    }
+    .craft-right > .p-item { margin:0; min-width:0; }
+    .poster-digital .p-fig > .agent-demo { aspect-ratio:1; }
+  }
+
 </style>
 <script>
   (function () {
@@ -721,26 +767,17 @@
   <main>
     <hr class="rule rule-top">
     <div class="poster poster-digital" id="interaction-craft">
-      <div class="p-item p-hero" style="--c:1 / 8;--r:1 / span 1"><h1 class="lede display head-fade">Design craft</h1></div>
+      <div class="p-item p-hero" style="--craft-order:0;--c:1 / 8;--r:1 / span 1"><h1 class="lede display head-fade">Design craft</h1></div>
 
-      <nav class="p-item toc p-toc" aria-label="On this page" style="--c:10 / 13;--r:1 / span 1">
+      <nav class="p-item toc p-toc" aria-label="On this page" style="--craft-order:1;--c:10 / 13;--r:1 / span 1">
         <a href="#interaction-craft">Interaction craft</a>
         <a href="#isokon-heading">Physical media</a>
       </nav>
 
-      <div id="craft-statement" class="p-item p-card p-statement" style="--c:7 / 13;--r:2"><h2 class="principle-title display" id="move-fast-heading">Move fast<br>and <span class="craft-word">craft</span><br>things</h2></div>
+      <div class="craft-right">
+<div id="craft-statement" class="p-item p-card p-statement" style="--craft-order:2;--c:7 / 13;--r:2"><h2 class="principle-title display" id="move-fast-heading">Move fast<br>and <span class="craft-word">craft</span><br>things</h2></div>
 
-      <figure class="craft-left p-item figure craft-widget craft-square" id="craft-image-insight-motif" style="--c:1 / 7;--r:2">
-        <object data="/case-studies/media/image-insight-motif-animated.svg?theme=dark" type="image/svg+xml" width="370" height="370" aria-label="Hover or tap to replay the Image Insight brand motif" title="Hover or tap to replay the Image Insight brand motif"><a href="/case-studies/media/image-insight-motif-animated.svg">Hover or tap to replay the Image Insight brand motif</a></object>
-        <figcaption><a href="/case-studies/image-insight#brand-motif">Image Insight</a></figcaption>
-      </figure>
-
-      <figure class="craft-left p-item figure craft-widget craft-icons" id="craft-image-insight-icons" style="--c:1 / 7;--r:3">
-        <object data="/case-studies/media/image-insight-icons-interactive.svg" type="image/svg+xml" width="253" height="141" aria-label="Try Image Insight’s animated icons" title="Try Image Insight’s animated icons"><a href="/case-studies/media/image-insight-icons-interactive.svg">Try Image Insight’s animated icons</a></object>
-        <figcaption><a href="/case-studies/image-insight#icon-details">Image Insight</a></figcaption>
-      </figure>
-
-      <figure class="p-item figure p-fig" style="--c:7 / 13;--r:3">
+<figure class="p-item figure p-fig" style="--craft-order:5;--c:7 / 13;--r:3">
       <div class="agent-demo">
                       <svg class="agent-interactive" xmlns="http://www.w3.org/2000/svg" width="690" height="250" viewBox="0 0 690 250" role="button" tabindex="0" aria-label="Agent" style="cursor:pointer;overflow:visible;touch-action:manipulation">
                       <title>Agent — hover to animate</title>
@@ -782,35 +819,12 @@
                               </div>
       <figcaption>All the details: Quantemplate Agent hover animation options</figcaption></figure>
 
-      <figure class="craft-left p-item figure mapping-tabs-detail" style="--c:1 / 7;--r:4" id="mapping-tabs-detail" aria-labelledby="mapping-tabs-title">
-          <div class="stage-heading">
-            <h4 class="diagram-title" id="mapping-tabs-title">Combined tab/progress bar</h4>
-          </div>
-          <div class="mapping-demo-canvas">
-            <object type="image/svg+xml" data="/case-studies/media/column-mapping-tabs.svg?v=20261009-hint3" aria-label="Interactive column mapping with Mapped and Unmapped tabs"><a href="/case-studies/media/column-mapping-tabs.svg">Open the interactive column mapping detail</a>.</object>
-          </div>
-          <div class="demo-controls" role="group" aria-label="Mapping demo controls">
-            <button class="control-button reset-button" type="button" disabled><span>Reset</span></button>
-            <button class="control-button demo-button" type="button" aria-pressed="false" disabled>
-              <svg class="play-icon" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1 11 6 2 11Z" fill="currentColor"/></svg>
-              <svg class="stop-icon" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><rect x="1" y="1" width="10" height="10" rx="1" fill="currentColor"/></svg>
-              <span>Play demo</span>
-            </button>
-          </div>
-          <span class="visually-hidden demo-status" role="status" aria-live="polite"></span>
-        </figure>
-
-      <figure class="p-item figure craft-widget craft-date-picker" id="craft-zonefully-date-picker" style="--c:7 / 13;--r:4">
+<figure class="p-item figure craft-widget craft-date-picker" id="craft-zonefully-date-picker" style="--craft-order:7;--c:7 / 13;--r:4">
         <div class="craft-date-canvas"><object data="/case-studies/media/zonefully-date-picker-interactive.svg?v=20261018-next-month#open" type="image/svg+xml" width="375" height="375" aria-label="Try Zonefully’s date picker" title="Try Zonefully’s date picker"><a href="/case-studies/media/zonefully-date-picker-interactive.svg">Try Zonefully’s date picker</a></object></div>
         <figcaption><a href="/case-studies/zonefully#date-picker">Zonefully</a></figcaption>
       </figure>
 
-      <figure class="craft-left p-item figure craft-widget craft-grid" id="craft-image-insight-grid" style="--c:1 / 7;--r:5">
-        <iframe src="/case-studies/media/image-insight-grid-interactive.html?hints=off&amp;v=20261025-refresh-lightweight" title="Try Image Insight’s image grid: refresh photos, switch categories and adjust the image count" loading="lazy"></iframe>
-        <figcaption><a href="/case-studies/image-insight#image-grid-controls">Image Insight</a></figcaption>
-      </figure>
-
-      <figure class="p-item figure craft-widget craft-square" id="craft-zonefully-brand" style="--c:7 / 13;--r:5">
+<figure class="p-item figure craft-widget craft-square" id="craft-zonefully-brand" style="--craft-order:9;--c:7 / 13;--r:5">
         <button class="zf-brand-mark" type="button" aria-label="Show full-colour Zonefully logo" aria-pressed="false">
                 <svg xmlns="http://www.w3.org/2000/svg" width="532" height="532" viewBox="0 0 266 266" fill="none" aria-hidden="true" focusable="false">
                 <rect width="266" height="266" fill="#000"/>
@@ -901,12 +915,7 @@
         <figcaption><a href="/case-studies/zonefully#brand-mark">Zonefully</a></figcaption>
       </figure>
 
-      <figure class="craft-left p-item figure craft-widget craft-programme" id="craft-zonefully-programme" style="--c:1 / 7;--r:6">
-        <iframe src="/case-studies/media/zonefully-program-selector-interactive.html?embed" title="Try Zonefully’s programme preview, search and activation" loading="lazy"></iframe>
-        <figcaption><a href="/case-studies/zonefully#programme-selector">Zonefully</a></figcaption>
-      </figure>
-
-      <figure id="profile-graphic" class="p-item figure p-nocrop profile-statistics" style="--c:7 / 13;--r:6">
+<figure id="profile-graphic" class="p-item figure p-nocrop profile-statistics" style="--craft-order:10;--c:7 / 13;--r:6">
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1005pt" height="719pt" viewBox="0 0 1005 719">
 <defs>
 <filter id="profile-filter-remove-color" x="0%" y="0%" width="100%" height="100%">
@@ -2843,6 +2852,72 @@
 <mask id="profile-animated-regions" maskUnits="userSpaceOnUse" x="0" y="0" width="1005" height="719"><rect width="1005" height="719" fill="white"/><rect x="316" y="391" width="187" height="10" fill="black"/><rect x="316" y="439" width="187" height="10" fill="black"/><rect x="316" y="487" width="187" height="10" fill="black"/><rect x="316" y="535" width="187" height="10" fill="black"/><rect x="316" y="583" width="187" height="10" fill="black"/><rect x="316" y="631" width="187" height="10" fill="black"/><rect x="601" y="391" width="203" height="10" fill="black"/><rect x="601" y="439" width="203" height="10" fill="black"/><rect x="601" y="487" width="203" height="10" fill="black"/><rect x="601" y="535" width="203" height="10" fill="black"/><rect x="601" y="583" width="203" height="10" fill="black"/><rect x="601" y="631" width="203" height="10" fill="black"/><rect x="316" y="320" width="90" height="49" fill="black"/><rect x="599" y="320" width="114" height="49" fill="black"/></mask><rect x="80" y="243" width="842" height="431" rx="8" fill="#0f1434"/><use xlink:href="#profile-source-28" mask="url(#profile-animated-regions)"/>
 <rect class="animated-bar" x="317" y="392" width="185.0" height="8" rx="4" fill="#00d3ed" data-width="185.0" data-delay="0"/><rect class="animated-bar" x="317" y="440" width="15.408106607440311" height="8" rx="4" fill="#00d3ed" data-width="15.408106607440311" data-delay="85"/><rect class="animated-bar" x="317" y="488" width="35.43864519711271" height="8" rx="4" fill="#00d3ed" data-width="35.43864519711271" data-delay="170"/><rect class="animated-bar" x="317" y="536" width="0.3081621321488062" height="8" rx="0.1540810660744031" fill="#00d3ed" data-width="0.3081621321488062" data-delay="255"/><rect class="animated-bar" x="317" y="584" width="24.036646307606887" height="8" rx="4" fill="#00d3ed" data-width="24.036646307606887" data-delay="340"/><rect class="animated-bar" x="317" y="632" width="24.652970571904497" height="8" rx="4" fill="#00d3ed" data-width="24.652970571904497" data-delay="425"/><rect class="animated-bar" x="602" y="392" width="185.0" height="8" rx="4" fill="#00cfa4" data-width="185.0" data-delay="0"/><rect class="animated-bar" x="602" y="440" width="45.936440677966104" height="8" rx="4" fill="#00cfa4" data-width="45.936440677966104" data-delay="85"/><rect class="animated-bar" x="602" y="488" width="5.408898305084746" height="8" rx="2.704449152542373" fill="#00cfa4" data-width="5.408898305084746" data-delay="170"/><rect class="animated-bar" x="602" y="536" width="61.144067796610166" height="8" rx="4" fill="#00cfa4" data-width="61.144067796610166" data-delay="255"/><rect class="animated-bar" x="602" y="584" width="97.04661016949153" height="8" rx="4" fill="#00cfa4" data-width="97.04661016949153" data-delay="340"/><rect class="animated-bar" x="602" y="632" width="111.62711864406779" height="8" rx="4" fill="#00cfa4" data-width="111.62711864406779" data-delay="425"/><g id="profile-headline-left" fill="#00d3ed"/><g id="profile-headline-right" fill="#00cfa4"/></svg>
 <figcaption>Quantemplate profile page showing usage statistics</figcaption></figure>
+      </div>
+
+      <figure class="craft-left p-item figure craft-widget craft-icons" id="craft-image-insight-icons" style="--craft-order:3;--c:1 / 7;--r:2">
+        <div class="craft-icon-panel">
+          <div class="ii-geometry"><button class="ii-geometry-replay" type="button" aria-label="Replay the Image Insight geometry: rounded squares forming the circle and plus symbol">
+              <svg aria-hidden="true" width="405" height="405" viewBox="0 0 405 405" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g opacity="0.3">
+<path d="M82.5 172.5H92.5C120.503 172.5 134.504 172.5 145.2 167.05C154.608 162.257 162.257 154.608 167.05 145.2C172.5 134.504 172.5 120.503 172.5 92.5V82.5C172.5 54.4974 172.5 40.4961 167.05 29.8005C162.257 20.3924 154.608 12.7433 145.2 7.94967C134.504 2.5 120.503 2.5 92.5 2.5H82.5C54.4974 2.5 40.4961 2.5 29.8005 7.94967C20.3924 12.7433 12.7433 20.3924 7.94967 29.8005C2.5 40.4961 2.5 54.4974 2.5 82.5V92.5C2.5 120.503 2.5 134.504 7.94967 145.2C12.7433 154.608 20.3924 162.257 29.8005 167.05C40.4961 172.5 54.4974 172.5 82.5 172.5Z" stroke-width="5" stroke="currentColor"/>
+<path d="M168.5 332.5H236.5C270.103 332.5 286.905 332.5 299.739 325.96C311.029 320.208 320.208 311.029 325.96 299.739C332.5 286.905 332.5 270.103 332.5 236.5V168.5C332.5 134.897 332.5 118.095 325.96 105.261C320.208 93.9708 311.029 84.792 299.739 79.0396C286.905 72.5 270.103 72.5 236.5 72.5H168.5C134.897 72.5 118.095 72.5 105.261 79.0396C93.9708 84.792 84.792 93.9708 79.0396 105.261C72.5 118.095 72.5 134.897 72.5 168.5V236.5C72.5 270.103 72.5 286.905 79.0396 299.739C84.792 311.029 93.9708 320.208 105.261 325.96C118.095 332.5 134.897 332.5 168.5 332.5Z" stroke-width="5" stroke="currentColor"/>
+<path d="M82.5 402.5H92.5C120.503 402.5 134.504 402.5 145.2 397.05C154.608 392.257 162.257 384.608 167.05 375.2C172.5 364.504 172.5 350.503 172.5 322.5V312.5C172.5 284.497 172.5 270.496 167.05 259.8C162.257 250.392 154.608 242.743 145.2 237.95C134.504 232.5 120.503 232.5 92.5 232.5H82.5C54.4974 232.5 40.4961 232.5 29.8005 237.95C20.3924 242.743 12.7433 250.392 7.94967 259.8C2.5 270.496 2.5 284.497 2.5 312.5V322.5C2.5 350.503 2.5 364.504 7.94967 375.2C12.7433 384.608 20.3924 392.257 29.8005 397.05C40.4961 402.5 54.4974 402.5 82.5 402.5Z" stroke-width="5" stroke="currentColor"/>
+<path d="M312.5 172.5H322.5C350.503 172.5 364.504 172.5 375.2 167.05C384.608 162.257 392.257 154.608 397.05 145.2C402.5 134.504 402.5 120.503 402.5 92.5V82.5C402.5 54.4974 402.5 40.4961 397.05 29.8005C392.257 20.3924 384.608 12.7433 375.2 7.94967C364.504 2.5 350.503 2.5 322.5 2.5H312.5C284.497 2.5 270.496 2.5 259.8 7.94967C250.392 12.7433 242.743 20.3924 237.95 29.8005C232.5 40.4961 232.5 54.4974 232.5 82.5V92.5C232.5 120.503 232.5 134.504 237.95 145.2C242.743 154.608 250.392 162.257 259.8 167.05C270.496 172.5 284.497 172.5 312.5 172.5Z" stroke-width="5" stroke="currentColor"/>
+<path d="M312.5 402.5H322.5C350.503 402.5 364.504 402.5 375.2 397.05C384.608 392.257 392.257 384.608 397.05 375.2C402.5 364.504 402.5 350.503 402.5 322.5V312.5C402.5 284.497 402.5 270.496 397.05 259.8C392.257 250.392 384.608 242.743 375.2 237.95C364.504 232.5 350.503 232.5 322.5 232.5H312.5C284.497 232.5 270.496 232.5 259.8 237.95C250.392 242.743 242.743 250.392 237.95 259.8C232.5 270.496 232.5 284.497 232.5 312.5V322.5C232.5 350.503 232.5 364.504 237.95 375.2C242.743 384.608 250.392 392.257 259.8 397.05C270.496 402.5 284.497 402.5 312.5 402.5Z" stroke-width="5" stroke="currentColor"/>
+</g>
+<g class="geometry-symbol">
+<path class="geometry-ink" pathLength="1" d="M202.5 102.5C202.5 121.086 202.5 130.379 200.963 138.107C194.65 169.842 169.842 194.65 138.107 200.963C130.379 202.5 121.086 202.5 102.5 202.5" stroke-width="13.5" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path class="geometry-ink" pathLength="1" d="M202.5 232.5V302.5M232.5 202.5H302.5" stroke-width="13.5" stroke-linecap="round" stroke="currentColor"/>
+<circle class="geometry-ink geometry-circle" pathLength="1" cx="202.5" cy="202.5" r="163.25" stroke-width="13.5" stroke="currentColor"/>
+</g>
+</svg>
+
+            </button></div>
+          <object data="/case-studies/media/image-insight-icons-interactive.svg" type="image/svg+xml" width="253" height="141" aria-label="Try Image Insight’s animated icons" title="Try Image Insight’s animated icons"><a href="/case-studies/media/image-insight-icons-interactive.svg">Try Image Insight’s animated icons</a></object>
+        </div>
+        <figcaption><a href="/case-studies/image-insight#icon-details">Image Insight</a></figcaption>
+      </figure>
+
+      <figure class="craft-left p-item figure craft-widget craft-focus" id="craft-image-insight-focus" style="--craft-order:4;--c:1 / 7;--r:3">
+        <div class="craft-focus-phone">
+          <video muted loop playsinline preload="metadata" width="1080" height="1920" poster="/case-studies/media/image-insight-mobile/focus-poster.jpg" tabindex="0" role="button" aria-label="Play Image Insight photo annotation video">
+            <source src="/case-studies/media/image-insight-mobile/focus-video.mp4" type="video/mp4">
+          </video>
+        </div>
+        <figcaption><a href="/case-studies/image-insight#mobile-views">Image Insight</a></figcaption>
+      </figure>
+
+
+
+      <figure class="craft-left p-item figure mapping-tabs-detail" style="--craft-order:6;--c:1 / 7;--r:4" id="mapping-tabs-detail" aria-labelledby="mapping-tabs-title">
+          <div class="stage-heading">
+            <h4 class="diagram-title" id="mapping-tabs-title">Combined tab/progress bar</h4>
+          </div>
+          <div class="mapping-demo-canvas">
+            <object type="image/svg+xml" data="/case-studies/media/column-mapping-tabs.svg?v=20261009-hint3" aria-label="Interactive column mapping with Mapped and Unmapped tabs"><a href="/case-studies/media/column-mapping-tabs.svg">Open the interactive column mapping detail</a>.</object>
+          </div>
+          <div class="demo-controls" role="group" aria-label="Mapping demo controls">
+            <button class="control-button reset-button" type="button" disabled><span>Reset</span></button>
+            <button class="control-button demo-button" type="button" aria-pressed="false" disabled>
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1 11 6 2 11Z" fill="currentColor"/></svg>
+              <svg class="stop-icon" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><rect x="1" y="1" width="10" height="10" rx="1" fill="currentColor"/></svg>
+              <span>Play demo</span>
+            </button>
+          </div>
+          <span class="visually-hidden demo-status" role="status" aria-live="polite"></span>
+        </figure>
+
+
+
+      <figure class="craft-left p-item figure craft-widget craft-grid" id="craft-image-insight-grid" style="--craft-order:8;--c:1 / 7;--r:5">
+        <iframe src="/case-studies/media/image-insight-grid-interactive.html?hints=off&amp;v=20261025-refresh-lightweight" title="Try Image Insight’s image grid: refresh photos, switch categories and adjust the image count" loading="lazy"></iframe>
+        <figcaption><a href="/case-studies/image-insight#image-grid-controls">Image Insight</a></figcaption>
+      </figure>
+
+
+
+
+
     </div>
 
     <div class="poster poster-2" style="--rows:6">
@@ -2931,6 +3006,26 @@
     })();
   </script>
   <script>
+    /* Play the phone demonstration only while visible; allow pause by tap or keyboard. */
+    (function () {
+      var video = document.querySelector('.craft-focus-phone video');
+      if (!video) return;
+      var reduced = matchMedia('(prefers-reduced-motion: reduce)');
+      var pausedByUser = false;
+      function label() { video.setAttribute('aria-label', (video.paused ? 'Play' : 'Pause') + ' Image Insight photo annotation video'); }
+      function toggle() { pausedByUser = !video.paused; if (video.paused) video.play().catch(function () {}); else video.pause(); }
+      video.addEventListener('play', label); video.addEventListener('pause', label);
+      video.addEventListener('click', toggle);
+      video.addEventListener('keydown', function (event) { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); toggle(); } });
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (entries) {
+          if (entries[0].isIntersecting && !reduced.matches && !pausedByUser) video.play().catch(function () {});
+          else video.pause();
+        }, { threshold: .25 }).observe(video);
+      }
+      reduced.addEventListener('change', function () { if (reduced.matches) video.pause(); });
+    })();
+
     /* Player controls for videos marked data-hover-controls (this page has no
        lightbox.js, which handles this elsewhere): shown on hover with a fine
        pointer; on touch screens the first tap reveals them, full screen
@@ -3190,5 +3285,37 @@
 <script src="/media/white-rainbow-shimmer.js"></script>
 <script src="/media/profile-page-animation.js"></script>
 <script src="/media/design-craft-motion.js?v=20261018b"></script>
+<script>
+(function () {
+  var figure=document.querySelector('.ii-geometry');
+  if (!figure) return;
+  var button=figure.querySelector('button');
+  var reduced=matchMedia('(prefers-reduced-motion: reduce)');
+  var replayPending=false;
+  function draw() {
+    figure.classList.remove('is-playing');
+    void figure.offsetWidth;
+    figure.classList.remove('is-fading');
+    figure.classList.add('is-playing');
+    replayPending=false;
+  }
+  function play() {
+    if (reduced.matches || replayPending) return;
+    if (!figure.classList.contains('is-playing')) { draw(); return; }
+    replayPending=true;
+    figure.classList.add('is-fading');
+    setTimeout(draw, 320);
+  }
+  if (!reduced.matches) figure.classList.add('is-armed');
+  button.addEventListener('click',play);
+  button.addEventListener('pointerenter',function(event) { if(event.pointerType==='mouse') play(); });
+  if ('IntersectionObserver' in window) {
+    var observer=new IntersectionObserver(function(entries) {
+      if(entries[0].isIntersecting) { play();observer.disconnect(); }
+    },{threshold:.3});
+    observer.observe(figure);
+  } else play();
+})();
+</script>
 </body>
 </html>

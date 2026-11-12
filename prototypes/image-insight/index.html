@@ -27,8 +27,17 @@
   <link rel="stylesheet" href="/prototypes/image-insight/session.css?v=20261026-review-title">
   <link rel="stylesheet" href="/prototypes/image-insight/theme.css?v=20261026-setup-no-close">
   <script src="/prototypes/image-insight/icons.js" defer></script>
-  <script src="/prototypes/image-insight/session.js?v=20261026-panel-history" defer></script>
+  <script src="/prototypes/image-insight/session.js?v=20261112-notes-edge" defer></script>
   <script src="/prototypes/image-insight/theme-fade.js?v=20261025-1"></script>
+  <script>
+    // Local design experiments are never loaded on the published prototype.
+    if (['localhost', '127.0.0.1', '[::1]'].includes(location.hostname) && !new URLSearchParams(location.search).has('embed')) {
+      const designLab = document.createElement('script');
+      designLab.src = '/prototypes/image-insight/dev/design-lab.js';
+      designLab.defer = true;
+      document.head.append(designLab);
+    }
+  </script>
 </head>
 <body>
 <div class="profile-menu" id="profile-menu" role="group" aria-label="Profile menu" hidden>

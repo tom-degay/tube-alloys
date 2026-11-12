@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Image Insight — try image notes</title>
+  <style>
+    * { box-sizing:border-box; }
+    html,body { margin:0; width:100%; height:100%; overflow:hidden; background:#e5ecee; }
+    body::before { content:''; position:fixed; inset:-24px; background:linear-gradient(#eef2f3a8,#eef2f3a8),url('image-insight-hero-ui.jpg') center/cover; filter:blur(12px); }
+    iframe { position:absolute; inset:0; border:0; transform-origin:top left; opacity:0; transition:opacity 350ms ease; }
+    body.ready iframe { opacity:1; }
+    .try { position:fixed; z-index:2; right:20px; top:20px; border:1px solid #ffffffb0; border-radius:999px; background:#ffffffe8; color:#187d94; padding:7px 15px; font:600 14px/1.5 system-ui,sans-serif; cursor:pointer; }
+    .try:focus-visible { outline:2px solid #187d94; outline-offset:3px; }
+    .try:disabled { cursor:wait; }
+    .fallback { position:fixed; inset:auto 24px 24px; text-align:center; font:14px/1.5 system-ui,sans-serif; color:#334857; }
+    .fallback a { color:inherit; }
+    @media(prefers-reduced-motion:reduce) { iframe { transition:none; } }
+  </style>
+</head>
+<body>
+  <iframe title="Image Insight prototype — explore a photograph and add notes" src="/prototypes/image-insight/?theme=light&amp;embed=notes"></iframe>
+  <button class="try" type="button" disabled>Try it</button>
+  <p class="fallback" hidden>Open the <a href="/prototypes/image-insight/" target="_blank" rel="noopener">Image Insight prototype</a> to try adding notes.</p>
+  <script>
+    // This wrapper stages the actual app. All note UI, state and gestures belong
+    // to the prototype; there is no second implementation of the editor here.
+    const frame = document.querySelector('iframe');
+    const trigger = document.querySelector('.try');
+    const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
+    async function waitFor(check) {
+      for (let i = 0; i < 300; i++) { const result = check(); if (result) return result; await pause(75); }
+      throw new Error('The prototype did not finish preparing.');
+    }
+    function fit() {
+      const width = document.documentElement.clientWidth;
+      const mobile = matchMedia('(pointer:coarse)').matches || width <= 430;
+      const viewport = mobile ? width : Math.max(960, width);
+      const scale = width / viewport;
+      frame.style.width = `${viewport}px`;
+      frame.style.height = `${document.documentElement.clientHeight / scale}px`;
+      frame.style.transform = `scale(${scale})`;
+    }
+    new ResizeObserver(fit).observe(document.documentElement);
+    fit();
+    frame.addEventListener('load', async () => {
+      try {
+        const doc = frame.contentDocument;
+        const backdrop = doc.createElement('style');
+        backdrop.textContent = 'html,body{background:#e5ecee!important}body::before{content:"";position:fixed;inset:-24px;background:url("/case-studies/media/image-insight-hero-ui.jpg") center/cover;filter:blur(12px)}.workspace{visibility:hidden}';
+        doc.head.append(backdrop);
+        await waitFor(() => doc.querySelector('#prototype-intro')?.open);
+        const board = doc.querySelector('#image-board');
+        await waitFor(() => board.contentDocument?.querySelectorAll('.photo-select').length >= 9);
+        doc.querySelector('#prototype-continue').click();
+        const grid = board.contentDocument;
+        await waitFor(() => !grid.documentElement.classList.contains('session-awaiting-intro') && [...grid.querySelectorAll('.photo:not([hidden])')].every(photo => photo.dataset.imageReady === 'true') && !grid.querySelector('[data-entering]'));
+        // Use a real expansion control, including the app's selection handling.
+        const photo = grid.querySelectorAll('.photo:not([hidden])')[2];
+        photo.querySelector('.photo-expand').click();
+        const dialog = await waitFor(() => doc.querySelector('#discussion-dialog')?.open && doc.querySelector('#discussion-dialog'));
+        await waitFor(() => doc.querySelector('#discussion-image').complete && doc.querySelector('#discussion-image').naturalWidth);
+        await pause(550);
+        document.body.classList.add('ready');
+        trigger.disabled = false;
+        trigger.addEventListener('click', async () => {
+          if (!dialog.open) {
+            photo.querySelector('.photo-expand').click();
+            await waitFor(() => dialog.open);
+          }
+          if (doc.querySelector('#toggle-notes').getAttribute('aria-expanded') !== 'true') doc.querySelector('#toggle-notes').click();
+        });
+      } catch (error) {
+        document.querySelector('.fallback').hidden = false;
+        trigger.hidden = true;
+        console.error(error);
+      }
+    });
+  </script>
+</body>
+</html>

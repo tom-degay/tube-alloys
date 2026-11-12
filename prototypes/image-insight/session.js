@@ -2,6 +2,7 @@
   'use strict';
   const $ = selector => document.querySelector(selector);
   const board = $('#image-board');
+  const embeddedNotesDemo = new URLSearchParams(location.search).get('embed') === 'notes';
   let introDismissed = false;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const sessionScroller = $('.session-body');
@@ -986,7 +987,8 @@
   }
   function writeFocusRoute(route, push = false) {
     const entry = {...window.history.state, [focusHistoryKey]: {page:focusHistoryPage, ...route}};
-    window.history[push ? 'pushState' : 'replaceState'](entry, '', location.href);
+    // Embedded case-study demos must not add steps to the host page's Back history.
+    window.history[push && !embeddedNotesDemo ? 'pushState' : 'replaceState'](entry, '', location.href);
   }
   writeFocusRoute({view:'board',session:state.id});
   function ensureSessionRoute() {
@@ -1001,6 +1003,7 @@
     if (route?.view === 'focus') writeFocusRoute({...route, image:id});
   }
   function leaveFocusHistory() {
+    if (embeddedNotesDemo) return false;
     if (focusRoute()?.view !== 'focus') return false;
     if (!focusBackPending) {
       focusBackPending = true;
@@ -1413,6 +1416,32 @@
     const opening = $('#toggle-notes').getAttribute('aria-expanded') !== 'true';
     if (!opening) rememberNotesCursor();
     setNotesVisible(opening);
+  });
+  // The desktop sheet can also be opened from a generous strip of the photo.
+  // Listen on the image itself, so the sibling navigation buttons retain their
+  // own hit targets and a swipe/drag never turns into an accidental notes click.
+  let notesEdgePress = null;
+  function isNotesEdge(event) {
+    if (phoneLayout.matches || $('#discussion-dialog').classList.contains('has-notes') || discussionClosing) return false;
+    const rect = swipeHero.getBoundingClientRect();
+    const width = Math.min(88, Math.max(48, rect.width * .2));
+    return event.clientX >= rect.right - width && event.clientX <= rect.right;
+  }
+  swipeHero.addEventListener('pointermove', event => {
+    swipeHero.classList.toggle('notes-edge', isNotesEdge(event));
+    if (notesEdgePress && Math.hypot(event.clientX - notesEdgePress.x, event.clientY - notesEdgePress.y) > 8) notesEdgePress = null;
+  });
+  swipeHero.addEventListener('pointerdown', event => {
+    notesEdgePress = event.button === 0 && isNotesEdge(event) ? {x:event.clientX, y:event.clientY} : null;
+  });
+  swipeHero.addEventListener('pointerleave', () => { swipeHero.classList.remove('notes-edge'); notesEdgePress = null; });
+  swipeHero.addEventListener('pointercancel', () => { notesEdgePress = null; });
+  swipeHero.addEventListener('click', event => {
+    const pressed = notesEdgePress;
+    notesEdgePress = null;
+    if (!pressed || !isNotesEdge(event) || swipeSettling || notesSettling) return;
+    swipeHero.classList.remove('notes-edge');
+    setNotesVisible(true);
   });
   // Keep the editor focused until activation: blurring on pointerdown dismisses
   // the mobile keyboard and moves Done before the browser can deliver its click.

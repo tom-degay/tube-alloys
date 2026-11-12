@@ -349,6 +349,7 @@ html:not([data-theme=dark]) .icon.icon-button .tile{fill-opacity:0}
 #session-settings #settings-stem-mask .handle{fill:#000}
 
 /* Desktop focus experiment: a notes sheet slides out from behind the image. */
+#discussion-image.notes-edge{cursor:pointer}
 @media(min-width:901px),(min-width:601px) and (min-height:501px){
  #discussion-dialog{--sheet-shift:0px;--sheet-peek:0px;--sheet-overlap:calc(var(--sheet-image-size) * .32);isolation:isolate}
  #discussion-dialog .discussion-image{z-index:2;pointer-events:none;transform:translateX(var(--sheet-shift));transition:transform 520ms cubic-bezier(.22,1,.36,1)}
