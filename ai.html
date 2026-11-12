@@ -117,6 +117,10 @@
     border-radius: 6px;
   }
 
+  /* Crop the screenshot's capture border and original rounded bottom edge. */
+  .design-lab-crop { position: relative; aspect-ratio: 3062 / 1978; overflow: hidden; border-radius: 6px; }
+  .figure .design-lab-crop img { width: 100.1306336%; max-width: none; margin-left: -0.1306336%; margin-top: -0.0653168%; border-radius: 0; }
+
   /* Content image/video floats on this same solid grey backdrop card,
      rather than sitting straight on the page's black background -- matches
      the case-study pages. Not applied inside .example-card, which has its
@@ -611,6 +615,19 @@
     font-size: clamp(16px, 1.3vw, 19px);
     line-height: 1.6;
   }
+  .ai-limitations {
+    margin: 16px 0 0;
+    padding-left: 1.2em;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: clamp(16px, 1.3vw, 19px);
+    line-height: 1.6;
+  }
+  .ai-limitations li + li { margin-top: 14px; }
+
+  .p-card p.tool-item { position: relative; padding-left: 48px; }
+  .p-card p.tool-item + p.tool-item { margin-top: 24px; }
+  .tool-icon { position: absolute; left: 0; top: 0; width: 32px; height: 32px; filter: invert(1); }
+
   .p-card p + p { margin-top: 1em; }
   .p-card p a[target="_blank"]::after { content: none; }
   .p-card p + blockquote, .p-card blockquote + p { margin-top: 22px; }
@@ -815,18 +832,49 @@
       <div class="p-item p-hero" style="--c:1 / 8;--r:1"><h1 class="lede display head-fade">Design and AI</h1></div>
 
       <nav class="p-item toc p-toc" aria-label="On this page" style="--c:10 / 13;--r:1">
+        <a href="#ai-with-heading">Designing with AI</a>
+        <a href="#ai-tools-heading">Tools</a>
         <a href="#ai-for-heading">Designing for AI</a>
         <a href="#ai-agents-heading">Designing for agents</a>
-        <a href="#ai-with-heading">Designing with AI</a>
       </nav>
-      <div class="p-item p-card p-section drop" style="--c:7 / 13;--r:2"><h2 class="principle-title display" id="ai-for-heading">Designing for AI</h2><blockquote>How should a system express what it doesn&rsquo;t know? How do we build confidence in automated decisions? How do we prevent harm?</blockquote><p>An uncertain suggestion can be useful if it&rsquo;s easy to check and correct. Even a confident one may need approval if a mistake would be costly. Previews, controls and feedback should reflect that distinction, directing attention where it matters most.</p><p>Trust in a process depends on evidence: who or what suggested a change, what informed it, and how it can be checked. Systems should show their working.</p><p>When results change between runs, those changes should be visible. Human work should never be silently undone. People should control what automation can access and change, and be able to trace what it did.</p><p>As AI takes on more of the work, design must keep asking: where in the loop does the human need to be?</p></div>
-      <figure class="p-item figure p-pic" style="--c:1 / 7;--r:2">
+      <div class="p-item p-card p-section band" style="--c:1 / 7;--r:2">
+        <h2 class="principle-title display" id="ai-with-heading">Designing with AI</h2>
+        <p>For complex projects like Quantemplate, I&rsquo;m an advocate of getting a working imperfect version into users&rsquo; hands early. We need to see how the tools work with real data, in a real context. AI shortens this feedback loop dramatically. Code is now a malleable design material that designers can rapidly shape and test.</p>
+        <p>That speed still needs careful oversight:</p>
+        <ul class="ai-limitations">
+          <li><strong>Craft needs attention.</strong> I review hierarchy, spacing, language and interaction details closely.</li>
+          <li><strong>Plausible output can hide flawed logic.</strong> I test assumptions, edge cases and behaviour beyond the happy path.</li>
+          <li><strong>A working prototype isn&rsquo;t production-ready.</strong> User testing, accessibility and reliability still need to be checked.</li>
+          <li><strong>More people prototyping makes governance essential.</strong> Shared components, interaction patterns and design review help keep the product consistent as contributions multiply.</li>
+        </ul>
+      </div>
+      <div class="p-item p-card p-section band drop" style="--c:7 / 13;--r:2">
+        <h2 class="principle-title display" id="ai-tools-heading">Tools</h2>
+        <p class="tool-item"><img class="tool-icon" src="/media/icons/carbon-flow-data.svg" width="32" height="32" alt="" aria-hidden="true"><strong>Thinking</strong><br>ChatGPT and Claude can help me interrogate a first draft of an idea, argument or flow.<br><br>If I&rsquo;m working on a flowchart, I&rsquo;ll let the AI draw the rectangles in FigJam, then review and adjust the results.</p>
+        <p class="tool-item"><img class="tool-icon" src="/media/icons/carbon-application.svg" width="32" height="32" alt="" aria-hidden="true"><strong>Prototyping</strong><br>I&rsquo;ve used Lovable and v0 for quick, disposable prototypes with realistic data. For more crafted prototypes, I go straight to Claude and Codex, including building my own &lsquo;design lab&rsquo; theme editors to try different approaches.</p>
+        <p class="tool-item"><img class="tool-icon" src="/media/icons/carbon-code.svg" width="32" height="32" alt="" aria-hidden="true"><strong>Building</strong><br>I design directly in code with Claude Code and Codex, shaping layout, behaviour and components together, then refining and integrating them into the product.</p>
+        <p class="tool-item"><img class="tool-icon" src="/media/icons/carbon-document-tasks.svg" width="32" height="32" alt="" aria-hidden="true"><strong>Testing</strong><br>Claude and Codex to generate dummy data and test scenarios, check logic and exercise edge cases.</p>
+        <p class="tool-item"><img class="tool-icon" src="/media/icons/carbon-chart-relationship.svg" width="32" height="32" alt="" aria-hidden="true"><strong>Explaining</strong><br>Codex for diagrams and interactive exhibits that make ideas easier to understand. By the time we get to release, Claude and Codex have the full project context, so I use them to write and build help documentation too.</p>
+      </div>
+      <figure class="p-item figure p-pic p-big" style="--c:1 / 13;--r:3">
+        <div class="design-lab-crop">
+          <img src="/media/image-insight-design-lab.png" width="3066" height="2000" alt="Image Insight prototype with a local Design lab side panel for comparing typefaces, sizes and weights alongside the image selection and session interface." loading="lazy">
+        </div>
+        <figcaption>A local design lab lets me compare and refine design options in the working Image Insight prototype.</figcaption>
+      </figure>
+      <div class="p-item p-card p-notes tight" style="--c:1 / 7;--r:4">
+        <span class="eyebrow">Image Insight</span>
+        <p>I used Codex to build a working prototype of <a href="/case-studies/image-insight">Image Insight</a>, smoothing out navigation, refining interactions and observing real users interacting with real code.</p>
+        <p>I built a &lsquo;design lab&rsquo; side panel into my local copy to try different design options, compare before and after, and revert changes without repeated prompting. Thanks to <a href="https://www.linkedin.com/in/andrebrantom/" target="_blank" rel="noopener noreferrer">Andre Brantom</a> for the idea.</p>
+        <p>Once I was happy with the result, I moved the components into Storybook, then progressively merged them into production, using Claude to test each piece as I went.</p>
+      </div>
+      <div class="p-item p-card p-section drop" style="--c:7 / 13;--r:5"><h2 class="principle-title display" id="ai-for-heading">Designing for AI</h2><blockquote>How should a system express what it doesn&rsquo;t know? How do we build confidence in automated decisions? How do we prevent harm?</blockquote><p>An uncertain suggestion can be useful if it&rsquo;s easy to check and correct. Even a confident one may need approval if a mistake would be costly. Previews, controls and feedback should reflect that distinction, directing attention where it matters most.</p><p>Trust in a process depends on evidence: who or what suggested a change, what informed it, and how it can be checked. Systems should show their working.</p><p>When results change between runs, those changes should be visible. Human work should never be silently undone. People should control what automation can access and change, and be able to trace what it did.</p><p>As AI takes on more of the work, design must keep asking: where in the loop does the human need to be?</p></div>
+      <figure class="p-item figure p-pic" style="--c:1 / 7;--r:5">
             <div class="ai-validation-animation">
               <img src="/media/ai-validation-animation.svg?v=4" width="1745" height="260" alt="Checking validation errors — animated gradient cube with shimmering text.">
             </div>
-            <figcaption>Quantemplate Agent thinking state</figcaption>
           </figure>
-      <figure class="p-item figure p-pic p-big" style="--c:1 / 13;--r:3">
+      <figure class="p-item figure p-pic p-big" style="--c:1 / 13;--r:6">
             <div class="figure-portrait-frame">
               <div class="ui-video" data-hover-controls>
                 <video autoplay muted loop playsinline disablepictureinpicture poster="/case-studies/media/automap-preview.jpg">
@@ -836,8 +884,8 @@
             </div>
             <figcaption>Lower confidence mapping suggestions are highlighted yellow for user review. See <a href="/case-studies/column-mapping">Column Mapping case study</a>.</figcaption>
           </figure>
-      <div class="p-item p-card p-section" style="--c:1 / 7;--r:4 / span 2"><h2 class="principle-title display" id="ai-agents-heading">Designing for agents</h2><p>Designing for agents extends beyond the chat window to the work itself. People need to see what an agent is proposing, what it has already changed, and what is waiting for their approval. Those distinctions should be visible where the work happens, without reconstructing events from a chat history.</p><p>Approval needs something concrete to act on: a structured diff showing exactly what will change. Users should be able to accept, adjust or reject proposals, with attention directed towards uncertainty and consequential decisions.</p><p>Once changes are applied, the interface should preserve change provenance: what changed, when, and who or what made and approved it. Interrupted tasks, partial success and conflicting human edits need clear paths to recovery.</p><p>Autonomy should be scoped to the task and its consequences, with approval gates for consequential actions.</p><p>My work on <a href="/case-studies/column-mapping">mapping suggestions</a>, <a href="/case-studies/validation">auditable corrections</a> and <a href="/case-studies/pipelines">inspectable data pipelines</a> provides a foundation for these challenges: helping people delegate work while retaining meaningful control.</p></div>
-      <div class="p-item p-stack drop2" style="--c:7 / 13;--r:4 / span 2">
+      <div class="p-item p-card p-section" style="--c:1 / 7;--r:7 / span 2"><h2 class="principle-title display" id="ai-agents-heading">Designing for agents</h2><p>Designing for agents extends beyond the chat window to the work itself. People need to see what an agent is proposing, what it has already changed, and what is waiting for their approval. Those distinctions should be visible where the work happens, without reconstructing events from a chat history.</p><p>Approval needs something concrete to act on: a structured diff showing exactly what will change. Users should be able to accept, adjust or reject proposals, with attention directed towards uncertainty and consequential decisions.</p><p>Once changes are applied, the interface should preserve change provenance: what changed, when, and who or what made and approved it. Interrupted tasks, partial success and conflicting human edits need clear paths to recovery.</p><p>My work on <a href="/case-studies/column-mapping">mapping suggestions</a>, <a href="/case-studies/validation">auditable corrections</a> and <a href="/case-studies/pipelines">inspectable data pipelines</a> provides a foundation for these challenges: helping people delegate work while retaining meaningful control.</p></div>
+      <div class="p-item p-stack drop2" style="--c:7 / 13;--r:7 / span 2">
         <a class="case-block has-thumb" href="https://www.youtube.com/watch?v=eSW6uoPb6tc" target="_blank" rel="noopener noreferrer">
             <img class="case-block-thumb" src="/case-studies/media/youtube-ai-pipelines.jpg" width="800" height="450" alt="Thumbnail for the YouTube video &lsquo;From raw data to production workflow in minutes with AI pipelines&rsquo;" loading="lazy">
             <span class="case-block-text">
@@ -854,31 +902,13 @@
             </span>
           </a>
       </div>
-      <figure class="p-item figure p-pic p-big" style="--c:2 / 12;--r:6">
+      <figure class="p-item figure p-pic p-big" style="--c:2 / 12;--r:9">
             <div class="figure-portrait-frame">
-              <img src="/media/agent-corrections-highlight.png" width="1638" height="1350" alt="Quantemplate's agent panel over a data table. A user asks it to correct the invalid zip codes; it replies that it added leading zeros to 12 values and links to review the changes. In the table behind, each corrected zip code is marked with a small cube icon. The user then asks it to change 2907 back, and the agent starts reverting that correction." loading="lazy">
+              <img src="/case-studies/media/agent-corrections-highlight.png" width="1638" height="1150" alt="Quantemplate's agent panel over a data table. A user asks it to correct the invalid zip codes; it replies that it added leading zeros to 12 values and links to review the changes. In the table behind, each corrected zip code is marked with a small cube icon. The user then asks it to change 2907 back, and the agent starts reverting that correction." loading="lazy">
             </div>
             <figcaption>Agent-proposed changes are marked in context with the cube motif, so users can inspect and approve them before they take effect.</figcaption>
           </figure>
-      <div class="p-item p-card p-section band" style="--c:1 / 7;--r:7"><h2 class="principle-title display" id="ai-with-heading">Designing with AI</h2><p>For complex projects like Quantemplate, I&rsquo;m an advocate of getting a working imperfect version into users&rsquo; hands early. We need to see how the tools work with real data, in a real context. AI shortens this feedback loop dramatically. Code is now a malleable design material that designers can rapidly shape and test.</p><p>I built this portfolio with <a href="https://claude.com/claude-code" target="_blank" rel="noopener noreferrer">Claude Code</a>. I have a working knowledge of web development, but using AI helped me get something real stood up faster. I could test how something would look, without building a mockup. And I could spend more time thinking about content, interaction and design and less time debugging nested divs.</p></div>
-      <div class="p-item p-card p-section band drop" style="--c:7 / 13;--r:7"><p>Aside from Claude, I&rsquo;ve found <a href="https://lovable.dev" target="_blank" rel="noopener noreferrer">Lovable</a> to be a great tool for getting rough prototypes up and working with realistic data in minutes, so we can test interaction patterns. I&rsquo;m excited about where these tools can take us.</p><p class="prompts-intro">Things I might say to an AI:</p><blockquote>
-            <p>Help me prototype this idea so I can try it out.</p>
-            <p>Suggest some other options for this pattern. What haven&rsquo;t I thought of?</p>
-            <p>Run an accessibility audit on this site.</p>
-            <p>Review this logic. Are there any edge cases or gaps in this approach?</p>
-            <p>What&rsquo;s another way we could say this?</p>
-            <p>Show me current research on identity cues, avatars, and trust.</p>
-            <p>Challenge this design decision. What&rsquo;s the strongest argument against it?</p>
-          </blockquote></div>
-      <figure class="p-item figure p-pic p-big" style="--c:1 / 13;--r:8">
-              <div class="ui-video" data-hover-controls>
-                <video autoplay muted loop playsinline disablepictureinpicture poster="media/loveable-poster.jpg">
-                  <source src="media/loveable.mp4" type="video/mp4">
-                </video>
-              </div>
-              <figcaption>A 10-minute prototype made in Lovable to test and refine some interactions. It doesn&rsquo;t look exactly like Quantemplate, but at this stage, it doesn&rsquo;t have to.</figcaption>
-            </figure>
-      <div class="p-item p-card p-notes tight" style="--c:1 / 7;--r:9"><span class="eyebrow">Prototyping example</span><p>In this example I used Lovable to test how users could find and sort datasets designated as &lsquo;data dictionaries&rsquo;. I explored placing the filter in the sidebar or the top ribbon, and sorting by properties unique to data dictionaries.</p><p>The prototype revealed a conflict between dictionary-specific sorting and the main dataset sort setting. I made the dictionary sort behave like a removable filter: users could see when it was active and clear it to return to the main sort order.</p><p>Working with realistic data exposed an issue that would have been harder to spot in a conventional click-through prototype.</p></div>
+
     </div>
 
     <hr class="rule">
