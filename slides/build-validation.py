@@ -135,6 +135,28 @@ title = inner(pick(hero_copy, r'<h1', 'h1'))
 subtitle = inner(pick(hero_copy, r'<p class="subtitle"', 'p'))
 slides.append(f'<section id="splash" class="splash" data-title="{escape(clean(title), quote=True)}"><div class="slide-layout"><div class="splash-copy"><p class="eyebrow splash-label"><img src="../media/icons/validation.svg" alt="" width="28" height="28">Validation</p><h1>{title}</h1><p class="strap">{subtitle}</p></div><div class="media-stage"><div class="val-hero-media">{asset(hero)}</div></div></div></section>')
 slide('project', 'Validation', 'Project details', pick(src, r'<div class="meta-row"', 'div'), 'meta-slide')
+# Reuse the requested Column mapping slides by stable ID, not changing numbers.
+mapping = (ROOT / 'slides/column-mapping.html').read_text()
+context_title = pick(mapping, r'<section id="problem"', 'section')
+slides.append(context_title.replace('id="problem"', 'id="context-schemas"', 1).replace('01 / Problem', 'Context'))
+slides.append(pick(mapping, r'<section id="schema-flow-slide"', 'section'))
+
+profile_icons = [
+    '<path d="M10 20H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6M2 8h18M8 8v12M2 14h8"/><path d="m13 17 3 3 6-7"/>',
+    '<path d="M8 20H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2M6 7h6M6 11h2"/><circle cx="15" cy="14" r="5"/><path d="m19 18 3 3m-9-6v-2m3 2v-4"/>',
+    '<circle cx="9" cy="7" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3m1-17a3 3 0 0 1 0 6m2 5a5 5 0 0 1 3 4v2"/>',
+    '<path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6zM8 12l3 3 5-6"/>',
+]
+profiles = [
+    ('Data Operations Analysts', 'Routine data operations', 'Process incoming data, monitor throughput and resolve routine validation issues using established procedures.', 'Basic Excel skills'),
+    ('Business Analysts', 'Business interpretation and complex corrections', 'Interpret business data, investigate complex exceptions and define correction logic using domain knowledge.', 'Advanced Excel skills; no coding knowledge'),
+    ('Team managers', 'Team oversight', 'Monitor team activity and data throughput.', 'Operations and audit expertise; no coding knowledge'),
+    ('CFOs, IT leaders and auditors', 'Oversight and assurance', 'Review outputs and reports, and perform spot checks.', 'Finance, technology or audit expertise, depending on role'),
+]
+cards = []
+for (role, focus, task, skills), drawing in zip(profiles, profile_icons):
+    cards.append(f'<article class="user-profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{drawing}</svg><div><h3>{role}</h3><p class="profile-focus">{focus}</p><p class="profile-skills">{skills}</p></div></article>')
+slide('user-profiles', 'Context', 'Quantemplate user profiles', '<div class="user-profiles">' + ''.join(cards) + '</div>', 'profiles-slide')
 problem = pick(src, r'<section aria-labelledby="problem-heading"', 'section')
 statement = inner(pick(problem, r'<p class="display problem-statement"', 'p'))
 slide('problem', 'Problem', statement, kind='section-slide problem-slide')
@@ -229,16 +251,47 @@ chart = chart.replace(chart_title, '').replace(chart_subtitle, '')
 slide('corrections-outcome', 'Outcome', inner(chart_title), chart, 'chart-slide', inner(chart_subtitle))
 slides[-1] = slides[-1].replace('<h2>', '<h2 id="corrections-chart-title">', 1)
 
+# Preserve the article's live Time, Trust, Truth component before Adoption rates.
+radar = pick(src, r'<div id="ttt-component"', 'div')
+radar_css = re.search(r'<style>(.*?)</style>', radar, re.S)[1]
+radar_js = re.search(r'<script>(.*?)</script>', radar, re.S)[1]
+radar = re.sub(r'<(?:style|script)>.*?</(?:style|script)>', '', radar, flags=re.S)
+radar = radar.replace('id="ttt-component"', 'id="ttt-component" class="ttt-component"')
+radar = radar.replace('id="ttt-chart"', 'id="ttt-chart" class="ttt-chart"')
+# Class selectors also style overview copies, whose IDs are renamed by deck.js.
+radar_css = radar_css.replace('#ttt-component', '.validation-deck .reveal .ttt-component').replace('#ttt-chart', '.ttt-chart')
+(ROOT / 'slides/time-trust-truth.css').write_text('/* Extracted from the article by build-validation.py. */\n' + radar_css)
+# Slide handles keep their keyboard interactions without advancing the deck.
+radar_js = radar_js.replace("root.addEventListener('keydown',event=>{", "root.addEventListener('keydown',event=>{event.stopPropagation();")
+# Animate only on the active slide, never underneath the overview or offscreen.
+a = radar_js.index(' if(!reduce.matches){\n  if(typeof IntersectionObserver')
+b = radar_js.index(" if(reduce.addEventListener)", a)
+radar_js = radar_js[:a] + """ const slide=root.closest('section'), main=document.querySelector('main.reveal');
+ function syncVisibility(){
+  const visible=slide.classList.contains('present')&&!main.inert&&main.style.visibility!=='hidden'&&!document.hidden;
+  if(!visible){cancelAnimationFrame(introRaf);introRaf=0;hideTooltip();}
+  else if(!introDone&&!reduce.matches)playIntro();
+ }
+ new MutationObserver(syncVisibility).observe(main,{subtree:true,attributes:true,attributeFilter:['class','inert','style']});
+ document.addEventListener('visibilitychange',syncVisibility);
+ syncVisibility();
+""" + radar_js[b:]
+(ROOT / 'slides/time-trust-truth.js').write_text('// Extracted from the article by build-validation.py.\n' + radar_js)
+slide('time-trust-truth', 'Outcome', '', radar, 'radar-slide')
+slides[-1] = slides[-1].replace('data-title="Outcome"', 'data-title="Time, Trust, Truth"')
+
 # Restore the approved adoption reflection verbatim from the original deck.
 slide('adoption-rates', 'Reflections', 'Adoption rates',
       '<div class="reflection-copy"><p>Adoption has been uneven despite support in research. Some clients started immediately; others were reluctant to change a documented system-of-record workflow. This showed that interest in a feature doesn&rsquo;t necessarily indicate readiness to adopt it.</p></div>',
       'section-slide reflection-slide')
 
 # Next steps now includes the requested supplier-sharing preview.
-next_steps = pick(src, r'<section aria-labelledby="reflections-heading"', 'section')
+next_steps = pick(src, r'<section aria-labelledby="nextsteps-label"', 'section')
 supplier = next_steps[:next_steps.index('<h3>Agentic suggestions</h3>')]
 supplier_title = inner(pick(supplier, r'<h3', 'h3'))
-supplier_figure = pick(supplier, r'<figure', 'figure')
+# Retain the approved preview now that the article links to the sharing study.
+supplier_figure = ('<figure><img src="media/correction-sharing-popup.png" width="2418" height="2216" '
+                   'alt="The sharing popup: &lsquo;Share with 2 partners&rsquo;, listing each partner organisation with its submitters and the validation results selected to share, with a Review sharing button."></figure>')
 media_slide('supplier-sharing-preview', 'Next steps', supplier_title, re.search(r'<img\b[^>]*>', supplier_figure).group())
 popup('supplier-sharing-context', ['supplier-sharing-preview'], 'More', supplier_title, pick(supplier, r'<p>', 'p'))
 agent = next_steps[next_steps.index('<h3>Agentic suggestions</h3>'):]
@@ -249,13 +302,13 @@ figure = pick(agent, r'<figure', 'figure')
 media_slide('agentic-preview', 'Next steps', agent_title, re.search(r'<img\b[^>]*>', figure).group(), inner(pick(figure, r'<figcaption', 'figcaption')).replace('Proposed next step:', 'One solution:'))
 
 page = '''<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>Validation — slide mode</title><link rel="icon" href="../tdg-favicon.svg"><link rel="stylesheet" href="vendor/reveal/reveal.css"><link rel="stylesheet" href="deck.css?v=42"><link rel="stylesheet" href="details.css?v=22"><link rel="stylesheet" href="validation.css?v=2"></head><body class="validation-deck">
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>Validation — slide mode</title><link rel="icon" href="../tdg-favicon.svg"><link rel="stylesheet" href="vendor/reveal/reveal.css"><link rel="stylesheet" href="deck.css?v=42"><link rel="stylesheet" href="details.css?v=22"><link rel="stylesheet" href="validation.css?v=8"><link rel="stylesheet" href="time-trust-truth.css?v=1"></head><body class="validation-deck">
 <nav class="deck-toolbar" aria-label="Presentation controls"><a href="../case-studies/validation.html" class="back-link">↖ Case study</a><div><button id="overview-button" type="button" aria-label="Overview" title="Overview (Esc)"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></button><button id="fullscreen-button" type="button" aria-label="Full screen" title="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="expand-icon" d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/><path class="collapse-icon" d="M3 8h5V3m13 5h-5V3M8 21v-5H3m13 5v-5h5"/></svg></button></div></nav>
 <main class="reveal"><div class="slides">''' + '\n'.join(slides) + '''</div></main>
 <footer class="deck-footer"><span>Tom de Gay <span class="footer-divider">/</span> Validation</span><div><button id="prev-slide" aria-label="Previous slide">←</button><span id="slide-count" aria-live="polite"></span><button id="next-slide" aria-label="Next slide">→</button></div></footer>
 ''' + '\n'.join(dialogs) + '''
 <noscript>This presentation needs JavaScript. <a href="../case-studies/validation.html">Read the case study</a>.</noscript>
-<script src="vendor/reveal/reveal.js"></script><script src="workflow.js?v=2"></script><script src="deck.js?v=43"></script><script src="details.js?v=23"></script></body></html>
+<script src="vendor/reveal/reveal.js"></script><script src="mapping-flow.js?v=1"></script><script src="workflow.js?v=2"></script><script src="deck.js?v=43"></script><script src="details.js?v=23"></script><script src="time-trust-truth.js?v=1"></script></body></html>
 '''
 page = '\n'.join(line.rstrip() for line in page.splitlines()) + '\n'
 (ROOT / 'slides/validation.html').write_text(page)

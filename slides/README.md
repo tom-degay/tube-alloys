@@ -4,7 +4,7 @@ A separate Reveal.js deck using the site's Fakt fonts, colours and existing medi
 
 For all future decks and edits, read [the reusable slide rules](AGENTS.md).
 They record the approved content, typography, popup, media and navigation decisions.
-Validation now follows the current case-study page in 34 slides.
+Validation now follows the current case-study page in 38 slides.
 
 Open `/slides/validation.html` on the local server. Vercel's clean URL is
 `/slides/validation`. The case-study header has a **View slides** link.
@@ -78,3 +78,7 @@ object-to-static-poster addition to `deck.js` is shared with Validation.
 artwork and a screenshot of the interactive tabs' initial state. Live slides use
 the original SVG documents; overview thumbnails do not create interactive copies.
 Keep the tab screenshot up to date if the source demo's initial appearance changes.
+
+- Context follows project details: Column mapping slides 5–6 (schema problem and live flow diagram), then four user profiles with icons. The two analyst profiles distinguish responsibilities, not seniority. Oversight roles have role-specific expertise.
+
+Slide 34 contains the article’s live Time, Trust, Truth diagram, immediately before Adoption rates. Its styles and interactions are extracted by `build-validation.py` into `time-trust-truth.css` and `time-trust-truth.js`.

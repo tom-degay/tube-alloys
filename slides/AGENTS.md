@@ -263,7 +263,7 @@ exceptions above; they do not change the Column mapping template.
 - Slide 9 has two stacked info popups: Technical context contains only the
   first introduction paragraph; Why prioritise this? contains the second.
 - Regenerate with `build-validation.py`; styling exceptions belong in
-  `validation.css`. Current deck: 34 slides, 16 popups, five videos.
+  `validation.css`. Current deck: 38 slides, 16 popups, five videos.
 
 - Slide 25 uses the 01:03–01:23 excerpt of the annotated demo, showing a correction being moved, instead of the static ordering image. Keep the source demo unchanged.
 - Follow it with a title slide: ‘2-minute demo’ / ‘Validation workflow walkthrough’, then the full demo.
@@ -274,3 +274,9 @@ exceptions above; they do not change the Column mapping template.
   retain the Outcome label, quote and attribution.
 - Restore the original Adoption rates slide verbatim in a Reflections section
   after Outcome and before Next steps. This overrides its earlier removal.
+
+- Context follows project details: Column mapping slides 5–6 (schema problem and live flow diagram), then four user profiles with icons. The two analyst profiles distinguish responsibilities, not seniority. Oversight roles have role-specific expertise.
+
+- Keep user-profile cards simple: icon, role, focus and skills only; omit the task-description paragraph.
+
+- User profiles use four square cards in one horizontal row, with generous gaps and icons above their titles.

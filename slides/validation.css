@@ -1,4 +1,16 @@
 /* Validation's November 2026 article-led revision; other decks keep their layout. */
+.validation-deck .schema-flow { width:100%; height:100%; display:flex; align-items:center; justify-content:center; }
+.validation-deck .schema-flow > svg { width:auto; max-width:100%; height:100%; border-radius:16px; overflow:hidden; }
+.validation-deck .schema-flow text { font-family:Fakt,sans-serif; font-weight:600; letter-spacing:normal; }
+.validation-deck .profiles-slide .slide-layout { padding-top:78px; padding-bottom:24px; gap:20px; }
+.validation-deck .reveal .profiles-slide h2 { font-size:48px; }
+.validation-deck .user-profiles { display:grid; grid-template-columns:repeat(4, 264px); gap:36px; margin:auto 0; }
+.validation-deck .user-profile { display:flex; flex-direction:column; gap:10px; width:264px; height:264px; box-sizing:border-box; padding:18px; background:#212121; border-radius:16px; }
+.validation-deck .user-profile > svg { width:26px; height:26px; flex:none; color:#00d8aa; }
+.validation-deck .reveal .user-profile h3 { margin:0; font-size:23px; line-height:1.15; text-transform:none; }
+.validation-deck .reveal .user-profile p { font-size:22px; line-height:1.3; margin-top:10px; text-wrap:pretty; }
+.validation-deck .reveal .user-profile .profile-focus { color:#00d8aa; font-size:17px; margin-top:10px; }
+.validation-deck .reveal .user-profile .profile-skills { color:#aaa; font-size:16px; }
 .validation-deck .reveal .step-title-slide .eyebrow { display: none; }
 .validation-deck .reveal .step-title-slide .step-label { display: block; color: rgba(255,255,255,.35); }
 .validation-deck .reveal .splash .slide-layout { grid-template-columns: 430px minmax(0,1fr); padding-right: 40px; }
@@ -29,3 +41,9 @@
 .validation-deck .reveal .framing-slide .evidence-card p { font-size: 30px; }
 .validation-deck .reveal .framing-slide .evidence-card .framing-quote { font-size: 38px; }
 .validation-deck .reveal .framing-slide .evidence-card .framing-term { font-size: 20px; }
+
+/* Full-slide outcomes diagram; source controls and SVG remain interactive. */
+.validation-deck .radar-slide .slide-layout { padding: 38px 54px; }
+.validation-deck .reveal .radar-slide .ttt-component { width: 780px; max-width: none; margin: auto; border-radius: 16px; flex: none; }
+.validation-deck .radar-slide .ttt-instruction,
+.validation-deck .radar-slide .ttt-caption { letter-spacing: normal; text-transform: none; }
