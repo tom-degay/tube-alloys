@@ -81,4 +81,4 @@ Keep the tab screenshot up to date if the source demo's initial appearance chang
 
 - Context follows project details: Column mapping slides 5–6 (schema problem and live flow diagram), then four user profiles with icons. The two analyst profiles distinguish responsibilities, not seniority. Oversight roles have role-specific expertise.
 
-Slide 34 contains the article’s live Time, Trust, Truth diagram, immediately before Adoption rates. Its styles and interactions are extracted by `build-validation.py` into `time-trust-truth.css` and `time-trust-truth.js`.
+Slide 34 contains the article’s live Speed, Accuracy, Confidence diagram, immediately before Adoption rates. Its styles and interactions are extracted by `build-validation.py` into `time-trust-truth.css` and `time-trust-truth.js`.

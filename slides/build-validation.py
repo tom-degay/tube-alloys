@@ -251,7 +251,7 @@ chart = chart.replace(chart_title, '').replace(chart_subtitle, '')
 slide('corrections-outcome', 'Outcome', inner(chart_title), chart, 'chart-slide', inner(chart_subtitle))
 slides[-1] = slides[-1].replace('<h2>', '<h2 id="corrections-chart-title">', 1)
 
-# Preserve the article's live Time, Trust, Truth component before Adoption rates.
+# Preserve the article's live Speed, Accuracy, Confidence component before Adoption rates.
 radar = pick(src, r'<div id="ttt-component"', 'div')
 radar_css = re.search(r'<style>(.*?)</style>', radar, re.S)[1]
 radar_js = re.search(r'<script>(.*?)</script>', radar, re.S)[1]
@@ -278,7 +278,7 @@ radar_js = radar_js[:a] + """ const slide=root.closest('section'), main=document
 """ + radar_js[b:]
 (ROOT / 'slides/time-trust-truth.js').write_text('// Extracted from the article by build-validation.py.\n' + radar_js)
 slide('time-trust-truth', 'Outcome', '', radar, 'radar-slide')
-slides[-1] = slides[-1].replace('data-title="Outcome"', 'data-title="Time, Trust, Truth"')
+slides[-1] = slides[-1].replace('data-title="Outcome"', 'data-title="Speed, Accuracy, Confidence"')
 
 # Restore the approved adoption reflection verbatim from the original deck.
 slide('adoption-rates', 'Reflections', 'Adoption rates',
@@ -308,7 +308,7 @@ page = '''<!doctype html>
 <footer class="deck-footer"><span>Tom de Gay <span class="footer-divider">/</span> Validation</span><div><button id="prev-slide" aria-label="Previous slide">←</button><span id="slide-count" aria-live="polite"></span><button id="next-slide" aria-label="Next slide">→</button></div></footer>
 ''' + '\n'.join(dialogs) + '''
 <noscript>This presentation needs JavaScript. <a href="../case-studies/validation.html">Read the case study</a>.</noscript>
-<script src="vendor/reveal/reveal.js"></script><script src="mapping-flow.js?v=1"></script><script src="workflow.js?v=2"></script><script src="deck.js?v=43"></script><script src="details.js?v=23"></script><script src="time-trust-truth.js?v=1"></script></body></html>
+<script src="vendor/reveal/reveal.js"></script><script src="mapping-flow.js?v=1"></script><script src="workflow.js?v=2"></script><script src="deck.js?v=43"></script><script src="details.js?v=23"></script><script src="time-trust-truth.js?v=2"></script></body></html>
 '''
 page = '\n'.join(line.rstrip() for line in page.splitlines()) + '\n'
 (ROOT / 'slides/validation.html').write_text(page)

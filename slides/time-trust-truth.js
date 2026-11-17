@@ -8,7 +8,7 @@
  const sketchStrokes=[root.querySelector('#ttt-sketch-0')];
  const buttons=[...root.querySelectorAll('button')],pill=root.querySelector('.ttt-pill');
  const center=[362.5,280],ends=[[362.5,120],[223.936,360],[501.064,360]];
- const names=['time','trust','truth'],original=[.54,.54,.63],after=[.8,.9,.66];
+ const names=['speed','confidence','accuracy'],original=[.54,.54,.63],after=[.8,.9,.66];
  const stages=[
   {headline:'A manual process forces trade-offs.',detail:'More checking takes time. Faster fixes can make changes harder to trace.',truth:['Better-quality data','through manual checking'],time:['Less time and effort','spent making corrections'],trust:['Confidence in a correct,','consistent process']},
   {headline:'A consistent, automated way to spot errors.',detail:'The original validations applied checks automatically and consistently, helping users identify data that needed attention.',truth:['Surface errors consistently','so users can address them'],time:['Apply checks automatically','to reduce manual checking'],trust:['The same checks','across datasets and runs']},
@@ -20,7 +20,7 @@
  const AREA=manual[0]*manual[1]+manual[0]*manual[2]+manual[1]*manual[2];
  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
  let introRaf=0,introDone=false,introObserver=null;
- const axisNames=['Time','Trust','Truth'];
+ const axisNames=['Speed','Confidence','Accuracy'];
  const modeNames=['Manual process','Original validations','Corrections workflow'];
  const improvements=[
   ['Checking and correcting data takes repeated manual effort.','Confidence depends on people following a consistent process and keeping track of changes.','Business knowledge helps spot and fix errors, but thorough checking takes time.'],
@@ -95,7 +95,7 @@
    'The corrections project made finding and fixing errors faster,\nand changes easier to trace.'
   ][state];
 
-  [['truth','Truth'],['time','Time'],['trust','Trust']].forEach(([key,label])=>root.querySelector('#ttt-'+key+'-heading').textContent=label);
+  [['truth','Accuracy'],['time','Speed'],['trust','Confidence']].forEach(([key,label])=>root.querySelector('#ttt-'+key+'-heading').textContent=label);
 
   root.querySelector('#ttt-desc').textContent=stage.headline+' '+stage.detail+(state?' Conceptual illustration of the selected stage.':' Drag a pink corner or use arrow keys. Each corner is capped halfway along its axis; area stays constant.');
  }
