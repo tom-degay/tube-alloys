@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/styles.css?v=20261119-zonefully-ipad-7">
 <link rel="stylesheet" href="/nav.css?v=20261016d">
 <style>
   html { scroll-padding-top: 100px; }
@@ -1031,6 +1031,20 @@
 
   /* next case study card */
   .theme-light .case-block { box-shadow: 0 0 0 1px rgba(var(--ink), 0.1); }
+  /* Match the white next-case-study card on the Zonefully page. */
+  .theme-light .case-footer .project-card .case-block {
+    background-color: #fff;
+    border-color: #fff;
+    box-shadow: 0 1px 2px rgba(var(--ink), 0.06), 0 8px 24px rgba(var(--ink), 0.08);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .theme-light .case-footer .project-card .case-block:hover,
+  .theme-light .case-footer .project-card .case-block:focus-visible {
+    background-color: #fff;
+    border-color: #fff;
+    box-shadow: 0 2px 4px rgba(var(--ink), 0.08), 0 14px 32px rgba(var(--ink), 0.14);
+    transform: translateY(-4px);
+  }
 
   /* nav bar: frosted white instead of smoked grey */
   body.theme-light[data-navigation="identity"] .identity-bar::before {
@@ -1615,8 +1629,8 @@
       <h2 class="eyebrow" id="next-heading">Next project</h2>
       <div class="project-card is-zf is-light">
         <a class="case-block has-image" href="/case-studies/zonefully">
-          <span class="project-media">
-            <img class="case-block-media" src="/case-studies/media/zonefully-card-detail-light.jpg" width="1200" height="750" alt="Detail of Zonefully&rsquo;s Programs screen: a list of training and breakfast programs beside a new, untitled program waiting to be assigned to an activity." loading="lazy">
+          <span class="project-media is-tablet">
+            <img class="case-block-media" src="/case-studies/media/zonefully-planner-ipad-light.jpg?v=2" width="1585" height="992" alt="Zonefully&rsquo;s weekly planner in light mode on an iPad, showing cycling and breakfast routines alongside the selected ride&rsquo;s details." loading="lazy">
           </span>
           <span class="case-block-text">
             <span class="case-block-kicker">Zonefully</span>

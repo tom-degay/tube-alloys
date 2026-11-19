@@ -1885,6 +1885,30 @@ the body script adds .is-revealed per card with a per-row --reveal-delay. */
 .project-card:hover .case-block-media,
 .project-card .case-block.has-image:focus-visible .case-block-media { transform: scale(1.03); }
 
+/* Dark iPad planner: equal black gaps, bleeding off right/bottom.
+   At 16:10, the 10%-height top gap is 6.25% of the width.
+   Offset the artwork's built-in left black margin to match that gap. */
+.project-card.is-zf .project-media.is-tablet {
+  position: relative;
+  padding: 0;
+  background: #000;
+}
+.project-card.is-zf .is-tablet .case-block-media {
+  position: absolute;
+  top: 10%;
+  left: 1.2%;
+  width: 110%;
+  height: 110%;
+  max-width: none;
+  object-position: center;
+  transform: none;
+  transform-origin: left top;
+}
+.project-card.is-zf:hover .is-tablet .case-block-media,
+.project-card.is-zf .case-block:focus-visible .is-tablet .case-block-media {
+  transform: scale(1.03);
+}
+
 /* "Try the prototype" is the card's secondary action: a plain text link
    styled like the page's other links (Fakt, white, the 0.22 underline)
    under the description, so the
@@ -1942,4 +1966,7 @@ the body script adds .is-revealed per card with a per-row --reveal-delay. */
 .project-card.is-light .case-block-title { color: #131313; }
 .project-card.is-light .case-block-subtitle { color: rgba(19, 19, 19, 0.68); }
 .project-card.is-light.is-zf .case-block-kicker { color: #e8336a; }
+.project-card.is-light.is-zf:hover > .case-block,
+.project-card.is-light.is-zf > .case-block:focus-visible { background-color: #fff; border-color: #fff; }
 .project-card.is-light.is-zf .project-media { background: #f7f7f7; }
+.project-card.is-light.is-zf .project-media.is-tablet { background: #f2f2f2; }
