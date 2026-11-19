@@ -44,7 +44,7 @@
   let theme = themeOverridden ? requestedTheme : deviceTheme.matches ? 'dark' : 'light';
   function applyTheme() {
     window.setImageInsightTheme(theme);
-    document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#1c1c1c' : '#47b3cf';
+    document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#1c1c1c' : '#3ea1b8';
     document.querySelectorAll('[data-theme-toggle]').forEach(button => {
       button.setAttribute('aria-pressed', String(theme === 'dark'));
       button.title = `Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`;

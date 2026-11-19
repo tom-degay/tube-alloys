@@ -1,10 +1,11 @@
+@font-face{font-family:Nunito;src:url("../../case-studies/media/fonts/nunito-variable.ttf") format("truetype");font-weight:200 1000;font-display:swap}
 @font-face{font-family:"Open Sans";src:url("../../case-studies/media/fonts/zonefully-open-sans-regular.woff2") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"Open Sans";src:url("../../case-studies/media/fonts/zonefully-open-sans-semibold.woff2") format("woff2");font-weight:600;font-display:swap}
 @font-face{font-family:"Open Sans";src:url("../../case-studies/media/fonts/zonefully-open-sans-bold.woff2") format("woff2");font-weight:700;font-display:swap}
-:root{color-scheme:light;--accent:#47b3cf;--accent-ink:#187d94;--ink:#354856;--muted:#6e7b84;--line:#dce3e5;--panel:340px;--rail:78px;--edge:22px;--ease:cubic-bezier(.22,.75,.25,1)}
+:root{color-scheme:light;--accent-rgb:62 161 184;--accent:rgb(var(--accent-rgb));--accent-ink:#187d94;--ink:#354856;--muted:#6e7b84;--line:#dce3e5;--panel:340px;--rail:78px;--edge:22px;--ease:cubic-bezier(.22,.75,.25,1)}
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;min-width:300px;height:100%;overflow:hidden;background:#efefef;color:var(--ink)}
-body,button,input,textarea{font-family:"Open Sans",system-ui,sans-serif;font-size:16px;line-height:1.5}
+body,button,input,textarea,select,output{font-family:Nunito,system-ui,sans-serif;font-size:16px;line-height:1.5}
 button,input,textarea{-webkit-tap-highlight-color:transparent}
 button{color:inherit;font-weight:600;cursor:pointer;touch-action:manipulation}
 button,input,textarea{transition:background-color 160ms,border-color 160ms,box-shadow 160ms}
@@ -108,7 +109,7 @@ dialog::backdrop{background:#e8eded66;-webkit-backdrop-filter:blur(15px);backdro
 body:has(#question-dialog[open]) .board-shell,.discussion-open .board-shell{filter:blur(15px);opacity:.7}
 .dialog-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
 .dialog-heading h2{font-size:24px;color:var(--accent)}
-.close{font-family:system-ui;font-size:30px;font-weight:300;line-height:1;margin:-6px -8px -6px 0}
+.close{font-family:inherit;font-size:30px;font-weight:300;line-height:1;margin:-6px -8px -6px 0}
 .muted{color:var(--muted);font-size:15px;line-height:1.7}
 .dialog-footer{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:25px}
 .dialog-footer>.primary,.dialog-footer>.secondary{min-width:150px}
@@ -116,13 +117,13 @@ body:has(#question-dialog[open]) .board-shell,.discussion-open .board-shell{filt
 .question-dialog h2{color:var(--accent)}
 .question-options{position:relative;border:0;padding:0;margin:0;min-width:0;max-height:48dvh;overflow:auto;scrollbar-width:thin}
 .question-choice{-webkit-tap-highlight-color:transparent;touch-action:manipulation;position:relative;display:block;border-radius:12px;padding:9px 12px;margin:0 0 4px;cursor:pointer;font-weight:600;font-size:20px;color:#5e707c;transition:background-color 300ms ease}
-@media(hover:hover) and (pointer:fine){.question-choice:hover{background:#def4fa}}
-.question-choice:has(input:checked){background:#c7edf7}
+@media(hover:hover) and (pointer:fine){.question-choice:hover{background:color-mix(in srgb,var(--accent) 15%,white)}}
+.question-choice:has(input:checked){background:color-mix(in srgb,var(--accent) 25%,white)}
 .question-choice:has(input:focus-visible){outline:2px solid var(--accent-ink);outline-offset:-2px}
 .question-choice input{position:absolute;width:1px;height:1px;opacity:0}
 .question-dialog .dialog-footer{margin-top:20px}
 .question-dialog .dialog-footer .primary{min-width:170px}
-.question-selecting .question-heading{background:#def4fa;border-radius:12px}
+.question-selecting .question-heading{background:color-mix(in srgb,var(--accent) 15%,white);border-radius:12px}
 .question-selecting .question-heading svg{opacity:.5}
 .discussion-dialog{width:min(700px,calc(100vw - var(--panel) - 160px));margin-left:calc(var(--rail) + (100vw - var(--rail) - var(--panel) - min(700px,100vw - var(--panel) - 160px)) / 2 - 12px);padding:26px 28px 24px}
 .discussion-dialog .dialog-heading{margin-bottom:20px}
@@ -471,7 +472,7 @@ html[data-input=pointer] #image-notes:focus{outline:none}
 
 
 .remove-image{transition:width 180ms var(--ease),opacity 160ms}
-.remove-image.is-confirming{width:96px;opacity:1!important;font:600 13px 'Open Sans',sans-serif;padding:6px 16px;border-radius:999px;corner-shape:round}
+.remove-image.is-confirming{width:96px;opacity:1!important;font:600 13px Nunito,sans-serif;padding:6px 16px;border-radius:999px;corner-shape:round}
 .remove-image.is-confirming::before{border-radius:999px;background:#ff0040}
 #discussion-dialog :is(#toggle-notes,#notes-done){background:rgb(128 128 128 / 16%);border:1px solid rgb(128 128 128 / 16%);border-radius:12px}
 #discussion-dialog :is(#toggle-notes,#notes-done):hover{background:rgb(128 128 128 / 26%)}
@@ -735,7 +736,7 @@ input:not([type=radio]):not([type=checkbox]):not([type=range]):focus,textarea:fo
 }
 
 .question-choice:last-child{margin-bottom:0}
-.question-selection-indicator{position:absolute;top:0;left:0;width:100%;border-radius:12px;background:#c7edf7;pointer-events:none}
+.question-selection-indicator{position:absolute;top:0;left:0;width:100%;border-radius:12px;background:color-mix(in srgb,var(--accent) 25%,white);pointer-events:none}
 [data-theme=dark] .question-selection-indicator{background:var(--teal-hover)}
 #question-form .has-selection-indicator .question-choice:has(input:checked){background:transparent}
 @media(prefers-reduced-motion:reduce){.question-choice{transition:none}}

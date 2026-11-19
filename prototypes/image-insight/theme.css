@@ -23,7 +23,7 @@ html:not([data-theme=dark]) .session-panel{--surface:#f6f7f7;background:var(--su
 .note-indicator{bottom:-10px;left:24px;right:auto;z-index:2;display:grid;place-items:center;width:34px;height:26px;padding:4px 5px;background:#454545;color:#fff;border:2px solid var(--surface);border-radius:20px;corner-shape:round}
 .note-indicator svg{width:20px;height:16px}
 .number-badge{border-color:var(--surface)}
-html[data-theme=dark]{color-scheme:dark;--accent:#72e0fc;--accent-ink:#72e0fc;--ink:#ededed;--muted:#adadad;--line:#444444;--surface:#242424;--page:#1c1c1c;--soft:#2f2f2f;--teal-soft:rgb(61 170 197 / 30%);--teal-hover:rgb(61 170 197 / 50%)}
+html[data-theme=dark]{color-scheme:dark;--accent-rgb:71 179 207;--accent:#72e0fc;--accent-ink:#72e0fc;--ink:#ededed;--muted:#adadad;--line:#444444;--surface:#242424;--page:#1c1c1c;--soft:#2f2f2f;--teal-soft:rgb(61 170 197 / 30%);--teal-hover:rgb(61 170 197 / 50%)}
 [data-theme=dark] body{background:var(--page)}
 [data-theme=dark] :is(.session-panel,dialog,.noscript){background:var(--surface);box-shadow:0 5px 35px #0004}
 [data-theme=dark] .rail{background:#303030;color:var(--accent)}
@@ -63,7 +63,7 @@ html[data-theme=dark]{color-scheme:dark;--accent:#72e0fc;--accent-ink:#72e0fc;--
 [data-theme=dark] input[aria-invalid=true]{border-color:#ff7899}
 @media (max-width:600px), (max-width:900px) and (max-height:500px){
  .mobile-appearance{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;font-weight:600}
- .mobile-appearance .theme-toggle{color:var(--accent-ink);background:#47b3cf20}
+ .mobile-appearance .theme-toggle{color:var(--accent-ink);background:rgb(var(--accent-rgb) / 12.5%)}
  [data-theme=dark] .rail{background:transparent}
  [data-theme=dark] :is(.rail,.mobile-session-bar)::before{background:rgb(36 36 36 / 90%)}
  [data-theme=dark] .rail-button{border-color:var(--line);color:var(--ink)}
@@ -167,7 +167,7 @@ html:not([data-theme=dark]) .profile > span{color:#fff}
  .avatar-trigger:hover img{border-color:#d4f6ff;box-shadow:0 0 0 2px rgb(255 255 255 / 18%)}
  [data-theme=dark] .avatar-trigger:hover img{border-color:#adadad;box-shadow:0 0 0 2px rgb(255 255 255 / 10%)}
 }
-.avatar-trigger:focus-visible img{border-color:var(--accent);box-shadow:0 0 0 2px rgb(71 179 207 / 25%)}
+.avatar-trigger:focus-visible img{border-color:var(--accent);box-shadow:0 0 0 2px rgb(var(--accent-rgb) / 25%)}
 @media(prefers-reduced-motion:reduce){.avatar-trigger img{transition:none}}
 
 /* Optical weight correction for the session header on dark surfaces. */
@@ -222,7 +222,7 @@ html:not([data-theme=dark]) .profile > span{color:#fff}
 }
 /* Actions are a single editable surface, with the remove control inside. */
 #review-actions{gap:10px}
-#review-actions .action-row{gap:0;border-radius:12px;background:rgb(71 179 207 / 15%);overflow:hidden;transition:background 200ms ease}
+#review-actions .action-row{gap:0;border-radius:12px;background:rgb(var(--accent-rgb) / 15%);overflow:hidden;transition:background 200ms ease}
 #review-actions .action-row input{background:transparent;border:0;box-shadow:none;padding:12px 16px;font-size:16px;font-weight:600;line-height:1.5}
 #review-actions .action-row .icon-button{flex:none;width:42px;height:44px;margin-right:5px;color:var(--ink);opacity:0;transition:opacity 180ms ease;background:transparent}
 #review-actions .action-row .icon-button svg{width:28px;height:28px}
@@ -231,14 +231,14 @@ html:not([data-theme=dark]) .profile > span{color:#fff}
 #add-action{display:flex;justify-content:center;align-items:center;gap:0;margin:14px auto 0}
 [data-theme=dark] #review-actions .action-row{background:rgb(61 170 197 / 15%)}
 @media(hover:hover){
- #review-actions .action-row:hover{background:rgb(71 179 207 / 25%)}
+ #review-actions .action-row:hover{background:rgb(var(--accent-rgb) / 25%)}
  #review-actions .action-row:hover .icon-button{opacity:1}
  [data-theme=dark] #review-actions .action-row:hover{background:rgb(61 170 197 / 25%)}
 }
 @media(hover:none){#review-actions .action-row .icon-button{opacity:1}}
 
 #review-actions .action-row .icon-button{overflow:hidden;transition:width 180ms var(--ease),opacity 180ms ease;white-space:nowrap}
-#review-actions .action-row .icon-button.is-confirming{width:96px;height:34px;opacity:1;background:#ff0040;color:#fff;border-radius:999px;corner-shape:round;padding:6px 16px;font:600 13px 'Open Sans',sans-serif}
+#review-actions .action-row .icon-button.is-confirming{width:96px;height:34px;opacity:1;background:#ff0040;color:#fff;border-radius:999px;corner-shape:round;padding:6px 16px;font:600 13px Nunito,sans-serif}
 #review-actions .remove-label{display:block;white-space:nowrap}
 @media(prefers-reduced-motion:reduce){#review-actions .action-row .icon-button{transition:none}}
 
@@ -307,20 +307,35 @@ html:not([data-theme=dark]) .profile > span{color:#fff}
 @media(min-width:901px),(min-width:601px) and (min-height:501px){
  :root{--rail:78px}
  .rail{width:78px;padding:21px 10px 18px}
+ html:not([data-theme=dark]) .rail{background:linear-gradient(to bottom,var(--accent),#317f93 calc(100% - 72px))}
+ html:not([data-theme=dark]) .rail :is(.rail-button,.theme-toggle):hover{background:rgb(0 0 0 / 10%)}
+ html:not([data-theme=dark]) .rail :is(.rail-button,.theme-toggle,.avatar-trigger):focus-visible{
+  outline:2px solid #fff;outline-offset:4px;
+ }
 }
+
+html:not([data-theme=dark]) .empty-tile{stroke:var(--accent)}
 
 /* Consistent standard rounded corners on text buttons. */
 .primary,.secondary,.quiet{border-radius:12px}
 #discussion-dialog :is(#toggle-notes,#notes-done){border-radius:12px}
 
-.secondary{transition:color 180ms ease,border-color 180ms ease}
-html:not([data-theme=dark]) .secondary:not(:disabled):hover{background:transparent;color:#389fb9;border-color:#389fb9}
+.secondary{transition:color 180ms ease,border-color 180ms ease,background-color 180ms ease}
+/* Session action buttons share the same type size on desktop and mobile. */
+:root:not([data-theme=dark]) :is(.primary,.secondary),
+:root:not([data-theme=dark]) #session-footer :is(#discuss-images,#review-session){font-size:17px;font-weight:600}
+html:not([data-theme=dark]) .primary{background:var(--accent);color:white}
+html:not([data-theme=dark]) .primary:not(:disabled):hover{background:#3b99af;box-shadow:none}
+html:not([data-theme=dark]) .secondary{color:#307a8c;border-color:#3d9bb1}
+@media(hover:hover){
+ html:not([data-theme=dark]) .secondary:not(:disabled):hover{background-color:rgb(0 0 0 / 4%);color:#276b7b;border-color:#3a93a8}
+}
 
 /* White writing surfaces in light mode. */
 html:not([data-theme=dark]) :is(.settings-content input:not([type=radio]),.settings-content textarea,#discussion-dialog #image-notes){background:#fff}
-html:not([data-theme=dark]) #review-actions .action-row{background:rgb(71 179 207 / 15%)}
+html:not([data-theme=dark]) #review-actions .action-row{background:rgb(var(--accent-rgb) / 15%)}
 html:not([data-theme=dark]) #review-actions .action-row input{background:transparent}
-@media(hover:hover){html:not([data-theme=dark]) #review-actions .action-row:hover{background:rgb(71 179 207 / 25%)}}
+@media(hover:hover){html:not([data-theme=dark]) #review-actions .action-row:hover{background:rgb(var(--accent-rgb) / 25%)}}
 
 /* Keep the welcome message centred without an empty header above it. */
 #session-panel:has(#welcome:not([hidden])) .session-header{display:none}
@@ -337,8 +352,8 @@ html:not([data-theme=dark]) #review-actions .action-row input{background:transpa
 @media(prefers-reduced-motion:no-preference){#saved-dialog[open]{animation-duration:300ms}}
 
 /* Match icon hover surfaces to the light-mode action fields. */
-html:not([data-theme=dark]) .icon-button:hover{background:rgb(71 179 207 / 15%)}
-html:not([data-theme=dark]) .icon:is(:hover,:focus-visible,.is-playing) .tile{fill:rgb(71 179 207);fill-opacity:.15}
+html:not([data-theme=dark]) .icon-button:hover{background:rgb(var(--accent-rgb) / 15%)}
+html:not([data-theme=dark]) .icon:is(:hover,:focus-visible,.is-playing) .tile{fill:var(--accent);fill-opacity:.15}
 /* Icon buttons already paint the tint on their outer surface. */
 html:not([data-theme=dark]) .icon.icon-button .tile{fill-opacity:0}
 
@@ -494,7 +509,7 @@ html:not([data-theme=dark]) .icon.icon-button .tile{fill-opacity:0}
 #discussion-dialog :is(#toggle-notes,[data-preview-id="toggle-notes"]) svg{color:var(--muted)}
 
 @media(max-width:600px),(max-width:900px) and (max-height:500px){
- html:not([data-theme=dark]) #back-to-board:hover{background:rgb(71 179 207 / 15%)}
+ html:not([data-theme=dark]) #back-to-board:hover{background:rgb(var(--accent-rgb) / 15%)}
 }
 
 /* Give the scroll mask room for the question’s 16px left overhang.
@@ -503,7 +518,7 @@ html:not([data-theme=dark]) .icon.icon-button .tile{fill-opacity:0}
 
 /* Hover surface sits outside the text without changing its alignment. */
 #edit-question{position:relative;isolation:isolate;padding:9px 36px 9px 16px;width:calc(100% + 16px);margin-left:-16px;border-radius:12px}
-#edit-question::after{content:"";position:absolute;inset:0;z-index:-1;border-radius:12px;background:rgb(71 179 207 / 15%);opacity:0;pointer-events:none;transition:opacity 300ms ease}
+#edit-question::after{content:"";position:absolute;inset:0;z-index:-1;border-radius:12px;background:rgb(var(--accent-rgb) / 15%);opacity:0;pointer-events:none;transition:opacity 300ms ease}
 [data-theme=dark] #edit-question::after{background:rgb(255 255 255 / 10%)}
 @media(hover:hover) and (pointer:fine){#edit-question:hover::after{opacity:1}}
 #edit-question:focus-visible::after{opacity:1}
@@ -522,7 +537,7 @@ html:not([data-theme=dark]) .icon.icon-button .tile{fill-opacity:0}
 #review-name{display:block;width:100%;padding:6px 42px 10px 12px;background:transparent;border:0;color:var(--muted);font-size:24px;line-height:1.35;font-weight:600;text-overflow:ellipsis}
 .review-name-edit{position:absolute;right:4px;top:2px;display:grid;place-items:center;width:36px;height:44px;padding:0;border:0;background:transparent;opacity:0;transition:opacity 200ms ease}
 .review-name-edit svg{width:18px;height:18px}
-.review-title-editor:is(:hover,:focus-within){background:rgb(71 179 207 / 15%)}
+.review-title-editor:is(:hover,:focus-within){background:rgb(var(--accent-rgb) / 15%)}
 [data-theme=dark] .review-title-editor:is(:hover,:focus-within){background:rgb(255 255 255 / 10%)}
 .review-title-editor:is(:hover,:focus-within) .review-name-edit{opacity:1}
 #review-name:focus{color:var(--ink);text-overflow:clip}
